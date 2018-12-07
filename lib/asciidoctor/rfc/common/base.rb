@@ -6,10 +6,9 @@ require "pathname"
 require "open-uri"
 require "pp"
 require "set"
-require "fileutils"
 
 module Asciidoctor
-  module RFC::Common
+  module Rfc::Common
     module Base
       def convert(node, transform = nil, opts = {})
         transform ||= node.node_name
@@ -378,7 +377,7 @@ HERE
         wgcache_name = "#{Dir.home}/.asciidoc-rfc-workgroup-cache.json"
         # If we are required to, clear the wg cache
         if node.attr("flush-caches") == "true"
-          FileUtils.rm_f wgcache_name
+          system("rm -f #{wgcache_name}")
         end
         # Is there already a wg cache? If not, create it.
         wg = []
@@ -415,7 +414,7 @@ HERE
         bibliocache_name = "#{Dir.home}/.asciidoc-rfc-biblio-cache.json"
         # If we are required to, clear the biblio cache
         if node.attr("flush-caches") == "true"
-          FileUtils.rm_f bibliocache_name
+          system("rm -f #{bibliocache_name}")
         end
         # Is there already a biblio cache? If not, create it.
         biblio = {}
@@ -526,16 +525,6 @@ HERE
           end
         end
         xmldoc
-      end
-
-      def output_dtd
-        return if Dir.getwd == File.expand_path("../../../../..", __FILE__)
-        filename = File.join(File.dirname(__FILE__), "../../../../rfc2629.dtd")
-        FileUtils.cp filename, Dir.getwd
-        filename = File.join(File.dirname(__FILE__), "../../../../rfc2629-other.ent")
-        FileUtils.cp filename, Dir.getwd
-        filename = File.join(File.dirname(__FILE__), "../../../../rfc2629-xhtml.ent")
-        FileUtils.cp filename, Dir.getwd
       end
     end
   end

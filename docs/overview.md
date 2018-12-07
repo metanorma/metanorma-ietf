@@ -2,4 +2,4 @@
 title: Overview
 ---
 
-asciidoctor-rfc lets you write Internet-Drafts and RFCs in AsciiDoc, the “asciidoctor-way”.
+metanorma-ietf lets you write Internet-Drafts and RFCs using the Metanorma publishing toolchain.

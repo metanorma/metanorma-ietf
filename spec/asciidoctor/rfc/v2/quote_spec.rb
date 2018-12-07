@@ -1,5 +1,5 @@
 require "spec_helper"
-describe Asciidoctor::RFC::V2::Converter do
+RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders a quote as a paragraph" do
     expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2)).to be_equivalent_to <<~'OUTPUT'
       [[verse-id]]

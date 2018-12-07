@@ -5,7 +5,7 @@ title: Installation
 Add this line to your application’s Gemfile:
 
 ```
-gem "asciidoctor-rfc"
+gem "metanorma-ietf"
 ```
 
 And then execute:
@@ -17,5 +17,5 @@ $ bundle
 Or install it yourself as:
 
 ```
-$ gem install asciidoctor-rfc
+$ gem install metanorma-cli
 ```

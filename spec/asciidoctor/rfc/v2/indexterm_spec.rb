@@ -1,5 +1,5 @@
 require "spec_helper"
-describe Asciidoctor::RFC::V2::Converter do
+RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders index" do
     expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
       = Document title

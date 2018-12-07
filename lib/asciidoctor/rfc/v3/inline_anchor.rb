@@ -1,5 +1,5 @@
 module Asciidoctor
-  module RFC::V3
+  module Rfc::V3
     module InlineAnchor
       def inline_anchor(node)
         case node.type

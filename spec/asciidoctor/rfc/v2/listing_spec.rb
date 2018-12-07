@@ -1,5 +1,5 @@
 require "spec_helper"
-describe Asciidoctor::RFC::V2::Converter do
+RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders a listing block with source attribute, ignoring listing content" do
     expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2)).to be_equivalent_to <<~'OUTPUT'
       [[literal-id]]

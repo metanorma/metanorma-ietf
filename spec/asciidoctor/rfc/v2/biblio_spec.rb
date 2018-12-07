@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Asciidoctor::RFC::V2::Converter do
+RSpec.describe Asciidoctor::Rfc::V2::Converter do
   # it "processes v2 sample biblio file" do
   #  system("rm -f spec/examples/refs-v2.new.xml")
   #  system("bin/asciidoctor-rfc2 -r asciidoctor-bibliography spec/examples/refs-v2.adoc -o spec/examples/refs-v2.new.xml")

@@ -1,18 +1,17 @@
 require "asciidoctor"
 
-require "asciidoctor/rfc/version"
-require "asciidoctor/rfc/common/base"
-require "asciidoctor/rfc/common/front"
-require "asciidoctor/rfc/v3/base"
-require "asciidoctor/rfc/v3/blocks"
-require "asciidoctor/rfc/v3/front"
-require "asciidoctor/rfc/v3/inline_anchor"
-require "asciidoctor/rfc/v3/lists"
-require "asciidoctor/rfc/v3/table"
-require "asciidoctor/rfc/v3/validate"
+require_relative "../common/base"
+require_relative "../common/front"
+require_relative "base"
+require_relative "blocks"
+require_relative "front"
+require_relative "inline_anchor"
+require_relative "lists"
+require_relative "table"
+require_relative "validate"
 
 module Asciidoctor
-  module RFC::V3
+  module Rfc::V3
     # A {Converter} implementation that generates RFC XML output, a format used to
     # format RFC proposals (https://tools.ietf.org/html/rfc7991)
     #
@@ -22,15 +21,15 @@ module Asciidoctor
       include ::Asciidoctor::Converter
       include ::Asciidoctor::Writer
 
-      include ::Asciidoctor::RFC::Common::Base
-      include ::Asciidoctor::RFC::Common::Front
-      include ::Asciidoctor::RFC::V3::Base
-      include ::Asciidoctor::RFC::V3::Blocks
-      include ::Asciidoctor::RFC::V3::Front
-      include ::Asciidoctor::RFC::V3::InlineAnchor
-      include ::Asciidoctor::RFC::V3::Lists
-      include ::Asciidoctor::RFC::V3::Table
-      include ::Asciidoctor::RFC::V3::Validate
+      include ::Asciidoctor::Rfc::Common::Base
+      include ::Asciidoctor::Rfc::Common::Front
+      include ::Asciidoctor::Rfc::V3::Base
+      include ::Asciidoctor::Rfc::V3::Blocks
+      include ::Asciidoctor::Rfc::V3::Front
+      include ::Asciidoctor::Rfc::V3::InlineAnchor
+      include ::Asciidoctor::Rfc::V3::Lists
+      include ::Asciidoctor::Rfc::V3::Table
+      include ::Asciidoctor::Rfc::V3::Validate
 
       register_for "rfc3"
 

@@ -1,5 +1,5 @@
 require "spec_helper"
-describe Asciidoctor::RFC::V3::Converter do
+RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "treats bcp14 macro in v3 as <bcp14>" do
     expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
       = Document title

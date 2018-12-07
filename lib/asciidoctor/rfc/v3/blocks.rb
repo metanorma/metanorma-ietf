@@ -2,7 +2,7 @@ require "htmlentities"
 require "uri"
 
 module Asciidoctor
-  module RFC::V3
+  module Rfc::V3
     module Blocks
       # Syntax:
       # [discrete]

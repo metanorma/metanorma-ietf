@@ -1,5 +1,5 @@
 require "spec_helper"
-describe Asciidoctor::RFC::V3::Converter do
+RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "renders raw RFC XML as references" do
     expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3)).to be_equivalent_to <<~'OUTPUT'
       = Document title

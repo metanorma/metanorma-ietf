@@ -1,7 +1,7 @@
 require "htmlentities"
 
 module Asciidoctor
-  module RFC::V2
+  module Rfc::V2
     module Blocks
       # Syntax:
       # [discrete]

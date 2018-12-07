@@ -2,7 +2,7 @@ require "nokogiri"
 require "jing"
 
 module Asciidoctor
-  module RFC::V2
+  module Rfc::V2
     module Validate
       class << self
         def validate(doc)
@@ -14,14 +14,14 @@ module Asciidoctor
           begin
             errors = schema.validate(".tmp.xml")
           rescue Jing::Error => e
-            abort "[asciidoctor-rfc] Validation error: #{e}"
+            abort "[metanorma-ietf] Validation error: #{e}"
           end
 
           if errors.none?
-            warn "[asciidoctor-rfc] Validation passed."
+            warn "[metanorma-ietf] Validation passed."
           else
             errors.each do |error|
-              warn "[asciidoctor-rfc] #{error[:message]} @ #{error[:line]}:#{error[:column]}"
+              warn "[metanorma-ietf] #{error[:message]} @ #{error[:line]}:#{error[:column]}"
             end
           end
 

@@ -1,5 +1,5 @@
 module Asciidoctor
-  module RFC::Common
+  module Rfc::Common
     module Front
       def title(node, xml)
         title_attributes = {

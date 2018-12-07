@@ -1,5 +1,5 @@
 module Asciidoctor
-  module RFC::V3
+  module Rfc::V3
     module Lists
       # Syntax:
       #   * [[[ref1]]] A

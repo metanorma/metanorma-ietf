@@ -58,7 +58,7 @@ def text_compare2(old_xml, new_xml)
   File.write("#{new_xml}.txt", remove_pages(File.read("#{new_xml}.txt.1", encoding: "utf-8")))
 end
 
-describe Asciidoctor::RFC::V2::Converter do
+RSpec.describe Asciidoctor::Rfc::V2::Converter do
   # it "processes RFC 6350 RFC XML v2 example with bibliography preprocessing, with equivalent text" do
   #  system("asciidoctor -b rfc2 -r 'asciidoctor-bibliography' -r 'asciidoctor-rfc' ./spec/examples/rfc6350.adoc -o spec/examples/rfc6350.xml")
   #  text_compare2("spec/examples/rfc6350.xml", "spec/examples/rfc6350.xml")
