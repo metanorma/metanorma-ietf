@@ -1,10 +1,10 @@
 ---
-sections:
-- name: Introduction
+items:
+- title: Introduction
   items:
-    - overview
-    - installation
-- name: Usage
+    - { title: Overview, path: overview/ }
+    - { title: Installation, path: installation/ }
+- title: Usage
   items:
-    - basic
+    - { title: Basic, path: basic/ }
 ---
