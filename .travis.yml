@@ -8,6 +8,10 @@ rvm:
   - 2.4
   - 2.3
   - ruby-head
+
+env:
+  - DEV_MODE=true
+
 addons:
   apt:
     packages:
@@ -18,6 +22,7 @@ before_install:
   - gem install bundler -v 2.0.1
   - unset _JAVA_OPTIONS
   - pip install --user xml2rfc
+
 matrix:
   allow_failures:
     - rvm: ruby-head

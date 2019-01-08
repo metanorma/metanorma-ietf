@@ -1,9 +1,12 @@
 require "asciidoctor"
 require "metanorma-standoc"
+require "asciidoctor/ietf/contributor"
 
 module Asciidoctor
   module Ietf
     class Converter < Standoc::Converter
+      include Asciidoctor::Ietf::Contributor
+
       register_for "ietf"
 
       def makexml(node)
@@ -14,6 +17,8 @@ module Asciidoctor
         ietf_xml
       end
 
+      alias :pass :content
+
       private
 
       def build_ieft_doc(node)
@@ -23,6 +28,14 @@ module Asciidoctor
         result << "</ietf-standard>"
 
         textcleanup(result.flatten * "\n")
+      end
+
+      def validate(document)
+        content_validate(document)
+        schema_validate(
+          formattedstr_strip(document.dup),
+          File.join(File.dirname(__FILE__), "ietf.rng"),
+        )
       end
     end
   end
