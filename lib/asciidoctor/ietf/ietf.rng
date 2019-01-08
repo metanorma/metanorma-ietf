@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    Currently we inherit from a namespaced grammar, isostandard. Until we inherit from isodoc,
+    we cannot have a new default namespace: we will end up with a grammar with two different
+    namespaces, one for isostandard and one for csand additions. And we do not want that.
+  -->
+  <include href="isostandard.rng">
+    <start>
+      <ref name="ietf-standard"/>
+    </start>
+    <define name="language">
+      <element name="language">
+        <value>en</value>
+      </element>
+    </define>
+    <define name="docidentifier">
+      <element name="docidentifier">
+        <optional>
+          <attribute name="type"/>
+        </optional>
+        <text/>
+      </element>
+    </define>
+    <define name="btitle">
+      <element name="title">
+        <ref name="FormattedString"/>
+      </element>
+    </define>
+    <define name="figure">
+      <element name="figure">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <choice>
+          <ref name="image"/>
+          <ref name="pre"/>
+          <oneOrMore>
+            <ref name="subfigure"/>
+          </oneOrMore>
+        </choice>
+        <zeroOrMore>
+          <ref name="fn"/>
+        </zeroOrMore>
+        <optional>
+          <ref name="dl"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="subfigure">
+      <element name="figure">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <choice>
+          <ref name="image"/>
+          <ref name="pre"/>
+        </choice>
+      </element>
+    </define>
+    <define name="status">
+      <element name="status">
+        <choice>
+          <value>proposal</value>
+          <value>working-draft</value>
+          <value>committee-draft</value>
+          <value>draft-standard</value>
+          <value>final-draft</value>
+          <value>published</value>
+          <value>withdrawn</value>
+          <ref name="LocalizedString"/>
+        </choice>
+      </element>
+    </define>
+    <define name="BibItemType" combine="choice">
+      <choice>
+        <value>policy-and-procedures</value>
+        <value>best-practices</value>
+        <value>supporting-document</value>
+        <value>report</value>
+        <value>legal</value>
+        <value>directives</value>
+        <value>proposal</value>
+        <value>standard</value>
+      </choice>
+    </define>
+    <define name="editorialgroup">
+      <element name="editorialgroup">
+        <oneOrMore>
+          <ref name="committee"/>
+        </oneOrMore>
+      </element>
+    </define>
+    <define name="BibData">
+      <optional>
+        <attribute name="type">
+          <ref name="BibItemType"/>
+        </attribute>
+      </optional>
+      <oneOrMore>
+        <ref name="btitle"/>
+      </oneOrMore>
+      <optional>
+        <ref name="formattedref"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="bsource"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="docidentifier"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="docnumber"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="bdate"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="contributor"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="edition"/>
+      </optional>
+      <optional>
+        <ref name="version"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="biblionote"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="language"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="script"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="abstract"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="status"/>
+      </optional>
+      <ref name="copyright"/>
+      <zeroOrMore>
+        <ref name="docrelation"/>
+      </zeroOrMore>
+      <ref name="editorialgroup"/>
+      <zeroOrMore>
+        <ref name="ics"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="security"/>
+      </optional>
+    </define>
+  </include>
+  <define name="committee">
+    <element name="committee">
+      <attribute name="type">
+        <choice>
+          <value>technical</value>
+          <value>provisional</value>
+        </choice>
+      </attribute>
+      <text/>
+    </element>
+  </define>
+  <define name="security">
+    <element name="security">
+      <text/>
+    </element>
+  </define>
+  <define name="ietf-standard">
+    <element name="ietf-standard">
+      <ref name="bibdata"/>
+      <zeroOrMore>
+        <ref name="termdocsource"/>
+      </zeroOrMore>
+      <ref name="preface"/>
+      <oneOrMore>
+        <ref name="sections"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="annex"/>
+      </zeroOrMore>
+      <ref name="bibliography"/>
+    </element>
+  </define>
+</grammar>
