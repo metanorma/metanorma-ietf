@@ -15,7 +15,7 @@ addons:
     - python-pip
 
 before_install:
-  - gem install bundler -v 1.16.1
+  - gem install bundler -v 2.0.1
   - unset _JAVA_OPTIONS
   - pip install --user xml2rfc
 matrix:
