@@ -11,8 +11,8 @@ module Asciidoctor
 
       def makexml(node)
         ietf_xml = cleanup(Nokogiri::XML(build_ieft_doc(node)))
-        ietf_xml.root.add_namespace(nil, "http://riboseinc.com/isoxml")
         validate(ietf_xml) unless @novalid
+        ietf_xml.root.add_namespace(nil, "http://riboseinc.com/isoxml")
 
         ietf_xml
       end
