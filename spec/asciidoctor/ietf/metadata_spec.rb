@@ -10,7 +10,6 @@ RSpec.describe Asciidoctor::Ietf do
 
       doc = Nokogiri::XML(iso_xml)
       contributor = doc.at("contributor")
-
       expect(strip(contributor)).to eq(strip(contributor_xml))
     end
   end
@@ -24,18 +23,17 @@ RSpec.describe Asciidoctor::Ietf do
       <roletype="author"/>
       <person>
         <name>
-          <completename>SimonPerreault</completename>
-          <surname>Perreault</surname>
           <initial>S.</initial>
+          <surname>Perreault</surname>
+          <completename>SimonPerreault</completename>
         </name>
-        <contact>
           <address>
             <street>2875Laurier,suiteD2-630</street>
+            <city>Quebec</city>
+            <state>QC</state>
             <country>Canada</country>
             <postcode>G1V2M2</postcode>
-            <region>Quebec,QC</region>
           </address>
-        </contact>
       </person>
     </contributor>'
   end
@@ -64,7 +62,8 @@ RSpec.describe Asciidoctor::Ietf do
     :organization: Viagenie
     :email: simon.perreault@viagenie.ca
     :street: 2875 Laurier, suite D2-630
-    :region: Quebec, QC
+    :city: Quebec
+    :region: QC
     :code: G1V 2M2
     :country: Canada
     :phone: +1 418 656 9254

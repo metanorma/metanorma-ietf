@@ -3,7 +3,7 @@
   <!--
     Currently we inherit from a namespaced grammar, isostandard. Until we inherit from isodoc,
     we cannot have a new default namespace: we will end up with a grammar with two different
-    namespaces, one for isostandard and one for csand additions. And we do not want that.
+    namespaces, one for isostandard and one for ietf additions. And we do not want that.
   -->
   <include href="isostandard.rng">
     <start>
@@ -70,27 +70,20 @@
     <define name="status">
       <element name="status">
         <choice>
-          <value>proposal</value>
-          <value>working-draft</value>
-          <value>committee-draft</value>
-          <value>draft-standard</value>
-          <value>final-draft</value>
-          <value>published</value>
-          <value>withdrawn</value>
-          <ref name="LocalizedString"/>
+          <value>standard</value>
+          <value>informational</value>
+          <value>experimental</value>
+          <value>bcp</value>
+          <value>fyi</value>
+          <value>full-standard</value>
+          <value>historic</value>
         </choice>
       </element>
     </define>
     <define name="BibItemType" combine="choice">
       <choice>
-        <value>policy-and-procedures</value>
-        <value>best-practices</value>
-        <value>supporting-document</value>
-        <value>report</value>
-        <value>legal</value>
-        <value>directives</value>
-        <value>proposal</value>
-        <value>standard</value>
+        <value>rfc</value>
+        <value>internet-draft</value>
       </choice>
     </define>
     <define name="editorialgroup">
@@ -106,11 +99,14 @@
           <ref name="BibItemType"/>
         </attribute>
       </optional>
-      <oneOrMore>
-        <ref name="btitle"/>
-      </oneOrMore>
-      <optional>
+      <choice>
+        <oneOrMore>
+          <ref name="btitle"/>
+        </oneOrMore>
         <ref name="formattedref"/>
+      </choice>
+      <optional>
+        <ref name="abbrevtitle"/>
       </optional>
       <zeroOrMore>
         <ref name="bsource"/>
@@ -152,28 +148,155 @@
       <zeroOrMore>
         <ref name="docrelation"/>
       </zeroOrMore>
+      <zeroOrMore>
+        <ref name="series"/>
+      </zeroOrMore>
       <ref name="editorialgroup"/>
       <zeroOrMore>
         <ref name="ics"/>
       </zeroOrMore>
       <optional>
-        <ref name="security"/>
+        <ref name="ipr"/>
+      </optional>
+      <optional>
+        <ref name="iprExtract"/>
+      </optional>
+      <optional>
+        <ref name="submissiontype"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="area"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="keyword"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="consensus"/>
       </optional>
     </define>
-  </include>
-  <define name="committee">
-    <element name="committee">
-      <attribute name="type">
+    <define name="keyword">
+      <element name="keyword">
+        <text/>
+      </element>
+    </define>
+    <define name="contact">
+      <choice>
+        <ref name="address"/>
+        <ref name="phone"/>
+        <ref name="fax"/>
+        <ref name="email"/>
+        <ref name="uri"/>
+      </choice>
+    </define>
+    <define name="TextElement" combine="choice">
+      <choice>
+        <ref name="iref"/>
+        <ref name="comment"/>
+      </choice>
+    </define>
+    <define name="fullname">
+      <element name="name">
         <choice>
-          <value>technical</value>
-          <value>provisional</value>
+          <group>
+            <zeroOrMore>
+              <ref name="prefix"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="forename"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="initial"/>
+            </zeroOrMore>
+            <ref name="surname"/>
+            <zeroOrMore>
+              <ref name="addition"/>
+            </zeroOrMore>
+          </group>
+          <ref name="completeName"/>
+          <group>
+            <zeroOrMore>
+              <ref name="prefix"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="forename"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="initial"/>
+            </zeroOrMore>
+            <ref name="surname"/>
+            <zeroOrMore>
+              <ref name="addition"/>
+            </zeroOrMore>
+            <ref name="completeName"/>
+          </group>
         </choice>
-      </attribute>
+        <zeroOrMore>
+          <ref name="biblionote"/>
+        </zeroOrMore>
+      </element>
+    </define>
+  </include>
+  <define name="fax">
+    <element name="fax">
       <text/>
     </element>
   </define>
-  <define name="security">
-    <element name="security">
+  <define name="consensus">
+    <element name="consensus">
+      <data type="boolean"/>
+    </element>
+  </define>
+  <define name="area">
+    <element name="area">
+      <choice>
+        <value>art</value>
+        <value>gen</value>
+        <value>int</value>
+        <value>ops</value>
+        <value>rtg</value>
+        <value>sec</value>
+        <value>tsv</value>
+      </choice>
+    </element>
+  </define>
+  <define name="abbrevtitle">
+    <element name="abbrevtitle">
+      <text/>
+    </element>
+  </define>
+  <define name="ipr">
+    <element name="ipr">
+      <text/>
+    </element>
+  </define>
+  <define name="iprExtract">
+    <element name="iprExtract">
+      <text/>
+    </element>
+  </define>
+  <define name="submissiontype">
+    <element name="submissiontype">
+      <text/>
+    </element>
+  </define>
+  <define name="committee">
+    <element name="technical-committee">
+      <text/>
+    </element>
+  </define>
+  <define name="iref">
+    <element name="iref">
+      <attribute name="item"/>
+      <optional>
+        <attribute name="subitem"/>
+      </optional>
+      <optional>
+        <text/>
+      </optional>
+    </element>
+  </define>
+  <define name="comment">
+    <element name="comment">
       <text/>
     </element>
   </define>

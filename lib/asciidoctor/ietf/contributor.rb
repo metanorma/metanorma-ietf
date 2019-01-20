@@ -9,9 +9,7 @@ module Asciidoctor
           contributor.person do |person|
             person.name { |name| set_name_data(name, author) }
 
-            person.contact do |contact|
-              contact.address { |address| set_address_data(address, author) }
-            end
+            person.address { |address| set_address_data(address, author) }
           end
         end
       end
@@ -26,17 +24,17 @@ module Asciidoctor
       end
 
       def set_name_data(name, values)
-        name.completename(values[:fullname])
-        name.surname(values[:lastname])
         name.initial(values[:forename_initials])
+        name.surname(values[:lastname])
+        name.completename(values[:fullname])
       end
 
       def set_address_data(address, values)
         address.street(values[:street])
         address.city(values[:city])
+        address.state(values[:region])
         address.country(values[:country])
         address.postcode(values[:code])
-        address.region(values[:region])
       end
 
       def find_author(node)
@@ -47,6 +45,19 @@ module Asciidoctor
           end
         end
       end
+
+      def metadata_copyright(node, xml)
+        publishers = node.attr("publisher") || "IETF"
+        publishers.split(/,[ ]?/).each do |p|
+          xml.copyright do |c|
+            c.from (node.attr("copyright-year") || Date.today.year)
+            c.owner do |owner|
+              owner.organization { |o| organization(o, p) }
+            end
+          end
+        end
+      end
+
     end
   end
 end

@@ -8,6 +8,7 @@ end
 require "bundler/setup"
 require "asciidoctor"
 require "metanorma-ietf"
+require "asciidoctor/ietf"
 # require "asciidoctor/standoc/converter"
 require "rspec/matchers"
 require "timecop"
