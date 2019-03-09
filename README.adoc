@@ -6,8 +6,8 @@
 "`http://asciidoctor.org/[asciidoctor]-way`".
 
 image:https://img.shields.io/gem/v/metanorma-ietf.svg["Gem Version", link="https://rubygems.org/gems/metanorma-ietf"]
-image:https://img.shields.io/travis/riboseinc/metanorma-ietf/master.svg["Build Status", link="https://travis-ci.com/riboseinc/metanorma-ietf"]
-image:https://codeclimate.com/github/riboseinc/metanorma-ietf/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/metanorma-ietf"]
+image:https://img.shields.io/travis/metanorma/metanorma-ietf/master.svg["Build Status", link="https://travis-ci.com/metanorma/metanorma-ietf"]
+image:https://codeclimate.com/github/metanorma/metanorma-ietf/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-ietf"]
 
 _Formerly known as_ `asciidoctor-rfc`.
 
@@ -19,7 +19,7 @@ a template for generating IETF International Standards.
 
 This AsciiDoc syntax for writing IETF standards is called "`AsciiRFC`".
 
-The gem currently inherits from the https://github.com/riboseinc/metanorma-standoc
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
 gem, and aligns closely to it.
 
 The following outputs are generated:
@@ -97,16 +97,16 @@ $ bundle
 == Quick Start / Template
 
 Clone the
-https://github.com/riboseinc/rfc-in-asciidoc-template[`rfc-in-asciidoc-template`]
+https://github.com/metanorma/rfc-asciirfc-minimal[`rfc-asciirfc-minimal`]
 repository as a template, and populate it for your Asciidoc RFCs and
 Internet-Drafts:
 
 [source,console]
 ----
-$ git clone https://github.com/riboseinc/rfc-in-asciidoc-template
+$ git clone https://github.com/metanorma/rfc-asciirfc-minimal
 ----
 
-See the https://github.com/riboseinc/rfc-in-asciidoc-template[README] of that document for
+See the https://github.com/metanorma/rfc-asciirfc-minimal[README] of that document for
 more information.
 
 
@@ -243,7 +243,7 @@ generated XML further.
 
 NOTE: A summary guide to authoring RFC XML in Asciidoctor is available at
 https://datatracker.ietf.org/doc/draft-ribose-asciirfc/ (with source at
-https://github.com/riboseinc/rfc-asciidoc-rfc ).
+https://github.com/metanorma/rfc-asciidoc-rfc ).
 
 
 
@@ -1620,7 +1620,7 @@ Clone the repository.
 
 [source,sh]
 ----
-git clone https://github.com/riboseinc/metanorma-ietf
+git clone https://github.com/metanorma/metanorma-ietf
 ----
 
 Setup your environment.
@@ -1647,7 +1647,7 @@ to use the contribution by all means.
 
 Here are a few technical guidelines to follow:
 
-. Open an https://github.com/riboseinc/metanorma-ietf/issues[issue] to discuss a new feature.
+. Open an https://github.com/metanorma/metanorma-ietf/issues[issue] to discuss a new feature.
 . Write tests to support your new feature.
 . Make sure the entire test suite passes locally and on CI.
 . Open a Pull Request.
