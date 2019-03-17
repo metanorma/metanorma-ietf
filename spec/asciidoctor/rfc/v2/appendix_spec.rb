@@ -16,8 +16,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       <?xml version="1.0" encoding="US-ASCII"?>
       <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 
-      <rfc
-      submissionType="IETF">
+      <rfc submissionType="IETF">
       <front>
       <title>Document title</title>
       <author fullname="Author"/>
