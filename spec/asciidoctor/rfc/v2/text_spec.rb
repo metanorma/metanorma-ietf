@@ -4,14 +4,9 @@ def text_compare(old_xml, new_xml)
   system("rm #{old_xml}.1")
   system("rm #{new_xml}.1")
   File.write("#{old_xml}.1", norm(File.read(old_xml, encoding: "utf-8")))
-  File.write("#{new_xml}.1", norm(File.read(new_xml, encoding: "utf-8")))
-  system("xml2rfc #{old_xml}.1 -o #{old_xml}.txt")
-  system("xml2rfc #{new_xml}.1 -o #{new_xml}.txt")
-end
-
-def text_compare1(old_xml, new_xml)
-  system("xml2rfc #{old_xml} -o #{old_xml}.txt")
-  system("xml2rfc #{new_xml} -o #{new_xml}.txt")
+  File.write("#{new_xml}.1", norm(File.read(old_xml, encoding: "utf-8")))
+  expect(system("xml2rfc #{old_xml}.1 -o #{old_xml}.txt")).to be_truthy
+  expect(system("xml2rfc #{new_xml}.1 -o #{new_xml}.txt")).to be_truthy
 end
 
 def norm(text)
@@ -65,81 +60,81 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   #  expect(File.read("spec/examples/rfc6350.xml.txt")).to eq(File.read("spec/examples/rfc6350.txt.orig"))
   # end
   it "processes Davies template with equivalent text" do
-    system("bin/asciidoctor-rfc2 spec/examples/davies-template-bare-06.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/davies-template-bare-06.adoc")).to be_truthy
     text_compare("spec/examples/davies-template-bare-06.xml.orig", "spec/examples/davies-template-bare-06.xml")
     expect(norm(File.read("spec/examples/davies-template-bare-06.xml.orig.txt"))).to eq(norm(File.read("spec/examples/davies-template-bare-06.xml.txt")))
   end
   it "processes MIB template with equivalent text" do
-    system("bin/asciidoctor-rfc2 spec/examples/mib-doc-template-xml-06.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/mib-doc-template-xml-06.adoc")).to be_truthy
     text_compare("spec/examples/mib-doc-template-xml-06.xml.orig", "spec/examples/mib-doc-template-xml-06.xml")
     expect(norm(File.read("spec/examples/mib-doc-template-xml-06.xml.orig.txt"))).to eq(norm(File.read("spec/examples/mib-doc-template-xml-06.xml.txt")))
   end
   it "processes rfc1149 from Markdown with equivalent text" do
     # leaving out step of running ./mmark
-    system("bin/asciidoctor-rfc2 spec/examples/rfc1149.md.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/rfc1149.md.adoc")).to be_truthy
     text_compare("spec/examples/rfc1149.md.2.xml", "spec/examples/rfc1149.md.xml")
     expect(norm(File.read("spec/examples/rfc1149.md.2.xml.txt"))).to eq(norm(File.read("spec/examples/rfc1149.md.xml.txt")))
   end
   it "processes rfc2100 from Markdown with equivalent text" do
     # leaving out step of running ./mmark
-    system("bin/asciidoctor-rfc2 spec/examples/rfc2100.md.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/rfc2100.md.adoc")).to be_truthy
     text_compare("spec/examples/rfc2100.md.2.xml", "spec/examples/rfc2100.md.xml")
     expect(norm(File.read("spec/examples/rfc2100.md.2.xml.txt"))).to eq(norm(File.read("spec/examples/rfc2100.md.xml.txt")))
   end
   it "processes rfc3514 from Markdown with equivalent text" do
     # leaving out step of running ./mmark
-    system("bin/asciidoctor-rfc2 spec/examples/rfc3514.md.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/rfc3514.md.adoc")).to be_truthy
     text_compare("spec/examples/rfc3514.md.2.xml", "spec/examples/rfc3514.md.xml")
     expect(norm(File.read("spec/examples/rfc3514.md.2.xml.txt"))).to eq(norm(File.read("spec/examples/rfc3514.md.xml.txt")))
   end
   it "processes rfc5841 from Markdown with equivalent text" do
     # leaving out step of running ./mmark
-    system("bin/asciidoctor-rfc2 spec/examples/rfc5841.md.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/rfc5841.md.adoc")).to be_truthy
     text_compare("spec/examples/rfc5841.md.2.xml", "spec/examples/rfc5841.md.xml")
     expect(norm(File.read("spec/examples/rfc5841.md.2.xml.txt"))).to eq(norm(File.read("spec/examples/rfc5841.md.xml.txt")))
   end
   it "processes rfc748 from Markdown with equivalent text" do
     # leaving out step of running ./mmark
-    system("bin/asciidoctor-rfc2 spec/examples/rfc748.md.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/rfc748.md.adoc")).to be_truthy
     text_compare("spec/examples/rfc748.md.2.xml", "spec/examples/rfc748.md.xml")
     expect(norm(File.read("spec/examples/rfc748.md.2.xml.txt"))).to eq(norm(File.read("spec/examples/rfc748.md.xml.txt")))
   end
   it "processes rfc7511 from Markdown with equivalent text" do
     # leaving out step of running ./mmark
-    system("bin/asciidoctor-rfc2 spec/examples/rfc7511.md.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/rfc7511.md.adoc")).to be_truthy
     text_compare("spec/examples/rfc7511.md.2.xml", "spec/examples/rfc7511.md.xml")
     expect(norm(File.read("spec/examples/rfc7511.md.2.xml.txt"))).to eq(norm(File.read("spec/examples/rfc7511.md.xml.txt")))
   end
   it "processes draft-ietf-core-block-xx from Kramdown with equivalent text" do
     # leaving out step of running ./kramdown
-    system("bin/asciidoctor-rfc2 spec/examples/draft-ietf-core-block-xx.mkd.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/draft-ietf-core-block-xx.mkd.adoc")).to be_truthy
     text_compare("spec/examples/draft-ietf-core-block-xx.xml.orig", "spec/examples/draft-ietf-core-block-xx.mkd.xml")
     expect(norm(File.read("spec/examples/draft-ietf-core-block-xx.xml.orig.txt"))).to eq(norm(File.read("spec/examples/draft-ietf-core-block-xx.mkd.xml.txt")))
   end
   it "processes skel from Kramdown with equivalent text" do
     # leaving out step of running ./kramdown
-    system("bin/asciidoctor-rfc2 spec/examples/skel.mkd.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/skel.mkd.adoc")).to be_truthy
     text_compare("spec/examples/skel.xml.orig", "spec/examples/skel.mkd.xml")
     expect(File.read("spec/examples/skel.xml.orig.txt")).to eq(File.read("spec/examples/skel.mkd.xml.txt"))
   end
   it "processes stupid-s from Kramdown with equivalent text" do
     # leaving out step of running ./kramdown
-    system("bin/asciidoctor-rfc2 spec/examples/stupid-s.mkd.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/stupid-s.mkd.adoc")).to be_truthy
     text_compare("spec/examples/stupid-s.xml.orig", "spec/examples/stupid-s.mkd.xml")
     expect(File.read("spec/examples/stupid-s.xml.orig.txt")).to eq(File.read("spec/examples/stupid-s.mkd.xml.txt"))
   end
   it "processes Hoffman RFC XML v2 example with equivalent text" do
-    system("bin/asciidoctor-rfc2 spec/examples/hoffmanv2.xml.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/hoffmanv2.xml.adoc")).to be_truthy
     text_compare("spec/examples/hoffmanv2.xml.orig", "spec/examples/hoffmanv2.xml.xml")
     expect(norm(File.read("spec/examples/hoffmanv2.xml.orig.txt"))).to eq(norm(File.read("spec/examples/hoffmanv2.xml.xml.txt")))
   end
   it "processes draft-iab-rfc-framework-bis RFC XML v2 example with equivalent text" do
-    system("bin/asciidoctor-rfc2 spec/examples/draft-iab-rfc-framework-bis.xml.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/draft-iab-rfc-framework-bis.xml.adoc")).to be_truthy
     text_compare("spec/examples/draft-iab-rfc-framework-bis.xml.orig", "spec/examples/draft-iab-rfc-framework-bis.xml.xml")
     expect(norm(File.read("spec/examples/draft-iab-rfc-framework-bis.xml.orig.txt"))).to eq(norm(File.read("spec/examples/draft-iab-rfc-framework-bis.xml.xml.txt")))
   end
   it "processes draft-iab-html-rfc-bis RFC XML v2 example with equivalent text" do
-    system("bin/asciidoctor-rfc2 spec/examples/draft-iab-html-rfc-bis.xml.adoc")
+    expect(system("bin/asciidoctor-rfc2 spec/examples/draft-iab-html-rfc-bis.xml.adoc")).to be_truthy
     text_compare("spec/examples/draft-iab-html-rfc-bis.xml.orig", "spec/examples/draft-iab-html-rfc-bis.xml.xml")
     expect(norm(File.read("spec/examples/draft-iab-html-rfc-bis.xml.orig.txt"))).to eq(norm(File.read("spec/examples/draft-iab-html-rfc-bis.xml.xml.txt")))
   end
