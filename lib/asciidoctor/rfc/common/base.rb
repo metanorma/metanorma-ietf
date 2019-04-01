@@ -377,15 +377,22 @@ HERE
         wgcache_name = "#{Dir.home}/.asciidoc-rfc-workgroup-cache.json"
         # If we are required to, clear the wg cache
         if node.attr("flush-caches") == "true"
-          system("rm -f #{wgcache_name}")
+          FileUtils.rm wgcache_name, :force => true
         end
         # Is there already a wg cache? If not, create it.
         wg = []
+
         if Pathname.new(wgcache_name).file?
-          File.open(wgcache_name, "r") do |f|
-            wg = JSON.parse(f.read)
+          begin
+            File.open(wgcache_name, "r") do |f|
+              wg = JSON.parse(f.read)
+            end
+          rescue Exception => e
+            STDERR.puts "Cache #{wgcache_name} is invalid, drop it"
           end
-        else
+        end
+
+        if wg.empty?
           File.open(wgcache_name, "w") do |b|
             STDERR.puts "Reading workgroups from https://tools.ietf.org/wg/..."
             Kernel.open("https://tools.ietf.org/wg/") do |f|
