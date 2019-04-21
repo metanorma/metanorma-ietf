@@ -1,5 +1,8 @@
 version: '{build}'
 
+cache:
+  - vendor/bundle
+
 environment:
   matrix:
     - RUBY_VERSION: 25
@@ -19,6 +22,7 @@ build_script:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%USERPROFILE%\AppData\Roaming\Python\Python%PYTHON_VERSION%\Scripts;C:\Python%PYTHON_VERSION%\Scripts;C:\Python%PYTHON_VERSION%;%PATH%
   - pip3 install --user --upgrade pip
   - pip3 install --user xml2rfc
+  - bundle config --local path vendor/bundle
   - bundle update
   - bundle install
 
@@ -29,4 +33,3 @@ before_test:
 
 test_script:
   - bundle exec rake
-
