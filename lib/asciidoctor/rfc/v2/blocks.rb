@@ -154,6 +154,18 @@ module Asciidoctor
         result
       end
 
+      # is this a text-only example? if so, mark it up as paragraphs
+      def text_only_example(node)
+        seen_artwork = false
+        node.blocks.each do |b|
+          case b.context
+          when :listing, :image, :literal, :stem
+            seen_artwork = true
+          end
+        end
+        !seen_artwork
+      end
+
       # Syntax:
       #   [[id]]
       #   .Title
@@ -172,22 +184,31 @@ module Asciidoctor
         }
         # TODO iref
         seen_artwork = false
-        noko do |xml|
-          xml.figure **attr_code(figure_attributes) do |xml_figure|
+
+        if text_only_example(node)
+          noko do |xml|
             node.blocks.each do |b|
-              case b.context
-              when :listing, :image, :literal, :stem
-                xml_figure << send(b.context, b).join("\n")
-                seen_artwork = true
-              else
-                # we want to see the para text, not its <t> container
-                if seen_artwork
-                  xml_figure.postamble do |postamble|
-                    postamble << b.content
-                  end
+              xml << node.content
+            end
+          end
+        else
+          noko do |xml|
+            xml.figure **attr_code(figure_attributes) do |xml_figure|
+              node.blocks.each do |b|
+                case b.context
+                when :listing, :image, :literal, :stem
+                  xml_figure << send(b.context, b).join("\n")
+                  seen_artwork = true
                 else
-                  xml_figure.preamble do |preamble|
-                    preamble << b.content
+                  # we want to see the para text, not its <t> container
+                  if seen_artwork
+                    xml_figure.postamble do |postamble|
+                      postamble << b.content
+                    end
+                  else
+                    xml_figure.preamble do |preamble|
+                      preamble << b.content
+                    end
                   end
                 end
               end

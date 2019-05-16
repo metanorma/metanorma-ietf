@@ -171,7 +171,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       </section>
     OUTPUT
   end
-  it "ignores block formatting within a table" do
+  it "ignores paragraph formatting within a table" do
     expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2)).to be_equivalent_to <<~'OUTPUT'
       = Document title
       Author
@@ -184,8 +184,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
       h|header cell
       a|
-      * List 1
-      * List 2
+      List 1
+
+      List 2
       | | body cell<<x>>
       ^|centre aligned cell | cell
       <|left aligned cell | cell
@@ -199,8 +200,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
          <ttcol align="left">head</ttcol>
          <ttcol align="left">head</ttcol>
          <c>header cell</c>
-         <c>* List 1
-       * List 2</c>
+         <c>List 1
+
+         List 2</c>
          <c/>
          <c>body cell<xref target="x"/></c>
          <c>centre aligned cell</c>
