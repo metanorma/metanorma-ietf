@@ -156,10 +156,12 @@ module Asciidoctor
         end
 =end
           result << "<t>#{node.attr("name").upcase}</t>"
-                 result << noko do |xml|
+          if node.blocks?
             node.blocks.each do |b|
-              xml << node.content
+              result << send(b.context, b)
             end
+          else
+            result << paragraph(node)
           end
         end
         result

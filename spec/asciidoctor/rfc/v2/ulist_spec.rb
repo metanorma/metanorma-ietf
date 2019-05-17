@@ -128,8 +128,8 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       <t>
          <list style="symbols">
            <t>First</t>
-           <t>Second<vspace blankLines="1"/>
-           <cref>Note</cref>
+           <t>Second<vspace blankLines="1"/>NOTE
+           <vspace blankLines="1"/>Note</t>
            </t>
          </list>
       </t>

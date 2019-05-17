@@ -60,7 +60,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
 
       </front><middle>
-      <section anchor="_section1" title="Section1"><t>Text<cref>This is a note</cref></t>
+      <section anchor="_section1" title="Section1"><t>Text</t>
+      <t>NOTE</t>
+        <t>This is a note</t>
 
       </section>
       </middle>
@@ -94,7 +96,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
 
       </front><middle>
-      <section anchor="_section1" title="Section1"><t>Text<cref>This is a note</cref></t>
+      <section anchor="_section1" title="Section1"><t>Text</t>
+        <t>WARNING</t>
+        <t>This is a note</t>
 
       </section>
       </middle>
@@ -156,7 +160,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
 
       </front><middle>
-      <section anchor="sect1" title="Section1"><t>Text<cref>Text _Text_ *Text* `Text` ~Text~ ^Text^ http://example.com/[linktext] </cref></t>
+      <section anchor="sect1" title="Section1"><t>Text</t>
+      <t>WARNING</t>
+      <t>Text <spanx style="emph">Text</spanx> <spanx style="strong">Text</spanx> <spanx style="verb">Text</spanx> _Text_ ^Text^ <eref target="http://example.com/">linktext</eref> <xref target="ref"/></t></section>
 
       </section>
       </middle><back>
@@ -228,21 +234,23 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
 
       </front><middle>
-      <section anchor="_section1" title="Section1"><t>Text<cref>While werewolves are hardy community members, keep in mind the following dietary concerns:
+      <section anchor="_section1" title="Section1">
+      <t>Text</t>
+      <t>IMPORTANT</t>
+<t>While werewolves are hardy community members, keep in mind the following dietary concerns:</t>
+<t>
+  <list style="numbers">
+    <t>They are allergic to <spanx style="strong">cinnamon</spanx>.</t>
+    <t>More than two glasses of orange juice in 24 hours makes them howl in harmony with alarms and sirens.</t>
+    <t>Celery makes them sad.</t>
+  </list>
+</t>
+<figure>
+  <artwork><![CDATA[
+<tagging>
+]]></artwork>
+</figure></section>
 
-
-
-      They are allergic to cinnamon.
-
-
-
-      More than two glasses of orange juice in 24 hours makes them howl in harmony with alarms and sirens.
-
-
-
-      Celery makes them sad.
-      &lt;tagging&gt;</cref></t>
-      </section>
       </middle>
       </rfc>
     OUTPUT
@@ -279,7 +287,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
 
       </front><middle>
-      <section anchor="_section1" title="Section1"><t>Text<cref anchor="id" source="GBS">Any admonition inside the body of the text is a comment.</cref></t>
+      <section anchor="_section1" title="Section1"><t>Text</t>
+      <t>NOTE</t>
+        <t>Any admonition inside the body of the text is a comment.</t>
 
       </section>
       </middle>
@@ -310,7 +320,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
          <date day="1" month="January" year="2000"/>
 
       </front><middle>
-      <section anchor="_section_1" title="Section 1"><t><cref>This is an initial note</cref></t>
+      <section anchor="_section_1" title="Section 1"><t>NOTE</t><t>This is an initial note</t>
 
       <t>Text</t></section>
       </middle>
