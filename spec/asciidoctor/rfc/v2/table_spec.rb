@@ -232,9 +232,9 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
     INPUT
       <section anchor="_section_1" title="Section 1">
       <texttable suppress-title="false" style="full">
-         <ttcol align="left" width="12.5%">a</ttcol>
+         <ttcol align="left" width="13%">a</ttcol>
          <ttcol align="left" width="25%">b</ttcol>
-         <ttcol align="left" width="62.5%">c</ttcol>
+         <ttcol align="left" width="63%">c</ttcol>
          <c>a</c>
          <c>b</c>
          <c>c</c>

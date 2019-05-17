@@ -86,7 +86,7 @@ module Asciidoctor
         percentage_widths = []
         named_widths = false
         node.columns.each do |col|
-          percentage_widths << col.attr("colpcwidth")
+          percentage_widths << col.attr("colpcwidth").to_f.round
           named_widths = true if col.attr("width") != 1
           # 1 is the default set value if no width has been given for the column
           # if a columns widths have been set as [1,1,1,1,...], they will be ignored
