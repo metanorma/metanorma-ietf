@@ -109,6 +109,8 @@ module Asciidoctor
       #   ====
       #
       # @note admonitions within preamble are notes. Elsewhere, they are comments.
+      # UPDATE 20190517
+      # @note admonitions within preamble are notes. Elsewhere, they are LABEL followed by text
       def admonition(node)
         result = []
         if node.parent.context == :preamble
@@ -125,6 +127,7 @@ module Asciidoctor
             end
           end
         else
+=begin
           cref_attributes = {
             anchor: node.id,
             source: node.attr("source"),
@@ -148,6 +151,14 @@ module Asciidoctor
               xml.cref **attr_code(cref_attributes) do |xml_cref|
                 xml_cref << cref_contents
               end
+            end
+          end
+        end
+=end
+          result << "<t>#{node.attr("name").upcase}</t>"
+                 result << noko do |xml|
+            node.blocks.each do |b|
+              xml << node.content
             end
           end
         end
