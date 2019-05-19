@@ -147,8 +147,15 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ++++
     INPUT
       <?xml version="1.0" encoding="US-ASCII"?>
+      <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
       <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc toc="yes"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
       <rfc submissionType="IETF">
       <front>
 
@@ -164,7 +171,6 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       <t>WARNING</t>
       <t>Text <spanx style="emph">Text</spanx> <spanx style="strong">Text</spanx> <spanx style="verb">Text</spanx> _Text_ ^Text^ <eref target="http://example.com/">linktext</eref> <xref target="ref"/></t></section>
 
-      </section>
       </middle><back>
       <references title="References">
       <reference anchor="ref" target="https://www.iso.org/standard/67116.html">
