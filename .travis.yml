@@ -12,7 +12,7 @@ rvm:
 - 2.4
 - ruby-head
 before_install:
-- gem install bundler -v 2.0.1
+- gem install bundler -v "~> 2"
 - bundle update
 - pip install --user xml2rfc
 - export PATH=$(python -c "import os,site; print os.path.join(site.USER_BASE, 'bin')"):$PATH
