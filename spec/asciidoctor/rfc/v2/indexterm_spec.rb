@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders index" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -12,8 +12,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       is visible in the text,
       this one is not (((indexterm, index-subterm))).
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -33,7 +32,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "does not render tertiary index terms" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -44,8 +43,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       is visible in the text,
       this one with a tertiary term is not (((indexterm, index-subterm, index-subsubterm))).
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">

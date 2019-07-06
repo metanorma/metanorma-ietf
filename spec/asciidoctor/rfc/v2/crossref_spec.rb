@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders links" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -11,8 +11,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       http://example.com/
       http://example.com/[linktext]
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -31,7 +30,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders cross-references" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -52,8 +51,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 5
       See <<crossreference,format=title>>
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -82,7 +80,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders cross-references" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -103,8 +101,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 5
       See <<crossreference,format=title>>
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -133,7 +130,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "does not support fragments in cross-references to bibliography" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -161,8 +158,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -197,7 +193,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders cross-references with dots to bibliography" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -225,8 +221,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -261,7 +256,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders relref references" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -301,8 +296,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       </reference>
       ++++
     INPUT
-       <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+       #{XML_HDR}
 
        <rfc submissionType="IETF">
        <front>

@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders keywords" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -10,8 +10,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -31,7 +30,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
      OUTPUT
   end
   it "deals with entities in keywords" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -40,8 +39,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">

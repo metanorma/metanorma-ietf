@@ -2,7 +2,7 @@ require "spec_helper"
 require "byebug"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders the minimal document w/ default values" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -10,8 +10,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -31,7 +30,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders all document attributes for RFC" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :name: 1111
@@ -52,8 +51,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc ipr="full3978" obsoletes="1, 2" updates="10, 11" category="info" consensus="no" submissionType="IRTF" iprExtract="ipr_extract_value" number="1111" seriesNo="12" xml:lang="en">
       <front>
@@ -77,7 +75,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders all document attributes for Internet Draft" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :name: draft-03-draft
@@ -97,8 +95,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc ipr="full3978" obsoletes="1, 2" updates="10, 11" category="info" consensus="no" submissionType="IRTF" iprExtract="ipr_extract_value" docName="draft-03-draft" seriesNo="12" xml:lang="en">
       <front>
@@ -122,7 +119,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders back matter" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -134,8 +131,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Appendix
       Lipsum.
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF">
       <front>

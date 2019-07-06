@@ -2,7 +2,7 @@ require "spec_helper"
 require "byebug"
 RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "renders the minimal document w/ default values" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -10,8 +10,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z" version="3" submissionType="IETF">
       <front>
@@ -29,7 +28,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "renders all document attributes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -50,8 +49,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc ipr="ipr_value" obsoletes="1, 2" updates="10, 11" prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IRTF" indexInclude="true" iprExtract="ipr_extract_value" sortRefs="true" symRefs="false" tocInclude="false" tocDepth="2">
@@ -70,7 +68,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "renders back matter" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -82,8 +80,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Appendix
       Lipsum.
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">

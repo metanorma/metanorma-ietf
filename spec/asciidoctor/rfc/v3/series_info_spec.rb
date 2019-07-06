@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "sets seriesInfo attributes for Internet Draft" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :doctype: internet-draft
@@ -13,8 +13,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IRTF">
@@ -38,7 +37,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "sets seriesInfo attributes for RFC, with FYI status" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :doctype: rfc
@@ -50,8 +49,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IRTF">
@@ -75,7 +73,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "treats the rfc- prefix on :name: as optional" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :doctype: rfc
@@ -87,8 +85,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IRTF">
@@ -112,7 +109,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "sets seriesInfo attributes for RFC with historic status" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :doctype: rfc
@@ -124,8 +121,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IRTF">
@@ -149,7 +145,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "sets seriesInfo attributes for RFC with illegal intended status" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :doctype: internet-draft
@@ -161,29 +157,22 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-       <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-       <?rfc strict="yes"?>
-       <?rfc toc="yes"?>
-       <?rfc tocdepth="4"?>
-       <?rfc symrefs=""?>
-       <?rfc sortrefs=""?>
-       <?rfc compact="yes"?>
-       <?rfc subcompact="no"?>
-       <rfc submissionType="IRTF" prepTime="2000-01-01T05:00:00Z" version="3">
-       <front>
-         <title>Document title</title>
-         <seriesInfo name="Internet-Draft" status="full-standard" stream="IRTF" value="draft-xxx"/>
-         <seriesInfo name="" status="illegal" value="draft-xxx"/>
-         <author fullname="Author"/>
-         <date day="1" month="January" year="2000"/>
+      #{XML_HDR}
+      <rfc submissionType="IRTF" prepTime="2000-01-01T05:00:00Z" version="3">
+        <front>
+          <title>Document title</title>
+          <seriesInfo name="Internet-Draft" status="full-standard" stream="IRTF" value="draft-xxx"/>
+          <seriesInfo name="" status="illegal" value="draft-xxx"/>
+          <author fullname="Author"/>
+          <date day="1" month="January" year="2000"/>
 
-       </front><middle>
-       <section anchor="_section_1" numbered="false">
-         <name>Section 1</name>
-         <t>Text</t>
-       </section>
-       </middle>
+        </front>
+        <middle>
+          <section anchor="_section_1" numbered="false">
+            <name>Section 1</name>
+            <t>Text</t>
+          </section>
+        </middle>
       </rfc>
     OUTPUT
   end

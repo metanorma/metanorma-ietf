@@ -97,7 +97,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders external RFC XML references as entities" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
       = The Holy Hand Grenade of Antioch
       Arthur Pendragon
       :doctype: internet-draft
@@ -151,7 +151,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ++++
     INPUT
       <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+      <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}" [
       <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
       <!ENTITY I-D.abarth-cake SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3//reference.I-D.draft-abarth-cake-00.xml">
       ]>
@@ -185,7 +185,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders skeletal external RFC XML references as entities" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
       = The Holy Hand Grenade of Antioch
       Arthur Pendragon
       :doctype: internet-draft
@@ -218,7 +218,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ++++
     INPUT
       <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+      <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}" [
       <!ENTITY RFC2119 SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
       <!ENTITY I-D.abarth-cake SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3//reference.I-D.abarth-cake.xml">
       ]>
@@ -252,7 +252,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders skeletal external RFC XML references with drafts as entities" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
       = The Holy Hand Grenade of Antioch
       Arthur Pendragon
       :doctype: internet-draft
@@ -274,7 +274,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ++++
     INPUT
       <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+      <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}" [
       <!ENTITY I-D.abarth-cake SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3//reference.I-D.draft-abarth-cake-00.xml">
       ]>
       <?rfc strict="yes"?>

@@ -74,7 +74,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders raw RFC XML as references, with displayreferences" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :doctype: internet-draft
@@ -114,15 +114,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-       <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-       <?rfc strict="yes"?>
-       <?rfc toc="yes"?>
-       <?rfc tocdepth="4"?>
-       <?rfc symrefs=""?>
-       <?rfc sortrefs=""?>
-       <?rfc compact="yes"?>
-       <?rfc subcompact="no"?>
+       #{XML_HDR}
        <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
        <front>
          <title>Document title</title>
@@ -147,7 +139,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders external RFC XML references as includes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true).to_s).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
       = The Holy Hand Grenade of Antioch
       Arthur Pendragon
       :doctype: internet-draft
@@ -200,15 +192,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc toc="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
+      #{XML_HDR}
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
        <front>
          <title>The Holy Hand Grenade of Antioch</title>
@@ -234,7 +218,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders skeletal external RFC XML references as includes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true).to_s).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
       = The Holy Hand Grenade of Antioch
       Arthur Pendragon
       :doctype: internet-draft
@@ -266,15 +250,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc toc="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
+      #{XML_HDR}
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
        <front>
          <title>The Holy Hand Grenade of Antioch</title>
@@ -301,7 +277,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders skeletal external RFC XML references with drafts as includes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true).to_s).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
       = The Holy Hand Grenade of Antioch
       Arthur Pendragon
       :doctype: internet-draft
@@ -322,15 +298,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc toc="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
+      #{XML_HDR}
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
          <title>The Holy Hand Grenade of Antioch</title>

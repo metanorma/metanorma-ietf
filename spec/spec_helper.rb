@@ -54,6 +54,10 @@ def strip_guid(x)
   x.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"}, ' target="_"')
 end
 
+def dtd_absolute_path
+  File.join(File.expand_path('..', File.dirname(__FILE__)), "rfc2629.dtd")
+end
+
 ASCIIDOC_BLANK_HDR = <<~"HDR"
       = Document title
       Author
@@ -120,3 +124,15 @@ HTML_HDR = <<~"HDR"
            <div class="main-section">
 HDR
 
+XML_HDR = <<~"HDR"
+      <?xml version="1.0" encoding="US-ASCII"?>
+      <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
+      <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}">
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc toc="yes"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
+HDR

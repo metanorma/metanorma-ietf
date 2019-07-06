@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "renders links" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -11,8 +11,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       http://example.com/
       http://example.com/[linktext]
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -32,7 +31,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "renders cross-references" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -53,8 +52,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 5
       See <<crossreference,format=title>>
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -88,7 +86,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "renders cross-references to bibliography" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -131,8 +129,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -185,7 +182,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "renders relref references" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -225,8 +222,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
        <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
        <front>

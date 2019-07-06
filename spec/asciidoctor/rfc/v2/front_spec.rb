@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders author, date, area, workgroup, keyword in sequence" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
       :abbrev: abbrev_value
@@ -14,8 +14,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF" docName="rfc-1111">
@@ -37,7 +36,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
     OUTPUT
   end
   it "deals with entities in titles" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document on the derivation of x & y < z
       Author
       :abbrev: deriv x & y < z
@@ -50,8 +49,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF" docName="rfc-1111">
