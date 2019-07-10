@@ -1,24 +1,16 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders all options with short author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       John Doe Horton <john.doe@email.com>
 
       == Section 1
       text
- INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+  INPUT
+      #{XML_HDR}
 
-       <?rfc strict="yes"?>
-       <?rfc toc="yes"?>
-       <?rfc tocdepth="4"?>
-       <?rfc symrefs="yes"?>
-       <?rfc sortrefs="yes"?>
-       <?rfc compact="yes"?>
-       <?rfc subcompact="no"?>
       <rfc
                 submissionType="IETF">
       <front>
@@ -42,7 +34,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders all options with multiple short author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       John Doe Horton <john.doe@email.com>; Joanna Diva Munez <joanna.munez@email.com>
@@ -50,8 +42,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                 submissionType="IETF">
@@ -84,7 +75,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders all options with long author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -106,8 +97,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                 submissionType="IETF">
@@ -140,7 +130,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "deals with entities for all options under long author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :fullname: John <Doe> Horton
       :lastname: Horton & Horton
@@ -160,8 +150,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                 submissionType="IETF">
@@ -194,7 +183,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders all options with multiple long author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -230,8 +219,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                 submissionType="IETF">
@@ -280,7 +268,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "respects multiple lines in street" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -292,7 +280,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       :email: john.doe@email.com
       :uri: http://example.com
       :phone: 555 5655
-      :street: 57 Mt Pleasant St\ Technology Park
+      :street: 57 Mt Pleasant St\\ Technology Park
       :city: Dullsville
       :region: NSW
       :country: Australia
@@ -301,8 +289,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                 submissionType="IETF">
@@ -336,7 +323,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "ignores initials attribute from Asciidoc" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -357,8 +344,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                 submissionType="IETF">
@@ -391,7 +377,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "permits corporate authors" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :role: editor
@@ -409,8 +395,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">

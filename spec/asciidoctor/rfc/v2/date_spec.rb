@@ -2,7 +2,7 @@ require "spec_helper"
 require "date"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "renders the date" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -11,8 +11,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -30,7 +29,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders the revdate" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -39,8 +38,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -58,7 +56,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "gives precedence to revdate" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -68,8 +66,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -87,7 +84,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "permits year-only revdate" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -96,8 +93,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -115,7 +111,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "permits year-month revdate" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
@@ -124,8 +120,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -144,13 +139,12 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
   it "supplies today's date if no date given" do
     # today's date is frozen at 2000-01-01 by spec_helper
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       Author
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
       <rfc submissionType="IETF">
          <front>
          <title>Document title</title>
@@ -164,14 +158,13 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
 
   it "supplies today's date if invalid date given" do
     # today's date is frozen at 2000-01-01 by spec_helper
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :date: fred
       Author
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
       <rfc submissionType="IETF">
         <front>
           <title>Document title</title>

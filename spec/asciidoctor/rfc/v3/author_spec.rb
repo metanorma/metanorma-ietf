@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "renders all options with short author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       John Doe Horton <john.doe@email.com>
@@ -9,8 +9,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z" version="3" submissionType="IETF">
       <front>
@@ -32,7 +31,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders all options with multiple short author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       John Doe Horton <john.doe@email.com>; Joanna Diva Munez <joanna.munez@email.com>
@@ -40,8 +39,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z" version="3" submissionType="IETF">
       <front>
@@ -68,7 +66,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders all options with long author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -89,8 +87,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -124,7 +121,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "deals with entities for all options under long author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :fullname: John <Doe> Horton
       :lastname: Horton & Horton
@@ -144,8 +141,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
        <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
@@ -178,7 +174,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "renders all options with multiple long author syntax" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -213,8 +209,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -264,7 +259,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "respects multiple lines in street" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -276,7 +271,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       :email: john.doe@email.com
       :uri: http://example.com
       :phone: 555 5655
-      :street: 57 Mt Pleasant St\ Technology Park
+      :street: 57 Mt Pleasant St\\ Technology Park
       :city: Dullsville
       :region: NSW
       :country: Australia
@@ -285,11 +280,9 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
-      <rfc prepTime="2000-01-01T05:00:00Z"
-                version="3" submissionType="IETF">
+      <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
       <title>Document title</title>
       <author fullname="John Doe Horton" initials="J. D." surname="Horton" role="editor">
@@ -321,7 +314,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "ignores initials attribute from Asciidoc" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -342,8 +335,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -377,7 +369,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "permits corporate authors" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :role: editor
@@ -395,8 +387,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -430,7 +421,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "respects postal line attributes, with multiple lines" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -442,13 +433,12 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       :email: john.doe@email.com
       :uri: http://example.com
       :phone: 555 5655
-      :postal-line: 57 Mt Pleasant St\ Dullsville\ NSW\ Australia\ 3333
+      :postal-line: 57 Mt Pleasant St\\ Dullsville\\ NSW\\ Australia\\ 3333
 
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -482,7 +472,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "gives postal lines priority over address lines" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :docName:
       :fullname: John Doe Horton
@@ -494,7 +484,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       :email: john.doe@email.com
       :uri: http://example.com
       :phone: 555 5655
-      :postal-line: 57 Mt Pleasant St\ Dullsville\ NSW\ Australia\ 3333
+      :postal-line: 57 Mt Pleasant St\\ Dullsville\\ NSW\\ Australia\\ 3333
       :street: 57 Mt Pleasant St
       :city: Dullsville
       :region: NSW
@@ -504,8 +494,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">

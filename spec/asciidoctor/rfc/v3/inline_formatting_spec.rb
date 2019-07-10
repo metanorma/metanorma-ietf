@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "treats bcp14 macro in v3 as <bcp14>" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -10,8 +10,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       This [bcp14]#must not# stand
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -30,7 +29,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "treats boldfaced capital BCP14 in v3 as <bcp14> by default" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -39,8 +38,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       This *MUST NOT* stand
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -59,7 +57,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "treats boldfaced capital BCP14 in v3 as normal strong text, if flag :no-rfc-bold-bcp14:." do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :no-rfc-bold-bcp14:
@@ -69,8 +67,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       This *MUST NOT* stand
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -89,7 +86,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "respects Asciidoctor inline formatting" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -98,8 +95,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       _Text_ *Text* `Text` "`Text`" '`Text`' ^Superscript^ ~Subscript~
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -118,7 +114,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "allows suppression of smart quotes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -128,8 +124,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       "`Text`" '`Text`'
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -146,7 +141,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "renders stem as literal" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -156,8 +151,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       stem:[sqrt(4) = 2]
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -176,7 +170,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "render line break within table" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
 
@@ -192,8 +186,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       cell
       |===
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
@@ -224,7 +217,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "ignore line break outside of table" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -235,8 +228,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       Hello +
       This is a line break
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
@@ -254,7 +246,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "deals with non-Ascii characters" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -264,8 +256,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       Hello René! Hello Владимир!
 
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
@@ -282,7 +273,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     OUTPUT
   end
   it "deals with HTML entities" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -295,8 +286,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 2
       Hello &lt;&nbsp;(&amp;lt;)
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>

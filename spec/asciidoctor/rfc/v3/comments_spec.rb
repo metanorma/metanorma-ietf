@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "ignores actual Asciidoctor comments" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -15,8 +15,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
         Multiblock ignorable comment
       ////
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -36,7 +35,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "uses Asciidoc inline NOTE admonition" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -47,8 +46,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
 
       NOTE: This is a note
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
@@ -69,7 +67,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "uses any Asciidoc inline admonition" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -80,8 +78,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
 
       WARNING: This is a note
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
@@ -102,7 +99,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "uses full range of inline formatting within Asciidoc inline admonition" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -142,8 +139,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       </reference>
       ++++
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
        <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
        <front>
@@ -187,7 +183,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "uses Asciidoc block admonition" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -206,8 +202,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       . Celery makes them sad.
       ====
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -232,7 +227,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "uses all options of the Asciidoc block admonition" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -248,8 +243,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       Any admonition inside the body of the text is a comment.
       ====
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
@@ -275,7 +269,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   end
 
   it "has a comment at the start of a section" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc3, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       Author
 
@@ -284,8 +278,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
 
       Text
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>

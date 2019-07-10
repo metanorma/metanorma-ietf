@@ -19,7 +19,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "suppresses smart apostrophes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :smart-quotes: false
@@ -28,15 +28,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Dante's Revenge
       Don't panic!
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-      <?rfc strict="yes"?>
-      <?rfc toc="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
+      #{XML_HDR}
       <rfc submissionType="IETF">
       <front>
         <title abbrev="abbrev_value">Document title</title>

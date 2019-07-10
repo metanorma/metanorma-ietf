@@ -1,7 +1,7 @@
 require "spec_helper"
 RSpec.describe Asciidoctor::Rfc::V2::Converter do
   it "treats bcp14 macro in v2 as <strong>" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -10,8 +10,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       This [bcp14]#must not# stand
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -29,7 +28,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "respects Asciidoctor inline formatting" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -38,8 +37,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       _Text_ *Text* `Text` "`Text`" '`Text`' ^Superscript^ ~Subscript~
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -57,7 +55,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "allows suppression of smart quotes" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -67,8 +65,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       "`Text`" '`Text`'
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -86,7 +83,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders stem as literal" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -96,8 +93,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       stem:[sqrt(4) = 2]
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -114,7 +110,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
     OUTPUT
   end
   it "deals with non-Ascii characters" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -124,8 +120,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       Hello René! Hello Владимир!
 
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -142,7 +137,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
     OUTPUT
   end
   it "deals with HTML entities" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -154,8 +149,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 2
       Hello &lt;&nbsp;(&amp;lt;)
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
@@ -187,7 +181,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
     OUTPUT
   end
   it "removes markup within spanx" do
-    expect(Asciidoctor.convert(<<~'INPUT', backend: :rfc2, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
       :abbrev: abbrev_value
       :docName:
@@ -196,8 +190,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       == Section 1
       `This is http://www.example.com _a_ *citation*`
     INPUT
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+      #{XML_HDR}
 
       <rfc
                submissionType="IETF">
