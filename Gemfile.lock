@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    metanorma-ietf (1.0.3)
+    metanorma-ietf (1.0.4)
       isodoc (~> 0.10.0)
       metanorma-standoc (~> 1.2.0)
 
@@ -43,8 +43,8 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    hashdiff (0.4.0)
-    html2doc (0.8.11)
+    hashdiff (1.0.0)
+    html2doc (0.8.12)
       asciimath (~> 1.0.7)
       htmlentities (~> 4.3.4)
       image_size
@@ -56,8 +56,8 @@ GEM
     httpclient (2.8.3)
     iev (0.2.2)
       nokogiri
-    image_size (2.0.1)
-    isodoc (0.10.0)
+    image_size (2.0.2)
+    isodoc (0.10.2)
       asciimath
       html2doc (~> 0.8.11)
       htmlentities (~> 4.3.4)
@@ -70,7 +70,7 @@ GEM
       thread_safe
       uuidtools
     isoics (0.1.7)
-    jaro_winkler (1.5.2)
+    jaro_winkler (1.5.3)
     json (2.2.0)
     liquid (4.0.3)
     listen (3.1.5)
@@ -78,17 +78,16 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
     lumberjack (1.0.13)
-    metanorma (0.3.11)
+    metanorma (0.3.14)
       asciidoctor
       htmlentities
-    metanorma-standoc (1.2.0)
+    metanorma-standoc (1.2.2)
       asciidoctor (~> 1.5.7)
       concurrent-ruby
       html2doc (~> 0.8.11)
       iev (~> 0.2.1)
       isodoc (~> 0.10.0)
       relaton (~> 0.4.0)
-      relaton-cli (~> 0.2.0)
       ruby-jing
       sterile (~> 1.0.14)
       unicode2latex (~> 0.0.1)
@@ -110,13 +109,13 @@ GEM
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    public_suffix (3.1.0)
+    public_suffix (3.1.1)
     rainbow (3.0.0)
     rake (12.3.2)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    relaton (0.4.0)
+    relaton (0.4.3)
       algoliasearch
       relaton-gb (~> 0.5.0)
       relaton-iec (~> 0.3.0)
@@ -125,41 +124,38 @@ GEM
       relaton-iso-bib (~> 0.2.0)
       relaton-itu (~> 0.2.0)
       relaton-nist (~> 0.2.0)
-    relaton-bib (0.2.1)
+    relaton-bib (0.2.4)
       addressable
       nokogiri (~> 1.8.4)
-    relaton-cli (0.2.0)
-      liquid
-      relaton (~> 0.4)
-      thor
-    relaton-gb (0.5.0)
+    relaton-gb (0.5.1)
       cnccs (~> 0.1.1)
       gb-agencies (~> 0.0.1)
       relaton-iso-bib (~> 0.2.0)
-    relaton-iec (0.3.0)
+    relaton-iec (0.3.1)
       addressable
       relaton-iso-bib (~> 0.2.0)
-    relaton-ietf (0.5.0)
+    relaton-ietf (0.5.4)
       relaton-iso-bib (~> 0.2.0)
-    relaton-iso (0.5.0)
+    relaton-iso (0.5.3)
       algoliasearch
       relaton-iec (~> 0.3.0)
       relaton-iso-bib (~> 0.2.0)
-    relaton-iso-bib (0.2.2)
+    relaton-iso-bib (0.2.3)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       relaton-bib (~> 0.2.0)
       ruby_deep_clone (~> 0.8.0)
-    relaton-itu (0.2.0)
+    relaton-itu (0.2.2)
       relaton-iso-bib (~> 0.2.0)
-    relaton-nist (0.2.0)
+    relaton-nist (0.2.2)
       relaton-bib (~> 0.2.0)
+      rubyzip
     roman-numerals (0.3.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
-    rspec-core (3.8.1)
+    rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -168,7 +164,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.2)
-    rubocop (0.71.0)
+    rubocop (0.72.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -180,12 +176,13 @@ GEM
     ruby-progressbar (1.10.1)
     ruby_deep_clone (0.8.0)
     ruby_dep (1.5.0)
+    rubyzip (1.2.3)
     safe_yaml (1.0.5)
     sassc (2.0.1)
       ffi (~> 1.9)
       rake
     shellany (0.0.1)
-    simplecov (0.16.1)
+    simplecov (0.17.0)
       docile (~> 1.1)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)

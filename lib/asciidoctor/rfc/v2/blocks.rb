@@ -14,6 +14,10 @@ module Asciidoctor
         end
       end
 
+      def pass(node)
+        node.content
+      end
+
       # Syntax:
       #   [[id]]
       #   .Name
