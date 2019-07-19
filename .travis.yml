@@ -8,6 +8,7 @@ os:
 python:
 - 2.7
 rvm:
+- 2.6
 - 2.5
 - 2.4
 - ruby-head
