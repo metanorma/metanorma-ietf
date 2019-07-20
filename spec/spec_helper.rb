@@ -55,7 +55,7 @@ def strip_guid(x)
 end
 
 def dtd_absolute_path
-  File.join(File.expand_path('..', File.dirname(__FILE__)), "rfc2629.dtd")
+  Metanorma::Ietf::RFC2629DTD_URL
 end
 
 ASCIIDOC_BLANK_HDR = <<~"HDR"
