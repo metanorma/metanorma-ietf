@@ -265,9 +265,7 @@ module Asciidoctor
           doc.root.add_previous_sibling(pi)
         end
 
-        dtd = File.join(File.expand_path('../../../..', File.dirname(__FILE__)), "rfc2629.dtd")
-
-        doc.create_internal_subset("rfc", nil, dtd)
+        doc.create_internal_subset("rfc", nil, Metanorma::Ietf::RFC2629DTD_URL)
         rfc_pis = common_rfc_pis(node)
         rfc_pis.each_pair do |k, v|
           pi = Nokogiri::XML::ProcessingInstruction.new(doc,

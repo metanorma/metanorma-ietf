@@ -47,8 +47,8 @@ end
 def text_compare2(old_xml, new_xml)
   File.write("#{old_xml}.1", norm(File.read(old_xml, encoding: "utf-8")))
   File.write("#{new_xml}.1", norm(File.read(new_xml, encoding: "utf-8")))
-  system("xml2rfc #{old_xml}.1 -o #{old_xml}.txt.1")
-  system("xml2rfc #{new_xml}.1 -o #{new_xml}.txt.1")
+  system("xml2rfc #{old_xml}.1 -o #{old_xml}.txt.1") || fail("xml2rfc failed")
+  system("xml2rfc #{new_xml}.1 -o #{new_xml}.txt.1") || fail("xml2rfc failed")
   File.write("#{old_xml}.txt", remove_pages(File.read("#{old_xml}.txt.1", encoding: "utf-8")))
   File.write("#{new_xml}.txt", remove_pages(File.read("#{new_xml}.txt.1", encoding: "utf-8")))
 end
