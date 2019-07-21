@@ -1,5 +1,8 @@
-require "pp"
 # coding: utf-8
+
+require "pp"
+require_relative "../common/validate"
+
 module Asciidoctor
   module Rfc::V2
     module Base
@@ -89,12 +92,10 @@ module Asciidoctor
         ret = result * "\n"
         ret = cleanup(ret)
         ret1 = Nokogiri::XML(ret)
-        # Validate::validate(ret1)
         ret1 = set_pis(node, ret1)
         ret1 = insert_biblio(node, ret1) unless node.attr("biblio-dir").nil? || node.attr("biblio-dir").empty?
-        Validate::validate(ret1)
+        Asciidoctor::Rfc::Common::Validate::validate(ret1, File.join(File.dirname(__FILE__), "validate.rng"))
         ret1 = resolve_references(node, ret1)
-        # Validate::validate(ret1)
         ret1.to_xml
       end
 
