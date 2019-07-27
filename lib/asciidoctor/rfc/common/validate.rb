@@ -2,17 +2,14 @@ require "nokogiri"
 require "jing"
 
 module Asciidoctor
-  module Rfc::V3
+  module Rfc::Common
     module Validate
       class << self
-        def validate(doc)
-          # svg_location = File.join(File.dirname(__FILE__), "svg.rng")
-          # schema = Nokogiri::XML::RelaxNG(File.read(File.join(File.dirname(__FILE__), "validate.rng")).
-          #   gsub(%r{<ref name="svg"/>}, "<externalRef href='#{svg_location}'/>"))
-
-          filename = File.join(File.dirname(__FILE__), "validate.rng")
+        def validate(doc, filename)
           schema = Jing.new(filename)
-          File.open(".tmp.xml", "w") { |f| f.write(doc.to_xml) }
+
+          File.write(".tmp.xml", doc.to_xml)
+
           begin
             errors = schema.validate(".tmp.xml")
           rescue Jing::Error => e

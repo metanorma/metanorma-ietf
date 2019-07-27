@@ -2,13 +2,13 @@ require "asciidoctor"
 
 require_relative "../common/base"
 require_relative "../common/front"
+require_relative "../common/validate"
 require_relative "base"
 require_relative "blocks"
 require_relative "front"
 require_relative "inline_anchor"
 require_relative "lists"
 require_relative "table"
-require_relative "validate"
 
 module Asciidoctor
   module Rfc::V3
@@ -23,13 +23,13 @@ module Asciidoctor
 
       include ::Asciidoctor::Rfc::Common::Base
       include ::Asciidoctor::Rfc::Common::Front
+      include ::Asciidoctor::Rfc::Common::Validate
       include ::Asciidoctor::Rfc::V3::Base
       include ::Asciidoctor::Rfc::V3::Blocks
       include ::Asciidoctor::Rfc::V3::Front
       include ::Asciidoctor::Rfc::V3::InlineAnchor
       include ::Asciidoctor::Rfc::V3::Lists
       include ::Asciidoctor::Rfc::V3::Table
-      include ::Asciidoctor::Rfc::V3::Validate
 
       register_for "rfc3"
 
