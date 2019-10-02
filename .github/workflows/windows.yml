@@ -32,7 +32,7 @@ jobs:
           architecture: 'x64'
       - name: Install xml2rfc
         run: |
-          pip install --user xml2rfc
+          pip install xml2rfc
       - name: Run specs
         run: |
           bundle exec rake
