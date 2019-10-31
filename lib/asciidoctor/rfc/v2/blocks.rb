@@ -220,11 +220,11 @@ module Asciidoctor
                   # we want to see the para text, not its <t> container
                   if seen_artwork
                     xml_figure.postamble do |postamble|
-                      postamble << b.content
+                      postamble << Array(b.content).join("\n")
                     end
                   else
                     xml_figure.preamble do |preamble|
-                      preamble << b.content
+                      preamble << Array(b.content).join("\n")
                     end
                   end
                 end
