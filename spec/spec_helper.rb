@@ -18,6 +18,7 @@ require "rspec/matchers"
 require "timecop"
 require "equivalent-xml"
 require "htmlentities"
+require "rexml/document"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -52,6 +53,14 @@ end
 
 def strip_guid(x)
   x.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"}, ' target="_"')
+end
+
+def xmlpp(x)
+  s = ""
+  f = REXML::Formatters::Pretty.new(2)
+  f.compact = true
+  f.write(REXML::Document.new(x),s)
+  s
 end
 
 def dtd_absolute_path

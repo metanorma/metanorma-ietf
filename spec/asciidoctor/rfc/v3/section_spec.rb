@@ -36,11 +36,12 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
   it "renders subsections" do
     expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc3, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
       = Document title
+      Author
       :abbrev: abbrev_value
       :docName:
-      Author
 
       :sectnums:
+
       [toc=exclude]
       == Section 1
       Para 1
@@ -49,8 +50,8 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       Para 1a
 
       :sectnums!:
-      [toc=default]
 
+      [toc=default]
       === Subsection 1.2
       Para 2
 
@@ -59,7 +60,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     INPUT
       #{XML_HDR}
 
-      <rfc prepTime="2000-01-01T05:00:00Z"
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" prepTime="2000-01-01T05:00:00Z"
                 version="3" submissionType="IETF">
       <front>
       <title abbrev="abbrev_value">Document title</title>

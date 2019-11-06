@@ -125,7 +125,7 @@ module Asciidoctor
         # <br> is only defined within tables
         noko do |xml|
           xml << node.text
-          xml.br if node.parent.context == :cell
+          xml.br if node.parent.context == :table_cell
         end.join
       end
 
@@ -261,7 +261,7 @@ module Asciidoctor
             anchor: node.id,
             removeInRFC: node.attr("remove-in-rfc"),
             toc: node.attr("toc"),
-            numbered: node.attr?("sectnums"),
+            numbered: node.numbered
           }
 
           result << noko do |xml|

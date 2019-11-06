@@ -188,7 +188,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
     INPUT
       #{XML_HDR}
 
-      <rfc submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" submissionType="IETF" prepTime="2000-01-01T05:00:00Z" version="3">
       <front>
          <title>Document title</title>
          <author fullname="Author"/>

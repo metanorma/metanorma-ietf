@@ -34,7 +34,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       Postamble text
       ====
     INPUT
-      <figure>
+      <figure alt="">
       <preamble>
       Preamble text
       </preamble>

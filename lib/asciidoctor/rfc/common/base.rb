@@ -4,8 +4,8 @@ require "htmlentities"
 require "json"
 require "pathname"
 require "open-uri"
-require "pp"
 require "set"
+require "fileutils"
 
 module Asciidoctor
   module Rfc::Common
@@ -374,7 +374,7 @@ HERE
       end
 
       def cache_workgroup(node)
-        wgcache_name = "#{Dir.home}/.asciidoc-rfc-workgroup-cache.json"
+        wgcache_name = "#{Dir.home}/.metanorma-ietf-workgroup-cache.json"
         # If we are required to, clear the wg cache
         if node.attr("flush-caches") == "true"
           FileUtils.rm wgcache_name, :force => true
@@ -418,7 +418,7 @@ HERE
       end
 
       def cache_biblio(node)
-        bibliocache_name = "#{Dir.home}/.asciidoc-rfc-biblio-cache.json"
+        bibliocache_name = "#{Dir.home}/.metanorma-ietf-biblio-cache.json"
         # If we are required to, clear the biblio cache
         if node.attr("flush-caches") == "true"
           system("rm -f #{bibliocache_name}")
@@ -426,10 +426,16 @@ HERE
         # Is there already a biblio cache? If not, create it.
         biblio = {}
         if Pathname.new(bibliocache_name).file?
+          begin
           File.open(bibliocache_name, "r") do |f|
             biblio = JSON.parse(f.read)
           end
-        else
+          rescue Exception => e
+            warn "JSON in #{bibliocache_name} is corrupt: deleting"
+          end
+        end
+
+        if biblio.empty?
           File.open(bibliocache_name, "w") do |b|
             STDERR.puts "Reading references from https://xml2rfc.tools.ietf.org/public/rfc/bibxml/..."
             Kernel.open("https://xml2rfc.tools.ietf.org/public/rfc/bibxml/") do |f|

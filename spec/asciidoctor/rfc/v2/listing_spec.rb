@@ -33,7 +33,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ----
       ====
     INPUT
-      <figure anchor="id">
+      <figure anchor="id" alt="">
         <artwork name="filename.rb" type="ruby" src="http://example.com/ruby.rb" alt="Alt Text"><![CDATA[]]></artwork>
       </figure>
     OUTPUT
@@ -52,7 +52,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ----
     INPUT
       <figure anchor="literal-id">
-      <artwork name="filename.rb" type="ruby"><![CDATA[
+      <artwork name="filename.rb" type="ruby" alt=""><![CDATA[
       def listing(node)
         result = []
         result << "<figure>" if node.parent.context != :example
@@ -69,7 +69,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       Notice that the monospace markup is preserved in the output.
     INPUT
       <figure>
-      <artwork><![CDATA[
+      <artwork alt=""><![CDATA[
       This is an example of a paragraph styled with `listing`.
       Notice that the monospace markup is preserved in the output.
       ]]></artwork>
