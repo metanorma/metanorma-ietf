@@ -6,9 +6,11 @@
 "`http://asciidoctor.org/[asciidoctor]-way`".
 
 image:https://img.shields.io/gem/v/metanorma-ietf.svg["Gem Version", link="https://rubygems.org/gems/metanorma-ietf"]
-image:https://img.shields.io/travis/metanorma/metanorma-ietf/master.svg["Build Status", link="https://travis-ci.com/metanorma/metanorma-ietf"]
+image:https://travis-ci.com/metanorma/metanorma-ietf.svg["Build Status", link="https://travis-ci.com/metanorma/metanorma-ietf"]
+image:https://ci.appveyor.com/api/projects/status/or6b0wx4b0q3qm0m?svg=true["Appveyor Build Status", link="https://ci.appveyor.com/project/metanorma/metanorma-ietf"]
 image:https://codeclimate.com/github/metanorma/metanorma-ietf/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-ietf"]
-image:https://ci.appveyor.com/api/projects/status/efby5jt6x06v6ce5?svg=true["Appveyor Build Status", link="https://ci.appveyor.com/project/ribose/metanorma-ietf"]
+image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-ietf.svg["Pull Requests", link="https://github.com/metanorma/metanorma-ietf/pulls"]
+image:https://img.shields.io/github/commits-since/metanorma/metanorma-ietf/latest.svg["Commits since latest",link="https://github.com/metanorma/metanorma-ietf/releases"]
 
 _Formerly known as_ `asciidoctor-rfc`.
 
