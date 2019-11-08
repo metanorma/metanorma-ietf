@@ -28,7 +28,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       <t>text</t>
       </section>
       </middle><back>
-      <section anchor="_appendix" numbered="false">
+      <section anchor="_appendix" numbered="true">
       <name>Appendix</name>
       <t>text</t>
       </section>

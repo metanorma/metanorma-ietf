@@ -76,6 +76,8 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       == Section 1
       text
 
+      :sectnums!:
+
       [appendix]
       == Appendix
       Lipsum.
@@ -95,7 +97,7 @@ RSpec.describe Asciidoctor::Rfc::V3::Converter do
       <t>text</t>
       </section>
       </middle><back>
-      <section anchor="_appendix" numbered="false">
+      <section anchor="_appendix" numbered="true">
       <name>Appendix</name>
       <t>Lipsum.</t>
       </section>

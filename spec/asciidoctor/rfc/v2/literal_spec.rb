@@ -63,7 +63,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
       ++++
       ====
     INPUT
-      <figure anchor="id">
+      <figure anchor="id" alt="">
       <artwork align="center"><![CDATA[
       sqrt(4) = 2
       ]]></artwork>
