@@ -802,8 +802,8 @@ Internet-Draft            RFC Format Framework                 June 2016
    [RFC-INTEREST]
               RFC Editor, "rfc-interest -- A list for discussion of the
               RFC series and RFC Editor functions.", n.d.,
-              <https://www.rfc-editor.org/mailman/listinfo/
-              rfc-interest>.
+              <https://www.rfc-editor.org/mailman/listinfo/rfc-
+              interest>.
 
    [RFC4845]  Daigle, L., Ed. and Internet Architecture Board, "Process
               for Publication of IAB RFCs", RFC 4845,
@@ -824,16 +824,16 @@ Internet-Draft            RFC Format Framework                 June 2016
               <https://www.rfc-editor.org/info/rfc7322>.
 
    [RSOC]     IAB, "RFC Editor Program: The RSOC", n.d.,
-              <http://www.iab.org/activities/programs/
-              rfc-editor-program/>.
+              <http://www.iab.org/activities/programs/rfc-editor-
+              program/>.
 
    [TNC2014]  Flanagan, H., "IETF Update - 'What's Hot?' - RFC Update",
               n.d., <https://tnc2014.terena.org/core/presentation/84>.
 
    [TYPOGRAPHY]
               Butterick, M., "Butterick's Practical Typography", n.d.,
-              <http://practicaltypography.com/
-              widow-and-orphan-control.html>.
+              <http://practicaltypography.com/widow-and-orphan-
+              control.html>.
 
 
 
@@ -844,8 +844,8 @@ Internet-Draft            RFC Format Framework                 June 2016
 
    [XML-ANNOUNCE]
               "Subject: [rfc-i] Direction of the RFC Format Development
-              effort", n.d., <http://www.rfc-editor.org/pipermail/
-              rfc-interest/2013-May/005584.html>.
+              effort", n.d., <http://www.rfc-editor.org/pipermail/rfc-
+              interest/2013-May/005584.html>.
 
 Author's Address
 

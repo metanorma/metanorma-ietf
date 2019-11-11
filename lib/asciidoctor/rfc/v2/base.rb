@@ -36,6 +36,9 @@ module Asciidoctor
       #
       #   [appendix] # start of back matter if not already started
       #   == Appendix
+      #
+      # @param node [Asciidoctor::Document]
+      # @return [String] document XML representation
       def document(node)
         $seen_back_matter = false
         $smart_quotes = (node.attr("smart-quotes") != "false")
@@ -99,6 +102,8 @@ module Asciidoctor
         ret1.to_xml
       end
 
+      # @param node [Asciidoctor::Document]
+      # @param doc [Nokogiri::XML::Socument]
       def resolve_references(node, doc)
         extract_entities(node, doc).each do |entity|
           Nokogiri::XML::EntityDecl::new(entity[:entity], doc,
