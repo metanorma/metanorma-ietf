@@ -187,7 +187,7 @@ RSpec.describe Asciidoctor::Rfc::V2::Converter do
   end
 
   it "renders skeletal external RFC XML references as entities" do
-    VCR.use_cassette "rfc2_references" do
+    VCR.use_cassette "rfc2_references_skeletal" do
       expect(Asciidoctor.convert(<<~"INPUT", backend: :rfc2, header_footer: true).to_s).to be_equivalent_to <<~"OUTPUT"
         = The Holy Hand Grenade of Antioch
         Arthur Pendragon
