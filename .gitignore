@@ -7,7 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
-/.vscode/
 .tmp.xml
 
 # rspec failure tracking

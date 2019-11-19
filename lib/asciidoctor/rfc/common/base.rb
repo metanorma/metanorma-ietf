@@ -6,7 +6,6 @@ require "pathname"
 require "open-uri"
 require "set"
 require "fileutils"
-require "relaton"
 
 module Asciidoctor
   module Rfc::Common
@@ -277,45 +276,28 @@ module Asciidoctor
 
         doc
       end
-# extract references which can be expressed as externally defined entities
-      #
-      # @param node [Asciidoctor::Document]
-      # @param xmldoc [Nokogiri::XML::Socument]
-      # @return [Array<Hash>]
+
+      # extract references which can be expressed as externally defined entities
       def extract_entities(node, xmldoc)
         refs = xmldoc.xpath("//reference")
         ret = []
+        biblio = cache_biblio(node)
         refs.each do |ref|
           next if ref.parent.name == "referencegroup"
           id = ref.at('.//seriesInfo[@name="Internet-Draft"]')
           anchor = ref["anchor"]
-          doc_ref = if id.nil?
-                  anchor.sub /^(RFC|I-D|W3C|BCP)\.?(.*)/, "\\1 \\2"
+          url = if id.nil?
+                  biblio[anchor]
                 else
-                  "I-D.#{id['value']}" # the specific version reference
+                  biblio["I-D.#{id['value']}"] # the specific version reference
                 end
-          if (doc = fetch_bib(doc_ref))
+          if biblio.has_key? anchor
             ret << { entity: anchor,
                      node: ref,
-                     url: doc.link.detect { |l| l.type == 'xml' }&.content&.to_s }
+                     url: url }
           end
         end
         ret
-      end
-
-      # @param ref [String]
-      # @return [RelatonIetf::IetfBibliographicItem, NilClass]
-      def fetch_bib(ref)
-        begin
-          relaton_db.fetch "IETF " + ref
-        rescue RelatonBib::RequestError
-          nil
-        end
-      end
-
-      # @return [Relaton::Db]
-      def relaton_db
-        @relaton_db ||= Relaton::Db.new("#{Dir.home}/.relaton/cache", nil)
       end
 
       # if node contains blocks, flatten them into a single line
@@ -435,8 +417,6 @@ HERE
         wg
       end
 
-      # @param node [Asciidoctor::Document]
-      # @return [Hash]
       def cache_biblio(node)
         bibliocache_name = "#{Dir.home}/.metanorma-ietf-biblio-cache.json"
         # If we are required to, clear the biblio cache
@@ -521,12 +501,13 @@ HERE
           end
         end
 
+        biblio = cache_biblio(node)
         [:norm, :info].each do |reftype|
           anchors[reftype].each do |r|
             if refxml_in[reftype].has_key?(r)
               # priority to on-disk references over skeleton references: they may contain draft information
               refxml_out[reftype] << refxml_in[reftype][r]
-            elsif fetch_bib(r)
+            elsif biblio.has_key?(r)
               refxml_out[reftype] << %{<reference anchor="#{r}"/>}
             else
               warn "Reference #{r} has not been includes in references directory, and is not a recognised external RFC reference"

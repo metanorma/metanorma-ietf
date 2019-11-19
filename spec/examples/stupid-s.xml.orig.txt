@@ -406,8 +406,8 @@ Internet-Draft                   STuPiD                        July 2009
               <https://www.rfc-editor.org/info/rfc5389>.
 
    [STUNT]    Hanson, R., "STUNT & out-of-band channels", September
-              2007, <http://deusty.blogspot.com/2007/09/stunt-out-of-
-              band-channels.html>.
+              2007, <http://deusty.blogspot.com/2007/09/
+              stunt-out-of-band-channels.html>.
 
 Appendix A.  Examples
 
