@@ -1,0 +1,62 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-abarth-cake-00.xml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - xml2rfc.tools.ietf.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 09 Nov 2019 12:57:16 GMT
+      Server:
+      - Apache/2.2.22 (Debian)
+      Last-Modified:
+      - Sat, 21 Aug 2010 22:00:00 GMT
+      Etag:
+      - '"39c4153-46c-48e5c8963d800"'
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '1132'
+      Content-Type:
+      - application/xml
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version='1.0' encoding='UTF-8'?>
+
+        <reference anchor='I-D.abarth-cake'>
+        <front>
+        <title>Simple HTTP State Management Mechanism</title>
+
+        <author initials='A' surname='Barth' fullname='Adam Barth'>
+            <organization />
+        </author>
+
+        <date month='August' day='22' year='2010' />
+
+        <abstract><t>This document describes a simple HTTP state management mechanism, called cake, that lets HTTP servers maintain stateful sessions with HTTP user agents.  This mechanism is harmonized with the same-origin security model and provides both confidentiality and integrity protection against active network attackers.  In addition, the mechanism is robust to cross-site request forgery attacks.Editorial Note (To be removed by RFC Editor)  If you have suggestions for improving this document, please send email to &lt;mailto:http-state@ietf.org>.  Further Working Group information is available from &lt;https://tools.ietf.org/wg/httpstate/>.</t></abstract>
+
+        </front>
+
+        <seriesInfo name='Internet-Draft' value='draft-abarth-cake-00' />
+        <format type='TXT'
+                target='http://www.ietf.org/internet-drafts/draft-abarth-cake-00.txt' />
+        </reference>
+    http_version: 
+  recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
+recorded_with: VCR 5.0.0
