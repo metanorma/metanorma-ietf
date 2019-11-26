@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    Currently we inherit from a namespaced grammar, isostandard. Until we inherit from isodoc,
+    we cannot have a new default namespace: we will end up with a grammar with two different
+    namespaces, one for isostandard and one for ietf additions. And we do not want that.
+  -->
+  <include href="isostandard.rng">
+    <start>
+      <ref name="ietf-standard"/>
+    </start>
+    <define name="figure">
+      <element name="figure">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <choice>
+          <ref name="image"/>
+          <ref name="pre"/>
+          <oneOrMore>
+            <ref name="subfigure"/>
+          </oneOrMore>
+        </choice>
+        <zeroOrMore>
+          <ref name="fn"/>
+        </zeroOrMore>
+        <optional>
+          <ref name="dl"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="subfigure">
+      <element name="figure">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <choice>
+          <ref name="image"/>
+          <ref name="pre"/>
+        </choice>
+      </element>
+    </define>
+    <define name="DocumentType">
+      <choice>
+        <value>rfc</value>
+        <value>internet-draft</value>
+      </choice>
+    </define>
+    <define name="editorialgroup">
+      <element name="editorialgroup">
+        <oneOrMore>
+          <ref name="committee"/>
+        </oneOrMore>
+      </element>
+    </define>
+    <define name="BibDataExtensionType">
+      <optional>
+        <ref name="doctype"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="ics"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="ipr"/>
+      </optional>
+      <optional>
+        <ref name="iprExtract"/>
+      </optional>
+      <optional>
+        <ref name="submissiontype"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="area"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="bkeyword"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="consensus"/>
+      </optional>
+    </define>
+    <define name="bkeyword">
+      <element name="keyword">
+        <text/>
+      </element>
+    </define>
+    <define name="contact">
+      <choice>
+        <ref name="address"/>
+        <ref name="phone"/>
+        <ref name="fax"/>
+        <ref name="email"/>
+        <ref name="uri"/>
+      </choice>
+    </define>
+    <define name="TextElement" combine="choice">
+      <choice>
+        <ref name="iref"/>
+        <ref name="comment"/>
+      </choice>
+    </define>
+    <define name="fullname">
+      <element name="name">
+        <choice>
+          <group>
+            <zeroOrMore>
+              <ref name="prefix"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="forename"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="initial"/>
+            </zeroOrMore>
+            <ref name="surname"/>
+            <zeroOrMore>
+              <ref name="addition"/>
+            </zeroOrMore>
+          </group>
+          <ref name="completeName"/>
+          <group>
+            <zeroOrMore>
+              <ref name="prefix"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="forename"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="initial"/>
+            </zeroOrMore>
+            <ref name="surname"/>
+            <zeroOrMore>
+              <ref name="addition"/>
+            </zeroOrMore>
+            <ref name="completeName"/>
+          </group>
+        </choice>
+        <zeroOrMore>
+          <ref name="biblionote"/>
+        </zeroOrMore>
+      </element>
+    </define>
+  </include>
+  <define name="fax">
+    <element name="fax">
+      <text/>
+    </element>
+  </define>
+  <define name="consensus">
+    <element name="consensus">
+      <data type="boolean"/>
+    </element>
+  </define>
+  <define name="area">
+    <element name="area">
+      <choice>
+        <value>art</value>
+        <value>gen</value>
+        <value>int</value>
+        <value>ops</value>
+        <value>rtg</value>
+        <value>sec</value>
+        <value>tsv</value>
+      </choice>
+    </element>
+  </define>
+  <define name="abbrevtitle">
+    <element name="abbrevtitle">
+      <text/>
+    </element>
+  </define>
+  <define name="ipr">
+    <element name="ipr">
+      <text/>
+    </element>
+  </define>
+  <define name="iprExtract">
+    <element name="iprExtract">
+      <text/>
+    </element>
+  </define>
+  <define name="submissiontype">
+    <element name="submissiontype">
+      <text/>
+    </element>
+  </define>
+  <define name="committee">
+    <element name="technical-committee">
+      <text/>
+    </element>
+  </define>
+  <define name="iref">
+    <element name="iref">
+      <attribute name="item"/>
+      <optional>
+        <attribute name="subitem"/>
+      </optional>
+      <optional>
+        <text/>
+      </optional>
+    </element>
+  </define>
+  <define name="comment">
+    <element name="comment">
+      <text/>
+    </element>
+  </define>
+  <define name="ietf-standard">
+    <element name="ietf-standard">
+      <ref name="bibdata"/>
+      <zeroOrMore>
+        <ref name="termdocsource"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="boilerplate"/>
+      </optional>
+      <ref name="preface"/>
+      <oneOrMore>
+        <ref name="sections"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="annex"/>
+      </zeroOrMore>
+      <ref name="bibliography"/>
+    </element>
+  </define>
+</grammar>

@@ -8,13 +8,13 @@ module Metanorma
       def initialize
         @short = :ietf
         @input_format = :asciidoc
-        @asciidoctor_backend = :rfc2
+        @asciidoctor_backend = :rfc
       end
 
       def output_formats
         {
-          xmlrfc2: "xml",
-          xmlrfc3: "v3.xml",
+          xml: "xml",
+          rfc: "rfc.xml",
           html: "html",
           txt: "txt"
         }
@@ -53,19 +53,8 @@ module Metanorma
 
       def output(isodoc_node, outname, format, options={})
         case format
-        when :xmlrfc2
-          # TODO: we're using XML RFC v2 as the central format because our processor
-          # is not updated to the new schema
-
-          # xmlrfcdoc = Metanorma::Input::Asciidoc.new.process(@file, @filename, :rfc2)
-          # File.open(outname, 'w') { |f| f << xmlrfcdoc }
-
-          # TODO: When we have IsoDoc, we just translate IsoDoc to XML RFC v2
-          File.open(outname, 'w') { |f| f << isodoc_node }
-        when :xmlrfc3
-          # TODO: When we have IsoDoc, we just translate IsoDoc to XML RFC v3
-          xmlrfcdoc = Metanorma::Input::Asciidoc.new.process(@file, @filename, :rfc3)
-          File.open(outname, 'w') { |f| f << xmlrfcdoc }
+        when :xmlrfc
+          IsoDoc::Rfc::RfcConvert.new(options).convert(outname, isodoc_node)
 
         when :txt, :html
           Tempfile.open(outname) do |f|
