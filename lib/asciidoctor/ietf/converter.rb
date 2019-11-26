@@ -10,7 +10,7 @@ module Asciidoctor
     #
     class Converter < Standoc::Converter
 
-      register_for "rsd"
+      register_for "ietf"
 
       def initialize(backend, opts)
         super
@@ -50,7 +50,7 @@ module Asciidoctor
                         File.join(File.dirname(__FILE__), "ietf.rng"))
       end
 
-      def html_converter(node)
+      def rfc_converter(node)
         IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
       end
 

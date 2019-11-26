@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
     metanorma-ietf lets you write IETF documents, such as Internet-Drafts and RFCs,
     in native AsciiDoc syntax. This is part of the Metanorma publishing framework.
 
-    RFC XML ("xml2rfc" Vocabulary XML, RFC7322) is the XML-based language used for
+    RFC XML ("xml2rfc" Vocabulary XML, RFC 7991) is the XML-based language used for
     writing Internet-Drafts and RFCs, but not everyone likes hand-crafting XML,
     especially when the focus should be on the content.
 
