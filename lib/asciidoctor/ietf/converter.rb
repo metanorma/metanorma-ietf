@@ -1,14 +1,11 @@
 require "asciidoctor"
 require "asciidoctor/standoc/converter"
 require "isodoc/ietf/rfc_convert"
+require_relative "./front"
 
 module Asciidoctor
-  module Rsd
-
-    # A {Converter} implementation that generates RSD output, and a document
-    # schema encapsulation of the document for validation
-    #
-    class Converter < Standoc::Converter
+  module Ietf
+    class Converter < ::Asciidoctor::Standoc::Converter
 
       register_for "ietf"
 
@@ -42,6 +39,25 @@ module Asciidoctor
         end
         @files_to_delete.each { |f| FileUtils.rm f }
         ret
+      end
+
+      def paragraph(node)
+        return termsource(node) if node.role == "source"
+        attrs = { keepWithNext: node.attr("keepWithNext"),
+                  keepWithPrevious: node.attr("keepWithPrevious"),
+                  id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node) }
+        noko do |xml|
+          xml.p **attr_code(attrs) do |xml_t|
+            xml_t << node.content
+          end
+        end.join("\n")
+      end
+
+      def clause_parse(attrs, xml, node)
+        attrs[:numbered] = node.attr("numbered")
+        attrs[:removeInRFC] = node.attr("removeInRFC")
+        attrs[:toc] = node.attr("toc")
+        super
       end
 
       def validate(doc)
