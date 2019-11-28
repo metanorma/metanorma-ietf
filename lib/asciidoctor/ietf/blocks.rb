@@ -20,6 +20,12 @@ module Asciidoctor
                   spacing: node.attr("spacing"),
                   start: node.attr("start"))
       end
+
+      def dl_attr(node)
+        attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
+                  hanging: node.attr("hanging"),
+                  spacing: node.attr("spacing"))
+      end
     end
   end
 end

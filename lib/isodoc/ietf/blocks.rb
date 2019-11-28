@@ -49,5 +49,11 @@ module IsoDoc::Ietf
         node.children.each { |n| parse(n, ol) }
       end
     end
+
+    def dl_attr(node)
+      attr_code(anchor: node["id"],
+                hanging: node["hanging"],
+                spacing: node["spacing"])
+    end
   end
 end
