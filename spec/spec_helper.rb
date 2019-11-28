@@ -86,51 +86,37 @@ HDR
 
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
-       <csd-standard xmlns="https://www.calconnect.org/standards/csd">
+       <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
        <bibdata type="standard">
-
-         <docidentifier type="csd">CC ???</docidentifier>
-         <contributor>
-           <role type="author"/>
-           <organization>
-             <name>IETF</name>
-           </organization>
-         </contributor>
+        <title language="en" format="text/plain">Document title</title>
          <contributor>
            <role type="publisher"/>
            <organization>
-             <name>IETF</name>
+           <name>Internet Engineering Task Force</name>
+       <abbreviation>IETF</abbreviation>
            </organization>
          </contributor>
 
          <language>en</language>
          <script>Latn</script>
+<status>
+  <stage>published</stage>
+</status>
 
          <copyright>
-           <from>#{Time.new.year}</from>
+           <from>2000</from>
            <owner>
              <organization>
-               <name>IETF</name>
+           <name>Internet Engineering Task Force</name>
+       <abbreviation>IETF</abbreviation>
              </organization>
            </owner>
          </copyright>
-         <editorialgroup>
-           <technical-committee/>
-         </editorialgroup>
+         <series type="stream">
+           <title>IETF</title>
+         </series>
+         <ext/>
        </bibdata>
-HDR
-
-HTML_HDR = <<~"HDR"
-         <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-           <div class="title-section">
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class="prefatory-section">
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class="main-section">
 HDR
 
 XML_HDR = <<~"HDR"
