@@ -42,18 +42,6 @@ module Asciidoctor
         ret
       end
 
-      def paragraph(node)
-        return termsource(node) if node.role == "source"
-        attrs = { keepWithNext: node.attr("keepWithNext"),
-                  keepWithPrevious: node.attr("keepWithPrevious"),
-                  id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node) }
-        noko do |xml|
-          xml.p **attr_code(attrs) do |xml_t|
-            xml_t << node.content
-          end
-        end.join("\n")
-      end
-
       def clause_parse(attrs, xml, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
