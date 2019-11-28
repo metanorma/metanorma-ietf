@@ -1,3 +1,6 @@
+require_relative "./terms"
+require_relative "./blocks"
+
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def convert1(docxml, filename, dir)
@@ -86,18 +89,6 @@ module IsoDoc::Ietf
       out.back do |back|
         annex isoxml, back
         bibliography isoxml, back
-      end
-    end
-
-    def para_attrs(node)
-      { keepWithNext: node["keepWithNext"],
-        keepWithPrevious: node["keepWithPrevious"],
-        anchor: node["id"] }
-    end
-
-    def para_parse(node, out)
-      out.t **attr_code(para_attrs(node)) do |p|
-        node.children.each { |n| parse(n, p) }
       end
     end
 

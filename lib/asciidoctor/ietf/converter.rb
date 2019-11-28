@@ -2,6 +2,7 @@ require "asciidoctor"
 require "asciidoctor/standoc/converter"
 require "isodoc/ietf/rfc_convert"
 require_relative "./front"
+require_relative "./blocks"
 
 module Asciidoctor
   module Ietf
