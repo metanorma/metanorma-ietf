@@ -42,6 +42,12 @@ module Asciidoctor
         ret
       end
 
+       def doctype(node)
+        ret = node.attr("doctype")
+        ret = "Internet-Draft" if ret == "article"
+        ret
+      end
+
       def clause_parse(attrs, xml, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")

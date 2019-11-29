@@ -88,7 +88,7 @@ BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
        <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
        <bibdata type="standard">
-        <title language="en" format="text/plain">Document title</title>
+        <title language="en" type="main" format="text/plain">Document title</title>
          <contributor>
            <role type="publisher"/>
            <organization>
@@ -115,7 +115,9 @@ BLANK_HDR = <<~"HDR"
          <series type="stream">
            <title>IETF</title>
          </series>
-         <ext/>
+         <ext>
+  <doctype>Internet-Draft</doctype>
+</ext>
        </bibdata>
 HDR
 

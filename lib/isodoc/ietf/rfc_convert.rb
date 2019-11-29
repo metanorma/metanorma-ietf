@@ -1,5 +1,7 @@
 require_relative "./terms"
 require_relative "./blocks"
+require_relative "./metadata"
+require_relative "./front"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -15,6 +17,10 @@ module IsoDoc::Ietf
         end
       end.join("\n")
     end
+
+    def metadata_init(lang, script, labels)
+        @meta = Metadata.new(lang, script, labels)
+      end
 
     def rfc_attributes(docxml)
       t = Time.now.getutc
@@ -65,17 +71,6 @@ module IsoDoc::Ietf
       when "equivalent" then "alternate"
       else 
         "alternate"
-      end
-    end
-
-    def relaton_relations
-      %w(included-in described-by derived-from equivalent)
-      # = item describedby convertedfrom alternate
-    end
-
-    def make_front(out, isoxml)
-      out.front do |front|
-        clause isoxml, front
       end
     end
 
