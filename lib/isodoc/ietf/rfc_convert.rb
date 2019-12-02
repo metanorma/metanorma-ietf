@@ -2,6 +2,7 @@ require_relative "./terms"
 require_relative "./blocks"
 require_relative "./metadata"
 require_relative "./front"
+require_relative "./table"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -149,6 +150,8 @@ module IsoDoc::Ietf
       end
     end
 
+    def footnote_parse(node, out)
+    end
 
     def  postprocess(result, filename, dir)
       File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }

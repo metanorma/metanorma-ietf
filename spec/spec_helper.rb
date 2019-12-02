@@ -121,10 +121,13 @@ BLANK_HDR = <<~"HDR"
        </bibdata>
 HDR
 
-XML_HDR = <<~"HDR"
+=begin
       <?xml version="1.0" encoding="US-ASCII"?>
       <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
       <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}">
+=end
+
+XML_HDR = <<~"HDR"
 <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
   <front>
     <abstract>
