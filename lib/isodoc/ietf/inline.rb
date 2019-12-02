@@ -47,5 +47,13 @@ module IsoDoc::Ietf
     def keyword_parse(node, out)
       node.children.each { |n| parse(n, out) }
     end
+
+    def text_parse(node, out)
+      return if node.nil? || node.text.nil?
+      text = node.to_s
+      #text = text.gsub("\n", "<br/>").gsub("<br/> ", "<br/>&nbsp;").
+      #  gsub(/[ ](?=[ ])/, "&nbsp;") if in_sourcecode
+      out << text
+    end
   end
 end

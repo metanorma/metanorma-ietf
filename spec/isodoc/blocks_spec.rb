@@ -158,15 +158,8 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="samplecode" class="example">
-                 <p class="example-title">EXAMPLE&#160;&#8212; Title</p>
-         <p>Hello</p>
-                 </div>
-               </div>
-               <p class="zzSTDTitle1"/>
+               <t anchor='samplecode'  keepWithNext='true'>EXAMPLE: Title</t>
+             <t>Hello</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -190,23 +183,12 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="samplecode" class="example">
-                 <p class="example-title">EXAMPLE  1</p>
-         <p>Hello</p>
-                 </div>
-                 <div id="samplecode2" class="example">
-                 <p class="example-title">EXAMPLE  2&#160;&#8212; Title</p>
-                 <p>Hello</p>
-                 </div>
-                 <div id="samplecode3" class="example">
-                 <p class="example-title">EXAMPLE</p>
-                 <p>Hello</p>
-                 </div>
-               </div>
-               <p class="zzSTDTitle1"/>
+        <t anchor='samplecode'  keepWithNext='true'>EXAMPLE</t>
+             <t>Hello</t>
+             <t anchor='samplecode2' keepWithNext='true'>EXAMPLE: Title</t>
+             <t>Hello</t>
+             <t anchor='samplecode3' keepWithNext='true'>EXAMPLE</t>
+             <t>Hello</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -223,12 +205,15 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <pre id="samplecode" class="prettyprint lang-rb"><br/>&#160;&#160;&#160; <br/>&#160; puts x<br/><p class="SourceTitle" style="text-align:center;">Ruby <i>code</i></p></pre>
-               </div>
-               <p class="zzSTDTitle1"/>
+        <figure anchor='samplecode'>
+               <name>
+                 Ruby
+                 <em>code</em>
+               </name>
+               <sourcecode type='ruby'><![CDATA[
+         puts x
+       ]]></sourcecode>
+             </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -245,12 +230,12 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <pre id="samplecode" class="prettyprint "><br/>&#160;&#160;&#160; <br/>&#160; &lt;xml&gt;<br/><p class="SourceTitle" style="text-align:center;">XML code</p></pre>
-               </div>
-               <p class="zzSTDTitle1"/>
+        <figure anchor='samplecode'>
+               <name>XML code</name>
+               <sourcecode><![CDATA[
+         &lt;xml&gt;
+       ]]></sourcecode>
+             </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -271,12 +256,17 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <pre id="_" class="prettyprint ">puts "Hello, world."  &lt;1&gt;<br/>&#160;&#160; %w{a b c}.each do |x|<br/>&#160;&#160;&#160;&#160; puts x  &lt;2&gt;<br/>&#160;&#160; end<br/><br/>&lt;1&gt; This is one callout<br/>&lt;2&gt; This is another callout</pre>
-               </div>
-               <p class="zzSTDTitle1"/>
+             <figure anchor='_'>
+               <sourcecode>
+                 <![CDATA[puts "Hello, world."  &lt;1&gt;
+          %w{a b c}.each do |x|
+            puts x  &lt;2&gt;
+          end
+     
+       &lt;1&gt; This is one callout
+       &lt;2&gt; This is another callout]]>
+               </sourcecode>
+             </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
