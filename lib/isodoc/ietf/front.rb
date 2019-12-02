@@ -37,7 +37,7 @@ module IsoDoc::Ietf
 
     def seriesinfo_attr(isoxml)
       attr_code(value: @meta.get[:docnumber],
-                asciiValue: @meta.get[:docnumber].transliterate,
+                asciiValue: @meta.get[:docnumber]&.transliterate,
                 status: @meta.get[:stage],
                 stream: isoxml&.at(ns("//bibdata/series[@type = 'stream']/"\
                                       "title"))&.text)

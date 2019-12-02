@@ -1,110 +1,59 @@
 require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
-  it "processes unlabelled notes" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-    <iso-standard xmlns="http://riboseinc.com/isoxml">
-    <preface><foreword>
-    <note>
-  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
-</note>
-    </foreword></preface>
-    </iso-standard>
-    INPUT
-    #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="" class="Note">
-                   <p><span class="note_label">NOTE</span>&#160; These results are based on a study carried out on three different types of kernel.</p>
-                 </div>
-               </div>
-               <p class="zzSTDTitle1"/>
-       </abstract></front><middle/><back/></rfc>
-    OUTPUT
-  end
-
   it "processes labelled notes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
-    <preface><foreword>
+    <sections><clause>
     <note id="note1">
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
 </note>
-    </foreword></preface>
+    </clause></sections>
     </iso-standard>
 INPUT
-    #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="note1" class="Note">
-                   <p><span class="note_label">NOTE</span>&#160; These results are based on a study carried out on three different types of kernel.</p>
-                 </div>
-               </div>
-               <p class="zzSTDTitle1"/>
-       </abstract></front><middle/><back/></rfc>
-    OUTPUT
-  end
-
-    it "processes sequences of notes" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-    <iso-standard xmlns="http://riboseinc.com/isoxml">
-    <preface><foreword>
-    <note id="note1">
-  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
-</note>
-    <note id="note2">
-  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">These results are based on a study carried out on three different types of kernel.</p>
-</note>
-    </foreword></preface>
-    </iso-standard>
-INPUT
-    #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="note1" class="Note">
-                   <p><span class="note_label">NOTE  1</span>&#160; These results are based on a study carried out on three different types of kernel.</p>
-                 </div>
-                 <div id="note2" class="Note">
-                   <p><span class="note_label">NOTE  2</span>&#160; These results are based on a study carried out on three different types of kernel.</p>
-                 </div>
-               </div>
-               <p class="zzSTDTitle1"/>
-       </abstract></front><middle/><back/></rfc>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front/>
+         <middle>
+           <section>
+             <t anchor='note1'>
+               NOTE: These results are based on a study carried out on three different
+               types of kernel.
+             </t>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
     OUTPUT
   end
 
   it "processes multi-para notes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
-    <preface><foreword>
+    <sections><clause>
     <note>
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
-  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">These results are based on a study carried out on three different types of kernel.</p>
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">They are based on a study carried out on three different types of kernel.</p>
 </note>
-    </foreword></preface>
+    </clause></sections>
     </iso-standard>
     INPUT
-        #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="" class="Note">
-                   <p><span class="note_label">NOTE</span>&#160; These results are based on a study carried out on three different types of kernel.</p>
-                   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">These results are based on a study carried out on three different types of kernel.</p>
-                 </div>
-               </div>
-               <p class="zzSTDTitle1"/>
-       </abstract></front><middle/><back/></rfc>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front/>
+         <middle>
+           <section>
+             <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>NOTE: These results are based on a study carried out on three different types of kernel.</t>
+             <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a'>They are based on a study carried out on three different types of kernel.</t>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
     OUTPUT
   end
 
   it "processes non-para notes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
-    <preface><foreword>
+    <sections><clause>
     <note>
     <dl>
     <dt>A</dt>
@@ -113,22 +62,29 @@ INPUT
     <ul>
     <li>C</li></ul>
 </note>
-    </foreword></preface>
+    </clause></sections>
     </iso-standard>
     INPUT
-        #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="" class="Note"><p><span class="note_label">NOTE</span>&#160; </p>
-           <dl><dt><p>A</p></dt><dd><p>B</p></dd></dl>
-           <ul>
-           <li>C</li></ul>
-       </div>
-               </div>
-               <p class="zzSTDTitle1"/>
-       </abstract></front><middle/><back/></rfc>
-
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front/>
+         <middle>
+           <section>
+             <t>NOTE: </t>
+             <dl>
+               <dt>
+                 <p>A</p>
+               </dt>
+               <dd>
+                 <t>B</t>
+               </dd>
+             </dl>
+             <ul>
+               <li>C</li>
+             </ul>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
     OUTPUT
   end
 

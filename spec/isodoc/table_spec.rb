@@ -120,12 +120,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </dt>
                <dd>A type of rice</dd>
              </dl>
-             <div id='' class='Note'>
-               <p>
-                 <span class='note_label'>NOTE</span>
-                 &#160; This is a table about rice
-               </p>
-             </div>
+             <t>NOTE: This is a table about rice</t>
              <table anchor='tableD-2'>
                <tbody>
                  <tr>

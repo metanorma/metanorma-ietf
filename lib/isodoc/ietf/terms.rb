@@ -28,11 +28,7 @@ module IsoDoc::Ietf
     end
 
     def termnote_parse(node, out)
-        first = node.first_element_child
-        out.t do |p|
-          p << "NOTE: "
-          para_then_remainder(first, node, p, out)
-        end
+      note_parse(node, out)
     end
 
     def termref_parse(node, out)

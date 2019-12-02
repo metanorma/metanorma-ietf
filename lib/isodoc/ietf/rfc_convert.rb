@@ -3,6 +3,7 @@ require_relative "./blocks"
 require_relative "./metadata"
 require_relative "./front"
 require_relative "./table"
+require_relative "./inline"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -88,36 +89,6 @@ module IsoDoc::Ietf
       end
     end
 
-    def em_parse(node, out)
-      out.em do |e|
-        node.children.each { |n| parse(n, e) }
-      end
-    end
-
-    def sup_parse(node, out)
-      out.sup do |e|
-        node.children.each { |n| parse(n, e) }
-      end
-    end
-
-    def sub_parse(node, out)
-      out.sub do |e|
-        node.children.each { |n| parse(n, e) }
-      end
-    end
-
-    def tt_parse(node, out)
-      out.tt do |e|
-        node.children.each { |n| parse(n, e) }
-      end
-    end
-
-    def strong_parse(node, out)
-      out.strong do |e|
-        node.children.each { |n| parse(n, e) }
-      end
-    end
-
     def clause_parse_title(node, div, c1, out)
       return unless c1
       div.name **attr_code( anchor: node["id"], numbered: node["numbered"],
@@ -153,11 +124,18 @@ module IsoDoc::Ietf
     def footnote_parse(node, out)
     end
 
+    def error_parse(node, out)
+      case node.name
+      when "bcp14" then bcp14_parse(node, out)
+      else
+        text = node.to_xml.gsub(/</, "&lt;").gsub(/>/, "&gt;")
+        out.t { |p| p << text }
+      end
+    end
+
     def  postprocess(result, filename, dir)
       File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }
       @files_to_delete.each { |f| FileUtils.rm_rf f }
     end
-
-
   end
 end

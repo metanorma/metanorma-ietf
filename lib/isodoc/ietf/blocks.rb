@@ -55,5 +55,16 @@ module IsoDoc::Ietf
                 hanging: node["hanging"],
                 spacing: node["spacing"])
     end
+
+    def note_parse(node, out)
+      first = node.first_element_child
+      out.t **attr_code(anchor: node["id"] || first["id"]) do |p|
+        p << "NOTE: "
+        first.name == "p" and first.children.each { |n| parse(n, p) }
+      end
+      first.name == "p" and
+        node.elements.drop(1).each { |n| parse(n, out) } or
+        node.elements.each { |n| parse(n, out) }
+    end
   end
 end

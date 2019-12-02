@@ -48,6 +48,28 @@ module Asciidoctor
         ret
       end
 
+       def inline_quoted(node)
+        noko do |xml|
+          case node.type
+          when :emphasis then xml.em { |s| s << node.text }
+          when :strong then xml.strong { |s| s << node.text }
+          when :monospaced then xml.tt { |s| s << node.text }
+          when :double then xml << "\"#{node.text}\""
+          when :single then xml << "'#{node.text}'"
+          when :superscript then xml.sup { |s| s << node.text }
+          when :subscript then xml.sub { |s| s << node.text }
+          when :asciimath then stem_parse(node.text, xml, :asciimath)
+          when :latexmath then stem_parse(node.text, xml, :latexmath)
+          else
+            case node.role
+            when "bcp14" then xml.bcp14 { |s| s << node.text }
+            else
+              xml << node.text
+            end
+          end
+        end.join
+      end
+
       def clause_parse(attrs, xml, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
@@ -64,7 +86,6 @@ module Asciidoctor
       def rfc_converter(node)
         IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
       end
-
     end
   end
 end
