@@ -4,6 +4,7 @@ require_relative "./metadata"
 require_relative "./front"
 require_relative "./table"
 require_relative "./inline"
+require_relative "./reqt"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert

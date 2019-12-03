@@ -30,7 +30,7 @@ INPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <sections><clause>
-    <note>
+    <note id="A">
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">They are based on a study carried out on three different types of kernel.</p>
 </note>
@@ -41,7 +41,7 @@ INPUT
          <front/>
          <middle>
            <section>
-             <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>NOTE: These results are based on a study carried out on three different types of kernel.</t>
+             <t anchor='A'>NOTE: These results are based on a study carried out on three different types of kernel.</t>
              <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a'>They are based on a study carried out on three different types of kernel.</t>
            </section>
          </middle>
@@ -54,7 +54,7 @@ INPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <sections><clause>
-    <note>
+    <note id="A">
     <dl>
     <dt>A</dt>
     <dd><p>B</p></dd>
@@ -69,7 +69,7 @@ INPUT
          <front/>
          <middle>
            <section>
-             <t>NOTE: </t>
+             <t anchor="A">NOTE: </t>
              <dl>
                <dt>
                  <p>A</p>
@@ -87,6 +87,39 @@ INPUT
        </rfc>
     OUTPUT
   end
+
+    it "processes note sequences" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    <iso-standard xmlns="http://riboseinc.com/isoxml">
+    <sections><clause>
+    <note id="A">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+<note id="B">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">They are based on a study carried out on three different types of kernel.</p>
+  </note>
+    </clause></sections>
+    </iso-standard>
+    INPUT
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front/>
+         <middle>
+           <section>
+           <t anchor='A'>
+               NOTE 1: These results are based on a study carried out on three
+               different types of kernel.
+             </t>
+             <t anchor='B'>
+               NOTE 2: They are based on a study carried out on three different types
+               of kernel.
+             </t>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
+    OUTPUT
+  end
+
 
   it "processes figures" do
     expect(xmlpp(strip_guid(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")

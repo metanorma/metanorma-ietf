@@ -56,10 +56,14 @@ module IsoDoc::Ietf
                 spacing: node["spacing"])
     end
 
+    def note_label(node)
+      l10n("#{super}: ")
+    end
+
     def note_parse(node, out)
       first = node.first_element_child
       out.t **attr_code(anchor: node["id"] || first["id"]) do |p|
-        p << "NOTE: "
+        p << note_label(node)
         first.name == "p" and first.children.each { |n| parse(n, p) }
       end
       first.name == "p" and
@@ -68,13 +72,19 @@ module IsoDoc::Ietf
     end
 
     def example_parse(node, out)
-      out.t **attr_code(anchor: node["id"], keepWithNext: true) do |p|
-        name = node.at(ns("./name"))
-        p << "EXAMPLE"
-        p << ": " if name
+      example_label(node, out, node.at(ns("./name")))
+      node.elements.each { |n| parse(n, out) unless n.name == "name" }
+    end
+
+    def example_label(node, div, name)
+      n = get_anchors[node["id"]]
+      div.t **attr_code(anchor: node["id"], keepWithNext: "true") do |p|
+        lbl = (n.nil? || n[:label].nil? || n[:label].empty?) ? @example_lbl :
+          l10n("#{@example_lbl} #{n[:label]}")
+        p << lbl
+        name and !lbl.nil? and p << ": "
         name and name.children.each { |n| parse(n, p) }
       end
-      node.elements.each { |n| parse(n, out) unless n.name == "name" }
     end
 
     # TODO no src attribute

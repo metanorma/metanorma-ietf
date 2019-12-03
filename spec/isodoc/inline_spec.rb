@@ -201,9 +201,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <h1>1.&#160; Normative references</h1>
                  <p id="ISO712" class="NormRef">ISO 712, <i> Cereals and cereal products</i></p>
                </div>
-             </div>
-           </body>
-       </html>
+</abstract></front><middle/><back/></rfc>
     OUTPUT
   end
 
@@ -263,9 +261,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <h1>1.&#160; Normative references</h1>
                  <p id="ISO712" class="NormRef">ISO 712, <i> Cereals and cereal products</i></p>
                </div>
-             </div>
-           </body>
-       </html>
+</abstract></front><middle/><back/></rfc>
     OUTPUT
   end
 
