@@ -216,9 +216,9 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-        <t anchor='samplecode'  keepWithNext='true'>EXAMPLE</t>
+        <t anchor='samplecode'  keepWithNext='true'>EXAMPLE 1</t>
              <t>Hello</t>
-             <t anchor='samplecode2' keepWithNext='true'>EXAMPLE: Title</t>
+             <t anchor='samplecode2' keepWithNext='true'>EXAMPLE 2: Title</t>
              <t>Hello</t>
              <t anchor='samplecode3' keepWithNext='true'>EXAMPLE</t>
              <t>Hello</t>
@@ -396,28 +396,26 @@ B</pre>
     OUTPUT
   end
 
-  it "processes paragraph alignments" do
+  it "processes paragraph attributes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
-    <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8">Vache Equipment<br/>
+    <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keepWithNext="true">Vache Equipment<br/>
 Fictitious<br/>
 World</p>
-    <p align="justify">Justify</p>
+    <p align="justify" keepWithPrevious="true">Justify</p>
     </foreword></preface>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" style="text-align:left;">Vache Equipment<br/>
-       Fictitious<br/>
-       World
-           </p>
-           <p style="text-align:justify;">Justify</p>
-               </div>
-               <p class="zzSTDTitle1"/>
+        <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>
+  Vache Equipment
+  <br/>
+   Fictitious
+  <br/>
+   World
+</t>
+<t keepWithPrevious='true'>Justify</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
