@@ -24,7 +24,9 @@ module IsoDoc::Ietf
     end
 
     def term_parse(node, out)
-      clause_parse(node, out)
+      out.name do |p|
+        node.children.each { |n| parse(n, p) }
+      end
     end
 
     def termnote_parse(node, out)

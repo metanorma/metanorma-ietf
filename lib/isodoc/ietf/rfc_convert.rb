@@ -119,10 +119,8 @@ module IsoDoc::Ietf
       end
     end
 
-    MIDDLE_CLAUSE = "//clause[parent::sections]".freeze
-
     def clause(isoxml, out)
-      isoxml.xpath(ns(self.class::MIDDLE_CLAUSE)).each do |c|
+      isoxml.xpath("//xmlns:sections/child::*").each do |c|
         out.section **attr_code( anchor: c["id"], numbered: c["numbered"],
                                 removeInRFC: c["removeInRFC"], toc: c["toc"]) do |div|
           clause_parse_title(c, div, c.at(ns("./title")), out)

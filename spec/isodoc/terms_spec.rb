@@ -53,45 +53,66 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 </sections>
 </iso-standard>
     INPUT
-    #{XML_HDR}
-               <div id="_terms_and_definitions"><h1>1.&#160; Terms and definitions</h1><p>For the purposes of this document,
-           the following terms and definitions apply.</p>
-       <p class="TermNum" id="paddy1">1.1.</p><p class="Terms" style="text-align:left;">paddy</p>
+    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+  <front/>
+  <middle>
+           <section anchor='_terms_and_definitions'>
+             <name anchor='_terms_and_definitions'>Terms and Definitions</name>
+             <t>For the purposes of this document, the following terms and definitions apply.</t>
+             <section anchor='paddy1'>
+               <name>paddy</name>
+               <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>rice retaining its husk after threshing</t>
+               <t anchor='_bd57bbf1-f948-4bae-b0ce-73c00431f892' keepWithNext='true'>EXAMPLE 1</t>
+               <t anchor='_65c9a509-9a89-4b54-a890-274126aeb55c'>Foreign seeds, husks, bran, sand, dust.</t>
+               <ul>
+                 <li>A</li>
+               </ul>
+               <t anchor='_bd57bbf1-f948-4bae-b0ce-73c00431f894' keepWithNext='true'>EXAMPLE 2</t>
+               <ul>
+                 <li>A</li>
+               </ul>
+               <t>
+                 <a href='#ISO7301'>ISO 7301:2011, Clause 3.1</a>
+                  The term "cargo rice" is shown as deprecated, and Note 1 to entry is
+                 not included here 
+               </t>
+             </section>
+             <section anchor='paddy'>
+               <name>paddy</name>
+               <t>paddy rice</t>
+               <t>rough rice</t>
+               <t>DEPRECATED: cargo rice</t>
+               <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>rice retaining its husk after threshing</t>
+               <t anchor='_bd57bbf1-f948-4bae-b0ce-73c00431f893' keepWithNext='true'>EXAMPLE</t>
+               <ul>
+                 <li>A</li>
+               </ul>
+               <aside anchor='_671a1994-4783-40d0-bc81-987d06ffb74e'>
+                 <t>
+                   NOTE Note 1 to entry: The starch of waxy rice consists almost
+                   entirely of amylopectin. The kernels have a tendency to stick
+                   together after cooking.
+                 </t>
+               </aside>
+               <aside anchor='_671a1994-4783-40d0-bc81-987d06ffb74f'>
+                 <t>NOTE Note 2 to entry: </t>
+                 <ul>
+                   <li>A</li>
+                 </ul>
+                 <t anchor='_19830f33-e46c-42cc-94ca-a5ef101132d5'>
+                   The starch of waxy rice consists almost entirely of amylopectin. The
+                   kernels have a tendency to stick together after cooking.
+                 </t>
+               </aside>
+               <t>
+                 <a href='#ISO7301'>ISO 7301:2011, Clause 3.1</a>
+               </t>
+             </section>
+           </section>
+         </middle>
+  <back/>
+</rfc>
 
-       <p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">&lt;rice&gt; rice retaining its husk after threshing</p>
-       <div id="_bd57bbf1-f948-4bae-b0ce-73c00431f892" class="example"><p class="example-title">EXAMPLE 1</p>
-         <p id="_65c9a509-9a89-4b54-a890-274126aeb55c">Foreign seeds, husks, bran, sand, dust.</p>
-         <ul>
-         <li>A</li>
-         </ul>
-       </div>
-       <div id="_bd57bbf1-f948-4bae-b0ce-73c00431f894" class="example"><p class="example-title">EXAMPLE 2</p>
-         <ul>
-         <li>A</li>
-         </ul>
-       </div>
-
-       <p>[TERMREF]
-         <a href="#ISO7301">ISO 7301:2011, Clause 3.1</a>
-           [MODIFICATION]The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here
-       [/TERMREF]</p><p class="TermNum" id="paddy">1.2.</p><p class="Terms" style="text-align:left;">paddy</p><p class="AltTerms" style="text-align:left;">paddy rice</p>
-       <p class="AltTerms" style="text-align:left;">rough rice</p>
-       <p class="DeprecatedTerms" style="text-align:left;">DEPRECATED: cargo rice</p>
-       <p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">rice retaining its husk after threshing</p>
-       <div id="_bd57bbf1-f948-4bae-b0ce-73c00431f893" class="example"><p class="example-title">EXAMPLE</p>
-         <ul>
-         <li>A</li>
-         </ul>
-       </div>
-       <div class="Note"><p>Note 1 to entry: The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p></div>
-       <div class="Note"><p>Note 2 to entry: <ul><li>A</li></ul><p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p></p></div>
-       <p>[TERMREF]
-         <a href="#ISO7301">ISO 7301:2011, Clause 3.1</a>
-       [/TERMREF]</p></div>
-             </div>
-           </middle>
-         <back/>
-       </rfc>
 OUTPUT
   end
 end
