@@ -77,8 +77,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  </tr>
                  <tr>
                    <td align='left'>Arborio</td>
-                   <td align='center'>Drago</td>
-                   <td align='center'>Balilla</td>
+                   <td align='center'>
+  Drago [a]
+  <fn>
+    <t anchor='_0fe65e9a-5531-408e-8295-eeff35f41a55'>[a] Parboiled rice.</t>
+  </fn>
+</td>
+<td align='center'>Balilla [a]</td>
                    <td align='center'>Thaibonnet</td>
                  </tr>
                </thead>

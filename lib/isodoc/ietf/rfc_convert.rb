@@ -5,6 +5,8 @@ require_relative "./front"
 require_relative "./table"
 require_relative "./inline"
 require_relative "./reqt"
+require_relative "./cleanup"
+require_relative "./footnotes"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -131,9 +133,6 @@ module IsoDoc::Ietf
       end
     end
 
-    def footnote_parse(node, out)
-    end
-
     def error_parse(node, out)
       case node.name
       when "bcp14" then bcp14_parse(node, out)
@@ -143,7 +142,8 @@ module IsoDoc::Ietf
       end
     end
 
-    def  postprocess(result, filename, dir)
+    def postprocess(result, filename, dir)
+      result = from_xhtml(cleanup(to_xhtml(result)))
       File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }
       @files_to_delete.each { |f| FileUtils.rm_rf f }
     end

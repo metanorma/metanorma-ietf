@@ -20,22 +20,38 @@ RSpec.describe IsoDoc do
     </preface>
     </iso-standard>
     INPUT
-    #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                <p>A.<a rel="footnote" href="#fn:2"><sup>2</sup></a></p>
-                <p>B.<a rel="footnote" href="#fn:2"><sup>2</sup></a></p>
-                <p>C.<a rel="footnote" href="#fn:1"><sup>1</sup></a></p>
-               </div>
-               <p class="zzSTDTitle1"/>
-                             <aside id="fn:2" class="footnote">
-          <p id="_1e228e29-baef-4f38-b048-b05a051747e4">Formerly denoted as 15 % (m/m).</p>
-        </aside>
-              <aside id="fn:1" class="footnote">
-          <p id="_1e228e29-baef-4f38-b048-b05a051747e4">Hello! denoted as 15 % (m/m).</p>
-        </aside>
-           </abstract></front><middle/><back/></rfc>
+    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+           <abstract>
+             <t>
+               A.
+               <fnref>2</fnref>
+               <fn>
+                 <t anchor='_1e228e29-baef-4f38-b048-b05a051747e4'>
+                   <ref>2</ref>
+                   Formerly denoted as 15 % (m/m).
+                 </t>
+               </fn>
+             </t>
+             <t>
+               B.
+               <fnref>2</fnref>
+             </t>
+             <t>
+               C.
+               <fnref>1</fnref>
+               <fn>
+                 <t anchor='_1e228e29-baef-4f38-b048-b05a051747e4'>
+                   <ref>1</ref>
+                   Hello! denoted as 15 % (m/m).
+                 </t>
+               </fn>
+             </t>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
     OUTPUT
   end
 
