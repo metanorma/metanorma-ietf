@@ -33,7 +33,7 @@ module IsoDoc::Ietf
     }.freeze
 
     def ol_style(type)
-      OL_STYLE[type.to_sym] || type
+      OL_STYLE[type&.to_sym] || type
     end
 
     def ol_attrs(node)
