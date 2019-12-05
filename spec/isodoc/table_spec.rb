@@ -100,13 +100,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </tbody>
                <tfoot>
                  <tr>
-                   <td align='left'>
-                     Reproducibility limit, 
-                     <span class='stem'>(#(R)#)</span>
-                      (= 2,83 
-                     <span class='stem'>(#(s_R)#)</span>
-                     )
-                   </td>
+                 <td align='left'>Reproducibility limit, $$ R $$ (= 2,83 $$ s_R $$)</td>
                    <td align='center'>2,89</td>
                    <td align='center'>0,57</td>
                    <td align='center'>2,26</td>

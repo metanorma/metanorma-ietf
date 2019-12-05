@@ -113,5 +113,21 @@ module IsoDoc::Ietf
       out << node&.children&.text&.strip
       @annotation = false
     end
+
+    def formula_where(dl, out)
+      return unless dl
+      out.t { |p| p << @where_lbl }
+      parse(dl, out)
+    end
+
+    def formula_parse1(node, out)
+      out.t **attr_code(id: node["id"]) do |p|
+        parse(node.at(ns("./stem")), p)
+        lbl = anchor(node['id'], :label, false)
+        unless lbl.nil?
+          p << "   (#{lbl})"
+        end
+      end
+    end
   end
 end

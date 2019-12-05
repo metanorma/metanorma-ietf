@@ -25,6 +25,17 @@ module IsoDoc::Ietf
         @meta = Metadata.new(lang, script, labels)
       end
 
+    def extract_delims(text)
+      @openmathdelim = "$$"
+      @closemathdelim = "$$"
+      while %r{#{Regexp.escape(@openmathdelim)}}m.match(text) ||
+          %r{#{Regexp.escape(@closemathdelim)}}m.match(text)
+        @openmathdelim += "$"
+        @closemathdelim += "$"
+      end
+      [@openmathdelim, @closemathdelim]
+    end
+
     def rfc_attributes(docxml)
       t = Time.now.getutc
       obs = xpath_comma(docxml.xpath(ns(

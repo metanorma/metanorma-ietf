@@ -98,42 +98,32 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-       <para><b role="strong">&lt;barry fred="http://example.com"&gt;example&lt;/barry&gt;</b></para>
-       </p>
-               </div>
+<t>
+  <t>&lt;barry fred="http://example.com"&gt;example&lt;/barry&gt;</t>
+</t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
 
   it "processes AsciiMath and MathML" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true).sub(/<html/, "<html xmlns:m='m'"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-    <iso-standard xmlns="http://riboseinc.com/isoxml">
+    expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true).sub(/<html/, "<html xmlns:m='m'"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    <iso-standard xmlns="http://riboseinc.com/isoxml" xmlns:m="mathml">
     <preface><foreword>
     <p>
     <stem type="AsciiMath">&lt;A&gt;</stem>
-    <stem type="MathML"><m:math><m:row>X</m:row></m:math></stem>
+    <stem type="MathML"><m:math><m:mrow>X</m:mrow></m:math></stem>
     <stem type="None">Latex?</stem>
     </p>
     </foreword></preface>
     <sections>
     </iso-standard>
     INPUT
-    #{XML_HDR.sub(/<html/, "<html xmlns:m='m'")}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-       <span class="stem">(#(&lt;A&gt;)#)</span>
-       <span class="stem"><m:math>
-         <m:row>X</m:row>
-       </m:math></span>
-       <span class="stem">Latex?</span>
-       </p>
-               </div>
+    #{XML_HDR}
+    <t>
+$$ &lt;A&gt; $$
+$$ X $$
+$$ Latex? $$
+</t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -144,21 +134,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <preface><foreword>
     <p>
     <stem type="AsciiMath">A</stem>
-    (#((Hello))#)
+    $$Hello$$$
     </p>
     </foreword></preface>
     <sections>
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-       <span class="stem">(#(((A)#)))</span>
-       (#((Hello))#)
-       </p>
-               </div>
+    <t> $$$$ A $$$$ $$Hello$$$ </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end

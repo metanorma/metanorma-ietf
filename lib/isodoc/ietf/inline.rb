@@ -1,3 +1,5 @@
+require "mathml2asciimath"
+
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def em_parse(node, out)
@@ -51,9 +53,16 @@ module IsoDoc::Ietf
     def text_parse(node, out)
       return if node.nil? || node.text.nil?
       text = node.to_s
-      #text = text.gsub("\n", "<br/>").gsub("<br/> ", "<br/>&nbsp;").
-      #  gsub(/[ ](?=[ ])/, "&nbsp;") if in_sourcecode
       out << text
+    end
+
+    def stem_parse(node, out)
+      stem = case node["type"]
+             when "MathML" then MathML2AsciiMath.m2a(node.children.to_xml)
+             else
+               HTMLEntities.new.encode(node.text)
+             end
+      out << "#{@openmathdelim} #{stem} #{@closemathdelim}"
     end
   end
 end

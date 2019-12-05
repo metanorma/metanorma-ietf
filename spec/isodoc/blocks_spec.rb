@@ -359,9 +359,7 @@ B</pre>
     <formula id="_be9158af-7e93-4ee2-90c5-26d31c181934" unnumbered="true">
   <stem type="AsciiMath">r = 1 %</stem>
 <dl id="_e4fe94fe-1cde-49d9-b1ad-743293b7e21d">
-  <dt>
-    <stem type="AsciiMath">r</stem>
-  </dt>
+  <dt><stem type="AsciiMath">r</stem></dt>
   <dd>
     <p id="_1b99995d-ff03-40f5-8f2e-ab9665a69b77">is the repeatability limit.</p>
   </dd>
@@ -377,21 +375,20 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="_be9158af-7e93-4ee2-90c5-26d31c181934" class="formula"><p><span class="stem">(#(r = 1 %)#)</span></p></div><p>where</p><dl id="_e4fe94fe-1cde-49d9-b1ad-743293b7e21d"><dt>
-           <span class="stem">(#(r)#)</span>
-         </dt><dd>
-           <p id="_1b99995d-ff03-40f5-8f2e-ab9665a69b77">is the repeatability limit.</p>
-         </dd></dl>
-
-
-           <div id="_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0" class="Note"><p><span class="note_label">NOTE</span>&#160; [durationUnits] is essentially a duration statement without the "P" prefix. "P" is unnecessary because between "G" and "U" duration is always expressed.</p></div>
-
-                 <div id="_be9158af-7e93-4ee2-90c5-26d31c181935" class="formula"><p><span class="stem">(#(r = 1 %)#)</span>&#160; (1)</p></div>
-                 </div>
-               <p class="zzSTDTitle1"/>
+        <t id='_be9158af-7e93-4ee2-90c5-26d31c181934'>$$ r = 1 % $$</t>
+             <t>where</t>
+             <dl anchor='_e4fe94fe-1cde-49d9-b1ad-743293b7e21d'>
+               <dt>$$ r $$</dt>
+               <dd>
+                 <t anchor='_1b99995d-ff03-40f5-8f2e-ab9665a69b77'>is the repeatability limit.</t>
+               </dd>
+             </dl>
+             <t anchor='_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0'>
+               NOTE: [durationUnits] is essentially a duration statement without the
+               "P" prefix. "P" is unnecessary because between "G" and "U" duration is
+               always expressed.
+             </t>
+             <t id='_be9158af-7e93-4ee2-90c5-26d31c181935'>$$ r = 1 % $$ (1)</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -524,34 +521,44 @@ World</p>
     </iso-standard>
     INPUT
     #{XML_HDR}
-       <br/>
-      <div>
-        <h1 class="ForewordTitle">Foreword</h1>
-        <div class="permission"><p class="AdmonitionTitle">Permission 1:<br/>/ogc/recommendation/wfs/2</p>
-        <p><i>Subject: user<br/>Control-class: Technical<br/>Priority: P0<br/>Family: System and Communications Protection<br/>Family: System and Communications Protocols</i></p>
-
-  <div class="requirement-inherit">/ss/584/2015/level/1</div>
-  <div class="requirement-description">
-    <p id="_">I recommend <i>this</i>.</p>
-  </div>
-
-  <div class="requirement-description">
-    <p id="_">As for the measurement targets,</p>
-  </div>
-  <div class="requirement-measurement-target">
-    <p id="_">The measurement target shall be measured as:</p>
-    <div id="_" class="formula"><p><span class="stem">(#(r/1 = 0)#)</span>&#160; (1)</p></div>
-
-
-  </div>
-  <div class="requirement-verification">
-    <p id="_">The following code will be run for verification:</p>
-    <pre id="_" class="prettyprint ">CoreRoot(success): HttpResponse<br/>&#160;&#160;&#160;&#160;&#160; if (success)<br/>&#160;&#160;&#160;&#160;&#160; recommendation(label: success-response)<br/>&#160;&#160;&#160;&#160;&#160; end<br/>&#160;&#160;&#160; </pre>
-  </div>
-
-</div>
-      </div>
-      <p class="zzSTDTitle1"/>
+    <t keepWithNext='true'>Permission 1:</t>
+             <t keepWithNext='true'>/ogc/recommendation/wfs/2</t>
+             <ul>
+               <li>
+                 <em>Subject: user</em>
+               </li>
+               <li>
+                 <em>Control-class: Technical</em>
+               </li>
+               <li>
+                 <em>Priority: P0</em>
+               </li>
+               <li>
+                 <em>Family: System and Communications Protection</em>
+               </li>
+               <li>
+                 <em>Family: System and Communications Protocols</em>
+               </li>
+             </ul>
+             <t>INHERIT: /ss/584/2015/level/1</t>
+             <t anchor='_'>
+               I recommend
+               <em>this</em>
+               .
+             </t>
+             <t anchor='_'>As for the measurement targets,</t>
+             <t anchor='_'>The measurement target shall be measured as:</t>
+             <t id='_'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>The following code will be run for verification:</t>
+             <figure anchor='_'>
+               <sourcecode>
+                 <![CDATA[CoreRoot(success): HttpResponse
+             if (success)
+             recommendation(label: success-response)
+             end
+           ]]>
+               </sourcecode>
+             </figure>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -608,33 +615,32 @@ World</p>
     </iso-standard>
     INPUT
     #{XML_HDR}
-        <br/>
-      <div>
-        <h1 class="ForewordTitle">Foreword</h1>
-        <div class="require"><p class="AdmonitionTitle">Requirement:<br/>/ogc/recommendation/wfs/2. A New Requirement</p><p><i>Subject: user</i></p>
-
-  <div class="requirement-inherit">/ss/584/2015/level/1</div>
-  <div class="requirement-description">
-    <p id="_">I recommend <i>this</i>.</p>
-  </div>
-
-  <div class="requirement-description">
-    <p id="_">As for the measurement targets,</p>
-  </div>
-  <div class="requirement-measurement-target">
-    <p id="_">The measurement target shall be measured as:</p>
-    <div id="B" class="formula"><p><span class="stem">(#(r/1 = 0)#)</span>&#160; (1)</p></div>
-
-
-  </div>
-  <div class="requirement-verification">
-    <p id="_">The following code will be run for verification:</p>
-    <pre id="_" class="prettyprint ">CoreRoot(success): HttpResponse<br/>&#160;&#160;&#160;&#160;&#160; if (success)<br/>&#160;&#160;&#160;&#160;&#160; recommendation(label: success-response)<br/>&#160;&#160;&#160;&#160;&#160; end<br/>&#160;&#160;&#160; </pre>
-  </div>
-
-</div>
-      </div>
-      <p class="zzSTDTitle1"/>
+    <t keepWithNext='true'>Requirement:</t>
+             <t keepWithNext='true'>/ogc/recommendation/wfs/2. A New Requirement</t>
+             <ul>
+               <li>
+                 <em>Subject: user</em>
+               </li>
+             </ul>
+             <t>INHERIT: /ss/584/2015/level/1</t>
+             <t anchor='_'>
+               I recommend
+               <em>this</em>
+               .
+             </t>
+             <t anchor='_'>As for the measurement targets,</t>
+             <t anchor='_'>The measurement target shall be measured as:</t>
+             <t id='B'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>The following code will be run for verification:</t>
+             <figure anchor='_'>
+               <sourcecode>
+                 <![CDATA[CoreRoot(success): HttpResponse
+             if (success)
+             recommendation(label: success-response)
+             end
+           ]]>
+               </sourcecode>
+             </figure>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -692,32 +698,41 @@ World</p>
     </iso-standard>
     INPUT
     #{XML_HDR}
-       <br/>
-      <div>
-        <h1 class="ForewordTitle">Foreword</h1>
-<div class="recommend"><p class="AdmonitionTitle">Recommendation 1:<br/>/ogc/recommendation/wfs/2</p><p><i>Obligation: shall,could<br/>Subject: user<br/>Type: text<br/>Language: BASIC</i></p>
-  <div class="requirement-inherit">/ss/584/2015/level/1</div>
-  <div class="requirement-description">
-    <p id="_">I recommend <i>this</i>.</p>
-  </div>
-
-  <div class="requirement-description">
-    <p id="_">As for the measurement targets,</p>
-  </div>
-  <div class="requirement-measurement-target">
-    <p id="_">The measurement target shall be measured as:</p>
-    <div id="_" class="formula"><p><span class="stem">(#(r/1 = 0)#)</span>&#160; (1)</p></div>
-
-
-  </div>
-  <div class="requirement-verification">
-    <p id="_">The following code will be run for verification:</p>
-    <pre id="_" class="prettyprint ">CoreRoot(success): HttpResponse<br/>&#160;&#160;&#160;&#160;&#160; if (success)<br/>&#160;&#160;&#160;&#160;&#160; recommendation(label: success-response)<br/>&#160;&#160;&#160;&#160;&#160; end<br/>&#160;&#160;&#160; </pre>
-  </div>
-
-</div>
-      </div>
-      <p class="zzSTDTitle1"/>
+    <t keepWithNext='true'>Recommendation 1:</t>
+             <t keepWithNext='true'>/ogc/recommendation/wfs/2</t>
+             <ul>
+               <li>
+                 <em>Obligation: shall,could</em>
+               </li>
+               <li>
+                 <em>Subject: user</em>
+               </li>
+               <li>
+                 <em>Type: text</em>
+               </li>
+               <li>
+                 <em>Language: BASIC</em>
+               </li>
+             </ul>
+             <t>INHERIT: /ss/584/2015/level/1</t>
+             <t anchor='_'>
+               I recommend
+               <em>this</em>
+               .
+             </t>
+             <t anchor='_'>As for the measurement targets,</t>
+             <t anchor='_'>The measurement target shall be measured as:</t>
+             <t id='_'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>The following code will be run for verification:</t>
+             <figure anchor='_'>
+               <sourcecode>
+                 <![CDATA[CoreRoot(success): HttpResponse
+             if (success)
+             recommendation(label: success-response)
+             end
+           ]]>
+               </sourcecode>
+             </figure>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end

@@ -50,11 +50,24 @@ module IsoDoc::Ietf
       end
     end
 
+    def inline?(node)
+      return true if node.first_element_child.nil?
+      %w(em link eref xref strong tt sup sub strike keyword smallcap
+         br hr bookmark pagebreak stem origin term preferred admitted
+         deprecates domain termsource modification).include? node.first_element_child.name
+    end
+
     def requirement_component_parse(node, out)
       return if node["exclude"] == "true"
-        node.children.each do |n|
-          parse(n, out)
+      out1 = out
+      if inline?(node)
+        out.t do |p|
+          p << "INHERIT: " if node.name == "inherit"
+          node.children.each { |n| parse(n, p) }
         end
+      else
+        node.children.each { |n| parse(n, out) }
+      end
     end
   end
 end
