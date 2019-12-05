@@ -553,10 +553,10 @@ World</p>
              <figure anchor='_'>
                <sourcecode>
                  <![CDATA[CoreRoot(success): HttpResponse
-             if (success)
-             recommendation(label: success-response)
-             end
-           ]]>
+      if (success)
+      recommendation(label: success-response)
+      end
+    ]]>
                </sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>
@@ -635,10 +635,10 @@ World</p>
              <figure anchor='_'>
                <sourcecode>
                  <![CDATA[CoreRoot(success): HttpResponse
-             if (success)
-             recommendation(label: success-response)
-             end
-           ]]>
+      if (success)
+      recommendation(label: success-response)
+      end
+    ]]>
                </sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>
@@ -727,10 +727,10 @@ World</p>
              <figure anchor='_'>
                <sourcecode>
                  <![CDATA[CoreRoot(success): HttpResponse
-             if (success)
-             recommendation(label: success-response)
-             end
-           ]]>
+      if (success)
+      recommendation(label: success-response)
+      end
+    ]]>
                </sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>
