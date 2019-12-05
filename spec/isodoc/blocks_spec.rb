@@ -15,10 +15,12 @@ INPUT
          <front/>
          <middle>
            <section>
-             <t anchor='note1'>
+             <aside anchor='note1'>
+             <t>
                NOTE: These results are based on a study carried out on three different
                types of kernel.
-             </t>
+               </t>
+             </aside>
            </section>
          </middle>
          <back/>
@@ -41,8 +43,10 @@ INPUT
          <front/>
          <middle>
            <section>
-             <t anchor='A'>NOTE: These results are based on a study carried out on three different types of kernel.</t>
+            <aside anchor='A'>
+             <t>NOTE: These results are based on a study carried out on three different types of kernel.</t>
              <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a'>They are based on a study carried out on three different types of kernel.</t>
+             </aside>
            </section>
          </middle>
          <back/>
@@ -69,7 +73,8 @@ INPUT
          <front/>
          <middle>
            <section>
-             <t anchor="A">NOTE: </t>
+           <aside anchor="A">
+             <t>NOTE: </t>
              <dl>
                <dt>
                  <p>A</p>
@@ -81,6 +86,7 @@ INPUT
              <ul>
                <li>C</li>
              </ul>
+             </aside>
            </section>
          </middle>
          <back/>
@@ -105,14 +111,18 @@ INPUT
          <front/>
          <middle>
            <section>
-           <t anchor='A'>
+           <aside anchor='A'>
+           <t>
                NOTE 1: These results are based on a study carried out on three
                different types of kernel.
              </t>
-             <t anchor='B'>
+             </aside>
+             <aside anchor='B'>
+             <t>
                NOTE 2: They are based on a study carried out on three different types
                of kernel.
              </t>
+             </aside>
            </section>
          </middle>
          <back/>
@@ -315,14 +325,10 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div class="Admonition"><p class="AdmonitionTitle" style="text-align:center;">CAUTION</p>
-         <p id="_e94663cc-2473-4ccc-9a72-983a74d989f2">Only use paddy or parboiled rice for the determination of husked rice yield.</p>
-       </div>
-               </div>
-               <p class="zzSTDTitle1"/>
+               <aside id='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
+               <t keepWithNext='true'>CAUTION</t>
+               <t anchor='_e94663cc-2473-4ccc-9a72-983a74d989f2'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
+             </aside>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -339,14 +345,10 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div class="Admonition"><p class="AdmonitionTitle" style="text-align:center;">Title</p>
-         <p id="_e94663cc-2473-4ccc-9a72-983a74d989f2">Only use paddy or parboiled rice for the determination of husked rice yield.</p>
-       </div>
-               </div>
-               <p class="zzSTDTitle1"/>
+               <aside id='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
+               <t keepWithNext='true'>Title</t>
+               <t anchor='_e94663cc-2473-4ccc-9a72-983a74d989f2'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
+             </aside>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -383,11 +385,13 @@ B</pre>
                  <t anchor='_1b99995d-ff03-40f5-8f2e-ab9665a69b77'>is the repeatability limit.</t>
                </dd>
              </dl>
-             <t anchor='_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0'>
+             <aside anchor='_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0'>
+             <t>
                NOTE: [durationUnits] is essentially a duration statement without the
                "P" prefix. "P" is unnecessary because between "G" and "U" duration is
                always expressed.
              </t>
+             </aside>
              <t id='_be9158af-7e93-4ee2-90c5-26d31c181935'>$$ r = 1 % $$ (1)</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -426,21 +430,38 @@ World</p>
   <author>ISO</author>
   <p id="_d4fd0a61-f300-4285-abe6-602707590e53">This International Standard gives the minimum specifications for rice (<em>Oryza sativa</em> L.) which is subject to international trade. It is applicable to the following types: husked rice and milled rice, parboiled or not, intended for direct human consumption. It is neither applicable to other products derived from rice, nor to waxy rice (glutinous rice).</p>
 </quote>
+<quote id="_044bd364-c832-4b78-8fea-92242402a1d2">
+  <source type="inline">http://www.example.com</source>
+  <author>ISO</author>
+  <p id="_d4fd0a61-f300-4285-abe6-602707590e53">This International Standard gives the minimum specifications for rice (<em>Oryza sativa</em> L.) which is subject to international trade. It is applicable to the following types: husked rice and milled rice, parboiled or not, intended for direct human consumption. It is neither applicable to other products derived from rice, nor to waxy rice (glutinous rice).</p>
+</quote>
 
     </foreword></preface>
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div class="Quote" id="_044bd364-c832-4b78-8fea-92242402a1d1">
-
-
-         <p id="_d4fd0a61-f300-4285-abe6-602707590e53">This International Standard gives the minimum specifications for rice (<i>Oryza sativa</i> L.) which is subject to international trade. It is applicable to the following types: husked rice and milled rice, parboiled or not, intended for direct human consumption. It is neither applicable to other products derived from rice, nor to waxy rice (glutinous rice).</p>
-       <p class="QuoteAttribution">&#8212; ISO, <a href="#ISO7301">ISO 7301:2011, Clause 1</a></p></div>
-               </div>
-               <p class="zzSTDTitle1"/>
+    <blockquote quotedFrom='ISO'>
+               <t anchor='_d4fd0a61-f300-4285-abe6-602707590e53'>
+                 This International Standard gives the minimum specifications for rice
+                 (
+                 <em>Oryza sativa</em>
+                  L.) which is subject to international trade. It is applicable to the
+                 following types: husked rice and milled rice, parboiled or not,
+                 intended for direct human consumption. It is neither applicable to
+                 other products derived from rice, nor to waxy rice (glutinous rice).
+               </t>
+             </blockquote>
+             <blockquote quotedFrom='ISO' cite='http://www.example.com'>
+               <t anchor='_d4fd0a61-f300-4285-abe6-602707590e53'>
+                 This International Standard gives the minimum specifications for rice
+                 (
+                 <em>Oryza sativa</em>
+                  L.) which is subject to international trade. It is applicable to the
+                 following types: husked rice and milled rice, parboiled or not,
+                 intended for direct human consumption. It is neither applicable to
+                 other products derived from rice, nor to waxy rice (glutinous rice).
+               </t>
+             </blockquote>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end

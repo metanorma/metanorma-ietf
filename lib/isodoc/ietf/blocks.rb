@@ -62,13 +62,15 @@ module IsoDoc::Ietf
 
     def note_parse(node, out)
       first = node.first_element_child
-      out.t **attr_code(anchor: node["id"] || first["id"]) do |p|
-        p << note_label(node)
-        first.name == "p" and first.children.each { |n| parse(n, p) }
-      end
-      first.name == "p" and
+      out.aside **attr_code(anchor: node["id"] || first["id"]) do |a|
+        a.t do |p|
+          p << note_label(node)
+          first.name == "p" and first.children.each { |n| parse(n, p) }
+        end
+        first.name == "p" and
         node.elements.drop(1).each { |n| parse(n, out) } or
-        node.elements.each { |n| parse(n, out) }
+        node.children.each { |n| parse(n, out) }
+      end
     end
 
     def example_parse(node, out)
@@ -127,6 +129,44 @@ module IsoDoc::Ietf
         unless lbl.nil?
           p << "   (#{lbl})"
         end
+      end
+    end
+
+    def quote_attribution(node)
+      author = node&.at(ns("./author"))&.text
+      source = node&.at(ns("./source"))&.text
+      isURI = /^#{URI::DEFAULT_PARSER.make_regexp}$/.match(source)
+      attr_code(quotedFrom: author,
+                cite: isURI ?  source : nil)
+    end
+
+    def quote_parse(node, out)
+      out.blockquote **quote_attribution(node) do |p|
+        node.children.each do |n|
+          parse(n, p) unless ["author", "source"].include? n.name
+        end
+      end
+    end
+
+     def admonition_name_parse(_node, div, name)
+      div.t **{keepWithNext: "true" } do |p|
+        name.children.each { |n| parse(n, p) }
+      end
+    end
+
+    def admonition_parse(node, out)
+      type = node["type"]
+      name = admonition_name(node, type)
+      out.aside **{ id: node["id"] } do |t|
+        admonition_name_parse(node, t, name) if name
+        node.children.each { |n| parse(n, t) unless n.name == "name" }
+      end
+    end
+
+    def review_note_parse(node, out)
+      out.cref **attr_code(anchor: node["id"], display: node["display"],
+                           source: node["reviewer"]) do |c|
+        node.children.each { |n| parse(n, c) }
       end
     end
   end

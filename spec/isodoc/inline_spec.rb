@@ -24,9 +24,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
    F G I
   <bpc14>must</bpc14>
   <br/>
-  <hr/>
   <a id='H'/>
-  <br/>
 </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT

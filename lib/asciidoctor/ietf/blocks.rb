@@ -27,6 +27,10 @@ module Asciidoctor
                   spacing: node.attr("spacing"))
       end
 
+      def todo_attrs(node)
+        super.merge(attr_code(display: node.attr("display")))
+      end
+
       def note(n)
         noko do |xml|
           xml.note **attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(n),

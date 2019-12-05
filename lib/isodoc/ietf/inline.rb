@@ -64,5 +64,11 @@ module IsoDoc::Ietf
              end
       out << "#{@openmathdelim} #{stem} #{@closemathdelim}"
     end
+
+    def page_break(_out)
+    end
+
+    def hr_parse(node, out)
+    end
   end
 end

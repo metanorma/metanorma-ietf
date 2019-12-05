@@ -136,7 +136,9 @@ OUTPUT
                  <t>??</t>
                </dd>
              </dl>
+             <aside>
              <t>NOTE: This is a note</t>
+             </aside>
 </abstract></front><middle/><back/></rfc>    
 OUTPUT
   end
