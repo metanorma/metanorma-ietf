@@ -61,7 +61,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <t>For the purposes of this document, the following terms and definitions apply.</t>
              <section anchor='paddy1'>
                <name>paddy</name>
-               <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>rice retaining its husk after threshing</t>
+               <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>&lt;rice&gt; rice retaining its husk after threshing</t>
                <t anchor='_bd57bbf1-f948-4bae-b0ce-73c00431f892' keepWithNext='true'>EXAMPLE 1</t>
                <t anchor='_65c9a509-9a89-4b54-a890-274126aeb55c'>Foreign seeds, husks, bran, sand, dust.</t>
                <ul>
@@ -89,13 +89,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </ul>
                <aside anchor='_671a1994-4783-40d0-bc81-987d06ffb74e'>
                  <t>
-                   NOTE Note 1 to entry: The starch of waxy rice consists almost
+                   NOTE 1: The starch of waxy rice consists almost
                    entirely of amylopectin. The kernels have a tendency to stick
                    together after cooking.
                  </t>
                </aside>
                <aside anchor='_671a1994-4783-40d0-bc81-987d06ffb74f'>
-                 <t>NOTE Note 2 to entry: </t>
+                 <t>NOTE 2: </t>
                  <ul>
                    <li>A</li>
                  </ul>

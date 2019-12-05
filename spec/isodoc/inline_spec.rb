@@ -69,17 +69,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-       <a href="http://example.com">http://example.com</a>
-       <a href="http://example.com">example</a>
-       <a href="http://example.com" title="tip">example</a>
-       <a href="mailto:fred@example.com">fred@example.com</a>
-       <a href="mailto:fred@example.com">mailto:fred@example.com</a>
-       </p>
-               </div>
+    <t>
+               <eref target='http://example.com'/>
+               <eref target='http://example.com'>example</eref>
+               <eref target='http://example.com'>example</eref>
+               <eref target='mailto:fred@example.com'/>
+               <eref target='mailto:fred@example.com'>mailto:fred@example.com</eref>
+             </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end

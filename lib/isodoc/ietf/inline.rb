@@ -70,5 +70,11 @@ module IsoDoc::Ietf
 
     def hr_parse(node, out)
     end
+
+    def link_parse(node, out)
+      out.eref **attr_code(target: node["target"]) do |l|
+        node.children.each { |n| parse(n, l) }
+      end
+    end
   end
 end
