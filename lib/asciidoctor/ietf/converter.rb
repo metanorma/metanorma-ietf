@@ -77,15 +77,31 @@ module Asciidoctor
         super
       end
 
-      def validate(doc)
-        content_validate(doc)
-        schema_validate(formattedstr_strip(doc.dup),
-                        File.join(File.dirname(__FILE__), "ietf.rng"))
-      end
+       def image_parse(node, out, caption)
 
-      def rfc_converter(node)
-        IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
-      end
+       end
+
+       def content_validate(doc)
+         super
+         image_validate(doc)
+       end
+
+       def image_validate(doc)
+         doc.xpath("//image").each do |i|
+           next if i["mimetype"] == "image/svg+xml"
+           warn "image #{i['src'][0, 40]} is not SVG!"
+         end
+       end
+
+       def validate(doc)
+         content_validate(doc)
+         schema_validate(formattedstr_strip(doc.dup),
+                         File.join(File.dirname(__FILE__), "ietf.rng"))
+       end
+
+       def rfc_converter(node)
+         IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
+       end
     end
   end
 end

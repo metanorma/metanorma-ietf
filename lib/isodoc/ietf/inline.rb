@@ -68,12 +68,35 @@ module IsoDoc::Ietf
     def page_break(_out)
     end
 
+    def br_parse(node, out)
+    end
+
     def hr_parse(node, out)
     end
 
     def link_parse(node, out)
       out.eref **attr_code(target: node["target"]) do |l|
         node.children.each { |n| parse(n, l) }
+      end
+    end
+
+    def image_parse(node, out, caption)
+      attrs = { src: node["src"],
+                title: node["title"],
+                align: node["align"],
+                name: node["filename"],
+                anchor: node["id"],
+                type: "svg",
+                alt: node["alt"]  }
+      out.artwork **attr_code(attrs)
+      image_title_parse(out, caption)
+    end
+
+     def image_title_parse(out, caption)
+      unless caption.nil?
+        out.t **{ align: "center", keepWithPrevious: "true" } do |p|
+          p << caption.to_s
+        end
       end
     end
   end

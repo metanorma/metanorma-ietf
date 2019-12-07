@@ -40,6 +40,21 @@ module Asciidoctor
           end
         end.join("\n")
       end
+
+      def literal(node)
+        noko do |xml|
+          xml.figure **literal_attrs(node) do |f|
+            figure_title(node, f)
+            f.pre node.lines.join("\n"),
+              **attr_code(align: node.attr("align"),
+                          alt: node.attr("alt"))
+          end
+        end
+      end
+
+      def image_attributes(node)
+        super.merge(attr_code(align: node.attr("align")))
+      end
     end
   end
 end

@@ -250,14 +250,17 @@ RSpec.describe Asciidoctor::Ietf do
     it "processes literals" do
       expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
+     
+      [[lit]]
+      [align=left,alt=hello]
       ....
       <LITERAL>
       ....
       INPUT
       #{BLANK_HDR}
        <sections>
-           <figure id="_">
-        <pre id="_">&lt;LITERAL&gt;</pre>
+           <figure id="lit">
+        <pre align='left' alt='hello'>&lt;LITERAL&gt;</pre>
         </figure>
        </sections>
        </ietf-standard>
@@ -467,126 +470,19 @@ RSpec.describe Asciidoctor::Ietf do
       OUTPUT
     end
 
-  it "processes subfigures" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-      #{ASCIIDOC_BLANK_HDR}
-      [[figureC-2]]
-      .Stages of gelatinization
-      ====
-      .Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
-      image::spec/examples/rice_images/rice_image3_1.png[]
-
-      .Intermediate stages: Some fully gelatinized kernels are visible
-      image::spec/examples/rice_images/rice_image3_2.png[]
-
-      .Final stages: All kernels are fully gelatinized
-      image::spec/examples/rice_images/rice_image3_3.png[]
-      ====
-    INPUT
-       #{BLANK_HDR}
-              <sections>
-         <figure id="figureC-2"><name>Stages of gelatinization</name><figure id="_">
-         <name>Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)</name>
-         <image src="spec/examples/rice_images/rice_image3_1.png" id="_" mimetype="image/png" height="auto" width="auto"/>
-       </figure>
-       <figure id="_">
-         <name>Intermediate stages: Some fully gelatinized kernels are visible</name>
-         <image src="spec/examples/rice_images/rice_image3_2.png" id="_" mimetype="image/png" height="auto" width="auto"/>
-       </figure>
-       <figure id="_">
-         <name>Final stages: All kernels are fully gelatinized</name>
-         <image src="spec/examples/rice_images/rice_image3_3.png" id="_" mimetype="image/png" height="auto" width="auto"/>
-       </figure></figure>
-       </sections>
-       </ietf-standard>
-    OUTPUT
-  end
-
-    it "processes figures within examples" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-      #{ASCIIDOC_BLANK_HDR}
-      [[figureC-2]]
-      .Stages of gelatinization
-      ====
-      .Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)
-      image::spec/examples/rice_images/rice_image3_1.png[]
-
-      Text
-
-      .Intermediate stages: Some fully gelatinized kernels are visible
-      image::spec/examples/rice_images/rice_image3_2.png[]
-
-      .Final stages: All kernels are fully gelatinized
-      image::spec/examples/rice_images/rice_image3_3.png[]
-      ====
-    INPUT
-       #{BLANK_HDR}
-              <sections>
-         <example id="figureC-2"><name>Stages of gelatinization</name><figure id="_">
-         <name>Initial stages: No grains are fully gelatinized (ungelatinized starch granules are visible inside the kernels)</name>
-         <image src="spec/examples/rice_images/rice_image3_1.png" id="_" mimetype="image/png" height="auto" width="auto"/>
-       </figure>
-       <p id="_">Text</p>
-       <figure id="_">
-         <name>Intermediate stages: Some fully gelatinized kernels are visible</name>
-         <image src="spec/examples/rice_images/rice_image3_2.png" id="_" mimetype="image/png" height="auto" width="auto"/>
-       </figure>
-       <figure id="_">
-         <name>Final stages: All kernels are fully gelatinized</name>
-         <image src="spec/examples/rice_images/rice_image3_3.png" id="_" mimetype="image/png" height="auto" width="auto"/>
-       </figure></example>
-       </sections>
-       </ietf-standard>
-    OUTPUT
-  end
-
-
-    it "processes images" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-      #{ASCIIDOC_BLANK_HDR}
-      [%unnumbered]
-      .Split-it-right sample divider
-      image::spec/examples/rice_images/rice_image1.png[alttext]
-
-      INPUT
-      #{BLANK_HDR}
-              <sections>
-         <figure id="_" unnumbered="true">
-         <name>Split-it-right sample divider</name>
-                  <image src="spec/examples/rice_images/rice_image1.png" id="_" mimetype="image/png" height="auto" width="auto" alt="alttext"/>
-       </figure>
-       </sections>
-       </ietf-standard>
-      OUTPUT
-    end
-
     it "accepts attributes on images" do
       expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
-      [height=4,width=3,alt="IMAGE",filename="riceimg1.png",titleattr="TITLE"]
+      [height=4,width=3,alt="IMAGE",filename="riceimg1.png",titleattr="TITLE",align=left]
       .Caption
-      image::spec/examples/rice_images/rice_image1.png[]
+      image::spec/assets/rice_image1.png[]
 
       INPUT
       #{BLANK_HDR}
               <sections>
          <figure id="_"><name>Caption</name>
-         <image src="spec/examples/rice_images/rice_image1.png" id="_" mimetype="image/png" height="4" width="3" title="TITLE" alt="IMAGE" filename="riceimg1.png"/>
+         <image src="spec/assets/rice_image1.png" id="_" mimetype="image/png" height="4" width="3" title="TITLE" alt="IMAGE" filename="riceimg1.png" align="left"/>
        </figure>
-       </sections>
-       </ietf-standard>
-      OUTPUT
-    end
-
-        it "processes inline images with width and height attributes on images" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-      #{ASCIIDOC_BLANK_HDR}
-      Hello image:spec/examples/rice_images/rice_image1.png[alt, 4, 3], how are you?
-
-      INPUT
-      #{BLANK_HDR}
-              <sections>
-          <p id="_">Hello <image src="spec/examples/rice_images/rice_image1.png" id="_" mimetype="image/png" height="3" width="4" alt="alt"/>, how are you?</p>
        </sections>
        </ietf-standard>
       OUTPUT

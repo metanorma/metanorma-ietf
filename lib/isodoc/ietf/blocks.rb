@@ -109,6 +109,13 @@ module IsoDoc::Ietf
       end
     end
 
+    def pre_parse(node, out) 
+      out.artwork **attr_code(anchor: node["id"], align: node["align"],
+                             alt: node["alt"], type: "ascii-art") do |s|
+        s.cdata node.text.sub(/^\n/, "").gsub(/\t/, "    ")
+      end
+    end
+
     def annotation_parse(node, out)
       @sourcecode = false
       @annotation = true
@@ -127,7 +134,7 @@ module IsoDoc::Ietf
     end
 
     def formula_parse1(node, out)
-      out.t **attr_code(id: node["id"]) do |p|
+      out.t **attr_code(anchor: node["id"]) do |p|
         parse(node.at(ns("./stem")), p)
         lbl = anchor(node['id'], :label, false)
         unless lbl.nil?
@@ -161,7 +168,7 @@ module IsoDoc::Ietf
     def admonition_parse(node, out)
       type = node["type"]
       name = admonition_name(node, type)
-      out.aside **{ id: node["id"] } do |t|
+      out.aside **{ anchor: node["id"] } do |t|
         admonition_name_parse(node, t, name) if name
         node.children.each { |n| parse(n, t) unless n.name == "name" }
       end
@@ -172,6 +179,26 @@ module IsoDoc::Ietf
                            source: node["reviewer"]) do |c|
         node.children.each { |n| parse(n, c) }
       end
+    end
+
+     def figure_name_parse(node, div, name)
+      return if name.nil?
+      div.name do |n|
+        name.children.each { |n| parse(n, div) }
+      end
+    end
+
+    def figure_parse(node, out)
+      return pseudocode_parse(node, out) if node["class"] == "pseudocode" ||
+        node["type"] == "pseudocode"
+      @in_figure = true
+      out.figure **attr_code(anchor: node["id"]) do |div|
+        figure_name_parse(node, div, node.at(ns("./name")))
+        node.children.each do |n|
+          parse(n, div) unless n.name == "name"
+        end
+      end
+      @in_figure = false
     end
   end
 end

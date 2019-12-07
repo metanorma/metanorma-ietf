@@ -137,6 +137,7 @@ INPUT
     <preface><foreword>
     <figure id="figureA-1">
   <name>Split-it-right <em>sample</em> divider</name>
+  <p id="AAA">Random text</p>
   <image src="rice_images/rice_image1.png" height="20" width="30" id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" alt="alttext" title="titletxt"/>
   <image src="rice_images/rice_image1.png" height="20" width="auto" id="_8357ede4-6d44-4672-bac4-9a85e82ab7f1" mimetype="image/png"/>
   <image src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7" height="20" width="auto" id="_8357ede4-6d44-4672-bac4-9a85e82ab7f2" mimetype="image/png"/>
@@ -149,7 +150,7 @@ INPUT
   </dl>
 </figure>
 <figure id="figure-B">
-<pre>A &lt;
+<pre id="BC" alt="hello">A &lt;
 B</pre>
 </figure>
 <figure id="figure-C" unnumbered="true">
@@ -160,31 +161,6 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <div id="figureA-1" class="figure">
-
-         <img src="rice_images/rice_image1.png" height="20" width="30" alt="alttext" title="titletxt"/>
-         <img src="rice_images/rice_image1.png" height="20" width="auto"/>
-         <img src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7" height="20" width="auto"/>
-         <a href="#_" class="TableFootnoteRef">a</a><aside class="footnote"><div id="fn:_"><span><span id="_" class="TableFootnoteRef">a</span>&#160; </span>
-         <p id="_">The time <span class="stem">(#(t_90)#)</span> was estimated to be 18,2 min for this example.</p>
-       </div></aside>
-         <p><b>Key</b></p><dl><dt><p>A</p></dt><dd><p>B</p></dd></dl>
-       <p class="FigureTitle" style="text-align:center;">Figure 1&#160;&#8212; Split-it-right <i>sample</i> divider</p></div>
-               <div class="figure" id="figure-B">
-<pre>A &lt;
-B</pre>
-<p class="FigureTitle" style="text-align:center;">Figure 2</p>
-</div>
-               <div class="figure" id="figure-C">
-<pre>A &lt;
-B</pre>
-<p class="FigureTitle" style="text-align:center;"/>
-</div>
-               </div>
-               <p class="zzSTDTitle1"/>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -325,7 +301,7 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <aside id='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
+               <aside anchor='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
                <t keepWithNext='true'>CAUTION</t>
                <t anchor='_e94663cc-2473-4ccc-9a72-983a74d989f2'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
              </aside>
@@ -345,7 +321,7 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-               <aside id='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
+               <aside anchor='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
                <t keepWithNext='true'>Title</t>
                <t anchor='_e94663cc-2473-4ccc-9a72-983a74d989f2'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
              </aside>
@@ -377,7 +353,7 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-        <t id='_be9158af-7e93-4ee2-90c5-26d31c181934'>$$ r = 1 % $$</t>
+        <t anchor='_be9158af-7e93-4ee2-90c5-26d31c181934'>$$ r = 1 % $$</t>
              <t>where</t>
              <dl anchor='_e4fe94fe-1cde-49d9-b1ad-743293b7e21d'>
                <dt>$$ r $$</dt>
@@ -392,7 +368,7 @@ B</pre>
                always expressed.
              </t>
              </aside>
-             <t id='_be9158af-7e93-4ee2-90c5-26d31c181935'>$$ r = 1 % $$ (1)</t>
+             <t anchor='_be9158af-7e93-4ee2-90c5-26d31c181935'>$$ r = 1 % $$ (1)</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -409,13 +385,7 @@ World</p>
     </iso-standard>
     INPUT
         #{XML_HDR}
-        <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>
-  Vache Equipment
-  <br/>
-   Fictitious
-  <br/>
-   World
-</t>
+        <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>Vache Equipment Fictitious World</t>
 <t keepWithPrevious='true'>Justify</t>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -577,7 +547,7 @@ World</p>
              </t>
              <t anchor='_'>As for the measurement targets,</t>
              <t anchor='_'>The measurement target shall be measured as:</t>
-             <t id='_'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
              <t anchor='_'>The following code will be run for verification:</t>
              <figure anchor='_'>
                <sourcecode>
@@ -659,7 +629,7 @@ World</p>
              </t>
              <t anchor='_'>As for the measurement targets,</t>
              <t anchor='_'>The measurement target shall be measured as:</t>
-             <t id='B'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='B'>$$ r/1 = 0 $$ (1)</t>
              <t anchor='_'>The following code will be run for verification:</t>
              <figure anchor='_'>
                <sourcecode>
@@ -751,7 +721,7 @@ World</p>
              </t>
              <t anchor='_'>As for the measurement targets,</t>
              <t anchor='_'>The measurement target shall be measured as:</t>
-             <t id='_'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
              <t anchor='_'>The following code will be run for verification:</t>
              <figure anchor='_'>
                <sourcecode>
