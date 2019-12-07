@@ -54,7 +54,7 @@ INPUT
     OUTPUT
   end
 
-    it "cleans up footnotes in a section" do
+  it "cleans up footnotes in a section" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
 <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front/>
@@ -262,4 +262,91 @@ INPUT
        </rfc>
     OUTPUT
   end
+
+  it "cleans up figures" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+           <abstract>
+     <figure anchor='figureA-1'>
+               <name>
+                 Split-it-right
+                 <em>sample</em>
+                  divider
+               </name>
+               <t anchor='AAA'>Random text</t>
+               <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+               <artwork src='rice_images/rice_image1.png' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f1' type='svg'/>
+               <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f2' type='svg'/>
+                [a]
+               <fn>
+                 <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+               </fn>
+               <dl>
+                 <dt>
+                   <p>A</p>
+                 </dt>
+                 <dd>
+                   <t>B</t>
+                 </dd>
+               </dl>
+             </figure>
+             <figure anchor='figure-B'>
+               <artwork anchor='BC' alt='hello' type='ascii-art'><![CDATA[A <
+       B]]></artwork>
+             </figure>
+             <figure anchor='figure-C'>
+               <artwork type='ascii-art'><![CDATA[A <
+       B]]></artwork>
+             </figure>
+             </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
+       INPUT
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+           <abstract>
+             <figure anchor='figureA-1'>
+                [a]
+               <name>
+                  Split-it-right
+                 <em>sample</em>
+                  divider
+               </name>
+               <preamble>
+                 <t anchor='AAA'>Random text</t>
+               </preamble>
+               <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+               <postamble>
+                 <artwork src='rice_images/rice_image1.png' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f1' type='svg'/>
+                 <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f2' type='svg'/>
+                 <dl>
+                   <dt>
+                     <p>A</p>
+                   </dt>
+                   <dd>
+                     <t>B</t>
+                   </dd>
+                 </dl>
+                 <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+               </postamble>
+             </figure>
+             <figure anchor='figure-B'>
+               <artwork anchor='BC' alt='hello' type='ascii-art'><![CDATA[A <
+              B]]></artwork>
+             </figure>
+             <figure anchor='figure-C'>
+               <artwork type='ascii-art'><![CDATA[A <
+              B]]></artwork>
+             </figure>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
+    OUTPUT
+  end
+
 end

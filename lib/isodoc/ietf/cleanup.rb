@@ -29,6 +29,21 @@ module IsoDoc::Ietf
 
     def figure_cleanup(docxml)
       figure_footnote_cleanup(docxml)
+      figure_postamble(docxml)
+    end
+
+    def figure_postamble(docxml)
+      docxml.xpath("//figure").each do |f|
+        name = f&.at("./name")&.remove
+        a = f&.at("./artwork | ./sourcework")
+        b = a&.xpath("./preceding-sibling::*")&.remove
+        c = a&.xpath("./following-sibling::*")&.remove
+        a = a.remove
+        name and f << name
+        b.empty? or f << "<preamble>#{b.to_xml}</preamble>"
+        a and f << a
+        c.empty? or f << "<postamble>#{c.to_xml}</postamble>"
+      end
     end
 
     def footnote_cleanup(docxml)

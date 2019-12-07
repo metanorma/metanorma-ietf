@@ -161,6 +161,37 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
+         <figure anchor='figureA-1'>
+               <name>
+                 Split-it-right
+                 <em>sample</em>
+                  divider
+               </name>
+               <t anchor='AAA'>Random text</t>
+               <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+               <artwork src='rice_images/rice_image1.png' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f1' type='svg'/>
+               <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f2' type='svg'/>
+                [a]
+               <fn>
+                 <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+               </fn>
+               <dl>
+                 <dt>
+                   <p>A</p>
+                 </dt>
+                 <dd>
+                   <t>B</t>
+                 </dd>
+               </dl>
+             </figure>
+             <figure anchor='figure-B'>
+               <artwork anchor='BC' alt='hello' type='ascii-art'><![CDATA[A <
+       B]]></artwork>
+             </figure>
+             <figure anchor='figure-C'>
+               <artwork type='ascii-art'><![CDATA[A <
+       B]]></artwork>
+             </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
