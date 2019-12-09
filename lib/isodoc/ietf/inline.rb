@@ -69,6 +69,9 @@ module IsoDoc::Ietf
     end
 
     def br_parse(node, out)
+      if @sourcecode
+        out.br
+      end
     end
 
     def hr_parse(node, out)

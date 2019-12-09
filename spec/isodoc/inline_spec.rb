@@ -23,7 +23,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   <tt>E</tt>
    F G I
   <bpc14>must</bpc14>
-  <br/>
   <a id='H'/>
 </t>
 </abstract></front><middle/><back/></rfc>
@@ -64,13 +63,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   </iso-standard>
   INPUT
     #{XML_HDR}
-      <br/>
-      <div>
-        <h1 class='ForewordTitle'>Foreword</h1>
-        <p>
-          <img src='rice_images/rice_image1.png' height='20' width='30' title='titletxt' alt='alttext'/>
-        </p>
-      </div>
+    <t>
+               <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+             </t>
 </abstract></front><middle/><back/></rfc>
   OUTPUT
   end

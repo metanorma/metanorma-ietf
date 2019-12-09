@@ -244,12 +244,13 @@ B</pre>
   end
 
   it "processes sourcecode" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to (<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
     <sourcecode lang="ruby" id="samplecode">
     <name>Ruby <em>code</em></name>
-  puts x
+  puts x;
+  puts y
 </sourcecode>
     </foreword></preface>
     </iso-standard>
@@ -260,9 +261,10 @@ B</pre>
                  Ruby
                  <em>code</em>
                </name>
-               <sourcecode type='ruby'><![CDATA[
-         puts x
-       ]]></sourcecode>
+               <sourcecode type='ruby'>
+         puts x;
+         puts y
+       </sourcecode>
              </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -282,9 +284,7 @@ B</pre>
         #{XML_HDR}
         <figure anchor='samplecode'>
                <name>XML code</name>
-               <sourcecode><![CDATA[
-         &lt;xml&gt;
-       ]]></sourcecode>
+               <sourcecode> &lt;xml&gt; </sourcecode>
              </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -308,13 +308,13 @@ B</pre>
         #{XML_HDR}
              <figure anchor='_'>
                <sourcecode>
-                 <![CDATA[puts "Hello, world."  &lt;1&gt;
+                 puts "Hello, world."  &lt;1&gt;
           %w{a b c}.each do |x|
             puts x  &lt;2&gt;
           end
      
        &lt;1&gt; This is one callout
-       &lt;2&gt; This is another callout]]>
+       &lt;2&gt; This is another callout
                </sourcecode>
              </figure>
        </abstract></front><middle/><back/></rfc>
@@ -582,11 +582,10 @@ World</p>
              <t anchor='_'>The following code will be run for verification:</t>
              <figure anchor='_'>
                <sourcecode>
-                 <![CDATA[CoreRoot(success): HttpResponse
+                 CoreRoot(success): HttpResponse
       if (success)
       recommendation(label: success-response)
       end
-    ]]>
                </sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>
@@ -664,11 +663,10 @@ World</p>
              <t anchor='_'>The following code will be run for verification:</t>
              <figure anchor='_'>
                <sourcecode>
-                 <![CDATA[CoreRoot(success): HttpResponse
+                 CoreRoot(success): HttpResponse
       if (success)
       recommendation(label: success-response)
       end
-    ]]>
                </sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>
@@ -756,11 +754,10 @@ World</p>
              <t anchor='_'>The following code will be run for verification:</t>
              <figure anchor='_'>
                <sourcecode>
-                 <![CDATA[CoreRoot(success): HttpResponse
+                 CoreRoot(success): HttpResponse
       if (success)
       recommendation(label: success-response)
       end
-    ]]>
                </sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>
@@ -768,11 +765,8 @@ World</p>
   end
 
  it "processes pseudocode" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to (<<~"OUTPUT")
 <itu-standard xmlns="http://riboseinc.com/isoxml">
-    <bibdata>
-    <language>en</language>
-    </bibdata>
         <preface><foreword>
   <figure id="_" class="pseudocode"><name>Label</name><p id="_">  <strong>A</strong><br/>
         <smallcap>B</smallcap></p>
@@ -780,14 +774,14 @@ World</p>
 </preface></itu-standard>
 INPUT
     #{XML_HDR}
-             <br/>
-             <div>
-               <h1 class="ForewordTitle">Foreword</h1>
-               <div id="_" class="pseudocode"><p id="_">&#160;&#160;<b>A</b><br/>
-       &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="font-variant:small-caps;">B</span></p>
-       <p id="_">&#160;&#160;<i>C</i></p><p class="SourceTitle" style="text-align:center;">Label</p></div>
-             </div>
-             <p class="zzSTDTitle1"/>
+             <figure anchor='_'>
+               <name>Label</name>
+               <sourcecode>
+                 <t anchor="_">&#xA0;&#xA0;<strong>A</strong>
+&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B</t>
+<t anchor="_">&#xA0;&#xA0;<em>C</em></t>
+               </sourcecode>
+             </figure>
 </abstract></front><middle/><back/></rfc>
 OUTPUT
   end

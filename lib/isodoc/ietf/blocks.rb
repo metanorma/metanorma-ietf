@@ -72,8 +72,8 @@ module IsoDoc::Ietf
           first.name == "p" and first.children.each { |n| parse(n, p) }
         end
         first.name == "p" and
-        node.elements.drop(1).each { |n| parse(n, out) } or
-        node.children.each { |n| parse(n, out) }
+          node.elements.drop(1).each { |n| parse(n, out) } or
+          node.children.each { |n| parse(n, out) }
       end
     end
 
@@ -104,14 +104,16 @@ module IsoDoc::Ietf
         end
         text = div.parent.at("./container").remove.children.to_s
         div.sourcecode **attr_code(type: node["lang"], name: node["filename"]) do |s|
-          s.cdata text.sub(/^\n/, "")
+          node.children.each do |x|
+            parse(x, s)
+          end
         end
       end
     end
 
     def pre_parse(node, out) 
       out.artwork **attr_code(anchor: node["id"], align: node["align"],
-                             alt: node["alt"], type: "ascii-art") do |s|
+                              alt: node["alt"], type: "ascii-art") do |s|
         s.cdata node.text.sub(/^\n/, "").gsub(/\t/, "    ")
       end
     end
@@ -159,7 +161,7 @@ module IsoDoc::Ietf
       end
     end
 
-     def admonition_name_parse(_node, div, name)
+    def admonition_name_parse(_node, div, name)
       div.t **{keepWithNext: "true" } do |p|
         name.children.each { |n| parse(n, p) }
       end
@@ -181,11 +183,15 @@ module IsoDoc::Ietf
       end
     end
 
-     def figure_name_parse(node, div, name)
+    def figure_name_parse(node, div, name)
       return if name.nil?
       div.name do |n|
         name.children.each { |n| parse(n, div) }
       end
+    end
+
+    def pseudocode_parse(node, out)
+      sourcecode_parse(node, out)
     end
 
     def figure_parse(node, out)

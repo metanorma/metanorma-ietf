@@ -349,4 +349,74 @@ INPUT
     OUTPUT
   end
 
+   it "cleans up inline figures" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
+     #{XML_HDR}
+    <t>
+               <artwork src='rice_images/rice_image1.png' title='titletxt 1' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+               <artwork src='rice_images/rice_image1.png' title='titletxt 2' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+             </t>
+</abstract></front><middle/><back/></rfc>
+    INPUT
+    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+           <abstract>
+             <t> [IMAGE 1] [IMAGE 2] </t>
+             <artwork src='rice_images/rice_image1.png' title='titletxt 1' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+             <artwork src='rice_images/rice_image1.png' title='titletxt 2' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
+    OUTPUT
+   end
+
+   it "cleans up pseudocode" do
+      expect((IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to (<<~"OUTPUT")
+      #{XML_HDR}
+             <figure anchor='_'>
+               <name>Label</name>
+               <sourcecode>
+                 <t anchor="_">&#xA0;&#xA0;<strong><em>A</em></strong><br/>
+&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B<br/>B1</t>
+<t anchor="_">&#xA0;&#xA0;<em>C</em></t>
+               </sourcecode>
+             </figure>
+             <figure anchor='samplecode'>
+               <name>
+                 Ruby
+                 <em>code</em>
+               </name>
+             <sourcecode type='ruby'>
+         puts x;
+         puts y
+       </sourcecode></figure>
+</abstract></front><middle/><back/></rfc>
+INPUT
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" version="3" prepTime="2000-01-01T05:00:00Z">
+         <front>
+           <abstract>
+
+                    <figure anchor="_">
+
+
+                    <name>Label</name><sourcecode><![CDATA[&#xA0;&#xA0;A
+&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B
+B1
+
+&#xA0;&#xA0;C]]></sourcecode></figure>
+<figure anchor='samplecode'>
+               <name>
+                 Ruby
+                 <em>code</em>
+               </name>
+               <sourcecode type='ruby'><![CDATA[         puts x;
+         puts y
+       ]]></sourcecode>
+             </figure>
+</abstract></front><middle/><back/></rfc>
+OUTPUT
+   end
+
 end
