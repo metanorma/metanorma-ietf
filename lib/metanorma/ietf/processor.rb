@@ -68,7 +68,8 @@ module Metanorma
           File.open(outname, 'w') { |f| f << xmlrfcdoc }
 
         when :txt, :html
-          Tempfile.open(outname) do |f|
+          warn outname
+          Tempfile.open(File.basename(outname)) do |f|
             f << isodoc_node
 
             unless which("xml2rfc")
