@@ -7,6 +7,7 @@ require_relative "./inline"
 require_relative "./reqt"
 require_relative "./cleanup"
 require_relative "./footnotes"
+require_relative "./references"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -99,7 +100,6 @@ module IsoDoc::Ietf
     def make_back(out, isoxml)
       out.back do |back|
         annex isoxml, back
-        require "byebug"; byebug
         bibliography isoxml, back
       end
     end

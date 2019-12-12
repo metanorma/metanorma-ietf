@@ -155,6 +155,7 @@ module IsoDoc::Ietf
     end
 
     def date_attr(date)
+      return nil if date.nil?
       if date.length == 4 && date =~ /^\d\d\d\d$/ then { year: date }
       elsif date =~ /^\d\d\d\d-?\d\d$/
         matched = /^(?<year>\d\d\d\d)-(?<month>\d\d)$/.match date
