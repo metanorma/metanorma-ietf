@@ -195,7 +195,18 @@ $$ Latex? $$
     <t>
   <relref target='ISO712'>A</relref>
 </t>
-</abstract></front><middle/><back/></rfc>
+</abstract></front><middle/>
+<back>
+  <references anchor='_normative_references'>
+    <name>Normative References</name>
+    <reference anchor='ISO712'>
+      <front>
+        <title>ISO 712, Cereals and cereal products</title>
+      </front>
+    </reference>
+  </references>
+</back>
+</rfc>
     OUTPUT
   end
 
@@ -246,7 +257,18 @@ $$ Latex? $$
   <relref target='ISO712'/>
   <relref target='ISO712'>A</relref>
 </t>
-</abstract></front><middle/><back/></rfc>
+</abstract></front><middle/>
+<back>
+  <references anchor='_normative_references'>
+    <name>Normative References</name>
+    <reference anchor='ISO712'>
+      <front>
+        <title>ISO 712, Cereals and cereal products</title>
+      </front>
+    </reference>
+  </references>
+</back>
+</rfc>
     OUTPUT
   end
 

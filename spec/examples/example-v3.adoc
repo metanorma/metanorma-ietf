@@ -5,7 +5,7 @@ David Waitzman <dwaitzman@BBN.COM>; Nick Nicholas <opoudjis@gmail.com>
 :obsoletes: 10, 120
 :updates: 2010, 2120
 :name: rfc-1149
-:status: full-standard 1149
+:status: full-standard
 :ipr: trust200902
 :area: Internet
 :workgroup: Network Working Group

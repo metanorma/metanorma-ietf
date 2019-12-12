@@ -541,6 +541,124 @@ OUTPUT
          </back>
        </rfc>
       INPUT
+      <?xml version="1.0"?>
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3" prepTime="2000-01-01T05:00:00Z">
+          <front>
+            <abstract>
+              <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+                <relref target="ISO712"/>
+                <relref target="ISBN"/>
+                <relref target="ISSN"/>
+                <relref target="ISO16634"/>
+                <relref target="ref1"/>
+                <relref target="ref10"/>
+                <relref target="ref12"/>
+              </t>
+            </abstract>
+          </front>
+          <middle/>
+          <back>
+            <references anchor="_normative_references">
+              <name>Normative References</name>
+              <reference anchor="ISO712">
+                <front>
+                  <title>ISO 712, Cereals or cereal products</title>
+                </front>
+              </reference>
+              <reference anchor="ISO16634">
+                <front>
+                  <title>
+                    ISO 16634:-- (all parts), Cereals, pulses, milled cereal products,
+                    xxxx, oilseeds and animal feeding stuffs
+                  </title>
+                  <author>
+                    <organization asciiName="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                  </author>
+                  <keyword>keyword1</keyword>
+                  <keyword>keyword2</keyword>
+                  <abstract>
+                    <t>This is an abstract</t>
+                  </abstract>
+                </front>
+              </reference>
+              <reference anchor="ISO20483">
+                <front>
+                  <title>ISO 20483:2013-2014, Cereals and pulses</title>
+                  <author fullname="&#xD6;laf N&#xFC;rk" asciiFullname="Olaf Nurk" surname="N&#xFC;rk" asciiSurname="Nurk"/>
+                  <author>
+                    <organization/>
+                  </author>
+                  <date year="2013"/>
+                </front>
+              </reference>
+              <reference anchor="ref1">
+                <front>
+                  <title>
+                    ICC 167, Standard No I.C.C 167.
+                    <em>
+                      Determination of the protein content in cereal and cereal products
+                      for food and animal feeding stuffs according to the Dumas
+                      combustion method
+                    </em>
+                     (see
+                    <eref target="http://www.icc.or.at"/>
+                    )
+                  </title>
+                </front>
+              <annotation>
+                NOTE: This is an annotation of ISO 20483:2013-2014
+              </annotation></reference>
+
+            </references>
+            <references anchor="_bibliography">
+              <name>Bibliography</name>
+              <reference anchor="ISBN">
+                <front>
+                  <title>1, Chemicals for analytical laboratory use</title>
+                </front>
+              </reference>
+              <reference anchor="ISSN">
+                <front>
+                  <title>2, Instruments for analytical laboratory use</title>
+                </front>
+              <annotation>
+                NOTE: This is an annotation of document ISSN.
+              </annotation></reference>
+
+
+              <reference anchor="ISO3696">
+                <front>
+                  <title>ISO 3696, Water for analytical laboratory use</title>
+                </front>
+              </reference>
+              <reference anchor="ref10">
+                <front>
+                  <title>
+                    10, Standard No I.C.C 167.
+                    <em>
+                      Determination of the protein content in cereal and cereal products
+                      for food and animal feeding stuffs according to the Dumas
+                      combustion method
+                    </em>
+                     (see
+                    <eref target="http://www.icc.or.at"/>
+                    )
+                  </title>
+                </front>
+              </reference>
+              <xi:include href="https://xml2rfc.tools.ietf.org/10.xml"/>
+              <reference anchor="ref12">
+                <front>
+                  <title>
+                    Citn, CitationWorks. 2019.
+                    <em>How to cite a reference</em>
+                    .
+                  </title>
+                </front>
+              </reference>
+            </references>
+          </back>
+        </rfc>
       OUTPUT
    end
 

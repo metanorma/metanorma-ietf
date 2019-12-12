@@ -112,11 +112,12 @@ module IsoDoc::Ietf
     end
 
     def annotation_cleanup(docxml)
-      docxml.xpath("//reference[following-sibling::annotation]").each do |r|
-        aside = r.next_element.remove
+      docxml.xpath("//reference").each do |r|
+        next unless r&.next_element&.name == "aside"
+        aside = r.next_element
         aside.name = "annotation"
         aside.traverse do |n|
-          n.name == "t" and t.replace(t.children)
+          n.name == "t" and n.replace(n.children)
         end
         r << aside
       end
