@@ -99,6 +99,7 @@ module IsoDoc::Ietf
     def make_back(out, isoxml)
       out.back do |back|
         annex isoxml, back
+        require "byebug"; byebug
         bibliography isoxml, back
       end
     end

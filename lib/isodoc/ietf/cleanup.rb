@@ -6,6 +6,7 @@ module IsoDoc::Ietf
       footnote_cleanup(docxml)
       image_cleanup(docxml)
       sourcecode_cleanup(docxml)
+      annotation_cleanup(docxml)
       docxml
     end
 
@@ -108,6 +109,18 @@ module IsoDoc::Ietf
         end
         s.children = "<![CDATA[#{s.children.to_xml.sub(/^\n+/, "")}]]>"
       end
+    end
+
+    def annotation_cleanup(docxml)
+      docxml.xpath("//reference[following-sibling::annotation]").each do |r|
+        aside = r.next_element.remove
+        aside.name = "annotation"
+        aside.traverse do |n|
+          n.name == "t" and t.replace(t.children)
+        end
+        r << aside
+      end
+      docxml.xpath("//references/aside").each { |r| r.remove }
     end
   end
 end
