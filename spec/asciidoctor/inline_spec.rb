@@ -100,16 +100,29 @@ RSpec.describe Asciidoctor::Ietf do
       Inline Reference with Text to <<reference,text>>
       Footnoted Reference with Text to <<reference,fn: text>>
       Anchored Crossreference to other document <<a.adoc#b>>
+      Inline Reference with Anchor to <<reference#fragment,text>>
+      Inline Reference with Anchor and format and text to <<reference#fragment,of,text>>
+      Inline Reference with Anchor and format and no text to <<reference#fragment,parens,>>
+      Inline Reference with Anchor and no format and no text to <<reference#fragment,parens>>
     INPUT
        #{BLANK_HDR}
         <sections>
          <clause id="reference" inline-header="false" obligation="normative">
          <title>Section</title>
          <p id="_">Inline Reference to <xref target="reference"/>
-       Footnoted Reference to <xref target="reference"/>
+       Footnoted Reference to <xref target="reference">fn</xref>
        Inline Reference with Text to <xref target="reference">text</xref>
        Footnoted Reference with Text to <xref target="reference">text</xref>
-       Anchored Crossreference to other document <xref target="a#b"/></p>
+       Anchored Crossreference to other document <xref target="a" relative="b"/>
+ Inline Reference with Anchor to 
+<xref target='reference' relative='fragment'>text</xref>
+ Inline Reference with Anchor and format and text to 
+<xref target='reference' displayFormat='of' relative='fragment'>text</xref>
+ Inline Reference with Anchor and format and no text to 
+<xref target='reference' displayFormat='parens' relative='fragment'/>
+ Inline Reference with Anchor and no format and no text to 
+<xref target='reference' relative='fragment'>parens</xref>
+</p>
        </clause>
        </sections>
        </ietf-standard>
@@ -137,7 +150,6 @@ RSpec.describe Asciidoctor::Ietf do
 
        </sections><bibliography><references id="_" obligation="informative">
          <title>Normative References</title>
-         <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
          <bibitem id="ISO712">
          <formattedref format="application/x-isodoc+xml">Reference</formattedref>
          <docidentifier>x</docidentifier>

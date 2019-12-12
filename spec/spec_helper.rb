@@ -73,6 +73,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR"
       :docfile: test.adoc
       :nodoc:
       :novalid:
+      :no-isobib:
 
 HDR
 

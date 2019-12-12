@@ -42,13 +42,13 @@ module Asciidoctor
         ret
       end
 
-       def doctype(node)
+      def doctype(node)
         ret = node.attr("doctype")
         ret = "Internet-Draft" if ret == "article"
         ret
       end
 
-       def inline_quoted(node)
+      def inline_quoted(node)
         noko do |xml|
           case node.type
           when :emphasis then xml.em { |s| s << node.text }
@@ -70,6 +70,51 @@ module Asciidoctor
         end.join
       end
 
+      def inline_anchor_xref(node)
+        f, c = xref_text(node)
+        t, rel = xref_rel(node)
+        noko do |xml|
+          xml.xref **attr_code(target: t, type: "inline",
+                               displayFormat: f,
+                               relative: rel ) do |x|
+                                 x << c
+                               end
+        end.join
+      end
+
+      def xref_text(node)
+        matched = /^(of|comma|parens|bare),(.*+)$/.match node.text
+        if matched.nil?
+          f = nil
+          c = node&.text&.sub(/^fn: /, "")
+        else
+          f = matched[1]
+          c = matched[2]
+        end
+        [f, c]
+      end
+
+      def xref_rel(node)
+        matched = /^([^#]+)#(.+)$/.match node.target
+        if matched.nil?
+          t = node.target.sub(/^#/, "")
+          rel = nil
+        else
+          t = matched[1].sub(/\.(xml|adoc)$/, "")
+          rel = matched[2]
+        end
+        [t, rel]
+      end
+
+      def xref_to_eref(x)
+        super
+        x.delete("displayFormat")
+        x.delete("relative")
+      end
+
+      def norm_ref_preface(f)
+      end
+
       def clause_parse(attrs, xml, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
@@ -77,31 +122,27 @@ module Asciidoctor
         super
       end
 
-       def image_parse(node, out, caption)
+      def content_validate(doc)
+        super
+        image_validate(doc)
+      end
 
-       end
+      def image_validate(doc)
+        doc.xpath("//image").each do |i|
+          next if i["mimetype"] == "image/svg+xml"
+          warn "image #{i['src'][0, 40]} is not SVG!"
+        end
+      end
 
-       def content_validate(doc)
-         super
-         image_validate(doc)
-       end
+      def validate(doc)
+        content_validate(doc)
+        schema_validate(formattedstr_strip(doc.dup),
+                        File.join(File.dirname(__FILE__), "ietf.rng"))
+      end
 
-       def image_validate(doc)
-         doc.xpath("//image").each do |i|
-           next if i["mimetype"] == "image/svg+xml"
-           warn "image #{i['src'][0, 40]} is not SVG!"
-         end
-       end
-
-       def validate(doc)
-         content_validate(doc)
-         schema_validate(formattedstr_strip(doc.dup),
-                         File.join(File.dirname(__FILE__), "ietf.rng"))
-       end
-
-       def rfc_converter(node)
-         IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
-       end
+      def rfc_converter(node)
+        IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
+      end
     end
   end
 end

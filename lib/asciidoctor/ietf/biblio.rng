@@ -359,7 +359,9 @@
   </define>
   <define name="phone">
     <element name="phone">
-      <attribute name="type"/>
+      <optional>
+        <attribute name="type"/>
+      </optional>
       <text/>
     </element>
   </define>

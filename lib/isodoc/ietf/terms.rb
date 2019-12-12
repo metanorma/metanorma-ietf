@@ -7,6 +7,7 @@ module IsoDoc::Ietf
 
     def modification_parse(node, out)
       para = node.at(ns("./p"))
+      out << " -- "
       para.children.each { |n| parse(n, out) }
     end
 
@@ -35,6 +36,7 @@ module IsoDoc::Ietf
 
     def termref_parse(node, out)
       out.t do |p|
+        p << "SOURCE: "
         node.children.each { |n| parse(n, p) }
       end
     end

@@ -102,12 +102,6 @@
         <ref name="uri"/>
       </choice>
     </define>
-    <define name="TextElement" combine="choice">
-      <choice>
-        <ref name="iref"/>
-        <ref name="comment"/>
-      </choice>
-    </define>
     <define name="fullname">
       <element name="name">
         <choice>
@@ -150,6 +144,12 @@
       </element>
     </define>
   </include>
+  <define name="TextElement" combine="choice">
+    <choice>
+      <ref name="iref"/>
+      <ref name="comment"/>
+    </choice>
+  </define>
   <define name="fax">
     <element name="fax">
       <text/>

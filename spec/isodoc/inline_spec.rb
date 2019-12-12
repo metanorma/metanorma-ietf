@@ -34,20 +34,30 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
     <p>
-    <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
+    <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" displayFormat="of" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
     </p>
     </foreword></preface>
     <sections>
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-       <i><b>&lt;</b></i> <tt><a href="B">B</a></tt> <a href="#_http_1_1">Requirement <tt>/req/core/http</tt></a>  <a href="#ISO712">Requirement <tt>/req/core/http</tt></a> <a href="#ISO712">ISO 712, Section 3.1</a>
-       </p>
-               </div>
+    <t>
+               <em>
+                 <strong>&lt;</strong>
+               </em>
+               <tt>
+                 <eref target='B'/>
+               </tt>
+               <xref target='#_http_1_1' format='default' displayFormat='of' relative='#abc'>
+                 Requirement
+                 <tt>/req/core/http</tt>
+               </xref>
+               <relref target='ISO712'>
+                 Requirement
+                 <tt>/req/core/http</tt>
+               </relref>
+               <relref target='ISO712' section='3.1'/>
+             </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -158,13 +168,12 @@ $$ Latex? $$
     OUTPUT
   end
 
-  it "processes eref types" do
+  it "processes eref attributes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
     <p>
-    <eref type="footnote" bibitemid="ISO712" citeas="ISO 712">A</stem>
-    <eref type="inline" bibitemid="ISO712" citeas="ISO 712">A</stem>
+    <eref type="inline" bibitemid="ISO712" citeas="ISO 712" relative="#abc" displayFormat="of">A</stem>
     </p>
     </foreword></preface>
     <bibliography><references id="_normative_references" obligation="informative"><title>Normative References</title>
@@ -183,19 +192,9 @@ $$ Latex? $$
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-           <sup><a href="#ISO712">A</a></sup>
-           <a href="#ISO712">A</a>
-           </p>
-               </div>
-               <p class="zzSTDTitle1"/>
-               <div>
-                 <h1>1.&#160; Normative references</h1>
-                 <p id="ISO712" class="NormRef">ISO 712, <i> Cereals and cereal products</i></p>
-               </div>
+    <t>
+  <relref target='ISO712'>A</relref>
+</t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -234,28 +233,19 @@ $$ Latex? $$
     </iso-standard>
     INPUT
     #{XML_HDR}
-               <br/>
-               <div>
-                 <h1 class="ForewordTitle">Foreword</h1>
-                 <p>
-           <a href="#ISO712">ISO 712</a>
-           <a href="#ISO712">ISO 712</a>
-           <a href="#ISO712">ISO 712, Table 1</a>
-           <a href="#ISO712">ISO 712, Table 1&#8211;1</a>
-           <a href="#ISO712">ISO 712, Clause 1, Table 1</a>
-           <a href="#ISO712">ISO 712, Clause 1</a>
-           <a href="#ISO712">ISO 712, Clause 1.5</a>
-           <a href="#ISO712">A</a>
-           <a href="#ISO712">ISO 712, </a>
-           <a href="#ISO712">ISO 712, Prelude 7</a>
-           <a href="#ISO712">A</a>
-           </p>
-               </div>
-               <p class="zzSTDTitle1"/>
-               <div>
-                 <h1>1.&#160; Normative references</h1>
-                 <p id="ISO712" class="NormRef">ISO 712, <i> Cereals and cereal products</i></p>
-               </div>
+    <t>
+  <relref target='ISO712'/>
+  <relref target='ISO712'/>
+  <relref target='ISO712'/>
+  <relref target='ISO712'/>
+  <relref target='ISO712' section='1'/>
+  <relref target='ISO712' section='1'/>
+  <relref target='ISO712' section='1.5'/>
+  <relref target='ISO712'>A</relref>
+  <relref target='ISO712'/>
+  <relref target='ISO712'/>
+  <relref target='ISO712'>A</relref>
+</t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end

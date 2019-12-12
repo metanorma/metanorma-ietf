@@ -72,7 +72,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <li>A</li>
                </ul>
                <t>
-                 <a href='#ISO7301'>ISO 7301:2011, Clause 3.1</a>
+                 SOURCE: <relref target='ISO7301' section='3.1'/> --
                   The term "cargo rice" is shown as deprecated, and Note 1 to entry is
                  not included here 
                </t>
@@ -105,7 +105,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  </t>
                </aside>
                <t>
-                 <a href='#ISO7301'>ISO 7301:2011, Clause 3.1</a>
+                 SOURCE: <relref target='ISO7301' section='3.1'/>
                </t>
              </section>
            </section>

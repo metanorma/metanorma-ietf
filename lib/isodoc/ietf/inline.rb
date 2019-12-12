@@ -102,5 +102,31 @@ module IsoDoc::Ietf
         end
       end
     end
+
+     def xref_parse(node, out)
+       target = /#/.match(node["target"]) ? node["target"].sub(/#/, ".html#") :
+         "##{node["target"]}"
+         out.xref **attr_code(target: target, format: "default",
+                              displayFormat: node["displayFormat"],
+                              relative: node["relative"]) do |l|
+                                l << get_linkend(node)
+                              end
+     end
+
+     def eref_parse(node, out)
+       linkend = node.children.select { |c| c.name != "locality" }
+       section = eref_clause(node.xpath(ns("./locality")), nil)
+       out.relref **attr_code(target: node["bibitemid"], section: section) do |l|
+         linkend.each { |n| parse(n, l) }
+       end
+     end
+
+     def eref_clause(refs, target)
+       refs.each do |l|
+         next unless %w(clause section).include? l["type"]
+         return l&.at(ns("./referenceFrom"))&.text
+       end
+       return nil
+     end
   end
 end
