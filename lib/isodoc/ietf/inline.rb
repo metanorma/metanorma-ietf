@@ -128,5 +128,10 @@ module IsoDoc::Ietf
        end
        return nil
      end
+
+     def index_parse(node, out)
+       out.iref nil, **attr_code(item: node["primary"],
+                                 subitem: node["secondary"])
+     end
   end
 end
