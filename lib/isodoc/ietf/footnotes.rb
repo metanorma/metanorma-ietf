@@ -27,7 +27,7 @@ module IsoDoc::Ietf
             node.elements.drop(1).each { |n| parse(n, xml) } or
             node.children.each { |n| parse(n, xml) }
         end
-      end.join("\n")
+      end.join
     end
 
     def table_footnote_parse(node, out)
@@ -58,7 +58,7 @@ module IsoDoc::Ietf
         first.name == "p" and
           node.elements.drop(1).each { |n| parse(n, xml) } or
           node.children.each { |n| parse(n, xml) }
-      end.join("\n")
+      end.join
     end
 
     def get_table_ancestor_id(node)

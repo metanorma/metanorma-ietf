@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com//metanorma
+  revision: 4f1f20a9fe6112516255f1253155c2624ab1b75f
+  branch: test/20191214
+  specs:
+    metanorma (0.3.18)
+      asciidoctor
+      htmlentities
+
 PATH
   remote: .
   specs:
@@ -79,9 +88,6 @@ GEM
     mathml2asciimath (0.0.7)
       htmlentities (~> 4.3.4)
       nokogiri (>= 1.10.4)
-    metanorma (0.3.18)
-      asciidoctor
-      htmlentities
     metanorma-standoc (1.3.9)
       asciidoctor (~> 2.0.0)
       concurrent-ruby
@@ -219,7 +225,7 @@ DEPENDENCIES
   equivalent-xml (~> 0.6)
   guard (~> 2.14)
   guard-rspec (~> 4.7)
-  metanorma (~> 0.3.0)
+  metanorma!
   metanorma-ietf!
   rake (~> 12.0)
   rspec (~> 3.6)

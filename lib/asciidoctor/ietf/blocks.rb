@@ -38,7 +38,7 @@ module Asciidoctor
             n.title.nil? or c.name { |name| name << n.title }
             wrap_in_para(n, c)
           end
-        end.join("\n")
+        end.join
       end
 
       def literal(node)
