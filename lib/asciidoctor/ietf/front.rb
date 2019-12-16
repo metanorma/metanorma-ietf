@@ -71,7 +71,6 @@ module Asciidoctor
         return unless node.attr("workgroup")
         xml.editorialgroup do |a|
           committee_component("workgroup", node, a)
-          # TODO validate against cache
         end
       end
 

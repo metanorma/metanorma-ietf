@@ -3,6 +3,7 @@ require "asciidoctor/standoc/converter"
 require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
+require_relative "./validate"
 
 module Asciidoctor
   module Ietf
@@ -18,6 +19,7 @@ module Asciidoctor
       def makexml(node)
         result = ["<?xml version='1.0' encoding='UTF-8'?>\n<ietf-standard>"]
         @draft = node.attributes.has_key?("draft")
+        @workgroups = cache_workgroup(node)
         result << noko { |ixml| front node, ixml }
         result << noko { |ixml| middle node, ixml }
         result << "</ietf-standard>"
@@ -120,24 +122,6 @@ module Asciidoctor
         attrs[:removeInRFC] = node.attr("removeInRFC")
         attrs[:toc] = node.attr("toc")
         super
-      end
-
-      def content_validate(doc)
-        super
-        image_validate(doc)
-      end
-
-      def image_validate(doc)
-        doc.xpath("//image").each do |i|
-          next if i["mimetype"] == "image/svg+xml"
-          warn "image #{i['src'][0, 40]} is not SVG!"
-        end
-      end
-
-      def validate(doc)
-        content_validate(doc)
-        schema_validate(formattedstr_strip(doc.dup),
-                        File.join(File.dirname(__FILE__), "ietf.rng"))
       end
 
       def rfc_converter(node)
