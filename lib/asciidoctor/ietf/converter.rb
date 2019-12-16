@@ -20,6 +20,7 @@ module Asciidoctor
         result = ["<?xml version='1.0' encoding='UTF-8'?>\n<ietf-standard>"]
         @draft = node.attributes.has_key?("draft")
         @workgroups = cache_workgroup(node)
+        @bcp_bold = !node.attr?("no-rfc-bold-bcp14")
         result << noko { |ixml| front node, ixml }
         result << noko { |ixml| middle node, ixml }
         result << "</ietf-standard>"
@@ -74,10 +75,11 @@ module Asciidoctor
 
       def inline_anchor_xref(node)
         f, c = xref_text(node)
+        f1, c = eref_text(node) if f.nil?
         t, rel = xref_rel(node)
         noko do |xml|
           xml.xref **attr_code(target: t, type: "inline",
-                               displayFormat: f,
+                               displayFormat: f, format: f1,
                                relative: rel ) do |x|
                                  x << c
                                end
@@ -86,6 +88,18 @@ module Asciidoctor
 
       def xref_text(node)
         matched = /^(of|comma|parens|bare),(.*+)$/.match node.text
+        if matched.nil?
+          f = nil
+          c = node&.text&.sub(/^fn: /, "")
+        else
+          f = matched[1]
+          c = matched[2]
+        end
+        [f, c]
+      end
+
+      def eref_text(node)
+        matched = /^format=(counter|title|none|default):(.*+)$/.match node.text
         if matched.nil?
           f = nil
           c = node&.text&.sub(/^fn: /, "")
@@ -108,10 +122,35 @@ module Asciidoctor
         [t, rel]
       end
 
+      def cleanup(xmldoc)
+        bcp14_cleanup(xmldoc)
+        super
+      end
+
+      BCP_KEYWORDS = [
+        "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", "OPTIONAL"
+      ].freeze
+
+      def bcp14_cleanup(xmldoc)
+        return unless @bcp_bold
+        xmldoc.xpath("//strong").each do |s|
+          next unless BCP_KEYWORDS.include?(s.text)
+          s.name = "bcp14"
+        end
+      end
+
       def xref_to_eref(x)
         super
-        x.delete("displayFormat")
+        x.delete("format")
+      end
+
+      def xref_cleanup(xmldoc)
+        super
+        xmldoc.xpath("//xref").each do |x|
+          x.delete("displayFormat")
         x.delete("relative")
+        end
       end
 
       def norm_ref_preface(f)

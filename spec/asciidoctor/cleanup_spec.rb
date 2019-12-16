@@ -133,7 +133,9 @@ RSpec.describe Asciidoctor::Ietf do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       <<iso216#123,of,text>>
+      <<biblio,format=counter:text1>>
 
+      [[biblio]]
       [bibliography]
       == Normative References
       * [[[iso216,ISO 216:2001]]], _Reference_
@@ -142,10 +144,11 @@ RSpec.describe Asciidoctor::Ietf do
         <preface><foreword obligation="informative">
         <title>Foreword</title>
         <p id="_">
-        <eref type="inline" bibitemid="iso216" citeas="ISO 216:2001">text</eref>
+        <eref type='inline' displayFormat='of' relative='123' bibitemid='iso216' citeas='ISO 216:2001'>text</eref>
+<xref target='biblio' format='counter'>text1</xref>
       </p>
       </foreword></preface><sections>
-      </sections><bibliography><references id="_" obligation="informative">
+      </sections><bibliography><references id="biblio" obligation="informative">
         <title>Normative References</title>
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
@@ -407,5 +410,53 @@ OUTPUT
        </ietf-standard>
 OUTPUT
         end
+
+  it "converts boldface BCP to bcp markup if not no-rfc-bold-bcp14" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    = Document title
+    Author
+    :docfile: test.adoc
+    :nodoc:
+    :novalid:
+    :no-isobib:
+    
+    I *MUST NOT* do this.
+    INPUT
+        #{BLANK_HDR}
+      <sections>
+    <p id='_'>
+      I
+      <bcp14>MUST NOT</bcp14>
+       do this.
+    </p>
+  </sections>
+</ietf-standard>
+    OUTPUT
+    end
+
+    it "does not convert boldface BCP to bcp markup if no-rfc-bold-bcp14" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    = Document title
+    Author
+    :docfile: test.adoc
+    :nodoc:
+    :novalid:
+    :no-isobib:
+    :no-rfc-bold-bcp14:
+
+    I *MUST NOT* do this.
+    INPUT
+    #{BLANK_HDR}
+      <sections>
+    <p id='_'>
+      I
+      <strong>MUST NOT</strong>
+       do this.
+    </p>
+  </sections>
+</ietf-standard>
+    OUTPUT
+    end
+
 
 end

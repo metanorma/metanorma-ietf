@@ -98,33 +98,56 @@ RSpec.describe Asciidoctor::Ietf do
       Inline Reference to <<reference>>
       Footnoted Reference to <<reference,fn>>
       Inline Reference with Text to <<reference,text>>
+      Inline Reference with Format to <<reference,format=counter:xyz>>
       Footnoted Reference with Text to <<reference,fn: text>>
-      Anchored Crossreference to other document <<a.adoc#b>>
-      Inline Reference with Anchor to <<reference#fragment,text>>
-      Inline Reference with Anchor and format and text to <<reference#fragment,of,text>>
-      Inline Reference with Anchor and format and no text to <<reference#fragment,parens,>>
-      Inline Reference with Anchor and no format and no text to <<reference#fragment,parens>>
+      Anchored Crossreference to other document <<doc.adoc#b>>
+      Inline Reference with Anchor to <<doc#fragment,text>>
+      Inline Reference with Anchor and format and text to <<doc#fragment,of,text>>
+      Inline Reference with Anchor and format and no text to <<doc#fragment,parens,>>
+      Inline Reference with Anchor and no format and no text to <<doc#fragment,parens>>
+
+      [[reference]]
+      [bibliography]
+      == Normative References
+      * [[[doc,x]]] Reference
     INPUT
        #{BLANK_HDR}
-        <sections>
-         <clause id="reference" inline-header="false" obligation="normative">
-         <title>Section</title>
-         <p id="_">Inline Reference to <xref target="reference"/>
-       Footnoted Reference to <xref target="reference">fn</xref>
-       Inline Reference with Text to <xref target="reference">text</xref>
-       Footnoted Reference with Text to <xref target="reference">text</xref>
-       Anchored Crossreference to other document <xref target="a" relative="b"/>
- Inline Reference with Anchor to 
-<xref target='reference' relative='fragment'>text</xref>
- Inline Reference with Anchor and format and text to 
-<xref target='reference' displayFormat='of' relative='fragment'>text</xref>
- Inline Reference with Anchor and format and no text to 
-<xref target='reference' displayFormat='parens' relative='fragment'/>
- Inline Reference with Anchor and no format and no text to 
-<xref target='reference' relative='fragment'>parens</xref>
-</p>
-       </clause>
-       </sections>
+                <sections>
+           <clause id='reference' inline-header='false' obligation='normative'>
+             <title>Section</title>
+             <p id='_'>
+               Inline Reference to
+               <xref target='reference'/>
+               Footnoted Reference to
+               <xref target='reference'>fn</xref>
+               Inline Reference with Text to
+               <xref target='reference'>text</xref>
+               Inline Reference with Format to
+               <xref target='reference' format='counter'>xyz</xref>
+               Footnoted Reference with Text to
+               <xref target='reference'>text</xref>
+               Anchored Crossreference to other document
+               <eref type='inline' relative='b' bibitemid='doc' citeas='x'/>
+               Inline Reference with Anchor to
+               <eref type='inline' relative='fragment' bibitemid='doc' citeas='x'>text</eref>
+               Inline Reference with Anchor and format and text to
+               <eref type='inline' displayFormat='of' relative='fragment' bibitemid='doc' citeas='x'>text</eref>
+               Inline Reference with Anchor and format and no text to
+               <eref type='inline' displayFormat='parens' relative='fragment' bibitemid='doc' citeas='x'/>
+               Inline Reference with Anchor and no format and no text to
+               <eref type='inline' relative='fragment' bibitemid='doc' citeas='x'>parens</eref>
+             </p>
+           </clause>
+         </sections>
+         <bibliography>
+           <references id='reference' obligation='informative'>
+             <title>Normative References</title>
+             <bibitem id='doc'>
+               <formattedref format='application/x-isodoc+xml'>Reference</formattedref>
+               <docidentifier>x</docidentifier>
+             </bibitem>
+           </references>
+         </bibliography>
        </ietf-standard>
       OUTPUT
     end
