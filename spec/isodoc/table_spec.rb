@@ -6,7 +6,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface>
     <foreword>
-      <table id="tableD-1" alt="tool tip" summary="long desc">
+      <table id="tableD-1" alt="tool tip" summary="long desc" align="right">
   <name>Repeatability and reproducibility of <em>husked</em> rice yield</name>
   <thead>
     <tr>
@@ -64,7 +64,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 </iso-standard>
     INPUT
     #{XML_HDR}
-             <table anchor='tableD-1'>
+             <table anchor='tableD-1' align="right">
                <name>
                  Repeatability and reproducibility of 
                  <em>husked</em>

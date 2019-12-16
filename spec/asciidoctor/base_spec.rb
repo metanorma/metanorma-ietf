@@ -120,6 +120,7 @@ RSpec.describe Asciidoctor::Ietf do
       :fax: 123b
       :phone_2: 123c
       :fax_2: 123d
+      :show-on-front-page: false
     INPUT
     <?xml version='1.0' encoding='UTF-8'?>
        <ietf-standard xmlns='https://open.ribose.com/standards/ietf'>
@@ -352,6 +353,7 @@ RSpec.describe Asciidoctor::Ietf do
              <symRefs>false</symRefs>
              <tocInclude>false</tocInclude>
              <tocDepth>9</tocDepth>
+             <showOnFrontPage>false</showOnFrontPage>
            </ext>
          </bibdata>
          <sections/>

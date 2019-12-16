@@ -86,7 +86,7 @@ VALIDATING_BLANK_HDR = <<~"HDR"
 HDR
 
 BLANK_HDR = <<~"HDR"
-       <?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
        <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
        <bibdata type="standard">
         <title language="en" type="main" format="text/plain">Document title</title>

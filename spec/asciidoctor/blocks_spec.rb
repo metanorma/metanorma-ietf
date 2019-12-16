@@ -788,4 +788,36 @@ end</sourcecode></verification>
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(output)
   end
 
+  it "processes table attribute" do
+      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR}
+
+      [align=right]
+      |===
+      |A |B
+
+      |C |D
+      |===
+      INPUT
+      #{BLANK_HDR}
+       <sections>
+           <table id='_' align='right'>
+             <thead>
+               <tr>
+                 <th align='left'>A</th>
+                 <th align='left'>B</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td align='left'>C</td>
+                 <td align='left'>D</td>
+               </tr>
+             </tbody>
+           </table>
+         </sections>
+       </ietf-standard>
+      OUTPUT
+    end
+
 end

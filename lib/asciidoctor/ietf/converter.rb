@@ -86,6 +86,10 @@ module Asciidoctor
         end.join
       end
 
+      def table_attrs(node)
+        super.merge(align: node.attr("align"))
+      end
+
       def xref_text(node)
         matched = /^(of|comma|parens|bare),(.*+)$/.match node.text
         if matched.nil?
@@ -127,10 +131,8 @@ module Asciidoctor
         super
       end
 
-      BCP_KEYWORDS = [
-        "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", "OPTIONAL"
-      ].freeze
+      BCP_KEYWORDS = ["MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+                      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", "OPTIONAL"].freeze
 
       def bcp14_cleanup(xmldoc)
         return unless @bcp_bold
@@ -149,7 +151,7 @@ module Asciidoctor
         super
         xmldoc.xpath("//xref").each do |x|
           x.delete("displayFormat")
-        x.delete("relative")
+          x.delete("relative")
         end
       end
 

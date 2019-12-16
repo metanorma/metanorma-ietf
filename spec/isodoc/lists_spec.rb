@@ -109,7 +109,7 @@ OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
-    <dl id="_732d3f57-4f88-40bf-9ae9-633891edc395" hanging="true" spacing="compact">
+    <dl id="_732d3f57-4f88-40bf-9ae9-633891edc395" newline="true" spacing="compact" indent="5">
   <dt>
     W
   </dt>
@@ -124,7 +124,7 @@ OUTPUT
 </iso-standard>
     INPUT
     #{XML_HDR}
-               <dl anchor='_732d3f57-4f88-40bf-9ae9-633891edc395' hanging='true' spacing='compact'>
+               <dl anchor='_732d3f57-4f88-40bf-9ae9-633891edc395' newline='true' spacing='compact' indent='5'>
                <dt>
                  <p> W </p>
                </dt>

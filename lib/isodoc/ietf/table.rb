@@ -1,7 +1,7 @@
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def make_table_attr(node)
-      attr_code(anchor: node["id"])
+      attr_code(anchor: node["id"], align: node["align"])
     end
 
     def table_parse(node, out)

@@ -60,9 +60,9 @@ module IsoDoc::Ietf
     end
 
     def author(isoxml, front)
-      isoxml.xpath(ns("//bibdata/contributor[role/type = 'editor' or "\
-                      "role/type = 'author']")).each do |c|
-        role = c.at(ns("./role/type")).text == "editor" ? "editor" : nil
+      isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = 'author' "\
+                      "or xmlns:role/@type = 'editor']")).each do |c|
+        role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
         c.at("./organization") and org_author(c, role, front) or
           person_author(c, role, front)
       end
@@ -82,9 +82,9 @@ module IsoDoc::Ietf
     end
 
     def person_author(c, role, front)
-      front.author **person_author_attrs(c.at("./person/name")) do |a|
+      front.author **person_author_attrs(c.at("./person/name"), role) do |a|
         org = c.at(ns("./person/affiliation/organization")) and
-          organization(org, a)
+          organization(org, a, c.document.at(ns("//showOnFrontPage")))
         address(c.xpath(ns(".//address")),
                 c.at(ns(".//phone[not(@type = 'fax')]")),
                 c.at(ns(".//phone[@type = 'fax']")),
@@ -94,18 +94,20 @@ module IsoDoc::Ietf
 
     def org_author(c, role, front)
       front.author **attr_code(role: role) do |a|
-        organization(c.at(ns("./organization")), a)
+        organization(c.at(ns("./organization")), a, c.document.at(ns("//showOnFrontPage")))
         address(c.at(ns(".//address")),
                 c.at(ns(".//phone[not(@type = 'fax')]")),
                 c.at(ns(".//phone[@type = 'fax']")),
-                c.xpath(ns(".//email")), c.xpath(ns(".//uri")), a)
+                c.at(ns(".//email")), c.at(ns(".//uri")), a)
       end
     end
 
-    def organization(org, out)
+    def organization(org, out, show)
       name = org.at(ns("./name"))&.text
       out.organization name, **attr_code(
+        showOnFrontPage: show&.text,
         ascii: name&.transliterate,
+        asciiAbbrev: org&.at(ns("./abbreviation"))&.transliterate,
         abbrev: org.at(ns("./abbreviation")))
     end
 
@@ -163,9 +165,9 @@ module IsoDoc::Ietf
           year: matched[:year] }
       else
         begin
-        d = Date.iso8601 date
-        { day: d.day.to_s.gsub(/^0/, ""), year: d.year,
-          month: Date::MONTHNAMES[d.month] }
+          d = Date.iso8601 date
+          { day: d.day.to_s.gsub(/^0/, ""), year: d.year,
+            month: Date::MONTHNAMES[d.month] }
         rescue
           nil
         end

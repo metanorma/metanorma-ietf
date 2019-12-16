@@ -239,7 +239,7 @@ expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))
          <sections/>
        </ietf-standard>
 INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='BCP' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
          <link href='INC1' rel='item'/>
          <link href='INCL2' rel='item'/>
          <link href='DESC1' rel='describedby'/>
@@ -252,6 +252,22 @@ INPUT
            <title abbrev='Abbreviated Title' ascii='Ascii Title'>Main Title?~@~I?~@~T?~@~ITitle</title>
            <seriesInfo value='1000' asciiValue='1000' status='10' stream='IRTF' name='RFC' asciiName='RFC'/>
            <seriesInfo name='' status='BCP'/>
+            <author>
+            <organization ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
+<postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
+<phone>123</phone>
+<facsimile>123b</facsimile>
+<email/>
+<uri>http://slate.example.com</uri>
+ </author>
+ <author>
+  <organization ascii='Rockhead and Quarry Cave Construction Company'>Rockhead and Quarry Cave Construction Company</organization>
+  <postalLine ascii='6A Rubble Way, Bedrock'>6A Rubble Way, Bedrock</postalLine>
+  <phone>123c</phone>
+  <facsimile>123d</facsimile>
+  <email>barney@rockhead.example.com</email>
+  <uri/>
+</author>
            <date day='1' year='1000' month='January'/>
            <area>A</area>
            <area>B</area>
@@ -280,6 +296,25 @@ OUTPUT
              <organization>
                <name>IEC</name>
              </organization>
+           </contributor>
+           <contributor>
+             <role type='author'/>
+             <person>
+               <name>
+                 <completename>Fred Flintstone</completename>
+               </name>
+               <affiliation>
+                 <organization>
+                   <name>Slate Rock and Gravel Company</name>
+                   <address>
+                     <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
+                   </address>
+                 </organization>
+               </affiliation>
+               <phone>123</phone>
+<phone type='fax'>123b</phone>
+               <uri>http://slate.example.com</uri>
+             </person>
            </contributor>
            <contributor>
              <role type='publisher'/>
@@ -341,6 +376,7 @@ OUTPUT
            </series>
            <ext>
   <doctype>Internet-Draft</doctype>
+  <showOnFrontPage>true</showOnFrontPage>
 </ext>
          </bibdata>
          <preface>
@@ -360,11 +396,19 @@ OUTPUT
          </sections>
        </ietf-standard>
 INPUT
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' submissionType='IETF' xml:lang='el' version='3' prepTime='2000-01-01T05:00:00Z'>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='BCP' submissionType='IETF' xml:lang='el' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front>
            <title>Document title</title>
            <seriesInfo value='1000' asciiValue='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>
            <seriesInfo name='' status='BCP'/>
+           <author>
+  <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
+  <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
+  <phone>123</phone>
+  <facsimile>123b</facsimile>
+  <email/>
+  <uri>http://slate.example.com</uri>
+</author>
            <abstract anchor='_'>
              <t anchor='_'>This is the abstract of the document</t>
              <t anchor='_'>This is the second paragraph of the abstract of the document.</t>

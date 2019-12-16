@@ -87,6 +87,7 @@ module Asciidoctor
         x = node.attr("sym-refs") and xml.symRefs x
         x = node.attr("toc-include") and xml.tocInclude x
         x = node.attr("toc-depth") and xml.tocDepth x
+        x = node.attr("show-on-front-page") and xml.showOnFrontPage x
       end
     end
   end

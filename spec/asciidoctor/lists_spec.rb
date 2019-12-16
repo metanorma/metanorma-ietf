@@ -26,7 +26,7 @@ RSpec.describe Asciidoctor::Ietf do
       . Fifth
       . Sixth
 
-      [hanging=false,spacing=compact]
+      [newline=false,spacing=compact,indent=5]
       Notes1::
       Notes::  Note 1.
       +
@@ -70,7 +70,7 @@ RSpec.describe Asciidoctor::Ietf do
                <p id='_'>Sixth</p>
              </li>
            </ol>
-           <dl id='_' hanging='false' spacing='compact'>
+           <dl id='_' newline='false' spacing='compact' indent='5'>
              <dt>Notes1</dt>
              <dd/>
              <dt>Notes</dt>

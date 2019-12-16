@@ -23,7 +23,8 @@ module Asciidoctor
 
       def dl_attr(node)
         attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
-                  hanging: node.attr("hanging"),
+                  newline: node.attr("newline"),
+                  indent: node.attr("indent"),
                   spacing: node.attr("spacing"))
       end
 

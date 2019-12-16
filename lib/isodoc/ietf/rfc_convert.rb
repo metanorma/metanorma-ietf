@@ -46,6 +46,9 @@ module IsoDoc::Ietf
       upd = xpath_comma(docxml.xpath(ns(
         "//bibdata/relation[@type = 'updates']/bibitem/docidentifier")))
       {
+        docName:        @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
+        number:         @meta.get[:doctype] == "Rfc" ? @meta.get[:docnumber] : nil,
+        category:       docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text,
         ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
         obsoletes:      obs,
         updates:        upd,

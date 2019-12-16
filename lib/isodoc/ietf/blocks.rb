@@ -56,7 +56,8 @@ module IsoDoc::Ietf
 
     def dl_attr(node)
       attr_code(anchor: node["id"],
-                hanging: node["hanging"],
+                newline: node["newline"],
+                indent: node["indent"],
                 spacing: node["spacing"])
     end
 
