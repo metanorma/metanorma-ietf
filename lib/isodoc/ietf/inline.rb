@@ -33,7 +33,7 @@ module IsoDoc::Ietf
     end
 
     def bcp14_parse(node, out)
-      out.bpc14 do |e|
+      out.bcp14 do |e|
         node.children.each { |n| parse(n, e) }
       end
     end
@@ -115,7 +115,7 @@ module IsoDoc::Ietf
 
      def eref_parse(node, out)
        linkend = node.children.select { |c| c.name != "locality" }
-       section = eref_clause(node.xpath(ns("./locality")), nil)
+       section = eref_clause(node.xpath(ns("./locality")), nil) || ""
        out.relref **attr_code(target: node["bibitemid"], section: section) do |l|
          linkend.each { |n| parse(n, l) }
        end

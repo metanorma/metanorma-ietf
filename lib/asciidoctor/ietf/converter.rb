@@ -142,6 +142,13 @@ module Asciidoctor
         end
       end
 
+      def smartquotes_cleanup(xmldoc)
+        xmldoc.traverse do |n|
+          next unless n.text?
+          n.replace(n.text.gsub(/\u2019/, "'").gsub(/\u201c|\u201d/, '"'))
+        end
+      end
+
       def xref_to_eref(x)
         super
         x.delete("format")

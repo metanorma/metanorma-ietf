@@ -247,7 +247,7 @@ B</pre>
     expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to (<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
-    <sourcecode lang="ruby" id="samplecode">
+    <sourcecode lang="ruby" id="samplecode" markers="true">
     <name>Ruby <em>code</em></name>
   puts x;
   puts y
@@ -261,7 +261,7 @@ B</pre>
                  Ruby
                  <em>code</em>
                </name>
-               <sourcecode type='ruby'>
+               <sourcecode type='ruby' markers='true'>
          puts x;
          puts y
        </sourcecode>

@@ -56,6 +56,10 @@ module Asciidoctor
       def image_attributes(node)
         super.merge(attr_code(align: node.attr("align")))
       end
+
+       def listing_attrs(node)
+         super.merge(attr_code(markers: node.attr("markers")))
+       end
     end
   end
 end

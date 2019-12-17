@@ -16,6 +16,7 @@ module IsoDoc::Ietf
       end
     end
 
+    # NOTE ignoring "bare" attribute, which is tantamount to "empty"
     def ul_attrs(node)
       { anchor: node["id"],
         empty: node["nobullet"],
@@ -61,6 +62,15 @@ module IsoDoc::Ietf
                 spacing: node["spacing"])
     end
 
+     def dt_parse(dt, term)
+      if dt.elements.empty?
+          term << dt.text
+      else
+        dt.children.each { |n| parse(n, term) }
+      end
+    end
+
+
     def note_label(node)
       l10n("#{super}: ")
     end
@@ -104,7 +114,8 @@ module IsoDoc::Ietf
           node.children.each { |x| parse(x, c) }
         end
         text = div.parent.at("./container").remove.children.to_s
-        div.sourcecode **attr_code(type: node["lang"], name: node["filename"]) do |s|
+        div.sourcecode **attr_code(type: node["lang"], name: node["filename"],
+                                  markers: node["markers"]) do |s|
           node.children.each do |x|
             parse(x, s)
           end

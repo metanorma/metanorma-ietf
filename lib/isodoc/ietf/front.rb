@@ -45,23 +45,23 @@ module IsoDoc::Ietf
 
     def rfc_seriesinfo(isoxml, front)
       front.seriesInfo **seriesinfo_attr(isoxml).merge({name: "RFC",
-                                                asciiName: "RFC"})
+                                                        asciiName: "RFC"})
       i = isoxml&.at(ns("//bibdata/series[@type = 'intended']")) and
         front.seriesInfo **attr_code(name: "", 
                                      status: i&.at(ns("./title"))&.text,
-                                     value: i&.at(ns("./number"))&.text)
+                                     value: i&.at(ns("./number"))&.text || "")
     end
 
     def id_seriesinfo(isoxml, front)
       front.seriesInfo **seriesinfo_attr(isoxml).merge({name: "Internet-Draft",
-                                                asciiName: "Internet-Draft"})
+                                                        asciiName: "Internet-Draft"})
       i = isoxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text and
-        front.seriesInfo **attr_code(name: "", status: i)
+        front.seriesInfo **attr_code(name: "", value: "", status: i)
     end
 
     def author(isoxml, front)
       isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = 'author' "\
-                      "or xmlns:role/@type = 'editor']")).each do |c|
+                    "or xmlns:role/@type = 'editor']")).each do |c|
         role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
         c.at("./organization") and org_author(c, role, front) or
           person_author(c, role, front)
@@ -70,19 +70,21 @@ module IsoDoc::Ietf
 
     def person_author_attrs(c, role)
       return {} if c.nil?
-      full = c&.at("./person/name/completeName")&.text
+      full = c&.at(ns("./completeName"))&.text
       ret = attr_code(role: role, fullname: full,
-                      initials: c&.at("./person/name/initial")&.text,
-                      surname: c&.at("./person/name/surname")&.text)
+                      initials: c&.at(ns("./initial"))&.text ||
+                      c&.xpath(ns("./forename")).map { |n| n.text[0] }.join("."),
+                      surname: c&.at(ns("./surname"))&.text)
       full and ret.merge!(attr_code(
-        asciiFullname: c&.at("./person/name/completeName")&.text&.transliterate,
-        asciiInitials: c&.at("./person/name/initial")&.text&.transliterate,
-        asciiSurname: c&.at("./person/name/surname")&.text&.transliterate))
+        asciiFullname: full&.transliterate,
+        asciiInitials: c&.at(ns("./initial"))&.text&.transliterate ||
+        c&.xpath(ns("./forename")).map { |n| n.text[0] }.join(".").transliterate,
+        asciiSurname: c&.at(ns("./surname"))&.text&.transliterate))
       ret
     end
 
     def person_author(c, role, front)
-      front.author **person_author_attrs(c.at("./person/name"), role) do |a|
+      front.author **person_author_attrs(c.at(ns("./person/name")), role) do |a|
         org = c.at(ns("./person/affiliation/organization")) and
           organization(org, a, c.document.at(ns("//showOnFrontPage")))
         address(c.xpath(ns(".//address")),
@@ -112,11 +114,14 @@ module IsoDoc::Ietf
     end
 
     def address(addr, phone, fax, email, uri, out)
-      addr and postal(addr, out)
-      phone and out.phone phone.text
-      fax and out.facsimile fax.text
-      email and email(email, out)
-      uri and out.uri uri.text
+      return unless addr || phone || fax || email || uri
+      out.address do |a|
+        addr and postal(addr, a)
+        phone and a.phone phone.text
+        fax and a.facsimile fax.text
+        email and email(email, a)
+        uri and a.uri uri.text
+      end
     end
 
     def postal(addr, out)
@@ -125,7 +130,9 @@ module IsoDoc::Ietf
           out.postalLine l, **attr_code(ascii: l.transliterate)
         end
       else
-        postal_detailed(addr, out)
+        out.postal do |p|
+          postal_detailed(addr, p)
+        end
       end
     end
 
@@ -135,11 +142,11 @@ module IsoDoc::Ietf
       end
       s = addr.at(ns("./city")) and
         out.city s.text, **attr_code(ascii: s.text.transliterate)
-      s = addr.xpath(ns("./state")) and
+      s = addr.at(ns("./state")) and
         out.region s.text, **attr_code(ascii: s.text.transliterate)
-      s = addr.xpath(ns("./country")) and
+      s = addr.at(ns("./country")) and
         out.country s.text, **attr_code(ascii: s.text.transliterate)
-      s = addr.xpath(ns("./postcode")) and
+      s = addr.at(ns("./postcode")) and
         out.code s.text, **attr_code(ascii: s.text.transliterate)
     end
 

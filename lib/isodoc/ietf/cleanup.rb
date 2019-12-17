@@ -7,8 +7,12 @@ module IsoDoc::Ietf
       image_cleanup(docxml)
       sourcecode_cleanup(docxml)
       annotation_cleanup(docxml)
+      deflist_cleanup(docxml)
+      aside_cleanup(docxml)
       docxml
     end
+
+    # TODO: insert <u>
 
     def table_footnote_cleanup(docxml)
       docxml.xpath("//table[descendant::fn]").each do |t|
@@ -37,8 +41,8 @@ module IsoDoc::Ietf
 
     def figure_postamble(docxml)
       docxml.xpath("//figure").each do |f|
+        a = f&.at("./artwork | ./sourcecode") || next
         name = f&.at("./name")&.remove
-        a = f&.at("./artwork | ./sourcecode")
         b = a&.xpath("./preceding-sibling::*")&.remove
         c = a&.xpath("./following-sibling::*")&.remove
         a = a.remove
@@ -122,6 +126,25 @@ module IsoDoc::Ietf
         r << aside
       end
       docxml.xpath("//references/aside").each { |r| r.remove }
+    end
+
+    def deflist_cleanup(docxml)
+      docxml.xpath("//dt | dd").each do |d|
+        d.xpath(".//t").each do |t|
+          d["id"] ||= t["id"]
+          t.replace(t.children)
+        end
+      end
+    end
+
+    def aside_cleanup(docxml)
+      docxml.xpath("//t[aside]").each do |p|
+        insert = p
+        p.xpath("./aside").each do |a|
+          insert.next = a.remove
+          insert = insert.next_element
+        end
+      end
     end
   end
 end

@@ -512,7 +512,7 @@ RSpec.describe Asciidoctor::Ietf do
       expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       .Caption
-      [source,ruby,filename=sourcecode1.rb]
+      [source,ruby,filename=sourcecode1.rb,markers=true]
       --
       puts "Hello, world."
       %w{a b c}.each do |x|
@@ -522,7 +522,7 @@ RSpec.describe Asciidoctor::Ietf do
       INPUT
       #{BLANK_HDR}
        <sections>
-         <sourcecode id="_" lang="ruby" filename="sourcecode1.rb"><name>Caption</name>puts "Hello, world."
+         <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name>Caption</name>puts "Hello, world."
        %w{a b c}.each do |x|
          puts x
        end</sourcecode>

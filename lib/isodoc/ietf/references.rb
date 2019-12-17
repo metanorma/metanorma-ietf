@@ -29,15 +29,20 @@ module IsoDoc::Ietf
       end
     end
 
+    # NOTE not bothering with <format> for alt urls
     def nonstd_bibitem(list, b, ordinal, bibliography)
-      list.reference **attr_code(anchor: b["id"],
-                                 target: b&.at(ns("./uri"))&.text) do |r|
+      uris = b.xpath(ns("./uri"))
+      list.reference **attr_code(target: uris.empty? ? nil : uris[0]&.text,
+                                 anchor: b["id"]) do |r|
         r.front do |f|
           relaton_to_title(b, f)
           relaton_to_author(b, f)
           relaton_to_date(b, f)
           relaton_to_keyword(b, f)
           relaton_to_abstract(b, f)
+        end
+        uris[1..-1]&.each do |u|
+          r.format nil, **attr_code(target: u.text, type: u["type"])
         end
       end
     end
@@ -53,8 +58,11 @@ module IsoDoc::Ietf
     end
 
     def relaton_to_author(b, f)
-      b.xpath(ns("./contributor[xmlns:role/@type = 'author' or "\
-                 "xmlns:role/@type = 'editor']")).each do |a|
+      auths = b.xpath(ns("./contributor[xmlns:role/@type = 'author' or "\
+                 "xmlns:role/@type = 'editor']"))
+      auths.empty? and auths = b.xpath(ns("./contributor[xmlns:role/@type = "\
+                                          "'publisher']"))
+      auths.each do |a|
         role = a.at(ns("./role[@type = 'editor']")) ? "editor" : nil
         p = a&.at(ns("./person/name")) and 
           relaton_person_to_author(p, role, f) or
@@ -70,9 +78,8 @@ module IsoDoc::Ietf
       initials = nil if initials.empty?
       f.author nil,
         **attr_code(fullname: fullname, asciiFullname: fullname&.transliterate,
-                    role: role, surname: surname,
+                    role: role, surname: surname, initials: initials,
                     asciiSurname: fullname ? surname&.transliterate : nil,
-                    initials: initials,
                     asciiInitials: fullname ? initials&.transliterate : nil)
     end
 
@@ -80,7 +87,7 @@ module IsoDoc::Ietf
       name = o&.at(ns("./name"))&.text
       abbrev = o&.at(ns("./abbreviation"))&.text
       f.author do |a|
-        f.organization name, **attr_code(asciiName: name&.transliterate, 
+        f.organization name, **attr_code(ascii: name&.transliterate, 
                                          abbrev: abbrev)
       end
     end

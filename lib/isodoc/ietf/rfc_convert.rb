@@ -13,20 +13,20 @@ module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def convert1(docxml, filename, dir)
       anchor_names docxml
+      info docxml, nil
       noko do |xml|
         xml.rfc **attr_code(rfc_attributes(docxml)) do |html|
-          info docxml, nil
           make_link(html, docxml)
           make_front(html, docxml)
           make_middle(html, docxml)
           make_back(html, docxml)
         end
-      end.join("\n")
+      end.join("\n").sub(/<!DOCTYPE[^>]+>\n/, "")
     end
 
     def metadata_init(lang, script, labels)
-        @meta = Metadata.new(lang, script, labels)
-      end
+      @meta = Metadata.new(lang, script, labels)
+    end
 
     def extract_delims(text)
       @openmathdelim = "$$"
@@ -47,7 +47,7 @@ module IsoDoc::Ietf
         "//bibdata/relation[@type = 'updates']/bibitem/docidentifier")))
       {
         docName:        @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
-        number:         @meta.get[:doctype] == "Rfc" ? @meta.get[:docnumber] : nil,
+        number:         @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
         category:       docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text,
         ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
         obsoletes:      obs,
@@ -109,8 +109,7 @@ module IsoDoc::Ietf
 
     def clause_parse_title(node, div, c1, out)
       return unless c1
-      div.name **attr_code( anchor: node["id"], numbered: node["numbered"],
-                           removeInRFC: node["removeInRFC"], toc: node["toc"]) do |n|
+      div.name do |n|
         c1&.children&.each { |c2| parse(c2, n) }
       end
     end
@@ -147,7 +146,8 @@ module IsoDoc::Ietf
     end
 
     def postprocess(result, filename, dir)
-      result = from_xhtml(cleanup(to_xhtml(result)))
+      result = from_xhtml(cleanup(to_xhtml(result))).sub(/<!DOCTYPE[^>]+>\n/, "").
+        sub(/(<rfc[^<]+? )lang="[^"]+"/, "\\1")
       File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }
       @files_to_delete.each { |f| FileUtils.rm_rf f }
     end
