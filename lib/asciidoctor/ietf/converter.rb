@@ -145,8 +145,11 @@ module Asciidoctor
       def smartquotes_cleanup(xmldoc)
         xmldoc.traverse do |n|
           next unless n.text?
-          n.replace(n.text.gsub(/\u2019/, "'").gsub(/\u201c|\u201d/, '"'))
+           n.replace(HTMLEntities.new.encode(
+            n.text.gsub(/\u2019|\u2018|\u201a|\u201b/, "'").
+                    gsub(/\u201c|\u201d|\u201e|\u201f/, '"'), :basic))
         end
+        xmldoc
       end
 
       def xref_to_eref(x)

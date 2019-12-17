@@ -131,5 +131,13 @@ HDR
 XML_HDR = <<~"HDR"
 <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
   <front>
+  <seriesInfo value='' name='RFC' asciiName='RFC'/>
     <abstract>
+HDR
+
+RFC_HDR = <<~"HDR"
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+</front>
 HDR

@@ -114,9 +114,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </tfoot>
              </table>
              <dl>
-               <dt>
-                 <p>Drago</p>
-               </dt>
+               <dt>Drago</dt>
                <dd>A type of rice</dd>
              </dl>
              <aside>

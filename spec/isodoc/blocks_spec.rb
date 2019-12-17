@@ -11,8 +11,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     </clause></sections>
     </iso-standard>
 INPUT
-       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front/>
+#{RFC_HDR}
          <middle>
            <section>
              <aside anchor='note1'>
@@ -39,8 +38,7 @@ INPUT
     </clause></sections>
     </iso-standard>
     INPUT
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front/>
+#{RFC_HDR}
          <middle>
            <section>
             <aside anchor='A'>
@@ -69,16 +67,13 @@ INPUT
     </clause></sections>
     </iso-standard>
     INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front/>
+    #{RFC_HDR}
          <middle>
            <section>
            <aside anchor="A">
              <t>NOTE: </t>
              <dl>
-               <dt>
-                 <p>A</p>
-               </dt>
+               <dt>A</dt>
                <dd>
                  <t>B</t>
                </dd>
@@ -107,8 +102,7 @@ INPUT
     </clause></sections>
     </iso-standard>
     INPUT
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front/>
+    #{RFC_HDR}
          <middle>
            <section>
            <aside anchor='A'>
@@ -176,9 +170,7 @@ B</pre>
                  <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
                </fn>
                <dl>
-                 <dt>
-                   <p>A</p>
-                 </dt>
+                 <dt>A</dt>
                  <dd>
                    <t>B</t>
                  </dd>

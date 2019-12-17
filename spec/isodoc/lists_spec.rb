@@ -126,7 +126,7 @@ OUTPUT
     #{XML_HDR}
                <dl anchor='_732d3f57-4f88-40bf-9ae9-633891edc395' newline='true' spacing='compact' indent='5'>
                <dt>
-                 <p> W </p>
+                 W
                </dt>
                <dd>
                  <t anchor='_05d81174-3a41-44af-94d8-c78b8d2e175d'>mass fraction of gelatinized kernels, expressed in per cent</t>

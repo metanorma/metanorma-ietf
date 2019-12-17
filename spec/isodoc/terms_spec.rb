@@ -54,10 +54,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 </iso-standard>
     INPUT
     <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-  <front/>
+    <front>
+  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+</front>
   <middle>
            <section anchor='_terms_and_definitions'>
-             <name anchor='_terms_and_definitions'>Terms and Definitions</name>
+             <name>Terms and Definitions</name>
              <t>For the purposes of this document, the following terms and definitions apply.</t>
              <section anchor='paddy1'>
                <name>paddy</name>

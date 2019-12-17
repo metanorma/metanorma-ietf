@@ -129,7 +129,7 @@ module IsoDoc::Ietf
     end
 
     def deflist_cleanup(docxml)
-      docxml.xpath("//dt | dd").each do |d|
+      docxml.xpath("//dt").each do |d|
         d.xpath(".//t").each do |t|
           d["id"] ||= t["id"]
           t.replace(t.children)

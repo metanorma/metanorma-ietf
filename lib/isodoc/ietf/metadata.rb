@@ -50,6 +50,11 @@ module IsoDoc
         end
          set(:wg, workgroups)
       end
+
+       def doctype(isoxml, _out)
+         super
+         set(:doctype, "Rfc") if get[:doctype].nil?
+       end
     end
   end
 end

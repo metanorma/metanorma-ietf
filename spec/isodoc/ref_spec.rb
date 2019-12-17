@@ -126,6 +126,7 @@ RSpec.describe IsoDoc::Ietf do
   <contributor>
     <role type="publisher"/>
     <organization>
+    <name>International Standards Organization</name>
       <abbreviation>ISO</abbreviation>
     </organization>
   </contributor>
@@ -151,15 +152,16 @@ RSpec.describe IsoDoc::Ietf do
     INPUT
     <rfc xmlns:xi='http://www.w3.org/2001/XInclude' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front>
+         <seriesInfo value='' name='RFC' asciiName='RFC'/>
            <abstract>
              <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <relref target='ISO712'/>
-               <relref target='ISBN'/>
-               <relref target='ISSN'/>
-               <relref target='ISO16634'/>
-               <relref target='ref1'/>
-               <relref target='ref10'/>
-               <relref target='ref12'/>
+               <relref target='ISO712'  section=''/>
+               <relref target='ISBN'  section=''/>
+               <relref target='ISSN'  section=''/>
+               <relref target='ISO16634'  section=''/>
+               <relref target='ref1'  section=''/>
+               <relref target='ref10'  section=''/>
+               <relref target='ref12'  section=''/>
              </t>
            </abstract>
          </front>
@@ -170,6 +172,9 @@ RSpec.describe IsoDoc::Ietf do
              <reference target='http://www.example.com' anchor='ISO712'>
                <front>
                  <title>ISO 712, Cereals or cereal products</title>
+                 <author>
+  <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
+</author>
                </front>
              </reference>
              <reference target='http://www.example.com' anchor='ISO16634'>
@@ -179,7 +184,7 @@ RSpec.describe IsoDoc::Ietf do
                    xxxx, oilseeds and animal feeding stuffs
                  </title>
                  <author>
-                   <organization asciiName='International Supporters of Odium' abbrev='ISO1'>International Supporters of Odium</organization>
+                   <organization ascii='International Supporters of Odium' abbrev='ISO1'>International Supporters of Odium</organization>
                  </author>
                  <keyword>keyword1</keyword>
                  <keyword>keyword2</keyword>
@@ -223,11 +228,17 @@ RSpec.describe IsoDoc::Ietf do
              <reference anchor='ISBN'>
                <front>
                  <title>1, Chemicals for analytical laboratory use</title>
+                 <author>
+  <organization abbrev='ISBN'/>
+</author>
                </front>
              </reference>
              <reference anchor='ISSN'>
                <front>
                  <title>2, Instruments for analytical laboratory use</title>
+               <author>
+  <organization abbrev='ISSN'/>
+</author>
                </front>
              </reference>
              <aside>
@@ -239,6 +250,9 @@ RSpec.describe IsoDoc::Ietf do
              <reference anchor='ISO3696'>
                <front>
                  <title>ISO 3696, Water for analytical laboratory use</title>
+               <author>
+               <organization ascii='International Standards Organization' abbrev='ISO'>International Standards Organization</organization>
+</author>
                </front>
              </reference>
              <reference anchor='ref10'>
