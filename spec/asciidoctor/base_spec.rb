@@ -7,13 +7,22 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "processes a blank document" do
+    VCR.use_cassette "workgroup_fetch" do
     expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-    #{ASCIIDOC_BLANK_HDR}
+= Document title
+Author
+:docfile: test.adoc
+:nodoc:
+:novalid:
+:no-isobib:
+:flush-caches: true
+
     INPUT
     #{BLANK_HDR}
 <sections/>
 </ietf-standard>
     OUTPUT
+  end
   end
 
   it "converts a blank document" do

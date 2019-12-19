@@ -19,25 +19,31 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "warns of invalid workgroup" do
+        VCR.use_cassette "workgroup_fetch" do
      expect { Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true) }.to output(%r{IETF: unrecognised working group}).to_stderr
   = Document title
   Author
   :docfile: test.adoc
   :nodoc:
   :workgroup: Group
+  :flush-caches: true
 
   INPUT
   end
+  end
 
   it "does not warn of valid workgroup suffixed with Working Group" do
+        VCR.use_cassette "workgroup_fetch" do
      expect { Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true) }.not_to output(%r{IETF: unrecognised working group}).to_stderr
   = Document title
   Author
   :docfile: test.adoc
   :nodoc:
   :workgroup: Global Access to the Internet for All Research Group
+  :flush-caches: true
 
   INPUT
+  end
   end
 
 end
