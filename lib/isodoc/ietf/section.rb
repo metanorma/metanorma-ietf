@@ -61,7 +61,7 @@ module IsoDoc::Ietf
       {
         docName:        @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
         number:         @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
-        category:       docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text,
+        category:       docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text || "std",
         ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
         obsoletes:      obs,
         updates:        upd,
@@ -72,7 +72,7 @@ module IsoDoc::Ietf
         tocInclude:     docxml&.at(ns("//bibdata/ext/tocInclude"))&.text,
         tocDepth:       docxml&.at(ns("//bibdata/ext/tocDepth"))&.text,
         submissionType: docxml&.at(ns(
-          "//bibdata/series[@type = 'stream']/title"))&.text,
+          "//bibdata/series[@type = 'stream']/title"))&.text || "IETF",
         'xml:lang':     docxml&.at(ns("//bibdata/language"))&.text,
         version:        "3",
         'xmlns:xi':        "http://www.w3.org/2001/XInclude",

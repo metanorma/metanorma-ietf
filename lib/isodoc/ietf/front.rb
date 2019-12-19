@@ -70,15 +70,15 @@ module IsoDoc::Ietf
 
     def person_author_attrs(c, role)
       return {} if c.nil?
-      full = c&.at(ns("./completeName"))&.text
-      ret = attr_code(role: role, fullname: full,
-                      initials: c&.at(ns("./initial"))&.text ||
-                      c&.xpath(ns("./forename")).map { |n| n.text[0] }.join("."),
+      full = c&.at(ns("./completename"))&.text
+      init = c&.at(ns("./initial"))&.text ||
+                      c&.xpath(ns("./forename")).map { |n| n.text[0] }.join(".")
+      init = nil if init.empty?
+      ret = attr_code(role: role, fullname: full, initials: init,
                       surname: c&.at(ns("./surname"))&.text)
       full and ret.merge!(attr_code(
         asciiFullname: full&.transliterate,
-        asciiInitials: c&.at(ns("./initial"))&.text&.transliterate ||
-        c&.xpath(ns("./forename")).map { |n| n.text[0] }.join(".").transliterate,
+        asciiInitials: init&.transliterate,
         asciiSurname: c&.at(ns("./surname"))&.text&.transliterate))
       ret
     end

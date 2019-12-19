@@ -20,9 +20,7 @@ RSpec.describe IsoDoc do
     </preface>
     </iso-standard>
     INPUT
-    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front>
-           <abstract>
+#{XML_HDR}
              <t>
                A.
                <fnref>2</fnref>
@@ -91,7 +89,15 @@ RSpec.describe IsoDoc do
              <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
                <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
              </cref>
-           </abstract></front><middle/><back/></rfc>
+           </abstract></front>
+           <middle>
+  <section>
+    <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
+      <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
+    </cref>
+  </section>
+</middle>
+        <back/></rfc>
     OUTPUT
   end
 

@@ -124,6 +124,9 @@ RSpec.describe Asciidoctor::Ietf do
            </series>
          <ext>
   <doctype>Internet-Draft</doctype>
+  <pi>
+  <toc>yes</toc>
+</pi>
 </ext>
        </bibdata>
        <sections><p id="foreword">Foreword</p>

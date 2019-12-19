@@ -22,7 +22,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   <sub>D</sub>
   <tt>E</tt>
    F G I
-  <bpc14>must</bpc14>
+  <bcp14>must</bcp14>
   <a id='H'/>
 </t>
 </abstract></front><middle/><back/></rfc>
@@ -52,7 +52,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  Requirement
                  <tt>/req/core/http</tt>
                </xref>
-               <relref target='ISO712'>
+               <relref target='ISO712' section=''>
                  Requirement
                  <tt>/req/core/http</tt>
                </relref>
@@ -208,7 +208,7 @@ $$ Latex? $$
     INPUT
     #{XML_HDR}
     <t>
-  <relref target='ISO712'>A</relref>
+  <relref target='ISO712' section=''>A</relref>
 </t>
 </abstract></front><middle/>
 <back>
@@ -217,6 +217,9 @@ $$ Latex? $$
     <reference anchor='ISO712'>
       <front>
         <title>ISO 712, Cereals and cereal products</title>
+        <author>
+  <organization abbrev='ISO'/>
+</author>
       </front>
     </reference>
   </references>
@@ -260,17 +263,17 @@ $$ Latex? $$
     INPUT
     #{XML_HDR}
     <t>
-  <relref target='ISO712'/>
-  <relref target='ISO712'/>
-  <relref target='ISO712'/>
-  <relref target='ISO712'/>
+  <relref target='ISO712' section=''/>
+  <relref target='ISO712' section=''/>
+  <relref target='ISO712' section=''/>
+  <relref target='ISO712' section=''/>
   <relref target='ISO712' section='1'/>
   <relref target='ISO712' section='1'/>
   <relref target='ISO712' section='1.5'/>
-  <relref target='ISO712'>A</relref>
-  <relref target='ISO712'/>
-  <relref target='ISO712'/>
-  <relref target='ISO712'>A</relref>
+  <relref target='ISO712' section=''>A</relref>
+  <relref target='ISO712' section=''/>
+  <relref target='ISO712' section=''/>
+  <relref target='ISO712' section=''>A</relref>
 </t>
 </abstract></front><middle/>
 <back>
@@ -279,6 +282,9 @@ $$ Latex? $$
     <reference anchor='ISO712'>
       <front>
         <title>ISO 712, Cereals and cereal products</title>
+        <author>
+  <organization abbrev='ISO'/>
+</author>
       </front>
     </reference>
   </references>

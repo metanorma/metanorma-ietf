@@ -8,10 +8,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <sections/>
         </iso-standard>
     INPUT
-    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-          <front>
-            <seriesInfo value='' name='RFC' asciiName='RFC'/>
-          </front>
+    #{RFC_HDR}
           <middle/>
           <back/>
         </rfc>
@@ -88,7 +85,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </bibliography>
        </iso-standard>
     INPUT
-    #{RFC_HDR}
+     <?xml version='1.0'?>
+        <?rfc strict="yes"?>
+        <?rfc compact="yes"?>
+        <?rfc subcompact="no"?>
+        <?rfc tocdepth="4"?>
+        <?rfc symrefs="yes"?>
+        <?rfc sortrefs="yes"?>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
+          <front>
+            <seriesInfo value='' name='RFC' asciiName='RFC'/>
+            <abstract> </abstract>
+          </front>
           <middle>
             <section anchor='B'>
               <name>Introduction</name>

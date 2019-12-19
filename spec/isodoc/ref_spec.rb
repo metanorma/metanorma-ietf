@@ -5,7 +5,6 @@ RSpec.describe IsoDoc::Ietf do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <bibdata>
-    <language>en</language>
     </bibdata>
     <preface><foreword>
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
@@ -150,10 +149,7 @@ RSpec.describe IsoDoc::Ietf do
 </bibliography>
     </iso-standard>
     INPUT
-    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front>
-         <seriesInfo value='' name='RFC' asciiName='RFC'/>
-           <abstract>
+           #{XML_HDR}
              <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
                <relref target='ISO712'  section=''/>
                <relref target='ISBN'  section=''/>

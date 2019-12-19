@@ -191,9 +191,7 @@ INPUT
          <back/>
        </rfc>
 INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front>
-           <abstract>
+    #{XML_HDR}
              <table anchor='tableD-1'>
                <name>
                   Repeatability and reproducibility of
@@ -358,9 +356,7 @@ INPUT
              </t>
 </abstract></front><middle/><back/></rfc>
     INPUT
-    <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front>
-           <abstract>
+     #{XML_HDR}
              <t> [IMAGE 1] [IMAGE 2] </t>
              <artwork src='rice_images/rice_image1.png' title='titletxt 1' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
              <artwork src='rice_images/rice_image1.png' title='titletxt 2' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
@@ -394,13 +390,8 @@ INPUT
        </sourcecode></figure>
 </abstract></front><middle/><back/></rfc>
 INPUT
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" version="3" prepTime="2000-01-01T05:00:00Z">
-         <front>
-           <abstract>
-
+#{XML_HDR}
                     <figure anchor="_">
-
-
                     <name>Label</name><sourcecode><![CDATA[&#xA0;&#xA0;A
 &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B
 B1

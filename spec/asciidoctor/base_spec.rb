@@ -389,6 +389,43 @@ RSpec.describe Asciidoctor::Ietf do
              <tocInclude>false</tocInclude>
              <tocDepth>9</tocDepth>
              <showOnFrontPage>false</showOnFrontPage>
+             <pi>
+  <artworkdelimiter>1</artworkdelimiter>
+  <artworklines>2</artworklines>
+  <authorship>3</authorship>
+  <autobreaks>4</autobreaks>
+  <background>5</background>
+  <colonspace>6</colonspace>
+  <comments>7</comments>
+  <docmapping>8</docmapping>
+  <editing>9</editing>
+  <emoticonic>10</emoticonic>
+  <footer>11</footer>
+  <header>12</header>
+  <inline>13</inline>
+  <iprnotified>14</iprnotified>
+  <linkmailto>15</linkmailto>
+  <linefile>16</linefile>
+  <notedraftinprogress>17</notedraftinprogress>
+  <private>18</private>
+  <refparent>19</refparent>
+  <rfcedstyle>20</rfcedstyle>
+  <slides>21</slides>
+  <text-list-symbols>22</text-list-symbols>
+  <tocappendix>23</tocappendix>
+  <tocindent>24</tocindent>
+  <tocnarrow>25</tocnarrow>
+  <tocompact>26</tocompact>
+  <topblock>27</topblock>
+  <useobject>28</useobject>
+  <strict>29</strict>
+  <compact>30</compact>
+  <subcompact>31</subcompact>
+  <toc>no</toc>
+  <tocdepth>9</tocdepth>
+  <symrefs>false</symrefs>
+  <sortrefs>false</sortrefs>
+</pi>
            </ext>
          </bibdata>
          <sections/>
@@ -497,6 +534,9 @@ RSpec.describe Asciidoctor::Ietf do
            </series>
            <ext>
   <doctype>Internet-Draft</doctype>
+  <pi>
+  <toc>yes</toc>
+</pi>
 </ext>
          </bibdata>
          <preface>

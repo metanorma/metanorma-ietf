@@ -125,12 +125,6 @@ BLANK_HDR = <<~"HDR"
        </bibdata>
 HDR
 
-=begin
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
-      <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}">
-=end
-
 XML_HDR = <<~"HDR"
 <?xml version='1.0'?>
 <?rfc strict="yes"?>
@@ -139,7 +133,7 @@ XML_HDR = <<~"HDR"
 <?rfc tocdepth="4"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
   <front>
   <seriesInfo value='' name='RFC' asciiName='RFC'/>
     <abstract>
@@ -153,7 +147,7 @@ RFC_HDR = <<~"HDR"
 <?rfc tocdepth="4"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
-       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front>
   <seriesInfo value='' name='RFC' asciiName='RFC'/>
 </front>

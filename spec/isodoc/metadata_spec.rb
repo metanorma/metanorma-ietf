@@ -234,12 +234,84 @@ expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))
              <symRefs>false</symRefs>
              <tocInclude>false</tocInclude>
              <tocDepth>9</tocDepth>
+                          <pi>
+  <artworkdelimiter>1</artworkdelimiter>
+  <artworklines>2</artworklines>
+  <authorship>3</authorship>
+  <autobreaks>4</autobreaks>
+  <background>5</background>
+  <colonspace>6</colonspace>
+  <comments>7</comments>
+  <docmapping>8</docmapping>
+  <editing>9</editing>
+  <emoticonic>10</emoticonic>
+  <footer>11</footer>
+  <header>12</header>
+  <inline>13</inline>
+  <iprnotified>14</iprnotified>
+  <linkmailto>15</linkmailto>
+  <linefile>16</linefile>
+  <notedraftinprogress>17</notedraftinprogress>
+  <private>18</private>
+  <refparent>19</refparent>
+  <rfcedstyle>20</rfcedstyle>
+  <slides>21</slides>
+  <text-list-symbols>22</text-list-symbols>
+  <tocappendix>23</tocappendix>
+  <tocindent>24</tocindent>
+  <tocnarrow>25</tocnarrow>
+  <tocompact>26</tocompact>
+  <topblock>27</topblock>
+  <useobject>28</useobject>
+  <strict>29</strict>
+  <compact>30</compact>
+  <subcompact>31</subcompact>
+  <toc>no</toc>
+  <tocdepth>9</tocdepth>
+  <symrefs>false</symrefs>
+  <sortrefs>false</sortrefs>
+</pi>
            </ext>
          </bibdata>
          <sections/>
        </ietf-standard>
 INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='BCP' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
+<?xml version='1.0'?>
+<?rfc artworkdelimiter="1"?>
+<?rfc artworklines="2"?>
+<?rfc authorship="3"?>
+<?rfc autobreaks="4"?>
+<?rfc background="5"?>
+<?rfc colonspace="6"?>
+<?rfc comments="7"?>
+<?rfc docmapping="8"?>
+<?rfc editing="9"?>
+<?rfc emoticonic="10"?>
+<?rfc footer="11"?>
+<?rfc header="12"?>
+<?rfc inline="13"?>
+<?rfc iprnotified="14"?>
+<?rfc linkmailto="15"?>
+<?rfc linefile="16"?>
+<?rfc notedraftinprogress="17"?>
+<?rfc private="18"?>
+<?rfc refparent="19"?>
+<?rfc rfcedstyle="20"?>
+<?rfc slides="21"?>
+<?rfc text-list-symbols="22"?>
+<?rfc tocappendix="23"?>
+<?rfc tocindent="24"?>
+<?rfc tocnarrow="25"?>
+<?rfc tocompact="26"?>
+<?rfc topblock="27"?>
+<?rfc useobject="28"?>
+<?rfc strict="29"?>
+<?rfc compact="30"?>
+<?rfc subcompact="31"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' number='1000' category='BCP' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
          <link href='INC1' rel='item'/>
          <link href='INCL2' rel='item'/>
          <link href='DESC1' rel='describedby'/>
@@ -251,22 +323,26 @@ INPUT
          <front>
            <title abbrev='Abbreviated Title' ascii='Ascii Title'>Main Title?~@~I?~@~T?~@~ITitle</title>
            <seriesInfo value='1000' asciiValue='1000' status='10' stream='IRTF' name='RFC' asciiName='RFC'/>
-           <seriesInfo name='' status='BCP'/>
-            <author>
+           <seriesInfo name='' value='' status='BCP'/>
+            <author fullname='Fred Flintstone' asciiFullname='Fred Flintstone'>
             <organization ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
+            <address>
 <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
 <phone>123</phone>
 <facsimile>123b</facsimile>
 <email/>
 <uri>http://slate.example.com</uri>
+</address>
  </author>
- <author>
+ <author role='editor' initials='B. X.' surname='Rubble'>
   <organization ascii='Rockhead and Quarry Cave Construction Company'>Rockhead and Quarry Cave Construction Company</organization>
+  <address>
   <postalLine ascii='6A Rubble Way, Bedrock'>6A Rubble Way, Bedrock</postalLine>
   <phone>123c</phone>
   <facsimile>123d</facsimile>
   <email>barney@rockhead.example.com</email>
   <uri/>
+  </address>
 </author>
            <date day='1' year='1000' month='January'/>
            <area>A</area>
@@ -396,35 +472,44 @@ OUTPUT
          </sections>
        </ietf-standard>
 INPUT
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='BCP' submissionType='IETF' xml:lang='el' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front>
-           <title>Document title</title>
-           <seriesInfo value='1000' asciiValue='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>
-           <seriesInfo name='' status='BCP'/>
-           <author>
-  <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
-  <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
-  <phone>123</phone>
-  <facsimile>123b</facsimile>
-  <email/>
-  <uri>http://slate.example.com</uri>
-</author>
-           <abstract anchor='_'>
-             <t anchor='_'>This is the abstract of the document</t>
-             <t anchor='_'>This is the second paragraph of the abstract of the document.</t>
-           </abstract>
-           <note removeInRFC='true'>
-             <name>Note Title</name>
-             <t anchor='_'>Note contents</t>
-           </note>
-         </front>
-         <middle>
-           <section anchor='_'>
-             <name>Clause 1</name>
-           </section>
-         </middle>
-         <back/>
-       </rfc>
+<?xml version='1.0'?>
+        <?rfc strict="yes"?>
+        <?rfc compact="yes"?>
+        <?rfc subcompact="no"?>
+        <?rfc tocdepth="4"?>
+        <?rfc symrefs="yes"?>
+        <?rfc sortrefs="yes"?>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' docName='1000' category='BCP' submissionType='IETF' xml:lang='el' version='3' prepTime='2000-01-01T05:00:00Z'>
+          <front>
+            <title>Document title</title>
+            <seriesInfo value='1000' asciiValue='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>
+            <seriesInfo name='' value='' status='BCP'/>
+            <author fullname='Fred Flintstone' asciiFullname='Fred Flintstone'>
+              <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
+              <address>
+                <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
+                <phone>123</phone>
+                <facsimile>123b</facsimile>
+                <email/>
+                <uri>http://slate.example.com</uri>
+              </address>
+            </author>
+            <abstract anchor='_'>
+              <t anchor='_'>This is the abstract of the document</t>
+              <t anchor='_'>This is the second paragraph of the abstract of the document.</t>
+            </abstract>
+            <note removeInRFC='true'>
+              <name>Note Title</name>
+              <t anchor='_'>Note contents</t>
+            </note>
+          </front>
+          <middle>
+            <section anchor='_'>
+              <name>Clause 1</name>
+            </section>
+          </middle>
+          <back/>
+        </rfc>
 OUTPUT
   end
 

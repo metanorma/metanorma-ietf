@@ -472,8 +472,7 @@ World</p>
     </sections>
     </iso-standard>
     INPUT
-       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
-         <front/>
+         #{RFC_HDR}
          <middle>
            <section>
              <section anchor='_extraneous_matter'>
