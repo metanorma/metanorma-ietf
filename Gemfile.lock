@@ -14,7 +14,7 @@ GEM
     asciidoctor (2.0.10)
     asciimath (1.0.9)
     ast (2.4.0)
-    byebug (9.1.0)
+    byebug (11.0.1)
     cnccs (0.1.5)
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
@@ -175,7 +175,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.77.0)
+    rubocop (0.78.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -198,7 +198,7 @@ GEM
     simplecov-html (0.10.2)
     sterile (1.0.14)
       nokogiri
-    thor (1.0.0)
+    thor (1.0.1)
     thread_safe (0.3.6)
     timecop (0.9.1)
     unicode-display_width (1.6.0)
@@ -215,7 +215,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0.1)
-  byebug (~> 9.1)
+  byebug
   equivalent-xml (~> 0.6)
   guard (~> 2.14)
   guard-rspec (~> 4.7)

@@ -40,7 +40,7 @@ module Asciidoctor
             STDERR.puts "Cache #{wgcache_name} is invalid, drop it"
           end
         end
-        wg
+        [wg, wgcache_name]
       end
 
       def cache_workgroup_ietf(wg, b)
@@ -69,7 +69,7 @@ module Asciidoctor
       end
 
       def cache_workgroup(node)
-        wg = open_wg_cache(node)
+        wg, wgcache_name = open_wg_cache(node)
         if wg.empty?
           File.open(wgcache_name, "w") do |b|
             wg = cache_workgroup_ietf(wg, b)
