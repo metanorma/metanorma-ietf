@@ -121,6 +121,41 @@ RSpec.describe Asciidoctor::Ietf do
       :phone_2: 123c
       :fax_2: 123d
       :show-on-front-page: false
+      :artworkdelimiter: 1
+      :artworklines: 2
+      :authorship: 3
+      :autobreaks: 4
+      :background: 5
+      :colonspace: 6
+      :comments: 7
+      :docmapping: 8
+      :editing: 9
+      :emoticonic: 10
+      :footer: 11
+      :header: 12
+      :inline: 13
+      :iprnotified: 14
+      :linkmailto: 15
+      :linefile: 16
+      :notedraftinprogress: 17
+      :private: 18
+      :refparent: 19
+      :rfcedstyle: 20
+      :slides: 21
+      :text-list-symbols: 22
+      :tocappendix: 23
+      :tocindent: 24
+      :tocnarrow: 25
+      :tocompact: 26
+      :topblock: 27
+      :useobject: 28
+      :strict: 29
+      :compact: 30
+      :subcompact: 31
+      :toc: 32
+      :tocdepth: 33
+      :symrefs: 34
+      :sortrefs: 35
     INPUT
     <?xml version='1.0' encoding='UTF-8'?>
        <ietf-standard xmlns='https://open.ribose.com/standards/ietf'>
@@ -373,6 +408,7 @@ RSpec.describe Asciidoctor::Ietf do
       :script: Grek
       :publisher: IEC,IETF,ISO
       :intended-series: BCP 111
+      :sortrefs: 35
 
       [abstract]
       == Abstract

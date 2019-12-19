@@ -118,6 +118,9 @@ BLANK_HDR = <<~"HDR"
          </series>
          <ext>
   <doctype>Internet-Draft</doctype>
+  <pi>
+  <toc>yes</toc>
+</pi>
 </ext>
        </bibdata>
 HDR
@@ -129,6 +132,13 @@ HDR
 =end
 
 XML_HDR = <<~"HDR"
+<?xml version='1.0'?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
 <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
   <front>
   <seriesInfo value='' name='RFC' asciiName='RFC'/>
@@ -136,6 +146,13 @@ XML_HDR = <<~"HDR"
 HDR
 
 RFC_HDR = <<~"HDR"
+<?xml version='1.0'?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front>
   <seriesInfo value='' name='RFC' asciiName='RFC'/>

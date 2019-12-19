@@ -50,7 +50,7 @@ module Asciidoctor
           parts = a.split(/ /)
           s.title parts[0]
           s.number parts[1..-1].join(" ") if parts.size > 1
-          end
+        end
       end
 
       def title(node, xml)
@@ -88,6 +88,55 @@ module Asciidoctor
         x = node.attr("toc-include") and xml.tocInclude x
         x = node.attr("toc-depth") and xml.tocDepth x
         x = node.attr("show-on-front-page") and xml.showOnFrontPage x
+        xml.pi { |pi| set_pi(node, pi) }
+      end
+
+      def set_pi(node, pi)
+        rfc_pis = {
+          artworkdelimiter: node.attr("artworkdelimiter"),
+          artworklines: node.attr("artworklines"),
+          authorship: node.attr("authorship"),
+          autobreaks: node.attr("autobreaks"),
+          background: node.attr("background"),
+          colonspace: node.attr("colonspace"),
+          comments: node.attr("comments"),
+          docmapping: node.attr("docmapping"),
+          editing: node.attr("editing"),
+          emoticonic: node.attr("emoticonic"),
+          footer: node.attr("footer"),
+          header: node.attr("header"),
+          inline: node.attr("inline"),
+          iprnotified: node.attr("iprnotified"),
+          linkmailto: node.attr("linkmailto"),
+          linefile: node.attr("linefile"),
+          notedraftinprogress: node.attr("notedraftinprogress"),
+          private: node.attr("private"),
+          refparent: node.attr("refparent"),
+          rfcedstyle: node.attr("rfcedstyle"),
+          slides: node.attr("slides"),
+          "text-list-symbols": node.attr("text-list-symbols"),
+          tocappendix: node.attr("tocappendix"),
+          tocindent: node.attr("tocindent"),
+          tocnarrow: node.attr("tocnarrow"),
+          tocompact: node.attr("tocompact"),
+          topblock: node.attr("topblock"),
+          useobject: node.attr("useobject"),
+          strict: node.attr("strict"),
+          compact: node.attr("compact"),
+          subcompact: node.attr("subcompact"),
+          toc: node.attr("toc-include") == "false" ? "no" : "yes",
+          tocdepth: node.attr("toc-depth"),
+          symrefs: node.attr("sym-refs"),
+          sortrefs: node.attr("sort-refs"),
+        }
+        pi_code(rfc_pis, pi)
+      end
+
+      def pi_code(rfc_pis, pi)
+        rfc_pis.each_pair do |k, v|
+          next if v.nil?
+          pi.send k.to_s, v
+        end
       end
     end
   end

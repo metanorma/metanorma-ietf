@@ -420,7 +420,7 @@ INPUT
          </front>
          <middle>
            <section anchor='_'>
-             <name anchor='_'>Clause 1</name>
+             <name>Clause 1</name>
            </section>
          </middle>
          <back/>

@@ -8,13 +8,14 @@ require_relative "./reqt"
 require_relative "./cleanup"
 require_relative "./footnotes"
 require_relative "./references"
+require_relative "./section"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def convert1(docxml, filename, dir)
       anchor_names docxml
       info docxml, nil
-      noko do |xml|
+      xml = noko do |xml|
         xml.rfc **attr_code(rfc_attributes(docxml)) do |html|
           make_link(html, docxml)
           make_front(html, docxml)
@@ -22,6 +23,7 @@ module IsoDoc::Ietf
           make_back(html, docxml)
         end
       end.join("\n").sub(/<!DOCTYPE[^>]+>\n/, "")
+          set_pis(docxml, Nokogiri::XML(xml))
     end
 
     def metadata_init(lang, script, labels)
@@ -37,103 +39,6 @@ module IsoDoc::Ietf
         @closemathdelim += "$"
       end
       [@openmathdelim, @closemathdelim]
-    end
-
-    def rfc_attributes(docxml)
-      t = Time.now.getutc
-      obs = xpath_comma(docxml.xpath(ns(
-        "//bibdata/relation[@type = 'obsoletes']/bibitem/docidentifier")))
-      upd = xpath_comma(docxml.xpath(ns(
-        "//bibdata/relation[@type = 'updates']/bibitem/docidentifier")))
-      {
-        docName:        @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
-        number:         @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
-        category:       docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text,
-        ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
-        obsoletes:      obs,
-        updates:        upd,
-        indexInclude:   docxml&.at(ns("//bibdata/ext/indexInclude"))&.text,
-        iprExtract:     docxml&.at(ns("//bibdata/ext/iprExtract"))&.text,
-        sortRefs:       docxml&.at(ns("//bibdata/ext/sortRefs"))&.text,
-        symRefs:        docxml&.at(ns("//bibdata/ext/symRefs"))&.text,
-        tocInclude:     docxml&.at(ns("//bibdata/ext/tocInclude"))&.text,
-        tocDepth:       docxml&.at(ns("//bibdata/ext/tocDepth"))&.text,
-        submissionType: docxml&.at(ns(
-          "//bibdata/series[@type = 'stream']/title"))&.text,
-        'xml:lang':     docxml&.at(ns("//bibdata/language"))&.text,
-        version:        "3",
-        'xmlns:xi':        "http://www.w3.org/2001/XInclude",
-        prepTime:       sprintf("%04d-%02d-%02dT%02d:%02d:%02dZ",
-                                t.year, t.month, t.day, t.hour, t.min, t.sec),
-      }
-    end
-
-    def xpath_comma(xpath)
-      return nil if xpath.empty?
-      xpath.map { |x| x.text }.join(", ")
-    end
-
-    def make_link(out, isoxml)
-      links = isoxml.xpath(ns(
-        "//bibdata/relation[@type = 'includedIn' or @type = 'describedBy' or "\
-        "@type = 'derivedFrom' or @type = 'equivalent']")) || return
-        links.each do |l|
-          out.link **{ href: l&.at(ns("./bibitem/docidentifier"))&.text,
-                       rel: rel2iana(l["type"]) }
-        end
-    end
-
-    def rel2iana(type)
-      case type
-      when "includedIn" then "item"
-      when "describedBy" then "describedby"
-      when "derivedFrom" then "convertedfrom"
-      when "equivalent" then "alternate"
-      else 
-        "alternate"
-      end
-    end
-
-    def make_middle(out, isoxml)
-      out.middle do |middle|
-        clause isoxml, middle
-      end
-    end
-
-    def make_back(out, isoxml)
-      out.back do |back|
-        annex isoxml, back
-        bibliography isoxml, back
-      end
-    end
-
-    def clause_parse_title(node, div, c1, out)
-      return unless c1
-      div.name do |n|
-        c1&.children&.each { |c2| parse(c2, n) }
-      end
-    end
-
-    def clause_parse(node, out)
-      out.section **attr_code( anchor: node["id"], numbered: node["numbered"],
-                              removeInRFC: node["removeInRFC"], toc: node["toc"]) do |div|
-        clause_parse_title(node, div, node.at(ns("./title")), out)
-        node.children.reject { |c1| c1.name == "title" }.each do |c1|
-          parse(c1, div)
-        end
-      end
-    end
-
-    def clause(isoxml, out)
-      isoxml.xpath("//xmlns:sections/child::*").each do |c|
-        out.section **attr_code( anchor: c["id"], numbered: c["numbered"],
-                                removeInRFC: c["removeInRFC"], toc: c["toc"]) do |div|
-          clause_parse_title(c, div, c.at(ns("./title")), out)
-          c.elements.reject { |c1| c1.name == "title" }.each do |c1|
-            parse(c1, div)
-          end
-        end
-      end
     end
 
     def error_parse(node, out)
