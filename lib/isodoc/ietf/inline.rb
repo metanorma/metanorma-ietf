@@ -104,13 +104,11 @@ module IsoDoc::Ietf
     end
 
      def xref_parse(node, out)
-       target = /#/.match(node["target"]) ? node["target"].sub(/#/, ".html#") :
-         "##{node["target"]}"
-         out.xref **attr_code(target: target, format: "default",
-                              displayFormat: node["displayFormat"],
-                              relative: node["relative"]) do |l|
-                                l << get_linkend(node)
-                              end
+       out.xref **attr_code(target: node["target"], format: "default",
+                            displayFormat: node["displayFormat"],
+                            relative: node["relative"]) do |l|
+                              l << get_linkend(node)
+                            end
      end
 
      def eref_parse(node, out)

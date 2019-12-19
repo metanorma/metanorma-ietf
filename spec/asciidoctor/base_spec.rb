@@ -462,7 +462,7 @@ Author
 
       This is the second paragraph of the abstract of the document.
 
-      [NOTE,removeInRFC=true]
+      [NOTE,remove-in-rfc=true]
       .Note Title
       ====
       Note contents

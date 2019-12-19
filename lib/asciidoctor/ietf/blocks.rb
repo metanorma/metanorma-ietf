@@ -35,11 +35,11 @@ module Asciidoctor
       def note(n)
         noko do |xml|
           xml.note **attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(n),
-                               removeInRFC: n.attr("removeInRFC")) do |c|
+                               removeInRFC: n.attr("remove-in-rfc")) do |c|
             n.title.nil? or c.name { |name| name << n.title }
             wrap_in_para(n, c)
           end
-        end.join
+        end.join("\n")
       end
 
       def literal(node)

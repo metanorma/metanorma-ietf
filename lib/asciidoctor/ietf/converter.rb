@@ -79,7 +79,7 @@ module Asciidoctor
         t, rel = xref_rel(node)
         noko do |xml|
           xml.xref **attr_code(target: t, type: "inline",
-                               displayFormat: f, format: f1,
+                               displayFormat: f1, format: f,
                                relative: rel ) do |x|
                                  x << c
                                end
@@ -90,7 +90,7 @@ module Asciidoctor
         super.merge(align: node.attr("align"))
       end
 
-      def xref_text(node)
+      def eref_text(node)
         matched = /^(of|comma|parens|bare),(.*+)$/.match node.text
         if matched.nil?
           f = nil
@@ -102,14 +102,14 @@ module Asciidoctor
         [f, c]
       end
 
-      def eref_text(node)
-        matched = /^format=(counter|title|none|default):(.*+)$/.match node.text
+      def xref_text(node)
+        matched = /^format=(counter|title|none|default)(:.*+)?$/.match node.text
         if matched.nil?
           f = nil
           c = node&.text&.sub(/^fn: /, "")
         else
           f = matched[1]
-          c = matched[2]
+          c = matched[2].sub(/^:/, "")
         end
         [f, c]
       end
@@ -173,6 +173,10 @@ module Asciidoctor
         attrs[:removeInRFC] = node.attr("removeInRFC")
         attrs[:toc] = node.attr("toc")
         super
+      end
+
+      def introduction_parse(attrs, xml, node)
+        clause_parse(attrs, xml, node)
       end
 
       def rfc_converter(node)

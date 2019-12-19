@@ -48,7 +48,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <tt>
                  <eref target='B'/>
                </tt>
-               <xref target='#_http_1_1' format='default' displayFormat='of' relative='#abc'>
+               <xref target='_http_1_1' format='default' displayFormat='of' relative='#abc'>
                  Requirement
                  <tt>/req/core/http</tt>
                </xref>
