@@ -827,7 +827,9 @@
         <data type="boolean"/>
       </attribute>
     </optional>
-    <attribute name="citeas"/>
+    <optional>
+      <attribute name="citeas"/>
+    </optional>
     <attribute name="type">
       <ref name="ReferenceFormat"/>
     </attribute>
