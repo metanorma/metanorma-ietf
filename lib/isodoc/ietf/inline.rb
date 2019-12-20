@@ -104,7 +104,7 @@ module IsoDoc::Ietf
     end
 
      def xref_parse(node, out)
-       out.xref **attr_code(target: node["target"], format: "default",
+       out.xref **attr_code(target: node["target"], 
                             format: node["format"],
                             relative: node["relative"]) do |l|
                               l << get_linkend(node)

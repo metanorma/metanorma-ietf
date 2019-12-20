@@ -179,6 +179,17 @@ module Asciidoctor
         clause_parse(attrs, xml, node)
       end
 
+      def quotesource_cleanup(xmldoc)
+        xmldoc.xpath("//quote/source | //terms/source").each do |x|
+          if x["target"] =~ URI::DEFAULT_PARSER.make_regexp
+            x["uri"] = x["target"]
+            x.delete("target")
+          else
+          xref_to_eref(x)
+          end
+        end
+      end
+
       def rfc_converter(node)
         IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
       end

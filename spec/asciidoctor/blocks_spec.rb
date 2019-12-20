@@ -263,7 +263,7 @@ RSpec.describe Asciidoctor::Ietf do
       #{BLANK_HDR}
        <sections>
            <figure id="lit">
-        <pre align='left' alt='hello'>&lt;LITERAL&gt;</pre>
+        <pre id='_' align='left' alt='hello'>&lt;LITERAL&gt;</pre>
         </figure>
        </sections>
        </ietf-standard>
@@ -498,6 +498,10 @@ RSpec.describe Asciidoctor::Ietf do
       ____
       Block quotation
       ____
+      [quote, ISO, http://www.example.com]
+      ____
+      Block quotation 2
+      ____
       INPUT
       #{BLANK_HDR}
        <sections>
@@ -506,6 +510,11 @@ RSpec.describe Asciidoctor::Ietf do
          <author>ISO</author>
          <p id="_">Block quotation</p>
        </quote>
+       <quote id='_'>
+  <source type='inline' uri='http://www.example.com'/>
+  <author>ISO</author>
+  <p id='_'>Block quotation 2</p>
+</quote>
        </sections>
        </ietf-standard>
       OUTPUT

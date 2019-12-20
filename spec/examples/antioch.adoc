@@ -309,12 +309,12 @@ tag::comment1[]
 
 The exchange of projectile animals was the beginning of a
 long-running fruitful relationship between the British and the
-French peoples,
+French peoples, which
+arguably predates the traditional English enmity with the
+French.
 
 ****
-TODO: Will need to verify that claim.# which
-arguably predates the traditional English enmity with the
-French. 
+TODO: Will need to verify that claim.
 ****
 
 ****
@@ -800,23 +800,7 @@ tag::bibliography1[]
 [bibliography]
 == Informative References
 
-++++
-
-<reference anchor="grail_film">
-  <front>
-    <title>Monty Python and the Holy Grail</title>
-    <author initials="G." surname="Chapman"/>
-    <author initials="J." surname="Cleese"/>
-    <author initials="E." surname="Idle"/>
-    <author initials="T." surname="Gilliam"/>
-    <author initials="T." surname="Jones"/>
-    <author initials="M." surname="Palin"/>
-    <date year="1975"/>
-  </front>
-</reference>
-
-++++
-
+* [[[grail_film,Grail]]] G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. _Monty Python and the Holy Grail_.
 * [[[RFC2635,RFC 2635]]]
 * [[[RFC7990,RFC 7990]]]
 * [[[RFC8140,RFC 8140]]]

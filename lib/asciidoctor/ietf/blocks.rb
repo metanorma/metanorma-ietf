@@ -48,6 +48,7 @@ module Asciidoctor
             figure_title(node, f)
             f.pre node.lines.join("\n"),
               **attr_code(align: node.attr("align"),
+                          id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(nil),
                           alt: node.attr("alt"))
           end
         end

@@ -159,10 +159,8 @@ module IsoDoc::Ietf
 
     def quote_attribution(node)
       author = node&.at(ns("./author"))&.text
-      source = node&.at(ns("./source"))&.text
-      isURI = /^#{URI::DEFAULT_PARSER.make_regexp}$/.match(source)
-      attr_code(quotedFrom: author,
-                cite: isURI ?  source : nil)
+      source = node&.at(ns("./source/@uri"))&.text
+      attr_code(quotedFrom: author, cite: source)
     end
 
     def quote_parse(node, out)
