@@ -266,6 +266,20 @@ INPUT
 <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front>
            <abstract>
+     <figure anchor='figureA-0'>
+     <name>Unnested figure</name>
+     <figure anchor="figureA-00">
+     <name>Unnested figure 1</name>
+     <figure anchor="figureA-000">
+     <name>Unnested figure 2</name>
+     </figure>
+     </figure>
+     </figure>
+     <figure anchor="figureA-001">
+     <aside><t>X</t></aside>
+     </figure>
+     <artwork src="spec/assets/Example.svg" align="right" anchor="_56cb3ff4-1775-40c6-b75d-d5c2283e8338" type="svg" alt="Orb"/>
+     <sourcecode/>
      <figure anchor='figureA-1'>
                <name>
                  Split-it-right
@@ -306,6 +320,26 @@ INPUT
        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
          <front>
            <abstract>
+           <figure anchor='figureA-0'>
+  <name>Unnested figure</name>
+</figure>
+<figure anchor='figureA-00'>
+  <name>Unnested figure 1</name>
+</figure>
+<figure anchor='figureA-000'>
+  <name>Unnested figure 2</name>
+</figure>
+<figure anchor='figureA-001'> </figure>
+<aside>
+  <t>X</t>
+</aside>
+<figure>
+               <artwork src='spec/assets/Example.svg' align='right' anchor='_56cb3ff4-1775-40c6-b75d-d5c2283e8338' type='svg' alt='Orb'/>
+             </figure>
+             <figure>
+  <sourcecode><![CDATA[]]></sourcecode>
+</figure>
+                 <t anchor='AAA'>Random text</t>
              <figure anchor='figureA-1'>
                 [a]
                <name>
@@ -313,13 +347,14 @@ INPUT
                  <em>sample</em>
                   divider
                </name>
-               <preamble>
-                 <t anchor='AAA'>Random text</t>
-               </preamble>
                <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
-               <postamble>
+               </figure>
+               <figure>
                  <artwork src='rice_images/rice_image1.png' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f1' type='svg'/>
+                 </figure>
+                 <figure>
                  <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f2' type='svg'/>
+                 </figure>
                  <dl>
                    <dt>
                      <p>A</p>
@@ -328,21 +363,23 @@ INPUT
                      <t>B</t>
                    </dd>
                  </dl>
-                 <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
-               </postamble>
-             </figure>
              <figure anchor='figure-B'>
                <artwork anchor='BC' alt='hello' type='ascii-art'><![CDATA[A <
-              B]]></artwork>
+       B]]></artwork>
              </figure>
              <figure anchor='figure-C'>
                <artwork type='ascii-art'><![CDATA[A <
-              B]]></artwork>
+       B]]></artwork>
              </figure>
            </abstract>
          </front>
          <middle/>
-         <back/>
+          <back>
+           <section>
+             <name>Endnotes</name>
+             <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+           </section>
+         </back>
        </rfc>
     OUTPUT
   end
@@ -358,8 +395,12 @@ INPUT
     INPUT
      #{XML_HDR}
              <t> [IMAGE 1] [IMAGE 2] </t>
+             <figure>
              <artwork src='rice_images/rice_image1.png' title='titletxt 1' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+             </figure>
+             <figure>
              <artwork src='rice_images/rice_image1.png' title='titletxt 2' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+             </figure>
            </abstract>
          </front>
          <middle/>
@@ -368,7 +409,7 @@ INPUT
     OUTPUT
    end
 
-   it "cleans up pseudocode" do
+   it "cleans up sourcecode" do
       expect((IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to (<<~"OUTPUT")
       #{XML_HDR}
              <figure anchor='_'>
@@ -386,7 +427,9 @@ INPUT
                </name>
              <sourcecode type='ruby'>
          puts x;
-         puts y
+         puts y;
+
+         puts z
        </sourcecode></figure>
 </abstract></front><middle/><back/></rfc>
 INPUT
@@ -403,7 +446,9 @@ B1
                  <em>code</em>
                </name>
                <sourcecode type='ruby'><![CDATA[         puts x;
-         puts y
+         puts y;
+
+         puts z
        ]]></sourcecode>
              </figure>
 </abstract></front><middle/><back/></rfc>

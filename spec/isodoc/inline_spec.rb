@@ -34,7 +34,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
     <p>
-    <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" displayFormat="of" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
+    <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" format="title" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
     </p>
     </foreword></preface>
     <sections>
@@ -48,7 +48,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <tt>
                  <eref target='B'/>
                </tt>
-               <xref target='_http_1_1' format='default' displayFormat='of' relative='#abc'>
+               <xref target='_http_1_1' format='title' relative='#abc'>
                  Requirement
                  <tt>/req/core/http</tt>
                </xref>
@@ -56,7 +56,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  Requirement
                  <tt>/req/core/http</tt>
                </relref>
-               <relref target='ISO712' section='3.1'/>
+               <relref target='ISO712' section='3.1' displayFormat="of"/>
              </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -208,7 +208,7 @@ $$ Latex? $$
     INPUT
     #{XML_HDR}
     <t>
-  <relref target='ISO712' section=''>A</relref>
+  <relref target='ISO712' section='' displayFormat='of'>A</relref>
 </t>
 </abstract></front><middle/>
 <back>

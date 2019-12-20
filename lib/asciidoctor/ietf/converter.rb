@@ -65,7 +65,7 @@ module Asciidoctor
           when :latexmath then stem_parse(node.text, xml, :latexmath)
           else
             case node.role
-            when "bcp14" then xml.bcp14 { |s| s << node.text }
+            when "bcp14" then xml.bcp14 { |s| s << node.text.upcase }
             else
               xml << node.text
             end
@@ -109,7 +109,7 @@ module Asciidoctor
           c = node&.text&.sub(/^fn: /, "")
         else
           f = matched[1]
-          c = matched[2].sub(/^:/, "")
+          c = matched[2]&.sub(/^:/, "")
         end
         [f, c]
       end

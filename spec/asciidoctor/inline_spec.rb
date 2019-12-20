@@ -31,7 +31,7 @@ RSpec.describe Asciidoctor::Ietf do
        sub<sub><em>scr</em>ipt</sub>
        <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub> <mrow> <mrow> <mi mathvariant="bold-italic">F</mi> </mrow> </mrow> <mrow> <mrow> <mi mathvariant="bold-italic">Α</mi> </mrow> </mrow> </msub> </math></stem>
        alt deprecated domain strike smallcap keyword
-       <bcp14>keyword</bcp14>
+       <bcp14>KEYWORD</bcp14>
        </p>
        </sections>
        </ietf-standard>

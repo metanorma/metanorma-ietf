@@ -1,10 +1,10 @@
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def cleanup(docxml)
+      image_cleanup(docxml)
       figure_cleanup(docxml)
       table_cleanup(docxml)
       footnote_cleanup(docxml)
-      image_cleanup(docxml)
       sourcecode_cleanup(docxml)
       annotation_cleanup(docxml)
       deflist_cleanup(docxml)
@@ -35,11 +35,35 @@ module IsoDoc::Ietf
     end
 
     def figure_cleanup(docxml)
-      figure_footnote_cleanup(docxml)
       figure_postamble(docxml)
+      figure_wrap_artwork(docxml)
+      figure_unnest(docxml)
+      figure_footnote_cleanup(docxml)
+    end
+
+    def figure_wrap_artwork(docxml)
+      docxml.xpath("//artwork[not(parent::figure)] | "\
+                   "//sourcecode[not(parent::figure)]").each do |a|
+        a.wrap("<figure></figure>")
+      end
+    end
+
+    def figure_unnest(docxml)
+      docxml.xpath("//figure[descendant::figure]").each do |f|
+        insert = f
+        f.xpath(".//figure").each do |a|
+          insert.next = a.remove
+          insert = insert.next_element
+        end
+      end
     end
 
     def figure_postamble(docxml)
+      make_postamble(docxml)
+      move_postamble(docxml)
+    end
+
+    def make_postamble(docxml)
       docxml.xpath("//figure").each do |f|
         a = f&.at("./artwork | ./sourcecode") || next
         name = f&.at("./name")&.remove
@@ -50,6 +74,22 @@ module IsoDoc::Ietf
         b.empty? or f << "<preamble>#{b.to_xml}</preamble>"
         a and f << a
         c.empty? or f << "<postamble>#{c.to_xml}</postamble>"
+      end
+    end
+
+    def move_postamble(docxml)
+      docxml.xpath("//postamble").each do |p|
+        insert = p.parent
+        p.remove.elements.each do |e|
+          insert.next = e
+          insert = insert.next_element
+        end
+      end
+      docxml.xpath("//preamble").each do |p|
+        insert = p.parent
+        p.remove.elements.each do |e|
+          insert.previous = e
+        end
       end
     end
 
@@ -100,8 +140,8 @@ module IsoDoc::Ietf
     # for markup in pseudocode
     def sourcecode_cleanup(docxml)
       docxml.xpath("//sourcecode").each do |s|
-        s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n").gsub(%r{\s+(<t[ >])}, "\\1").
-          gsub(%r{</t>\s+}, "</t>")
+        s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n").
+          gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
         s.traverse do |n|
           next if n.text?
           next if %w(name callout annotation note sourcecode).include? n.name
@@ -111,7 +151,7 @@ module IsoDoc::Ietf
             n.replace(n.children)
           end
         end
-        s.children = "<![CDATA[#{s.children.to_xml.sub(/^\n+/, "")}]]>"
+        s.children = "<![CDATA[#{s.children.to_xml.sub(/\A\n+/, "")}]]>"
       end
     end
 
@@ -138,9 +178,10 @@ module IsoDoc::Ietf
     end
 
     def aside_cleanup(docxml)
-      docxml.xpath("//t[aside]").each do |p|
+      docxml.xpath("//t[descendant::aside] | //table[descendant::aside] | "\
+                   "//figure[descendant::aside]").each do |p|
         insert = p
-        p.xpath("./aside").each do |a|
+        p.xpath(".//aside").each do |a|
           insert.next = a.remove
           insert = insert.next_element
         end
