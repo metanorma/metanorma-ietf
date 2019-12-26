@@ -132,5 +132,9 @@ module IsoDoc::Ietf
        out.iref nil, **attr_code(item: node["primary"],
                                  subitem: node["secondary"])
      end
+
+     def bookmark_parse(node, out)
+       out.bookmark nil, **attr_code(anchor: node["id"])
+     end
   end
 end

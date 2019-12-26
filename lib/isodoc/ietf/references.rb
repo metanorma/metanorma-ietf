@@ -29,7 +29,6 @@ module IsoDoc::Ietf
       end
     end
 
-    # NOTE not bothering with <format> for alt urls
     def nonstd_bibitem(list, b, ordinal, bibliography)
       uris = b.xpath(ns("./uri"))
       list.reference **attr_code(target: uris.empty? ? nil : uris[0]&.text,

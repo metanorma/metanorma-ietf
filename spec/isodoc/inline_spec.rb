@@ -23,7 +23,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   <tt>E</tt>
    F G I
   <bcp14>must</bcp14>
-  <a id='H'/>
+  <bookmark anchor='H'/>
 </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT

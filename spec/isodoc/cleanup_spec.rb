@@ -698,4 +698,47 @@ OUTPUT
       OUTPUT
    end
 
+     it "cleans up definition lists" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+           <abstract>
+           <t id="id0"><bookmark anchor="id1"/>A</t>
+           <dl>
+           <dt><bookmark anchor="id1"/>A</dt>
+           <dd><t anchor="id2">B</t></dd>
+           <dt><t anchor="id3"><strong>C</strong></t><t anchor="id4">D</t></dt>
+           <dd><t anchor="id5">E</t></dd>
+           </dl>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
+INPUT
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+  <front>
+    <abstract>
+    <t id='id0'>A</t>
+      <dl>
+        <dt anchor='id1'>A</dt>
+        <dd>
+          <t anchor='id2'>B</t>
+        </dd>
+        <dt anchor='id3'>
+          <strong>C</strong>
+          D
+        </dt>
+        <dd>
+          <t anchor='id5'>E</t>
+        </dd>
+      </dl>
+    </abstract>
+  </front>
+  <middle/>
+  <back/>
+</rfc>
+OUTPUT
+
+end
 end

@@ -8,6 +8,7 @@ module IsoDoc::Ietf
       sourcecode_cleanup(docxml)
       annotation_cleanup(docxml)
       deflist_cleanup(docxml)
+      bookmark_cleanup(docxml)
       aside_cleanup(docxml)
       docxml
     end
@@ -169,11 +170,31 @@ module IsoDoc::Ietf
     end
 
     def deflist_cleanup(docxml)
+      dt_cleanup(docxml)
+      dd_cleanup(docxml)
+    end
+
+    def dt_cleanup(docxml)
       docxml.xpath("//dt").each do |d|
+        d&.first_element_child&.name == "bookmark" and
+          d["anchor"] ||= d.first_element_child["anchor"]
         d.xpath(".//t").each do |t|
-          d["id"] ||= t["id"]
+          d["anchor"] ||= t["anchor"]
           t.replace(t.children)
         end
+      end
+    end
+
+    def dd_cleanup(docxml)
+      docxml.xpath("//dd").each do |d|
+        d&.first_element_child&.name == "bookmark" and
+          d["anchor"] ||= d.first_element_child["anchor"]
+      end
+    end
+
+    def bookmark_cleanup(docxml)
+      docxml.xpath("//bookmark").each do |b|
+        b.remove
       end
     end
 

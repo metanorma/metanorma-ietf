@@ -15,7 +15,7 @@ module Asciidoctor
 
       def ol_attr(node)
         attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
-                  type: node.attr("rfc_label") || olist_style(node.style),
+                  type: node.attr("format") || olist_style(node.style),
                   group: node.attr("group"),
                   spacing: node.attr("spacing"),
                   start: node.attr("start"))

@@ -20,7 +20,7 @@ RSpec.describe Asciidoctor::Ietf do
       [loweralpha,group=6,spacing=normal,start=2]
       . First
       . Second
-      [upperalpha,rfc_label=%d.]
+      [upperalpha,format=%d.]
       .. Third
       .. Fourth
       . Fifth
