@@ -42,7 +42,6 @@ module IsoDoc::Ietf
     end
 
     def set_pis(node, doc)
-      #doc.create_internal_subset("rfc", nil, Metanorma::Ietf::RFC2629DTD_URL)
       rfc_pis = common_rfc_pis(node)
       rfc_pis.each_pair do |k, v|
         pi = Nokogiri::XML::ProcessingInstruction.new(doc, "rfc",

@@ -3,12 +3,14 @@ require "isodoc"
 module IsoDoc
   module Ietf
     class  Metadata < IsoDoc::Metadata
+      TITLE_RFC = "//bibdata//title[@type='main' and @language='en']".freeze
+
       def title(isoxml, _out)
-        t =  isoxml.at(ns("//bibdata//title[@type='main' and @language='en']")) and
+        t =  isoxml.at(ns(TITLE_RFC)) and
           set(:doctitle, t.text)
-        t =  isoxml.at(ns("//bibdata//title[@type='abbrev' and @language='en']")) and
+        t =  isoxml.at(ns(TITLE_RFC.sub(/main/, "abbrev"))) and
           set(:docabbrev, t.text)
-        t =  isoxml.at(ns("//bibdata//title[@type='ascii' and @language='en']")) and
+        t =  isoxml.at(ns(TITLE_RFC.sub(/main/, "ascii"))) and
           set(:docascii, t.text)
       end
 

@@ -48,21 +48,22 @@ module IsoDoc::Ietf
       front.seriesInfo **seriesinfo_attr(isoxml).merge({name: "RFC",
                                                         asciiName: "RFC"})
       i = isoxml&.at(ns("//bibdata/series[@type = 'intended']")) and
-        front.seriesInfo **attr_code(name: "", 
-                                     status: i&.at(ns("./title"))&.text,
-                                     value: i&.at(ns("./number"))&.text || "")
+        front.seriesInfo nil,
+        **attr_code(name: "", status: i&.at(ns("./title"))&.text,
+                    value: i&.at(ns("./number"))&.text || "")
     end
 
     def id_seriesinfo(isoxml, front)
-      front.seriesInfo **seriesinfo_attr(isoxml).merge({name: "Internet-Draft",
-                                                        asciiName: "Internet-Draft"})
+      front.seriesInfo nil,
+        **seriesinfo_attr(isoxml).merge({name: "Internet-Draft",
+                                         asciiName: "Internet-Draft"})
       i = isoxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text and
         front.seriesInfo **attr_code(name: "", value: "", status: i)
     end
 
     def author(isoxml, front)
-      isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = 'author' "\
-                    "or xmlns:role/@type = 'editor']")).each do |c|
+      isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = "\
+                    "'author' or xmlns:role/@type = 'editor']")).each do |c|
         role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
         c.at("./organization") and org_author(c, role, front) or
           person_author(c, role, front)
@@ -73,10 +74,14 @@ module IsoDoc::Ietf
       return {} if c.nil?
       full = c&.at(ns("./completename"))&.text
       init = c&.at(ns("./initial"))&.text ||
-                      c&.xpath(ns("./forename")).map { |n| n.text[0] }.join(".")
+        c&.xpath(ns("./forename")).map { |n| n.text[0] }.join(".")
       init = nil if init.empty?
       ret = attr_code(role: role, fullname: full, initials: init,
                       surname: c&.at(ns("./surname"))&.text)
+      pers_author_attrs1(ret, full, init, c)
+    end
+
+    def pers_author_attrs1(ret, full, init, c)
       full and ret.merge!(attr_code(
         asciiFullname: full&.transliterate,
         asciiInitials: init&.transliterate,
@@ -97,7 +102,8 @@ module IsoDoc::Ietf
 
     def org_author(c, role, front)
       front.author **attr_code(role: role) do |a|
-        organization(c.at(ns("./organization")), a, c.document.at(ns("//showOnFrontPage")))
+        organization(c.at(ns("./organization")), a,
+                     c.document.at(ns("//showOnFrontPage")))
         address(c.at(ns(".//address")),
                 c.at(ns(".//phone[not(@type = 'fax')]")),
                 c.at(ns(".//phone[@type = 'fax']")),
@@ -108,8 +114,7 @@ module IsoDoc::Ietf
     def organization(org, out, show)
       name = org.at(ns("./name"))&.text
       out.organization name, **attr_code(
-        showOnFrontPage: show&.text,
-        ascii: name&.transliterate,
+        showOnFrontPage: show&.text, ascii: name&.transliterate,
         asciiAbbrev: org&.at(ns("./abbreviation"))&.transliterate,
         abbrev: org.at(ns("./abbreviation")))
     end
@@ -168,9 +173,8 @@ module IsoDoc::Ietf
       return nil if date.nil?
       if date.length == 4 && date =~ /^\d\d\d\d$/ then { year: date }
       elsif date =~ /^\d\d\d\d-?\d\d$/
-        matched = /^(?<year>\d\d\d\d)-(?<month>\d\d)$/.match date
-        { month: Date::MONTHNAMES[(matched[:month]).to_i],
-          year: matched[:year] }
+        m = /^(?<year>\d\d\d\d)-(?<month>\d\d)$/.match date
+        { month: Date::MONTHNAMES[(m[:month]).to_i], year: m[:year] }
       else
         begin
           d = Date.iso8601 date
@@ -210,7 +214,8 @@ module IsoDoc::Ietf
     end
 
     def note(isoxml, front)
-      a = isoxml.at(ns("//preface/abstract/note | //preface/foreword/note")) || return
+      a = isoxml.at(ns("//preface/abstract/note | //preface/foreword/note")) or
+        return
       front.note **attr_code(removeInRFC: a["removeInRFC"]) do |n|
         title = a.at(ns("./name")) and n.name do |t|
           title.children.each { |tt| parse(tt, t) }

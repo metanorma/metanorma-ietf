@@ -109,7 +109,8 @@ module IsoDoc::Ietf
           name.children.each { |nn| parse(nn, n) }
         end
         div.sourcecode **attr_code(type: node["lang"], name: node["filename"],
-                                   markers: node["markers"], src: node["src"]) do |s|
+                                   markers: node["markers"],
+                                   src: node["src"]) do |s|
           node.children.each { |x| parse(x, s) unless x.name == "name" }
         end
       end

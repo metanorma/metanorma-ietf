@@ -84,18 +84,15 @@ module IsoDoc::Ietf
     end
 
     def image_parse(node, out, caption)
-      attrs = { src: node["src"],
-                title: node["title"],
-                align: node["align"],
-                name: node["filename"],
-                anchor: node["id"],
-                type: "svg",
-                alt: node["alt"]  }
+      attrs = { src: node["src"], title: node["title"],
+                align: node["align"], name: node["filename"],
+                anchor: node["id"], type: "svg",
+                alt: node["alt"] }
       out.artwork **attr_code(attrs)
       image_title_parse(out, caption)
     end
 
-     def image_title_parse(out, caption)
+    def image_title_parse(out, caption)
       unless caption.nil?
         out.t **{ align: "center", keepWithPrevious: "true" } do |p|
           p << caption.to_s
@@ -103,38 +100,37 @@ module IsoDoc::Ietf
       end
     end
 
-     def xref_parse(node, out)
-       out.xref **attr_code(target: node["target"], 
-                            format: node["format"],
-                            relative: node["relative"]) do |l|
-                              l << get_linkend(node)
-                            end
-     end
+    def xref_parse(node, out)
+      out.xref **attr_code(target: node["target"], format: node["format"],
+                           relative: node["relative"]) do |l|
+                             l << get_linkend(node)
+                           end
+    end
 
-     def eref_parse(node, out)
-       linkend = node.children.select { |c| c.name != "locality" }
-       section = eref_clause(node.xpath(ns("./locality")), nil) || ""
-       out.relref **attr_code(target: node["bibitemid"], section: section,
+    def eref_parse(node, out)
+      linkend = node.children.select { |c| c.name != "locality" }
+      section = eref_clause(node.xpath(ns("./locality")), nil) || ""
+      out.relref **attr_code(target: node["bibitemid"], section: section,
                              displayFormat: node["displayFormat"]) do |l|
-         linkend.each { |n| parse(n, l) }
-       end
-     end
+        linkend.each { |n| parse(n, l) }
+      end
+    end
 
-     def eref_clause(refs, target)
-       refs.each do |l|
-         next unless %w(clause section).include? l["type"]
-         return l&.at(ns("./referenceFrom"))&.text
-       end
-       return nil
-     end
+    def eref_clause(refs, target)
+      refs.each do |l|
+        next unless %w(clause section).include? l["type"]
+        return l&.at(ns("./referenceFrom"))&.text
+      end
+      return nil
+    end
 
-     def index_parse(node, out)
-       out.iref nil, **attr_code(item: node["primary"],
-                                 subitem: node["secondary"])
-     end
+    def index_parse(node, out)
+      out.iref nil, **attr_code(item: node["primary"],
+                                subitem: node["secondary"])
+    end
 
-     def bookmark_parse(node, out)
-       out.bookmark nil, **attr_code(anchor: node["id"])
-     end
+    def bookmark_parse(node, out)
+      out.bookmark nil, **attr_code(anchor: node["id"])
+    end
   end
 end
