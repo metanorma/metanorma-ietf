@@ -11,18 +11,18 @@ David Waitzman <dwaitzman@BBN.COM>; Nick Nicholas <opoudjis@gmail.com>
 :workgroup: Network Working Group
 :keyword: this, that
 :revdate: 1990-04-01T00:00:00Z
-:organization: BBN STC
+:affiliation: BBN STC
 :phone: (617) 873-4323
-:uri: http://bbn.com
+:contributor-uri: http://bbn.com
 :street: 10 Moulton Street
 :city: Cambridge
 :code: MA 02238
-:organization_2: BBN STC
+:affiliation_2: BBN STC
 :phone_2: (617) 873-4323
 :street_2: 10 Moulton Street
 :city_2: Cambridge
 :code_2: MA 02238
-:uri_2: http://opoudjis.net
+:contributor-uri_2: http://opoudjis.net
 
 [abstract]
 Avian carriers can provide high delay, low throughput, and low

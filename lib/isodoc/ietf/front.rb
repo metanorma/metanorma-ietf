@@ -27,7 +27,8 @@ module IsoDoc::Ietf
     def title(isoxml, front)
       title = @meta.get[:doctitle] or return
       front.title title, **attr_code(abbrev: @meta.get[:docabbrev],
-                                     ascii: @meta.get[:docascii])
+                                     ascii: @meta.get[:docascii] ||
+                                     title.transliterate)
     end
 
     def seriesinfo(isoxml, front)

@@ -70,7 +70,6 @@ module IsoDoc::Ietf
       end
     end
 
-
     def note_label(node)
       l10n("#{super}: ")
     end
@@ -104,21 +103,14 @@ module IsoDoc::Ietf
       end
     end
 
-    # TODO no src attribute
     def sourcecode_parse(node, out)
       out.figure **attr_code(anchor: node["id"]) do |div|
-        name = node&.at(ns("./name"))&.remove and div.name do |n| 
+        name = node&.at(ns("./name"))&.remove and div.name do |n|
           name.children.each { |nn| parse(nn, n) }
         end
-        div.container do |c|
-          node.children.each { |x| parse(x, c) }
-        end
-        text = div.parent.at("./container").remove.children.to_s
         div.sourcecode **attr_code(type: node["lang"], name: node["filename"],
-                                  markers: node["markers"]) do |s|
-          node.children.each do |x|
-            parse(x, s)
-          end
+                                   markers: node["markers"], src: node["src"]) do |s|
+          node.children.each { |x| parse(x, s) unless x.name == "name" }
         end
       end
     end
@@ -151,9 +143,8 @@ module IsoDoc::Ietf
       out.t **attr_code(anchor: node["id"]) do |p|
         parse(node.at(ns("./stem")), p)
         lbl = anchor(node['id'], :label, false)
-        unless lbl.nil?
-          p << "   (#{lbl})"
-        end
+        lbl.nil? or
+          p << "    (#{lbl})"
       end
     end
 

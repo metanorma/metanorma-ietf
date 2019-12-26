@@ -534,6 +534,10 @@ RSpec.describe Asciidoctor::Ietf do
         puts x
       end
       --
+
+      [source,ruby,src="http://www.example.com"]
+      --
+      --
       INPUT
       #{BLANK_HDR}
        <sections>
@@ -541,6 +545,7 @@ RSpec.describe Asciidoctor::Ietf do
        %w{a b c}.each do |x|
          puts x
        end</sourcecode>
+       <sourcecode lang='ruby' id='_' src='http://www.example.com'/>
        </sections>
        </ietf-standard>
       OUTPUT

@@ -18,7 +18,7 @@ module IsoDoc::Ietf
     def table_footnote_cleanup(docxml)
       docxml.xpath("//table[descendant::fn]").each do |t|
         t.xpath(".//fn").each do |a|
-          t << a.remove.children
+          t << "<aside>#{a.remove.children}</aside>"
         end
       end
     end
@@ -26,7 +26,7 @@ module IsoDoc::Ietf
     def figure_footnote_cleanup(docxml)
       docxml.xpath("//figure[descendant::fn]").each do |t|
         t.xpath(".//fn").each do |a|
-          t << a.remove.children
+          t << "<aside>#{a.remove.children}</aside>"
         end
       end
     end
@@ -62,6 +62,7 @@ module IsoDoc::Ietf
     def figure_postamble(docxml)
       make_postamble(docxml)
       move_postamble(docxml)
+      move_preamble(docxml)
     end
 
     def make_postamble(docxml)
@@ -86,6 +87,9 @@ module IsoDoc::Ietf
           insert = insert.next_element
         end
       end
+    end
+
+    def move_preamble(docxml)
       docxml.xpath("//preamble").each do |p|
         insert = p.parent
         p.remove.elements.each do |e|
@@ -143,16 +147,20 @@ module IsoDoc::Ietf
       docxml.xpath("//sourcecode").each do |s|
         s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n").
           gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
-        s.traverse do |n|
-          next if n.text?
-          next if %w(name callout annotation note sourcecode).include? n.name
-          if n.name == "br" then n.replace("\n")
-          elsif n.name == "t" then n.replace("\n\n#{n.children}")
-          else
-            n.replace(n.children)
-          end
-        end
+        sourcecode_remove_markup(s)
         s.children = "<![CDATA[#{s.children.to_xml.sub(/\A\n+/, "")}]]>"
+      end
+    end
+
+    def sourcecode_remove_markup(s)
+      s.traverse do |n|
+        next if n.text?
+        next if %w(name callout annotation note sourcecode).include? n.name
+        if n.name == "br" then n.replace("\n")
+        elsif n.name == "t" then n.replace("\n\n#{n.children}")
+        else
+          n.replace(n.children)
+        end
       end
     end
 

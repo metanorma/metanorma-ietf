@@ -481,7 +481,7 @@ INPUT
         <?rfc sortrefs="yes"?>
         <rfc xmlns:xi='http://www.w3.org/2001/XInclude' docName='1000' category='BCP' submissionType='IETF' xml:lang='el' version='3' prepTime='2000-01-01T05:00:00Z'>
           <front>
-            <title>Document title</title>
+            <title ascii='Document title'>Document title</title>
             <seriesInfo value='1000' asciiValue='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>
             <seriesInfo name='' value='' status='BCP'/>
             <author fullname='Fred Flintstone' asciiFullname='Fred Flintstone'>

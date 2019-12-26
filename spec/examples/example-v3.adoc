@@ -13,7 +13,7 @@ David Waitzman <dwaitzman@BBN.COM>; Nick Nicholas <opoudjis@gmail.com>
 :revdate: 1990-04-01T00:00:00Z
 :organization: BBN STC
 :phone: (617) 873-4323
-:uri: http://bbn.com
+:contributor-uri: http://bbn.com
 :street: 10 Moulton Street
 :city: Cambridge
 :code: MA 02238
@@ -22,8 +22,8 @@ David Waitzman <dwaitzman@BBN.COM>; Nick Nicholas <opoudjis@gmail.com>
 :street_2: 10 Moulton Street
 :city_2: Cambridge
 :code_2: MA 02238
-:uri_2: http://opoudjis.net
-:link: http://example1.com,http://example2.com author
+:contributor-uri_2: http://opoudjis.net
+:equivalent: http://example1.com
 :surname: Waitzman
 :givenname: David
 :email: dwaitzman@BBN.COM

@@ -235,8 +235,10 @@ INPUT
                    <td align='center'>6,06</td>
                  </tr>
                </tfoot>
-               <t anchor='_0fe65e9a-5531-408e-8295-eeff35f41a55'>[a] Parboiled rice.</t>
              </table>
+             <aside>
+               <t anchor='_0fe65e9a-5531-408e-8295-eeff35f41a55'>[a] Parboiled rice.</t>
+               </aside>
              <dl>
                <dt>
                  <p>Drago</p>

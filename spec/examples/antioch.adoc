@@ -19,7 +19,7 @@ Arthur son of Uther Pendragon
 :surname: Pendragon
 :email: arthur.pendragon@ribose.com
 :organization: Camelot
-:uri: http://camelot.gov.example
+:contributor-uri: http://camelot.gov.example
 :address: Palace\ Camel Lot 1, Camelot, England, United Kingdom
 :comments: yes
 :notedraftinprogress: yes

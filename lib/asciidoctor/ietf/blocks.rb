@@ -69,7 +69,7 @@ module Asciidoctor
       end
 
        def listing_attrs(node)
-         super.merge(attr_code(markers: node.attr("markers")))
+         super.merge(attr_code(markers: node.attr("markers"), src: node.attr("src")))
        end
     end
   end

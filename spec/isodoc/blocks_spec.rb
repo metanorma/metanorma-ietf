@@ -244,6 +244,7 @@ B</pre>
   puts x;
   puts y
 </sourcecode>
+    <sourcecode lang="ruby" id="samplecode2" src="http://www.example.com"/>
     </foreword></preface>
     </iso-standard>
     INPUT
@@ -257,7 +258,8 @@ B</pre>
          puts x;
          puts y
        </sourcecode>
-             </figure>
+       </figure>
+       <figure anchor="samplecode2"><sourcecode type="ruby" src="http://www.example.com"/></figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
