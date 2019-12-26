@@ -87,6 +87,7 @@ RSpec.describe Asciidoctor::Ietf do
       Foreword
 
       [reviewer=ISO,date=20170101,from=foreword,to=foreword,display=false]
+      .Title
       ****
       A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.
 
@@ -130,7 +131,9 @@ RSpec.describe Asciidoctor::Ietf do
 </ext>
        </bibdata>
        <sections><p id="foreword">Foreword</p>
-       <review reviewer="ISO" id="_" date="20170101T00:00:00Z" from="foreword" to="foreword" display='false'><p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
+       <review reviewer="ISO" id="_" date="20170101T00:00:00Z" from="foreword" to="foreword" display='false'>
+       <name>Title</name>
+<p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
        <p id="_">For further information on the Foreword, see <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong></p></review></sections>
        </ietf-standard>
 

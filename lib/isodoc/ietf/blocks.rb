@@ -189,7 +189,10 @@ module IsoDoc::Ietf
     def review_note_parse(node, out)
       out.cref **attr_code(anchor: node["id"], display: node["display"],
                            source: node["reviewer"]) do |c|
-        node.children.each { |n| parse(n, c) }
+        name = node.at(ns("./name")) and c.name do |div|
+          name.children.each { |n| parse(n, div) }
+        end
+        node.children.each { |n| parse(n, c) unless n.name == "name" }
       end
     end
 

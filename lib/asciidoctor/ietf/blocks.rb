@@ -32,6 +32,16 @@ module Asciidoctor
         super.merge(attr_code(display: node.attr("display")))
       end
 
+      def sidebar(node)
+        return unless draft?
+        noko do |xml|
+          xml.review **(sidebar_attrs(node)) do |r|
+            node.title.nil? or r.name { |name| name << node.title }
+            wrap_in_para(node, r)
+          end
+        end
+      end
+
       def note(n)
         noko do |xml|
           xml.note **attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(n),
