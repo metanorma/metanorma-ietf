@@ -458,5 +458,51 @@ OUTPUT
     OUTPUT
     end
 
+    it "imposes anchor loaded with RFC references" do
+      expect(xmlpp(strip_guid(Asciidoctor::Ietf::Converter.new(nil, nil).rfc_anchor_cleanup(Nokogiri::XML(<<~INPUT)).to_xml))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    <ietf-standard>
+    <sections>
+    <clause>
+    <p><eref bibitemid="B"/></p>
+    <termsource><origin bibitemid="A"/></termsource>
+    </clause>
+    </sections>
+    <bibliography>
+    <references>
+    <bibitem id="B">
+    <docidentifier type='rfc-anchor'>A</docidentifier>
+    </bibitem>
+    <bibitem id="A">
+    <docidentifier type='rfc-anchor'>B</docidentifier>
+    </bibitem>
+    </references>
+    </bibliography>
+    </ietf-standard>
+    INPUT
+ <ietf-standard>
+         <sections>
+           <clause>
+             <p>
+               <eref bibitemid='A'/>
+             </p>
+             <termsource>
+               <origin bibitemid='B'/>
+             </termsource>
+           </clause>
+         </sections>
+         <bibliography>
+           <references>
+             <bibitem id='A'>
+               <docidentifier type='rfc-anchor'>A</docidentifier>
+             </bibitem>
+             <bibitem id='B'>
+               <docidentifier type='rfc-anchor'>B</docidentifier>
+             </bibitem>
+           </references>
+         </bibliography>
+       </ietf-standard>
+    OUTPUT
+    end
+
 
 end

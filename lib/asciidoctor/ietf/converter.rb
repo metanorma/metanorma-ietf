@@ -128,6 +128,7 @@ module Asciidoctor
 
       def cleanup(xmldoc)
         bcp14_cleanup(xmldoc)
+        rfc_anchor_cleanup(xmldoc)
         super
       end
 
@@ -140,6 +141,18 @@ module Asciidoctor
           next unless BCP_KEYWORDS.include?(s.text)
           s.name = "bcp14"
         end
+      end
+
+      def rfc_anchor_cleanup(xmldoc)
+        map = {}
+        xmldoc.xpath("//bibitem[docidentifier/@type = 'rfc-anchor']").each do |b|
+          map[b["id"]] = b.at("./docidentifier[@type = 'rfc-anchor']").text
+          b["id"] = b.at("./docidentifier[@type = 'rfc-anchor']").text
+        end
+        xmldoc.xpath("//eref | //origin").each do |x|
+          map[x["bibitemid"]] and x["bibitemid"] = map[x["bibitemid"]]
+        end
+        xmldoc
       end
 
       def smartquotes_cleanup(xmldoc)
