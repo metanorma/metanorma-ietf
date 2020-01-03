@@ -1,59 +1,104 @@
 require "spec_helper"
 require "metanorma"
 
-# RSpec.describe Metanorma::Ietf::Processor do
-#
-#   registry = Metanorma::Registry.instance
-#   registry.register(Metanorma::Ietf::Processor)
-#   processor = registry.find_processor(:csd)
-#
-#   it "registers against metanorma" do
-#     expect(processor).not_to be nil
-#   end
-#
-#   it "registers output formats against metanorma" do
-#     expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
-#     [[:doc, "doc"], [:html, "html"], [:pdf, "pdf"], [:xml, "xml"]]
-#     OUTPUT
-#   end
-#
-#   it "registers version against metanorma" do
-#     expect(processor.version.to_s).to match(%r{^Metanorma::Ietf })
-#   end
-#
-#   it "generates IsoDoc XML from a blank document" do
-#     expect(processor.input_to_isodoc(<<~"INPUT", nil)).to be_equivalent_to <<~"OUTPUT"
-#     #{ASCIIDOC_BLANK_HDR}
-#     INPUT
-#     #{BLANK_HDR}
-# <sections/>
-# </csd-standard>
-#     OUTPUT
-#   end
-#
-#   it "generates HTML from IsoDoc XML" do
-#     FileUtils.rm_f "test.xml"
-#     processor.output(<<~"INPUT", "test.html", :html)
-#                <csd-standard xmlns="http://riboseinc.com/isoxml">
-#        <sections>
-#        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-#          <term id="J">
-#          <preferred>Term2</preferred>
-#        </term>
-#         </terms>
-#         </sections>
-#         </csd-standard>
-#     INPUT
-#     expect(File.read("test.html", encoding: "utf-8").gsub(%r{^.*<main}m, "<main").gsub(%r{</main>.*}m, "</main>")).to be_equivalent_to <<~"OUTPUT"
-#            <main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-#              <p class="zzSTDTitle1"></p>
-#              <div id="H"><h1>1.&#xA0; Terms and definitions</h1><p>For the purposes of this document,
-#            the following terms and definitions apply.</p>
-#        <h2 class="TermNum" id="J">1.1&#xA0;<p class="Terms" style="text-align:left;">Term2</p></h2>
-#
-#        </div>
-#            </main>
-#     OUTPUT
-#   end
-#
-# end
+RSpec.describe Metanorma::Ietf::Processor do
+
+  registry = Metanorma::Registry.instance
+  registry.register(Metanorma::Ietf::Processor)
+  processor = registry.find_processor(:ietf)
+
+  it "registers against metanorma" do
+    expect(processor).not_to be nil
+  end
+
+  it "registers output formats against metanorma" do
+    expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
+    [[:html, "html"], [:rfc, "rfc.xml"], [:txt, "txt"], [:xml, "xml"]]
+    OUTPUT
+  end
+
+  it "registers version against metanorma" do
+    expect(processor.version.to_s).to match(%r{^Metanorma::Ietf })
+  end
+
+  it "generates IsoDoc XML from a blank document" do
+    expect(processor.input_to_isodoc(<<~"INPUT", nil)).to be_equivalent_to <<~"OUTPUT"
+    #{ASCIIDOC_BLANK_HDR}
+    INPUT
+    #{BLANK_HDR}
+<sections/>
+</csd-standard>
+    OUTPUT
+  end
+
+  it "generates HTML from IsoDoc XML" do
+    FileUtils.rm_f "test.xml"
+    processor.output(<<~"INPUT", "test.html", :html)
+           <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
+       <bibdata type="standard">
+        <title language="en" type="main" format="text/plain">Document title</title>
+        <docidentifier>1149</docidentifier>
+<docnumber>1149</docnumber>
+         <contributor>
+           <role type="publisher"/>
+           <organization>
+           <name>Internet Engineering Task Force</name>
+       <abbreviation>IETF</abbreviation>
+           </organization>
+         </contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<forename>David</forename>
+  
+<surname>Waitzman</surname>
+</name>
+<phone>(617) 873-4323</phone>
+<email>dwaitzman@BBN.COM</email>
+</person>
+</contributor>
+         <language>en</language>
+         <script>Latn</script>
+<status>
+  <stage>published</stage>
+</status>
+
+         <copyright>
+           <from>2000</from>
+           <owner>
+             <organization>
+           <name>Internet Engineering Task Force</name>
+       <abbreviation>IETF</abbreviation>
+             </organization>
+           </owner>
+         </copyright>
+         <series type="stream">
+           <title>IETF</title>
+         </series>
+         <series type="intended">
+         <title>std</title>
+         </series>
+         <ext>
+  <doctype>rfc</doctype>
+  <pi>
+  <toc>yes</toc>
+</pi>
+</ext>
+       </bibdata>
+              <sections>
+  <terms id="A" obligation="normative">
+  <title>Terms and definitions</title>
+         <p>No terms and definitions are listed in this document.</p>
+  <clause id="B" inline-header="false" obligation="normative">
+  <title>Term1</title>
+  <note id="C">
+  <p id="D">This is a note</p>
+</note>
+</clause>
+</terms>
+</sections>
+    INPUT
+    expect(File.read("test.html", encoding: "utf-8")).to include "No terms and definitions are listed in this document."
+  end
+end

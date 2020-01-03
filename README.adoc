@@ -211,3 +211,12 @@ Here are a few technical guidelines to follow:
 == Credits
 
 This gem is developed, maintained and funded by https://www.ribose.com[Ribose Inc.]
+
+== Examples
+
+////
+* Example documents are avalable at the https://github.com/metanorma/mn-samples-ietf[mn-samples-ietf] repository.
+////
+
+* Document templates are available at the https://github.com/metanorma/mn-templates-ietf[mn-templates-ietf] repository.
+

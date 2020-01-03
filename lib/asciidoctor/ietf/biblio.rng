@@ -1,0 +1,1142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  instantiations of this grammar may replace leaf strings
+  with more elaborated types; e.g. title (text) replaced with
+  title-main, title-intro, title-part; type replaced with
+  enum.
+  
+  some renaming at leaf nodes is permissible
+  
+  obligations can change both from optional to mandatory,
+  and from mandatory to optional; optional elements may
+  be omitted; freely positioned alternatives may be replaced
+  with strict ordering
+  
+  DO NOT introduce a namespace here. We do not want a distinct namespace
+  for these elements, and a distinct namespace for any grammar inheriting
+  these elements; we just want one namespace for any child grammars
+  of this.
+-->
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    https://www.myintervals.com/blog/2009/05/20/iso-8601-date-validation-that-doesnt-suck/
+    iso8601date = xsd:string { pattern = "([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?" }
+    Somewhat dumbed down for XSD regex:
+  -->
+  <define name="ISO8601DateTime">
+    <data type="string">
+      <param name="pattern">([\+\-]?\d{4})((-?)((0[1-9]|1[0-2])((-?)([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+)?)?((:?)[0-5]\d([.,]\d+)?)?([zZ]|([\+\-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?</param>
+    </data>
+  </define>
+  <define name="ISO8601Date">
+    <data type="string">
+      <param name="pattern">([\+\-]?\d{4})((-?)((0[1-9]|1[0-2])((-?)([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6]))))?</param>
+    </data>
+  </define>
+  <start>
+    <ref name="bibitem"/>
+  </start>
+  <define name="status">
+    <element name="status">
+      <ref name="stage"/>
+      <optional>
+        <ref name="substage"/>
+      </optional>
+      <optional>
+        <ref name="iteration"/>
+      </optional>
+    </element>
+  </define>
+  <define name="stage">
+    <element name="stage">
+      <text/>
+    </element>
+  </define>
+  <define name="substage">
+    <element name="substage">
+      <text/>
+    </element>
+  </define>
+  <define name="iteration">
+    <element name="iteration">
+      <text/>
+    </element>
+  </define>
+  <define name="language">
+    <element name="language">
+      <text/>
+    </element>
+  </define>
+  <define name="script">
+    <a:documentation>ISO-639</a:documentation>
+    <element name="script">
+      <text/>
+    </element>
+  </define>
+  <define name="edition">
+    <a:documentation>ISO-15924: Latn</a:documentation>
+    <element name="edition">
+      <optional>
+        <attribute name="number"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="LocalizedString">
+    <optional>
+      <!-- multiple languages and scripts possible: comma delimit them if so -->
+      <attribute name="language"/>
+    </optional>
+    <optional>
+      <attribute name="script"/>
+    </optional>
+    <text/>
+  </define>
+  <!--
+    Unlike UML, change type to format: type is overloaded
+    Would be need if plain were default value and could omit the attribute
+    Added LocalizedStringOrXsAny
+  -->
+  <define name="FormattedString">
+    <optional>
+      <!-- attribute format { ( "plain" | "html" | "docbook" | "tei" | "asciidoc" | "markdown" ) }?, -->
+      <attribute name="format">
+        <choice>
+          <value>text/plain</value>
+          <value>text/html</value>
+          <value>application/docbook+xml</value>
+          <value>application/tei+xml</value>
+          <value>text/x-asciidoc</value>
+          <value>text/markdown</value>
+          <value>application/x-isodoc+xml</value>
+          <text/>
+        </choice>
+      </attribute>
+    </optional>
+    <ref name="LocalizedStringOrXsAny"/>
+  </define>
+  <define name="LocalizedStringOrXsAny">
+    <optional>
+      <!-- multiple languages and scripts possible: comma delimit them if so -->
+      <attribute name="language"/>
+    </optional>
+    <optional>
+      <attribute name="script"/>
+    </optional>
+    <oneOrMore>
+      <choice>
+        <text/>
+        <ref name="AnyElement"/>
+      </choice>
+    </oneOrMore>
+  </define>
+  <define name="contributor">
+    <element name="contributor">
+      <zeroOrMore>
+        <ref name="role"/>
+      </zeroOrMore>
+      <ref name="ContributorInfo"/>
+    </element>
+  </define>
+  <define name="role">
+    <element name="role">
+      <optional>
+        <attribute name="type">
+          <choice>
+            <value>author</value>
+            <value>performer</value>
+            <value>publisher</value>
+            <value>editor</value>
+            <value>adapter</value>
+            <value>translator</value>
+            <value>distributor</value>
+          </choice>
+        </attribute>
+      </optional>
+      <zeroOrMore>
+        <ref name="roledescription"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="ContributorInfo">
+    <choice>
+      <ref name="person"/>
+      <ref name="organization"/>
+    </choice>
+  </define>
+  <define name="roledescription">
+    <element name="description">
+      <ref name="FormattedString"/>
+    </element>
+  </define>
+  <define name="person">
+    <element name="person">
+      <optional>
+        <ref name="fullname"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="affiliation"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="person-identifier"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="contact"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="uri"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="fullname">
+    <element name="name">
+      <ref name="FullNameType"/>
+    </element>
+  </define>
+  <define name="FullNameType">
+    <choice>
+      <group>
+        <zeroOrMore>
+          <ref name="prefix"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="forename"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="initial"/>
+        </zeroOrMore>
+        <ref name="surname"/>
+        <zeroOrMore>
+          <ref name="addition"/>
+        </zeroOrMore>
+      </group>
+      <ref name="completeName"/>
+    </choice>
+    <zeroOrMore>
+      <ref name="biblionote"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="variantname"/>
+    </zeroOrMore>
+  </define>
+  <define name="prefix">
+    <element name="prefix">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="initial">
+    <element name="initial">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="addition">
+    <element name="addition">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="surname">
+    <element name="surname">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="forename">
+    <element name="forename">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="completeName">
+    <element name="completename">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="variantname">
+    <element name="variant">
+      <attribute name="type"/>
+      <ref name="FullNameType"/>
+    </element>
+  </define>
+  <define name="affiliation">
+    <element name="affiliation">
+      <optional>
+        <ref name="affiliationname"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="affiliationdescription"/>
+      </zeroOrMore>
+      <ref name="organization"/>
+    </element>
+  </define>
+  <define name="affiliationname">
+    <element name="name">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="affiliationdescription">
+    <element name="description">
+      <ref name="FormattedString"/>
+    </element>
+  </define>
+  <define name="organization">
+    <element name="organization">
+      <oneOrMore>
+        <ref name="orgname"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="subdivision"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="abbreviation"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="uri"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="org-identifier"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="contact"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="orgname">
+    <element name="name">
+      <choice>
+        <ref name="LocalizedString"/>
+        <ref name="NameWithVariants"/>
+      </choice>
+    </element>
+  </define>
+  <define name="subdivision">
+    <element name="subdivision">
+      <choice>
+        <ref name="LocalizedString"/>
+        <ref name="NameWithVariants"/>
+      </choice>
+    </element>
+  </define>
+  <define name="NameWithVariants">
+    <element name="primary">
+      <ref name="LocalizedString"/>
+    </element>
+    <zeroOrMore>
+      <element name="variant">
+        <ref name="NameWithVariants1"/>
+      </element>
+    </zeroOrMore>
+  </define>
+  <define name="NameWithVariants1">
+    <attribute name="type"/>
+    <element name="primary">
+      <ref name="LocalizedString"/>
+    </element>
+    <zeroOrMore>
+      <element name="variant">
+        <ref name="NameWithVariants1"/>
+      </element>
+    </zeroOrMore>
+  </define>
+  <define name="abbreviation">
+    <element name="abbreviation">
+      <ref name="LocalizedString"/>
+    </element>
+  </define>
+  <define name="uri">
+    <element name="uri">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <data type="anyURI"/>
+    </element>
+  </define>
+  <!-- TODO may change -->
+  <define name="contact">
+    <choice>
+      <ref name="address"/>
+      <ref name="phone"/>
+      <ref name="email"/>
+      <ref name="uri"/>
+    </choice>
+  </define>
+  <define name="phone">
+    <element name="phone">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="email">
+    <element name="email">
+      <text/>
+    </element>
+  </define>
+  <define name="address">
+    <element name="address">
+      <choice>
+        <!-- iso191606 TODO -->
+        <group>
+          <oneOrMore>
+            <ref name="street"/>
+          </oneOrMore>
+          <ref name="city"/>
+          <optional>
+            <ref name="state"/>
+          </optional>
+          <ref name="country"/>
+          <optional>
+            <ref name="postcode"/>
+          </optional>
+        </group>
+        <ref name="formattedAddress"/>
+      </choice>
+    </element>
+  </define>
+  <define name="street">
+    <element name="street">
+      <text/>
+    </element>
+  </define>
+  <define name="city">
+    <element name="city">
+      <text/>
+    </element>
+  </define>
+  <define name="state">
+    <element name="state">
+      <text/>
+    </element>
+  </define>
+  <define name="country">
+    <element name="country">
+      <text/>
+    </element>
+  </define>
+  <define name="postcode">
+    <element name="postcode">
+      <text/>
+    </element>
+  </define>
+  <define name="formattedAddress">
+    <element name="formattedAddress">
+      <text/>
+    </element>
+  </define>
+  <define name="person-identifier">
+    <element name="identifier">
+      <attribute name="type">
+        <choice>
+          <value>isni</value>
+          <value>uri</value>
+        </choice>
+      </attribute>
+      <text/>
+    </element>
+  </define>
+  <define name="org-identifier">
+    <element name="identifier">
+      <attribute name="type">
+        <choice>
+          <value>orcid</value>
+          <value>uri</value>
+        </choice>
+      </attribute>
+      <text/>
+    </element>
+  </define>
+  <define name="citation">
+    <element name="citation">
+      <ref name="CitationType"/>
+    </element>
+  </define>
+  <define name="CitationType">
+    <attribute name="bibitemid">
+      <data type="IDREF"/>
+    </attribute>
+    <zeroOrMore>
+      <ref name="locality"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="date"/>
+    </optional>
+  </define>
+  <define name="date">
+    <element name="date">
+      <ref name="ISO8601Date"/>
+    </element>
+  </define>
+  <define name="locality">
+    <element name="locality">
+      <ref name="BibItemLocality"/>
+    </element>
+  </define>
+  <define name="BibItemLocality">
+    <attribute name="type">
+      <ref name="LocalityType"/>
+    </attribute>
+    <optional>
+      <ref name="referenceFrom"/>
+    </optional>
+    <optional>
+      <ref name="referenceTo"/>
+    </optional>
+  </define>
+  <define name="LocalityType">
+    <data type="string">
+      <param name="pattern">section|clause|part|paragraph|chapter|page|whole|table|annex|figure|note|list|example|volume|issue|time|locality:[a-zA-Z0-9_]+</param>
+    </data>
+  </define>
+  <define name="referenceFrom">
+    <element name="referenceFrom">
+      <text/>
+    </element>
+  </define>
+  <define name="referenceTo">
+    <element name="referenceTo">
+      <text/>
+    </element>
+  </define>
+  <!-- unlike UML, has id attribute; that results from including bibitem in a docmodel -->
+  <define name="bibitem">
+    <element name="bibitem">
+      <attribute name="id">
+        <data type="ID"/>
+      </attribute>
+      <ref name="BibliographicItem"/>
+    </element>
+  </define>
+  <define name="bibitem_no_id">
+    <element name="bibitem">
+      <ref name="BibliographicItem"/>
+    </element>
+  </define>
+  <define name="relaton_collection">
+    <element name="relaton-collection">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <ref name="btitle"/>
+      <zeroOrMore>
+        <ref name="contributor"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="docrelation"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="BibItemType" combine="choice">
+    <choice>
+      <value>article</value>
+      <value>book</value>
+      <value>booklet</value>
+      <value>manual</value>
+      <value>proceedings</value>
+      <value>presentation</value>
+      <value>thesis</value>
+      <value>techreport</value>
+      <value>standard</value>
+      <value>unpublished</value>
+      <value>map</value>
+      <value>electronic resource</value>
+      <value>audiovisual</value>
+      <value>film</value>
+      <value>video</value>
+      <value>broadcast</value>
+      <value>software</value>
+      <value>graphic_work</value>
+      <value>music</value>
+      <value>patent</value>
+      <value>inbook</value>
+      <value>incollection</value>
+      <value>inproceedings</value>
+      <value>journal</value>
+      <value>website</value>
+      <value>webresource</value>
+      <value>dataset</value>
+      <value>archival</value>
+      <value>social_media</value>
+      <value>alert</value>
+      <value>message</value>
+      <value>conversation</value>
+      <value>misc</value>
+    </choice>
+  </define>
+  <define name="BibliographicItem">
+    <optional>
+      <attribute name="type">
+        <ref name="BibItemType"/>
+      </attribute>
+    </optional>
+    <optional>
+      <ref name="fetched"/>
+    </optional>
+    <choice>
+      <oneOrMore>
+        <ref name="btitle"/>
+      </oneOrMore>
+      <ref name="formattedref"/>
+    </choice>
+    <zeroOrMore>
+      <ref name="bsource"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="docidentifier"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="docnumber"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="bdate"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="contributor"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="edition"/>
+    </optional>
+    <optional>
+      <ref name="version"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="biblionote"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="language"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="script"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="bibabstract"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="status"/>
+    </optional>
+    <optional>
+      <ref name="copyright"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="docrelation"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="series"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="medium"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="bplace"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="bprice"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="extent"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="accesslocation"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="license"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="bclassification"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="bkeyword"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="validity"/>
+    </optional>
+  </define>
+  <define name="btitle">
+    <element name="title">
+      <ref name="TypedTitleString"/>
+    </element>
+  </define>
+  <define name="bsource">
+    <element name="uri">
+      <ref name="TypedUri"/>
+    </element>
+  </define>
+  <define name="formattedref">
+    <element name="formattedref">
+      <ref name="FormattedString"/>
+    </element>
+  </define>
+  <define name="license">
+    <element name="license">
+      <text/>
+    </element>
+  </define>
+  <define name="fetched">
+    <element name="fetched">
+      <ref name="ISO8601DateTime"/>
+    </element>
+  </define>
+  <define name="validity">
+    <element name="validity">
+      <optional>
+        <ref name="validityBegins"/>
+      </optional>
+      <optional>
+        <ref name="validityEnds"/>
+      </optional>
+      <optional>
+        <ref name="validityRevision"/>
+      </optional>
+    </element>
+  </define>
+  <define name="validityBegins">
+    <element name="validityBegins">
+      <ref name="ISO8601DateTime"/>
+    </element>
+  </define>
+  <define name="validityEnds">
+    <element name="validityEnds">
+      <ref name="ISO8601DateTime"/>
+    </element>
+  </define>
+  <define name="validityRevision">
+    <element name="revision">
+      <ref name="ISO8601DateTime"/>
+    </element>
+  </define>
+  <define name="TypedTitleString">
+    <optional>
+      <attribute name="type">
+        <ref name="TitleType"/>
+      </attribute>
+    </optional>
+    <ref name="FormattedString"/>
+  </define>
+  <define name="TitleType">
+    <choice>
+      <value>alternative</value>
+      <value>original</value>
+      <value>unofficial</value>
+      <value>subtitle</value>
+      <value>main</value>
+    </choice>
+  </define>
+  <define name="TypedUri">
+    <optional>
+      <attribute name="type"/>
+    </optional>
+    <data type="anyURI"/>
+  </define>
+  <define name="DateType">
+    <optional>
+      <attribute name="text"/>
+    </optional>
+    <optional>
+      <ref name="ISO8601Date"/>
+    </optional>
+  </define>
+  <define name="BibliographicDateType">
+    <choice>
+      <value>published</value>
+      <value>accessed</value>
+      <value>created</value>
+      <value>implemented</value>
+      <value>obsoleted</value>
+      <value>confirmed</value>
+      <value>updated</value>
+      <value>issued</value>
+      <value>transmitted</value>
+      <value>copied</value>
+      <value>unchanged</value>
+      <value>circulated</value>
+      <value>adapted</value>
+    </choice>
+  </define>
+  <define name="bdate">
+    <element name="date">
+      <attribute name="type">
+        <choice>
+          <ref name="BibliographicDateType"/>
+          <text/>
+        </choice>
+      </attribute>
+      <optional>
+        <attribute name="text"/>
+      </optional>
+      <optional>
+        <choice>
+          <group>
+            <element name="from">
+              <ref name="ISO8601Date"/>
+            </element>
+            <optional>
+              <element name="to">
+                <ref name="ISO8601Date"/>
+              </element>
+            </optional>
+          </group>
+          <element name="on">
+            <ref name="ISO8601Date"/>
+          </element>
+        </choice>
+      </optional>
+    </element>
+  </define>
+  <define name="docidentifier">
+    <element name="docidentifier">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <optional>
+        <attribute name="scope"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="docnumber">
+    <element name="docnumber">
+      <text/>
+    </element>
+  </define>
+  <define name="bclassification">
+    <element name="classification">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="bplace">
+    <element name="place">
+      <optional>
+        <attribute name="uri">
+          <data type="anyURI"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="region"/>
+      </optional>
+      <text/>
+    </element>
+  </define>
+  <define name="bprice">
+    <element name="price">
+      <attribute name="currency"/>
+      <text/>
+    </element>
+  </define>
+  <define name="medium">
+    <element name="medium">
+      <optional>
+        <ref name="bcontent"/>
+      </optional>
+      <optional>
+        <ref name="genre"/>
+      </optional>
+      <optional>
+        <ref name="form"/>
+      </optional>
+      <optional>
+        <ref name="carrier"/>
+      </optional>
+      <optional>
+        <ref name="size"/>
+      </optional>
+      <optional>
+        <ref name="scale"/>
+      </optional>
+    </element>
+  </define>
+  <define name="bcontent">
+    <element name="content">
+      <text/>
+    </element>
+  </define>
+  <define name="genre">
+    <element name="genre">
+      <text/>
+    </element>
+  </define>
+  <define name="form">
+    <element name="form">
+      <text/>
+    </element>
+  </define>
+  <define name="carrier">
+    <element name="carrier">
+      <text/>
+    </element>
+  </define>
+  <define name="size">
+    <element name="size">
+      <text/>
+    </element>
+  </define>
+  <define name="scale">
+    <element name="scale">
+      <text/>
+    </element>
+  </define>
+  <define name="accesslocation">
+    <element name="accesslocation">
+      <text/>
+    </element>
+  </define>
+  <define name="extent">
+    <element name="extent">
+      <ref name="BibItemLocality"/>
+    </element>
+  </define>
+  <define name="series">
+    <element name="series">
+      <optional>
+        <attribute name="type">
+          <ref name="SeriesType"/>
+        </attribute>
+      </optional>
+      <choice>
+        <ref name="formattedref"/>
+        <group>
+          <ref name="btitle"/>
+          <optional>
+            <ref name="bplace"/>
+          </optional>
+          <optional>
+            <ref name="seriesorganization"/>
+          </optional>
+          <optional>
+            <ref name="abbreviation"/>
+          </optional>
+          <optional>
+            <ref name="seriesfrom"/>
+          </optional>
+          <optional>
+            <ref name="seriesto"/>
+          </optional>
+          <optional>
+            <ref name="seriesnumber"/>
+          </optional>
+          <optional>
+            <ref name="seriespartnumber"/>
+          </optional>
+          <optional>
+            <ref name="seriesrun"/>
+          </optional>
+        </group>
+      </choice>
+    </element>
+  </define>
+  <define name="SeriesType">
+    <choice>
+      <value>main</value>
+      <value>alt</value>
+      <text/>
+    </choice>
+  </define>
+  <define name="seriesorganization">
+    <element name="organization">
+      <text/>
+    </element>
+  </define>
+  <define name="seriesfrom">
+    <element name="from">
+      <ref name="ISO8601Date"/>
+    </element>
+  </define>
+  <define name="seriesto">
+    <element name="to">
+      <ref name="ISO8601Date"/>
+    </element>
+  </define>
+  <define name="seriesnumber">
+    <element name="number">
+      <text/>
+    </element>
+  </define>
+  <define name="seriespartnumber">
+    <element name="partnumber">
+      <text/>
+    </element>
+  </define>
+  <define name="seriesrun">
+    <element name="run">
+      <text/>
+    </element>
+  </define>
+  <define name="biblionote">
+    <element name="note">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <ref name="FormattedString"/>
+    </element>
+  </define>
+  <define name="bibabstract">
+    <element name="abstract">
+      <ref name="FormattedString"/>
+    </element>
+  </define>
+  <define name="copyright">
+    <element name="copyright">
+      <ref name="from"/>
+      <optional>
+        <ref name="to"/>
+      </optional>
+      <ref name="owner"/>
+    </element>
+  </define>
+  <define name="from">
+    <element name="from">
+      <data type="gYear"/>
+    </element>
+  </define>
+  <define name="to">
+    <element name="to">
+      <data type="gYear"/>
+    </element>
+  </define>
+  <define name="owner">
+    <element name="owner">
+      <ref name="ContributorInfo"/>
+    </element>
+  </define>
+  <define name="DocRelationType">
+    <choice>
+      <value>obsoletes</value>
+      <value>obsoletedBy</value>
+      <value>supersedes</value>
+      <value>supersededBy</value>
+      <value>updates</value>
+      <value>updatedBy</value>
+      <value>complements</value>
+      <value>derivedFrom</value>
+      <value>translatedFrom</value>
+      <value>hasTranslation</value>
+      <value>adoptedFrom</value>
+      <value>equivalent</value>
+      <value>identical</value>
+      <value>nonequivalent</value>
+      <value>includedIn</value>
+      <value>includes</value>
+      <value>instance</value>
+      <value>instanceOf</value>
+      <value>partOf</value>
+      <value>hasPart</value>
+      <value>hasDraft</value>
+      <value>draftOf</value>
+      <value>merges</value>
+      <value>splits</value>
+      <value>amends</value>
+      <value>amendedBy</value>
+      <value>corrects</value>
+      <value>correctedBy</value>
+      <value>revises</value>
+      <value>revisedBy</value>
+      <value>describes</value>
+      <value>describedBy</value>
+    </choice>
+  </define>
+  <define name="docrelation">
+    <element name="relation">
+      <attribute name="type">
+        <ref name="DocRelationType"/>
+      </attribute>
+      <element name="bibitem">
+        <ref name="BibliographicItem"/>
+      </element>
+      <zeroOrMore>
+        <ref name="locality"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="version">
+    <element name="version">
+      <optional>
+        <ref name="revision-date"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="draft"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="vedition">
+    <element name="edition">
+      <data type="int"/>
+    </element>
+  </define>
+  <define name="revision-date">
+    <element name="revision-date">
+      <ref name="ISO8601Date"/>
+    </element>
+  </define>
+  <define name="draft">
+    <element name="draft">
+      <text/>
+    </element>
+  </define>
+  <define name="bkeyword">
+    <element name="keyword">
+      <choice>
+        <ref name="LocalizedString"/>
+        <group>
+          <element name="vocab">
+            <ref name="LocalizedString"/>
+          </element>
+          <oneOrMore>
+            <ref name="vocabid"/>
+          </oneOrMore>
+        </group>
+        <group>
+          <oneOrMore>
+            <element name="taxon">
+              <ref name="LocalizedString"/>
+            </element>
+          </oneOrMore>
+          <oneOrMore>
+            <ref name="vocabid"/>
+          </oneOrMore>
+        </group>
+      </choice>
+    </element>
+  </define>
+  <define name="vocabid">
+    <element name="vocabid">
+      <attribute name="type"/>
+      <optional>
+        <attribute name="uri">
+          <data type="anyURI"/>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="code">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="term">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <!--
+    Anycontents = mixed {
+    https://github.com/relaxng/jing-trang/issues/211
+    https://lists.oasis-open.org/archives/office/200808/msg00024.html
+    https://lists.oasis-open.org/archives/office/200808/msg00099.html
+    For this to work, we will actually strip any attributes in the Anycontents before
+    passing it for validation. Horrible I know, but there are no good alternatives
+    that also allow us to do grammar inheritance
+    (attribute * { text } | Any)*
+           Any*
+    }
+  -->
+  <define name="AnyElement">
+    <element>
+      <anyName/>
+      <oneOrMore>
+        <choice>
+          <text/>
+          <ref name="AnyElement"/>
+        </choice>
+      </oneOrMore>
+    </element>
+  </define>
+</grammar>

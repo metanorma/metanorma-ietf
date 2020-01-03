@@ -73,6 +73,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR"
       :docfile: test.adoc
       :nodoc:
       :novalid:
+      :no-isobib:
 
 HDR
 
@@ -85,63 +86,69 @@ VALIDATING_BLANK_HDR = <<~"HDR"
 HDR
 
 BLANK_HDR = <<~"HDR"
-       <?xml version="1.0" encoding="UTF-8"?>
-       <csd-standard xmlns="https://www.calconnect.org/standards/csd">
+<?xml version='1.0' encoding='UTF-8'?>
+       <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
        <bibdata type="standard">
-
-         <docidentifier type="csd">CC ???</docidentifier>
-         <contributor>
-           <role type="author"/>
-           <organization>
-             <name>IETF</name>
-           </organization>
-         </contributor>
+        <title language="en" type="main" format="text/plain">Document title</title>
          <contributor>
            <role type="publisher"/>
            <organization>
-             <name>IETF</name>
+           <name>Internet Engineering Task Force</name>
+       <abbreviation>IETF</abbreviation>
            </organization>
          </contributor>
 
          <language>en</language>
          <script>Latn</script>
+<status>
+  <stage>published</stage>
+</status>
 
          <copyright>
-           <from>#{Time.new.year}</from>
+           <from>2000</from>
            <owner>
              <organization>
-               <name>IETF</name>
+           <name>Internet Engineering Task Force</name>
+       <abbreviation>IETF</abbreviation>
              </organization>
            </owner>
          </copyright>
-         <editorialgroup>
-           <technical-committee/>
-         </editorialgroup>
+         <series type="stream">
+           <title>IETF</title>
+         </series>
+         <ext>
+  <doctype>Internet-Draft</doctype>
+  <pi>
+  <toc>yes</toc>
+</pi>
+</ext>
        </bibdata>
 HDR
 
-HTML_HDR = <<~"HDR"
-         <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-           <div class="title-section">
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class="prefatory-section">
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class="main-section">
+XML_HDR = <<~"HDR"
+<?xml version='1.0'?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
+  <front>
+  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+    <abstract>
 HDR
 
-XML_HDR = <<~"HDR"
-      <?xml version="1.0" encoding="US-ASCII"?>
-      <?xml-stylesheet type="text/xsl" href="rfc2629.xslt"?>
-      <!DOCTYPE rfc SYSTEM "#{dtd_absolute_path}">
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc toc="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
+RFC_HDR = <<~"HDR"
+<?xml version='1.0'?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
+         <front>
+  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+</front>
 HDR

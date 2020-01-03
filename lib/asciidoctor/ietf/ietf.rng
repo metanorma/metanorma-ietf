@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    Currently we inherit from a namespaced grammar, isostandard. Until we inherit from isodoc,
+    we cannot have a new default namespace: we will end up with a grammar with two different
+    namespaces, one for isostandard and one for ietf additions. And we do not want that.
+  -->
+  <include href="isostandard.rng">
+    <start>
+      <ref name="ietf-standard"/>
+    </start>
+    <define name="DocumentType">
+      <choice>
+        <value>rfc</value>
+        <value>internet-draft</value>
+      </choice>
+    </define>
+    <define name="BibDataExtensionType">
+      <optional>
+        <ref name="doctype"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="editorialgroup"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="ics"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="area"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="ipr"/>
+      </optional>
+      <optional>
+        <ref name="consensus"/>
+      </optional>
+      <optional>
+        <ref name="index-include"/>
+      </optional>
+      <optional>
+        <ref name="ipr-extract"/>
+      </optional>
+      <optional>
+        <ref name="sort-refs"/>
+      </optional>
+      <optional>
+        <ref name="sym-refs"/>
+      </optional>
+      <optional>
+        <ref name="toc-include"/>
+      </optional>
+      <optional>
+        <ref name="toc-depth"/>
+      </optional>
+      <optional>
+        <ref name="show-on-front-page"/>
+      </optional>
+      <optional>
+        <ref name="processing-instructions"/>
+      </optional>
+    </define>
+    <define name="ParagraphType">
+      <attribute name="id">
+        <data type="ID"/>
+      </attribute>
+      <optional>
+        <attribute name="align">
+          <ref name="Alignments"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="keepWithNext">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="keepWithPrevious">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <zeroOrMore>
+        <ref name="TextElement"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="note"/>
+      </zeroOrMore>
+    </define>
+    <define name="paragraph-with-footnote">
+      <element name="p">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="align">
+            <ref name="Alignments"/>
+          </attribute>
+        </optional>
+        <zeroOrMore>
+          <choice>
+            <ref name="TextElement"/>
+            <ref name="fn"/>
+          </choice>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="ul">
+      <element name="ul">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="nobullet"/>
+        </optional>
+        <optional>
+          <attribute name="spacing"/>
+        </optional>
+        <oneOrMore>
+          <ref name="li"/>
+        </oneOrMore>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="ol">
+      <element name="ol">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <attribute name="type">
+          <choice>
+            <value>roman</value>
+            <value>alphabet</value>
+            <value>arabic</value>
+            <value>roman_upper</value>
+            <value>alphabet_upper</value>
+            <value>text</value>
+          </choice>
+        </attribute>
+        <optional>
+          <attribute name="group"/>
+        </optional>
+        <optional>
+          <attribute name="spacing"/>
+        </optional>
+        <optional>
+          <attribute name="start"/>
+        </optional>
+        <oneOrMore>
+          <ref name="li"/>
+        </oneOrMore>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="dl">
+      <element name="dl">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="newline"/>
+        </optional>
+        <optional>
+          <attribute name="indent"/>
+        </optional>
+        <optional>
+          <attribute name="spacing"/>
+        </optional>
+        <oneOrMore>
+          <ref name="dt"/>
+          <ref name="dd"/>
+        </oneOrMore>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="review">
+      <element name="review">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <attribute name="reviewer"/>
+        <optional>
+          <attribute name="date">
+            <data type="dateTime"/>
+          </attribute>
+        </optional>
+        <attribute name="from">
+          <data type="IDREF"/>
+        </attribute>
+        <optional>
+          <attribute name="to">
+            <data type="IDREF"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="display"/>
+        </optional>
+        <oneOrMore>
+          <ref name="paragraph"/>
+        </oneOrMore>
+      </element>
+    </define>
+    <define name="note">
+      <element name="note">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="removeInRFC"/>
+        </optional>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <oneOrMore>
+          <ref name="paragraph"/>
+        </oneOrMore>
+      </element>
+    </define>
+    <define name="pre">
+      <element name="pre">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="alt"/>
+        </optional>
+        <optional>
+          <attribute name="align"/>
+        </optional>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <text/>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="image">
+      <element name="image">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <attribute name="src">
+          <data type="anyURI"/>
+        </attribute>
+        <attribute name="mimetype"/>
+        <optional>
+          <attribute name="filename"/>
+        </optional>
+        <optional>
+          <attribute name="width">
+            <choice>
+              <data type="int"/>
+              <value>auto</value>
+            </choice>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="height">
+            <choice>
+              <data type="int"/>
+              <value>auto</value>
+            </choice>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="alt"/>
+        </optional>
+        <optional>
+          <attribute name="title"/>
+        </optional>
+        <optional>
+          <attribute name="longdesc">
+            <data type="anyURI"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="align"/>
+        </optional>
+      </element>
+    </define>
+    <define name="sourcecode">
+      <element name="sourcecode">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="unnumbered">
+            <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="subsequence"/>
+        </optional>
+        <optional>
+          <attribute name="lang"/>
+        </optional>
+        <optional>
+          <attribute name="markers"/>
+        </optional>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <oneOrMore>
+          <choice>
+            <text/>
+            <ref name="callout"/>
+          </choice>
+        </oneOrMore>
+        <zeroOrMore>
+          <ref name="annotation"/>
+        </zeroOrMore>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="xref">
+      <element name="xref">
+        <attribute name="target">
+          <data type="IDREF"/>
+        </attribute>
+        <optional>
+          <attribute name="type">
+            <ref name="ReferenceFormat"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="alt"/>
+        </optional>
+        <optional>
+          <attribute name="format"/>
+        </optional>
+        <text/>
+      </element>
+    </define>
+    <define name="erefType">
+      <optional>
+        <attribute name="normative">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <attribute name="citeas"/>
+      <attribute name="type">
+        <ref name="ReferenceFormat"/>
+      </attribute>
+      <optional>
+        <attribute name="alt"/>
+      </optional>
+      <optional>
+        <attribute name="displayFormat"/>
+      </optional>
+      <optional>
+        <attribute name="relative"/>
+      </optional>
+      <ref name="CitationType"/>
+      <text/>
+    </define>
+    <define name="quote-source">
+      <element name="source">
+        <ref name="erefTypeURI"/>
+      </element>
+    </define>
+    <define name="table">
+      <element name="table">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+        <optional>
+          <attribute name="unnumbered">
+            <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="subsequence"/>
+        </optional>
+        <optional>
+          <attribute name="alt"/>
+        </optional>
+        <optional>
+          <attribute name="summary"/>
+        </optional>
+        <optional>
+          <attribute name="uri">
+            <data type="anyURI"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="align"/>
+        </optional>
+        <optional>
+          <ref name="tname"/>
+        </optional>
+        <optional>
+          <ref name="thead"/>
+        </optional>
+        <ref name="tbody"/>
+        <optional>
+          <ref name="tfoot"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="table-note"/>
+        </zeroOrMore>
+        <optional>
+          <ref name="dl"/>
+        </optional>
+      </element>
+    </define>
+    <define name="Clause-Section">
+      <optional>
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="language"/>
+      </optional>
+      <optional>
+        <attribute name="script"/>
+      </optional>
+      <optional>
+        <attribute name="numbered"/>
+      </optional>
+      <optional>
+        <attribute name="removeInRFC"/>
+      </optional>
+      <optional>
+        <attribute name="toc"/>
+      </optional>
+      <optional>
+        <attribute name="inline-header">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <attribute name="obligation">
+        <choice>
+          <value>normative</value>
+          <value>informative</value>
+        </choice>
+      </attribute>
+      <optional>
+        <ref name="section-title"/>
+      </optional>
+      <group>
+        <group>
+          <zeroOrMore>
+            <ref name="BasicBlock"/>
+          </zeroOrMore>
+          <zeroOrMore>
+            <ref name="note"/>
+          </zeroOrMore>
+        </group>
+        <zeroOrMore>
+          <choice>
+            <ref name="clause-subsection"/>
+            <ref name="terms"/>
+            <ref name="definitions"/>
+          </choice>
+        </zeroOrMore>
+      </group>
+    </define>
+    <define name="annex">
+      <element name="annex">
+        <optional>
+          <attribute name="id">
+            <data type="ID"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="language"/>
+        </optional>
+        <optional>
+          <attribute name="script"/>
+        </optional>
+        <attribute name="obligation">
+          <choice>
+            <value>normative</value>
+            <value>informative</value>
+          </choice>
+        </attribute>
+        <optional>
+          <attribute name="numbered"/>
+        </optional>
+        <optional>
+          <attribute name="removeInRFC"/>
+        </optional>
+        <optional>
+          <attribute name="toc"/>
+        </optional>
+        <optional>
+          <ref name="section-title"/>
+        </optional>
+        <group>
+          <group>
+            <zeroOrMore>
+              <ref name="BasicBlock"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <ref name="note"/>
+            </zeroOrMore>
+          </group>
+          <zeroOrMore>
+            <ref name="clause-subsection"/>
+          </zeroOrMore>
+        </group>
+      </element>
+    </define>
+    <define name="Content-Section">
+      <optional>
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="language"/>
+      </optional>
+      <optional>
+        <attribute name="script"/>
+      </optional>
+      <optional>
+        <attribute name="numbered"/>
+      </optional>
+      <optional>
+        <attribute name="removeInRFC"/>
+      </optional>
+      <optional>
+        <attribute name="toc"/>
+      </optional>
+      <optional>
+        <ref name="section-title"/>
+      </optional>
+      <group>
+        <group>
+          <zeroOrMore>
+            <ref name="BasicBlock"/>
+          </zeroOrMore>
+          <zeroOrMore>
+            <ref name="note"/>
+          </zeroOrMore>
+        </group>
+        <zeroOrMore>
+          <ref name="content-subsection"/>
+        </zeroOrMore>
+      </group>
+    </define>
+    <define name="editorialgroup">
+      <element name="editorialgroup">
+        <zeroOrMore>
+          <ref name="committee"/>
+        </zeroOrMore>
+      </element>
+    </define>
+  </include>
+  <define name="TextElement" combine="choice">
+    <ref name="bcp14"/>
+  </define>
+  <define name="bcp14">
+    <element name="bcp14">
+      <text/>
+    </element>
+  </define>
+  <define name="committee">
+    <element name="committee">
+      <ref name="IsoWorkgroup"/>
+    </element>
+  </define>
+  <define name="area">
+    <element name="area">
+      <choice>
+        <value>art</value>
+        <value>gen</value>
+        <value>int</value>
+        <value>ops</value>
+        <value>rtg</value>
+        <value>sec</value>
+        <value>tsv</value>
+        <value>Applications and Real-Time</value>
+        <value>General</value>
+        <value>Internet</value>
+        <value>Operations and Management</value>
+        <value>Routing</value>
+        <value>Security</value>
+        <value>Transport</value>
+      </choice>
+    </element>
+  </define>
+  <define name="comment">
+    <element name="comment">
+      <text/>
+    </element>
+  </define>
+  <define name="ipr">
+    <element name="ipr">
+      <text/>
+    </element>
+  </define>
+  <define name="consensus">
+    <element name="consensus">
+      <text/>
+    </element>
+  </define>
+  <define name="index-include">
+    <element name="indexInclude">
+      <text/>
+    </element>
+  </define>
+  <define name="ipr-extract">
+    <element name="iprExtract">
+      <text/>
+    </element>
+  </define>
+  <define name="sort-refs">
+    <element name="sortRefs">
+      <text/>
+    </element>
+  </define>
+  <define name="sym-refs">
+    <element name="symRefs">
+      <text/>
+    </element>
+  </define>
+  <define name="toc-include">
+    <element name="tocInclude">
+      <text/>
+    </element>
+  </define>
+  <define name="toc-depth">
+    <element name="tocDepth">
+      <text/>
+    </element>
+  </define>
+  <define name="show-on-front-page">
+    <element name="showOnFrontPage">
+      <text/>
+    </element>
+  </define>
+  <define name="processing-instructions">
+    <element name="pi">
+      <optional>
+        <element name="artworkdelimiter">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="artworklines">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="authorship">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="autobreaks">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="background">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="colonspace">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="comments">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="docmapping">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="editing">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="emoticonic">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="footer">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="header">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="inline">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="iprnotified">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="linkmailto">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="linefile">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="notedraftinprogress">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="private">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="refparent">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="rfcedstyle">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="slides">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="text-list-symbols">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="tocappendix">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="tocindent">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="tocnarrow">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="tocompact">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="topblock">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="useobject">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="strict">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="compact">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="subcompact">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="toc">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="tocdepth">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="symrefs">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="sortrefs">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
+  <define name="erefTypeURI">
+    <optional>
+      <attribute name="normative">
+        <data type="boolean"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="citeas"/>
+    </optional>
+    <attribute name="type">
+      <ref name="ReferenceFormat"/>
+    </attribute>
+    <optional>
+      <attribute name="alt"/>
+    </optional>
+    <optional>
+      <attribute name="displayFormat"/>
+    </optional>
+    <optional>
+      <attribute name="relative"/>
+    </optional>
+    <optional>
+      <attribute name="bibitemid">
+        <data type="IDREF"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="uri">
+        <data type="anyURI"/>
+      </attribute>
+    </optional>
+    <zeroOrMore>
+      <ref name="locality"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="date"/>
+    </optional>
+    <text/>
+  </define>
+  <define name="ietf-standard">
+    <element name="ietf-standard">
+      <ref name="bibdata"/>
+      <zeroOrMore>
+        <ref name="termdocsource"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="boilerplate"/>
+      </optional>
+      <ref name="preface"/>
+      <oneOrMore>
+        <ref name="sections"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="annex"/>
+      </zeroOrMore>
+      <ref name="bibliography"/>
+    </element>
+  </define>
+</grammar>
