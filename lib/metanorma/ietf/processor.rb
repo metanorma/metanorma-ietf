@@ -49,7 +49,7 @@ module Metanorma
       def output(isodoc_node, outname, format, options={})
         case format
         when :rfc
-          IsoDoc::Ietf::RfcConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::Ietf::RfcConvert.new(options).convert(outname.sub(/\.xml/, ""), isodoc_node)
           @done_rfc = true
 
         when :txt, :html
