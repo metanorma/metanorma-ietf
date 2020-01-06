@@ -579,8 +579,7 @@ OUTPUT
          </back>
        </rfc>
       INPUT
-      <?xml version="1.0"?>
-       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3" prepTime="2000-01-01T05:00:00Z">
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3" prepTime="2000-01-01T05:00:00Z">
           <front>
             <abstract>
               <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
@@ -601,6 +600,7 @@ OUTPUT
               <reference anchor="ISO712">
                 <front>
                   <title>ISO 712, Cereals or cereal products</title>
+                 <author surname="Unknown"/>
                 </front>
               </reference>
               <reference anchor="ISO16634">
@@ -633,15 +633,16 @@ OUTPUT
                 <front>
                   <title>
                     ICC 167, Standard No I.C.C 167.
-                    <em>
+
                       Determination of the protein content in cereal and cereal products
                       for food and animal feeding stuffs according to the Dumas
                       combustion method
-                    </em>
+
                      (see
-                    <eref target="http://www.icc.or.at"/>
+
                     )
                   </title>
+                 <author surname="Unknown"/>
                 </front>
               <annotation>
                 NOTE: This is an annotation of ISO 20483:2013-2014
@@ -653,11 +654,13 @@ OUTPUT
               <reference anchor="ISBN">
                 <front>
                   <title>1, Chemicals for analytical laboratory use</title>
+                 <author surname="Unknown"/>
                 </front>
               </reference>
               <reference anchor="ISSN">
                 <front>
                   <title>2, Instruments for analytical laboratory use</title>
+                 <author surname="Unknown"/>
                 </front>
               <annotation>
                 NOTE: This is an annotation of document ISSN.
@@ -667,21 +670,23 @@ OUTPUT
               <reference anchor="ISO3696">
                 <front>
                   <title>ISO 3696, Water for analytical laboratory use</title>
+                 <author surname="Unknown"/>
                 </front>
               </reference>
               <reference anchor="ref10">
                 <front>
                   <title>
                     10, Standard No I.C.C 167.
-                    <em>
+
                       Determination of the protein content in cereal and cereal products
                       for food and animal feeding stuffs according to the Dumas
                       combustion method
-                    </em>
+
                      (see
-                    <eref target="http://www.icc.or.at"/>
+
                     )
                   </title>
+                 <author surname="Unknown"/>
                 </front>
               </reference>
               <xi:include href="https://xml2rfc.tools.ietf.org/10.xml"/>
@@ -689,9 +694,10 @@ OUTPUT
                 <front>
                   <title>
                     Citn, CitationWorks. 2019.
-                    <em>How to cite a reference</em>
+                    How to cite a reference
                     .
                   </title>
+                 <author surname="Unknown"/>
                 </front>
               </reference>
             </references>
@@ -743,4 +749,5 @@ INPUT
 OUTPUT
 
 end
+
 end

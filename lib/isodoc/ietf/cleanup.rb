@@ -10,10 +10,19 @@ module IsoDoc::Ietf
       deflist_cleanup(docxml)
       bookmark_cleanup(docxml)
       aside_cleanup(docxml)
+      front_cleanup(docxml)
       docxml
     end
 
     # TODO: insert <u>
+    
+    def front_cleanup(xmldoc)
+        xmldoc.xpath("//title").each { |s| s.children = s.text }
+        xmldoc.xpath("//reference/front[not(author)]").each do |f|
+          insert = f.at("./seriesInfo[last()]") || f.at("./title")
+          insert.next = "<author surname='Unknown'/>"
+        end
+      end
 
     def table_footnote_cleanup(docxml)
       docxml.xpath("//table[descendant::fn]").each do |t|
