@@ -62,6 +62,8 @@ module Metanorma
           # In xml2rfc, --text and --html are used
           format = :text if format == :txt
           system("xml2rfc --#{format} #{rfcname} -o #{outname}")
+        else
+          super
         end
       end
     end
