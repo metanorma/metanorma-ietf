@@ -13,7 +13,7 @@ RSpec.describe Metanorma::Ietf::Processor do
 
   it "registers output formats against metanorma" do
     expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
-    [[:html, "html"], [:rfc, "rfc.xml"], [:txt, "txt"], [:xml, "xml"]]
+    [[:html, "html"], [:rfc, "rfc.xml"], [:rxl, "rxl"], [:txt, "txt"], [:xml, "xml"]]
     OUTPUT
   end
 

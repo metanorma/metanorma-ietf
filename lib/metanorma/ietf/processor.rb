@@ -13,6 +13,7 @@ module Metanorma
 
       def output_formats
         {
+          rxl: "rxl",
           xml: "xml",
           rfc: "rfc.xml",
           html: "html",
