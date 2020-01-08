@@ -2,7 +2,11 @@
 # use ci-master https://github.com/metanorma/metanorma-build-scripts
 name: macos
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ '**' ]
 
 jobs:
   test-macos:
@@ -30,8 +34,7 @@ jobs:
           architecture: 'x64'
       - name: Install xml2rfc
         run: |
-          pip install --user xml2rfc
+          pip install xml2rfc
       - name: Run specs
         run: |
-          export PATH=$(python -c "import os,site; print os.path.join(site.USER_BASE, 'bin')"):$PATH
           bundle exec rake
