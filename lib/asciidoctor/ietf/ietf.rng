@@ -5,7 +5,7 @@
     we cannot have a new default namespace: we will end up with a grammar with two different
     namespaces, one for isostandard and one for ietf additions. And we do not want that.
   -->
-  <include href="isostandard.rng">
+  <include href="isodoc.rng">
     <start>
       <ref name="ietf-standard"/>
     </start>
