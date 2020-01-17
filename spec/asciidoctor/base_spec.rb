@@ -499,11 +499,11 @@ Author
            <language>el</language>
            <script>Grek</script>
            <abstract>
-             <p id='_'>This is the abstract of the document</p>
-             <p id='_'>This is the second paragraph of the abstract of the document.</p>
-             <note removeInRFC='true' id='_'>
+             <p>This is the abstract of the document</p>
+             <p>This is the second paragraph of the abstract of the document.</p>
+             <note removeInRFC='true'>
   <name>Note Title</name>
-  <p id='_'>Note contents</p>
+  <p>Note contents</p>
 </note>
            </abstract>
            <status>

@@ -33,7 +33,7 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p>For the purposes of this document, the following terms and definitions apply.</p>
+         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
          <term id="_"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>t</mi><mn>90</mn></msub></math></stem></preferred><admitted><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>t</mi><mn>91</mn></msub></math></stem></admitted>
        <definition><p id="_">Time</p></definition></term>
        </terms>
@@ -55,7 +55,7 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p>For the purposes of this document, the following terms and definitions apply.</p>
+         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
          <term id="_">
          <preferred>Tempus</preferred>
          <domain>relativity</domain><definition><p id="_"> Time</p></definition>
@@ -90,7 +90,7 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p>For the purposes of this document, the following terms and definitions apply.</p>
+         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
          <term id="_"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>t</mi><mn>90</mn></msub></math></stem></preferred><definition><formula id="_"> 
          <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>t</mi><mi>A</mi></msub></math></stem> 
        </formula>
@@ -118,7 +118,7 @@ RSpec.describe Asciidoctor::Ietf do
        #{BLANK_HDR}
               <sections>
          <terms id="_" obligation="normative"><title>Terms and definitions</title>
-         <p>For the purposes of this document, the following terms and definitions apply.</p>
+         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
 
        <term id="_">
        <preferred>Time</preferred>
@@ -252,7 +252,7 @@ RSpec.describe Asciidoctor::Ietf do
        <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p>For the purposes of this document, the following terms and definitions apply.</p>
+         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
          <term id="_">
          <preferred>Term1</preferred>
          <termsource status="identical">
