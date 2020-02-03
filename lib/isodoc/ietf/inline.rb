@@ -68,6 +68,9 @@ module IsoDoc::Ietf
     def page_break(_out)
     end
 
+    def pagebreak_parse(_node, _out)
+    end
+
     def br_parse(node, out)
       if @sourcecode
         out.br
