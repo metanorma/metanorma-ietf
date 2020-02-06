@@ -8,6 +8,8 @@ require_relative "./validate"
 module Asciidoctor
   module Ietf
     class Converter < ::Asciidoctor::Standoc::Converter
+      XML_ROOT_TAG = "ietf-standard".freeze
+      XML_NAMESPACE = "https://open.ribose.com/standards/ietf".freeze
 
       register_for "ietf"
 
@@ -17,18 +19,10 @@ module Asciidoctor
       end
 
       def makexml(node)
-        result = ["<?xml version='1.0' encoding='UTF-8'?>\n<ietf-standard>"]
         @draft = node.attributes.has_key?("draft")
         @workgroups = cache_workgroup(node)
         @bcp_bold = !node.attr?("no-rfc-bold-bcp14")
-        result << noko { |ixml| front node, ixml }
-        result << noko { |ixml| middle node, ixml }
-        result << "</ietf-standard>"
-        result = textcleanup(result)
-        ret1 = cleanup(Nokogiri::XML(result))
-        validate(ret1) unless @novalid
-        ret1.root.add_namespace(nil, "https://open.ribose.com/standards/ietf")
-        ret1
+        super
       end
 
       def document(node)
