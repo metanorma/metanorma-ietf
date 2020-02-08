@@ -87,7 +87,7 @@ HDR
 
 BLANK_HDR = <<~"HDR"
 <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
+       <ietf-standard xmlns="https://www.metanorma.com/ns/ietf">
        <bibdata type="standard">
         <title language="en" type="main" format="text/plain">Document title</title>
          <contributor>
