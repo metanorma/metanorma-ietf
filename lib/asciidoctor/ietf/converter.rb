@@ -9,7 +9,7 @@ module Asciidoctor
   module Ietf
     class Converter < ::Asciidoctor::Standoc::Converter
       XML_ROOT_TAG = "ietf-standard".freeze
-      XML_NAMESPACE = "https://www.metanorma.com/ns/ietf".freeze
+      XML_NAMESPACE = "https://www.metanorma.org/ns/ietf".freeze
 
       register_for "ietf"
 

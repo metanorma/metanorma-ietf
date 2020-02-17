@@ -167,7 +167,7 @@ Author
       :sortrefs: 35
     INPUT
     <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns='https://www.metanorma.com/ns/ietf'>
+       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf'>
          <bibdata type='standard'>
            <title language='en' format='text/plain' type='main'>Main Title — Title</title>
         <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
@@ -472,7 +472,7 @@ Author
       == Clause 1
     INPUT
      <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns='https://www.metanorma.com/ns/ietf'>
+       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf'>
          <bibdata type='standard'>
            <title language='en' type="main" format='text/plain'>Document title</title>
            <docidentifier>1000</docidentifier>
