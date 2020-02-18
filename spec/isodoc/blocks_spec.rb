@@ -124,6 +124,32 @@ INPUT
     OUTPUT
   end
 
+  it "processes paragraphs containing notes" do
+        expect(xmlpp(strip_guid(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        <iso-standard xmlns="http://riboseinc.com/isoxml">
+    <sections><clause>
+    <p id="A">ABC <note id="B"><p id="C">XYZ</p></note>
+<note id="B1"><p id="C1">XYZ1</p></note></p>
+ </clause></sections>
+    </iso-standard>
+INPUT
+    #{RFC_HDR}
+  <middle>
+    <section>
+      <t anchor='A'>ABC </t>
+      <aside anchor='B'>
+        <t>NOTE 1: XYZ</t>
+      </aside>
+      <aside anchor='B1'>
+        <t>NOTE 2: XYZ1</t>
+      </aside>
+    </section>
+  </middle>
+  <back/>
+</rfc>
+
+OUTPUT
+  end
 
   it "processes figures" do
     expect(xmlpp(strip_guid(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")

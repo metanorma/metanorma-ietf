@@ -12,8 +12,9 @@ module IsoDoc::Ietf
           p << "&lt;#{@termdomain}&gt; "
           @termdomain = ""
         end
-        node.children.each { |n| parse(n, p) }
+        node.children.each { |n| parse(n, p) unless n.name == "note" }
       end
+      node.xpath(ns("./note")).each { |n| parse(n, out) }
     end
 
     # NOTE ignoring "bare" attribute, which is tantamount to "empty"
