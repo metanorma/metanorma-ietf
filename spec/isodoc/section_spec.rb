@@ -29,7 +29,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <introduction id="B" obligation="informative"><title>Introduction</title><clause id="C" inline-header="false" obligation="informative">
          <title>Introduction Subsection</title>
        </clause>
-       </introduction></preface><sections>
+       </introduction>
+       <acknowledgements obligation="informative">
+         <title>Acknowledgements</title>
+         <p id="A1">This is a preamble</p>
+       </acknowledgements>
+        </preface><sections>
        <clause id="D" obligation="normative">
          <title>Scope</title>
          <p id="E">Text</p>
@@ -104,6 +109,10 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <name>Introduction Subsection</name>
               </section>
             </section>
+            <section>
+  <name>Acknowledgements</name>
+  <t anchor='A1'>This is a preamble</t>
+</section>
             <section anchor='D'>
               <name>Scope</name>
               <t anchor='E'>Text</t>
