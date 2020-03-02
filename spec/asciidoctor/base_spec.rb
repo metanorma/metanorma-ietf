@@ -567,6 +567,25 @@ Author
     OUTPUT
   end
 
+    it "cites drafts of internet drafts" do
+      VCR.use_cassette "abarth-02" do
+    doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))
+      = Document title
+      Author
+      :docfile: test.adoc
+
+      <<I-D.abarth-cake>>
+
+      [bibliography]
+      == References
+      * [[[I-D.abarth-cake,IETF(I-D.abarth-cake-02)]]], _Title_
+INPUT
+      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
+      expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
+      expect(doc).to include "<uri type='TXT'>http://www.ietf.org/internet-drafts/draft-abarth-cake-02.txt</uri>"
+    end
+    end
+
 end
 
 
