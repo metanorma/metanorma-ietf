@@ -195,7 +195,7 @@ RSpec.describe Asciidoctor::Ietf do
       == Title footnote:[Footnote text 2]
     INPUT
             #{BLANK_HDR}
-              <preface><foreword obligation="informative">
+              <preface><foreword id="_" obligation="informative">
          <title>Foreword</title>
          <p id="_">Hello!<fn reference="1">
          <p id="_">Footnote text</p>
