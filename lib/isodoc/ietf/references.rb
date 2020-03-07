@@ -31,7 +31,13 @@ module IsoDoc::Ietf
 
     def nonstd_bibitem(list, b, ordinal, bibliography)
       uris = b.xpath(ns("./uri"))
-      list.reference **attr_code(target: uris.empty? ? nil : uris[0]&.text,
+      target = nil
+      uris&.each do |u|
+        if u["type"] == "src" then
+          target = u.text
+        end
+      end
+      list.reference **attr_code(target: target,
                                  anchor: b["id"]) do |r|
         r.front do |f|
           relaton_to_title(b, f)
@@ -40,8 +46,14 @@ module IsoDoc::Ietf
           relaton_to_keyword(b, f)
           relaton_to_abstract(b, f)
         end
-        uris[1..-1]&.each do |u|
+        uris&.each do |u|
           r.format nil, **attr_code(target: u.text, type: u["type"])
+        end
+        docidentifiers = b.xpath(ns("./docidentifier"))
+        docidentifiers&.each do |u|
+          if u["type"] == "DOI" || u["type"] == "IETF" then
+            r.seriesInfo nil, **attr_code(value: u.text, name: u["type"])
+          end
         end
       end
     end
@@ -51,7 +63,6 @@ module IsoDoc::Ietf
       identifier = render_identifier(id)
       title = b&.at(ns("./title")) || b&.at(ns("./formattedref")) or return
       f.title do |t|
-        t << "#{identifier}, "
         title.children.each { |n| parse(n, t) }
       end
     end
@@ -111,7 +122,9 @@ module IsoDoc::Ietf
     def relaton_to_abstract(b, f)
       b.xpath(ns("./abstract")).each do |k|
         f.abstract do |abstract|
-          k.children.each { |n| parse(n, abstract) }
+          k.children.each { |n|
+            abstract.t { |p| parse(n, p) }
+          }
         end
       end
     end
@@ -122,8 +135,7 @@ module IsoDoc::Ietf
     end
 
     def is_ietf(b)
-      url = b.at(ns("./uri[@type = 'xml']")) or return false
-      /xml2rfc\.tools\.ietf\.org/.match(url)
+      return false
     end
   end
 end

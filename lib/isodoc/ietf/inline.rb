@@ -106,7 +106,16 @@ module IsoDoc::Ietf
     def xref_parse(node, out)
       out.xref **attr_code(target: node["target"], format: node["format"],
                            relative: node["relative"]) do |l|
-                             l << get_linkend(node)
+                             l2 = get_linkend(node)
+                             if l2.start_with? "Annex" then
+                               l << ""
+                             elsif l2.start_with? "Clause" then
+                               l << ""
+                             elsif l2.start_with? "IETF" then
+                               l << ""
+                             else
+                               l << get_linkend(node)
+                             end
                            end
     end
 
