@@ -10,7 +10,7 @@ module Asciidoctor
       def image_validate(doc)
         doc.xpath("//image").each do |i|
           next if i["mimetype"] == "image/svg+xml"
-          warn "image #{i['src'][0, 40]} is not SVG!"
+          @log.add("MIME", i, "image #{i['src'][0, 40]} is not SVG!")
         end
       end
 
@@ -19,7 +19,7 @@ module Asciidoctor
         doc.xpath("//bibdata/ext/editorialgroup/workgroup").each do |wg|
           wg_norm = wg.text.sub(/ (Working|Research) Group$/, "")
           next if @workgroups.include?(wg_norm)
-          warn "IETF: unrecognised working group #{wg.text}"
+          @log.add("Document Attributes", nil, "IETF: unrecognised working group #{wg.text}")
         end
       end
 
