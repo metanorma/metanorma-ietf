@@ -6,8 +6,9 @@
 "`http://asciidoctor.org/[asciidoctor]-way`".
 
 image:https://img.shields.io/gem/v/metanorma-ietf.svg["Gem Version", link="https://rubygems.org/gems/metanorma-ietf"]
-image:https://travis-ci.com/metanorma/metanorma-ietf.svg["Build Status", link="https://travis-ci.com/metanorma/metanorma-ietf"]
-image:https://ci.appveyor.com/api/projects/status/or6b0wx4b0q3qm0m?svg=true["Appveyor Build Status", link="https://ci.appveyor.com/project/metanorma/metanorma-ietf"]
+image:https://github.com/metanorma/metanorma-ietf/workflows/macos/badge.svg["Build Status (macOS)", link="https://github.com/metanorma/metanorma-ietf/actions?workflow=macos"]
+image:https://github.com/metanorma/metanorma-ietf/workflows/ubuntu/badge.svg["Build Status (ubuntu)", link="https://github.com/metanorma/metanorma-ietf/actions?workflow=ubuntu"]
+image:https://github.com/metanorma/metanorma-ietf/workflows/windows/badge.svg["Build Status (Windows)", link="https://github.com/metanorma/metanorma-ietf/actions?workflow=windows"]
 image:https://codeclimate.com/github/metanorma/metanorma-ietf/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-ietf"]
 image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-ietf.svg["Pull Requests", link="https://github.com/metanorma/metanorma-ietf/pulls"]
 image:https://img.shields.io/github/commits-since/metanorma/metanorma-ietf/latest.svg["Commits since latest",link="https://github.com/metanorma/metanorma-ietf/releases"]
