@@ -47,22 +47,38 @@ module Metanorma
         nil
       end
 
+      def xml2rfc_present?
+        !which("xml2rfc").nil?
+      end
+
       def output(isodoc_node, outname, format, options={})
         case format
         when :rfc
-          IsoDoc::Ietf::RfcConvert.new(options).convert(outname.sub(/\.xml/, ""), isodoc_node)
+          IsoDoc::Ietf::RfcConvert.new(options).convert(outname, isodoc_node)
           @done_rfc = true
 
-        when :txt, :html
-          rfcname = outname.sub(/\.(html|txt)$/, ".rfc.xml")
-          output(isodoc_node, outname, :rfc, options) unless @done_rfc
-          unless which("xml2rfc")
+        when :txt
+          unless xml2rfc_present?
             warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
             return
           end
-          # In xml2rfc, --text and --html are used
-          format = :text if format == :txt
-          system("xml2rfc --#{format} #{rfcname} -o #{outname}")
+
+          rfcname = outname.sub(/\.txt$/, ".rfc.xml")
+          output(isodoc_node, outname, :rfc, options) unless @done_rfc
+
+          system("xml2rfc --text #{rfcname} -o #{outname}")
+
+        when :html
+          unless xml2rfc_present?
+            warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
+            return
+          end
+
+          rfcname = outname.sub(/\.html$/, ".rfc.xml")
+          output(isodoc_node, outname, :rfc, options) unless @done_rfc
+
+          system("xml2rfc --html #{rfcname} -o #{outname}")
+
         else
           super
         end
