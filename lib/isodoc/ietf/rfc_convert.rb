@@ -56,5 +56,10 @@ module IsoDoc::Ietf
       File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }
       @files_to_delete.each { |f| FileUtils.rm_rf f }
     end
+
+    def init_file(filename, debug)
+      filename = filename.sub(/\.rfc\.xml$/, ".rfc")
+      super
+    end
   end
 end
