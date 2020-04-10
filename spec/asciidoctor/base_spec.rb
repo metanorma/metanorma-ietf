@@ -117,7 +117,7 @@ Author
       :included-in: INC1;INCL2
       :described-by: DESC1;DESC2
       :derived-from: DER1;DER2
-      :equivalent: EQ1;EQ2
+      :instance: EQ1;EQ2
       :obsoletes: OB1;OB2
       :updates: UPD1;UPD2
       :abbrev: Abbreviated Title
@@ -326,13 +326,13 @@ Author
                <docidentifier>DER2</docidentifier>
              </bibitem>
            </relation>
-           <relation type='equivalent'>
+           <relation type='instance'>
              <bibitem>
                <title>--</title>
                <docidentifier>EQ1</docidentifier>
              </bibitem>
            </relation>
-           <relation type='equivalent'>
+           <relation type='instance'>
              <bibitem>
                <title>--</title>
                <docidentifier>EQ2</docidentifier>

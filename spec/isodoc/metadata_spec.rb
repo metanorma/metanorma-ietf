@@ -163,13 +163,13 @@ expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))
                <docidentifier>DER2</docidentifier>
              </bibitem>
            </relation>
-           <relation type='equivalent'>
+           <relation type='instance'>
              <bibitem>
                <title>--</title>
                <docidentifier>EQ1</docidentifier>
              </bibitem>
            </relation>
-           <relation type='equivalent'>
+           <relation type='instance'>
              <bibitem>
                <title>--</title>
                <docidentifier>EQ2</docidentifier>
