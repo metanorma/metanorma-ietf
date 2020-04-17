@@ -97,7 +97,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <?rfc tocdepth="4"?>
         <?rfc symrefs="yes"?>
         <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
           <front>
             <seriesInfo value='' name='RFC' asciiName='RFC'/>
             <abstract> </abstract>
@@ -151,6 +151,15 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             </section>
           </middle>
           <back>
+            <references anchor='Q2'>
+              <name>Annex Bibliography</name>
+            </references>
+            <references anchor='R'>
+              <name>Normative References</name>
+            </references>
+            <references anchor='T'>
+              <name>Bibliography Subsection</name>
+            </references>
             <section anchor='P'>
               <name>Annex</name>
               <section anchor='Q'>
@@ -163,15 +172,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 </div>
               </section>
             </section>
-            <references anchor='Q2'>
-              <name>Annex Bibliography</name>
-            </references>
-            <references anchor='R'>
-              <name>Normative References</name>
-            </references>
-            <references anchor='T'>
-              <name>Bibliography Subsection</name>
-            </references>
           </back>
         </rfc>
 OUTPUT

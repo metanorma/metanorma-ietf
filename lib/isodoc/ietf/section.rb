@@ -75,8 +75,6 @@ module IsoDoc::Ietf
         'xml:lang':     docxml&.at(ns("//bibdata/language"))&.text,
         version:        "3",
         'xmlns:xi':        "http://www.w3.org/2001/XInclude",
-        prepTime:       sprintf("%04d-%02d-%02dT%02d:%02d:%02dZ",
-                                t.year, t.month, t.day, t.hour, t.min, t.sec),
       }
     end
 
@@ -114,8 +112,8 @@ module IsoDoc::Ietf
 
     def make_back(out, isoxml)
       out.back do |back|
-        annex isoxml, back
         bibliography isoxml, back
+        annex isoxml, back
       end
     end
 

@@ -110,6 +110,14 @@ module IsoDoc::Ietf
                            end
     end
 
+    def get_linkend(node)
+      contents = node.children.select { |c| !%w{locality localityStack}.include? c.name }.
+        select { |c| !c.text? || /\S/.match(c) }
+      !contents.empty? and
+        return Nokogiri::XML::NodeSet.new(node.document, contents).to_xml
+      ""
+    end
+
     def eref_parse(node, out)
       linkend = node.children.reject { |c| %w{locality localityStack}.include? c.name }
       section = eref_clause(node.xpath(ns("./locality | ./localityStack")), nil) || ""

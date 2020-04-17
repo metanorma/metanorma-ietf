@@ -17,7 +17,8 @@ module Metanorma
           xml: "xml",
           rfc: "rfc.xml",
           html: "html",
-          txt: "txt"
+          txt: "txt",
+          pdf: "pdf"
         }
       end
 
@@ -67,6 +68,17 @@ module Metanorma
           output(isodoc_node, outname, :rfc, options) unless @done_rfc
 
           system("xml2rfc --text #{rfcname} -o #{outname}")
+
+        when :pdf
+          unless xml2rfc_present?
+            warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
+            return
+          end
+
+          rfcname = outname.sub(/\.pdf$/, ".rfc.xml")
+          output(isodoc_node, outname, :rfc, options) unless @done_rfc
+
+          system("xml2rfc --pdf #{rfcname} -o #{outname}")
 
         when :html
           unless xml2rfc_present?
