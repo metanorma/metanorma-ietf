@@ -106,7 +106,7 @@ module IsoDoc::Ietf
     def xref_parse(node, out)
       out.xref **attr_code(target: node["target"], format: node["format"],
                            relative: node["relative"]) do |l|
-                             l2 << get_linkend(node)
+                             l << get_linkend(node)
                            end
     end
 
@@ -115,6 +115,7 @@ module IsoDoc::Ietf
         select { |c| !c.text? || /\S/.match(c) }
       !contents.empty? and
         return Nokogiri::XML::NodeSet.new(node.document, contents).to_xml
+      ""
     end
 
     def eref_parse(node, out)

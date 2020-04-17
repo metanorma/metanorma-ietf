@@ -151,6 +151,15 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             </section>
           </middle>
           <back>
+            <references anchor='Q2'>
+              <name>Annex Bibliography</name>
+            </references>
+            <references anchor='R'>
+              <name>Normative References</name>
+            </references>
+            <references anchor='T'>
+              <name>Bibliography Subsection</name>
+            </references>
             <section anchor='P'>
               <name>Annex</name>
               <section anchor='Q'>
@@ -163,15 +172,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 </div>
               </section>
             </section>
-            <references anchor='Q2'>
-              <name>Annex Bibliography</name>
-            </references>
-            <references anchor='R'>
-              <name>Normative References</name>
-            </references>
-            <references anchor='T'>
-              <name>Bibliography Subsection</name>
-            </references>
           </back>
         </rfc>
 OUTPUT

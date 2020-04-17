@@ -50,8 +50,10 @@ module IsoDoc::Ietf
           r.format nil, **attr_code(target: u.text, type: u["type"])
         end
         docidentifiers = b.xpath(ns("./docidentifier"))
+        id = bibitem_ref_code(b) and id.text != "(NO ID)" and
+          r.refcontent render_identifier(id)
         docidentifiers&.each do |u|
-          if u["type"] == "DOI" || u["type"] == "IETF" then
+          if %w(DOI IETF).include? u["type"]
             r.seriesInfo nil, **attr_code(value: u.text, name: u["type"])
           end
         end
@@ -59,17 +61,24 @@ module IsoDoc::Ietf
     end
 
     def relaton_to_title(b, f)
-      id = bibitem_ref_code(b)
-      identifier = render_identifier(id)
       title = b&.at(ns("./title")) || b&.at(ns("./formattedref")) or return
       f.title do |t|
         title.children.each { |n| parse(n, t) }
       end
     end
 
+    def bibitem_ref_code(b)
+      id =  b.at(ns("./docidentifier[not(@type = 'DOI' or @type = 'metanorma' "\
+                    "or @type = 'ISSN' or @type = 'ISBN' or @type = 'IETF')]"))
+      return id if id
+      id = Nokogiri::XML::Node.new("docidentifier", b.document)
+      id << "(NO ID)"
+      id
+    end
+
     def relaton_to_author(b, f)
       auths = b.xpath(ns("./contributor[xmlns:role/@type = 'author' or "\
-                 "xmlns:role/@type = 'editor']"))
+                         "xmlns:role/@type = 'editor']"))
       auths.empty? and auths = b.xpath(ns("./contributor[xmlns:role/@type = "\
                                           "'publisher']"))
       auths.each do |a|
@@ -122,9 +131,13 @@ module IsoDoc::Ietf
     def relaton_to_abstract(b, f)
       b.xpath(ns("./abstract")).each do |k|
         f.abstract do |abstract|
-          k.children.each { |n|
-            abstract.t { |p| parse(n, p) }
-          }
+          if k.at(ns("./p"))
+            k.children.each { |n| parse(n, abstract) }
+          else
+            abstract.t do |t|
+              k.children.each { |n| parse(n, t) }
+            end
+          end
         end
       end
     end
@@ -135,7 +148,9 @@ module IsoDoc::Ietf
     end
 
     def is_ietf(b)
-      return false
+      return false if !@xinclude
+      url = b.at(ns("./uri[@type = 'xml']")) or return false
+      /xml2rfc\.tools\.ietf\.org/.match(url)
     end
   end
 end

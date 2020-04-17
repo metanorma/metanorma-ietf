@@ -22,6 +22,7 @@ module Asciidoctor
         @draft = node.attributes.has_key?("draft")
         @workgroups = cache_workgroup(node)
         @bcp_bold = !node.attr?("no-rfc-bold-bcp14")
+        @xinclude = node.attr?("use-xinclude") 
         super
       end
 
@@ -196,6 +197,10 @@ module Asciidoctor
             xref_to_eref(x)
           end
         end
+      end
+
+      def html_extract_attributes(node)
+        super.merge(use_xinclude: node.attr("use-xinclude"))
       end
 
       def rfc_converter(node)

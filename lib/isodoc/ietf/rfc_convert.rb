@@ -61,5 +61,10 @@ module IsoDoc::Ietf
       filename = filename.sub(/\.rfc\.xml$/, ".rfc")
       super
     end
+
+    def initialize(options)
+      super
+      @xinclude = options[:use_xinclude] == "true"
+    end
   end
 end
