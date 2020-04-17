@@ -311,7 +311,7 @@ INPUT
 <?rfc tocdepth="4"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' number='1000' category='BCP' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' number='1000' category='BCP' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3'>
          <link href='INC1' rel='item'/>
          <link href='INCL2' rel='item'/>
          <link href='DESC1' rel='describedby'/>
@@ -479,7 +479,7 @@ INPUT
         <?rfc tocdepth="4"?>
         <?rfc symrefs="yes"?>
         <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' docName='1000' category='BCP' submissionType='IETF' xml:lang='el' version='3' prepTime='2000-01-01T05:00:00Z'>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' docName='1000' category='BCP' submissionType='IETF' xml:lang='el' version='3'>
           <front>
             <title ascii='Document title'>Document title</title>
             <seriesInfo value='1000' asciiValue='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>

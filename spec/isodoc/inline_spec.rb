@@ -183,6 +183,75 @@ $$ Latex? $$
     OUTPUT
   end
 
+    it "cross-references notes" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    <iso-standard xmlns="http://riboseinc.com/isoxml">
+    <preface>
+    <foreword>
+    <p>
+    <xref target="N1">note</xref>
+    <xref target="N2"/>
+    <xref target="N"/>
+    <xref target="note1"/>
+    <xref target="note2">note</xref>
+    <xref target="AN"/>
+    <xref target="Anote1">note</xref>
+    <xref target="Anote2"/>
+    </p>
+    </foreword>
+    <introduction id="intro">
+    <note id="N1">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83e">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+<clause id="xyz"><title>Preparatory</title>
+    <note id="N2">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83d">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+</clause>
+    </introduction>
+    </preface>
+    <sections>
+    <clause id="scope"><title>Scope</title>
+    <note id="N">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+<p><xref target="N"/></p>
+
+    </clause>
+    <terms id="terms"/>
+    <clause id="widgets"><title>Widgets</title>
+    <clause id="widgets1">
+    <note id="note1">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+    <note id="note2">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+<p>    <xref target="note1"/> <xref target="note2"/> </p>
+
+    </clause>
+    </clause>
+    </sections>
+    <annex id="annex1">
+    <clause id="annex1a">
+    <note id="AN">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+    </clause>
+    <clause id="annex1b">
+    <note id="Anote1">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+    <note id="Anote2">
+  <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">These results are based on a study carried out on three different types of kernel.</p>
+</note>
+    </clause>
+    </annex>
+    </iso-standard>
+INPUT
+OUTPUT
+    end
+
   it "processes eref attributes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
