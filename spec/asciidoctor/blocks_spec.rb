@@ -509,7 +509,11 @@ RSpec.describe Asciidoctor::Ietf do
       #{BLANK_HDR}
        <sections>
          <quote id="_">
-         <source type="inline" bibitemid="ISO7301" citeas=""><locality type="section"><referenceFrom>1</referenceFrom></locality></source>
+         <source type="inline" bibitemid="ISO7301" citeas="">
+         <localityStack>
+        <locality type="section"><referenceFrom>1</referenceFrom></locality>
+         </localityStack>
+        </source>
          <author>ISO</author>
          <p id="_">Block quotation</p>
        </quote>
@@ -596,7 +600,11 @@ RSpec.describe Asciidoctor::Ietf do
          <term id="_">
          <preferred>Term1</preferred>
          <termsource status="identical">
-         <origin bibitemid="ISO2191" type="inline" citeas=""><locality type="section"><referenceFrom>1</referenceFrom></locality></origin>
+         <origin bibitemid="ISO2191" type="inline" citeas="">
+         <localityStack>
+        <locality type="section"><referenceFrom>1</referenceFrom></locality>
+         </localityStack>
+        </origin>
        </termsource>
        </term>
        </terms>
@@ -624,7 +632,11 @@ RSpec.describe Asciidoctor::Ietf do
          <term id="_">
          <preferred>Term1</preferred>
          <termsource status="modified">
-         <origin bibitemid="ISO2191" type="inline" citeas=""><locality type="section"><referenceFrom>1</referenceFrom></locality></origin>
+         <origin bibitemid="ISO2191" type="inline" citeas="">
+         <localityStack>
+        <locality type="section"><referenceFrom>1</referenceFrom></locality>
+         </localityStack>
+        </origin>
          <modification>
            <p id="_">with adjustments</p>
          </modification>

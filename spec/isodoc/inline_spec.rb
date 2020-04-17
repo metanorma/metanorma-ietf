@@ -148,7 +148,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <preface><foreword>
     <p>
     <stem type="AsciiMath">&lt;A&gt;</stem>
-    <stem type="MathML"><m:math><m:mrow>X</m:mrow></m:math></stem>
+    <stem type="MathML"><m:math><m:mrow><m:mi>X</m:mi></m:mrow></m:math></stem>
     <stem type="None">Latex?</stem>
     </p>
     </foreword></preface>
