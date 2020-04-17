@@ -3,7 +3,7 @@ require "nokogiri"
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "cleans up footnotes" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front>
            <abstract>
              <t>
@@ -34,7 +34,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
 INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front>
            <abstract>
              <t> A. [1] </t>
@@ -56,7 +56,7 @@ INPUT
 
   it "cleans up footnotes in a section" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front/>
          <middle>
            <section>
@@ -92,7 +92,7 @@ INPUT
          </back>
        </rfc>
 INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front/>
          <middle>
            <section>
@@ -265,7 +265,7 @@ INPUT
 
   it "cleans up figures" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front>
            <abstract>
      <figure anchor='figureA-0'>
@@ -319,7 +319,7 @@ INPUT
          <back/>
        </rfc>
        INPUT
-       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front>
            <abstract>
            <figure anchor='figureA-0'>
@@ -459,7 +459,7 @@ OUTPUT
 
    it "cleans up annotated bibliography" do
       expect((IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to (<<~"OUTPUT")
-      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' xml:lang='en' version='3' prepTime='2000-01-01T05:00:00Z'>
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' xml:lang='en' version='3'>
          <front>
            <abstract>
              <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
@@ -579,7 +579,7 @@ OUTPUT
          </back>
        </rfc>
       INPUT
-      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3" prepTime="2000-01-01T05:00:00Z">
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3">
           <front>
             <abstract>
               <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
@@ -708,7 +708,7 @@ OUTPUT
 
      it "cleans up definition lists" do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front>
            <abstract>
            <t id="id0"><bookmark anchor="id1"/>A</t>
@@ -724,7 +724,7 @@ OUTPUT
          <back/>
        </rfc>
 INPUT
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3' prepTime='2000-01-01T05:00:00Z'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
   <front>
     <abstract>
     <t id='id0'>A</t>

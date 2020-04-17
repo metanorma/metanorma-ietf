@@ -97,7 +97,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <?rfc tocdepth="4"?>
         <?rfc symrefs="yes"?>
         <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3' prepTime='2000-01-01T05:00:00Z'>
+        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
           <front>
             <seriesInfo value='' name='RFC' asciiName='RFC'/>
             <abstract> </abstract>
