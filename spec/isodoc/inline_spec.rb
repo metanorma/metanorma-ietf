@@ -313,6 +313,8 @@ OUTPUT
     <eref type="inline" bibitemid="ISO712"><locality type="whole"></locality></eref>
     <eref type="inline" bibitemid="ISO712"><locality type="locality:prelude"><referenceFrom>7</referenceFrom></locality></eref>
     <eref type="inline" bibitemid="ISO712" citeas="ISO 712">A</eref>
+    <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="clause"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
+    <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="table"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
     </p>
     </foreword></preface>
     <bibliography><references id="_normative_references" obligation="informative"><title>Normative References</title>
@@ -343,6 +345,8 @@ OUTPUT
   <relref target='ISO712' section=''/>
   <relref target='ISO712' section=''/>
   <relref target='ISO712' section=''>A</relref>
+  <relref target='ISO712' section='1; 3'/>
+  <relref target='ISO712' section='1'/>
 </t>
 </abstract></front><middle/>
 <back>

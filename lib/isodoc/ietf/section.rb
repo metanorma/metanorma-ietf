@@ -86,7 +86,7 @@ module IsoDoc::Ietf
     def make_link(out, isoxml)
       links = isoxml.xpath(ns(
         "//bibdata/relation[@type = 'includedIn' or @type = 'describedBy' or "\
-        "@type = 'derivedFrom' or @type = 'equivalent']")) || return
+        "@type = 'derivedFrom' or @type = 'instance']")) || return
         links.each do |l|
           out.link **{ href: l&.at(ns("./bibitem/docidentifier"))&.text,
                        rel: rel2iana(l["type"]) }
@@ -98,7 +98,7 @@ module IsoDoc::Ietf
       when "includedIn" then "item"
       when "describedBy" then "describedby"
       when "derivedFrom" then "convertedfrom"
-      when "equivalent" then "alternate"
+      when "instance" then "alternate"
       else 
         "alternate"
       end

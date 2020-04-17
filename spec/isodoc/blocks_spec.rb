@@ -577,7 +577,7 @@ World</p>
                  <em>Subject: user</em>
                </li>
                <li>
-  <em>Inherit: /ss/584/2015/level/1</em>
+  <em>Inherits: /ss/584/2015/level/1</em>
 </li>
                <li>
                  <em>Control-class: Technical</em>
@@ -673,7 +673,7 @@ World</p>
                  <em>Subject: user</em>
                </li>
                <li>
-  <em>Inherit: /ss/584/2015/level/1</em>
+  <em>Inherits: /ss/584/2015/level/1</em>
 </li>
              </ul>
              <t>INHERIT: /ss/584/2015/level/1</t>
@@ -761,7 +761,7 @@ World</p>
                  <em>Subject: user</em>
                </li>
                <li>
-  <em>Inherit: /ss/584/2015/level/1</em>
+  <em>Inherits: /ss/584/2015/level/1</em>
 </li>
                <li>
                  <em>Type: text</em>

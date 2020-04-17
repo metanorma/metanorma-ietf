@@ -118,8 +118,8 @@ module IsoDoc::Ietf
     end
 
     def eref_parse(node, out)
-      linkend = node.children.select { |c| c.name != "locality" }
-      section = eref_clause(node.xpath(ns("./locality")), nil) || ""
+      linkend = node.children.reject { |c| %w{locality localityStack}.include? c.name }
+      section = eref_clause(node.xpath(ns("./locality | ./localityStack")), nil) || ""
       out.relref **attr_code(target: node["bibitemid"], section: section,
                              displayFormat: node["displayFormat"]) do |l|
         linkend.each { |n| parse(n, l) }
@@ -127,11 +127,27 @@ module IsoDoc::Ietf
     end
 
     def eref_clause(refs, target)
+      ret = []
+      ret1 = ""
+      refs.each do |l|
+        if l.name == "localityStack"
+          ret << ret1
+          ret1 = ""
+          ret << eref_clause1(l.elements, target)
+        else
+          ret1 += eref_clause1([l], target)
+        end
+      end
+      ret << ret1
+      ret.reject { |c| c.nil? || c.empty? }.join("; ")
+    end
+
+    def eref_clause1(refs, target)
       refs.each do |l|
         next unless %w(clause section).include? l["type"]
         return l&.at(ns("./referenceFrom"))&.text
       end
-      return nil
+      return ""
     end
 
     def index_parse(node, out)

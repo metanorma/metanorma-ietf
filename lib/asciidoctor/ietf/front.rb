@@ -2,7 +2,7 @@ module Asciidoctor
   module Ietf
     class Converter < ::Asciidoctor::Standoc::Converter
       def relaton_relations
-        %w(included-in described-by derived-from equivalent obsoletes updates)
+        %w(included-in described-by derived-from instance obsoletes updates)
       end
 
       def metadata_author(node, xml)
