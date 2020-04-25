@@ -57,8 +57,9 @@ module Asciidoctor
         ["en"].each do |lang|
           at = { language: lang, format: "text/plain" }
           xml.title **attr_code(at.merge(type: "main")) do |t|
-            t << ::Asciidoctor::Standoc::Utils::asciidoc_sub(
-              node.attr("title") || node.attr("title-en") || node.title)
+            t << (::Asciidoctor::Standoc::Utils::asciidoc_sub(node.attr("title")) ||
+              ::Asciidoctor::Standoc::Utils::asciidoc_sub(node.attr("title-en")) ||
+              node.title)
           end
           a = node.attr("abbrev") and
             xml.title a, **attr_code(at.merge(type: "abbrev"))
