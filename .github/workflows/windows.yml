@@ -37,7 +37,7 @@ jobs:
       - name: Use Python
         uses: actions/setup-python@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.6'
           architecture: 'x64'
       - name: Install xml2rfc
         run: |
