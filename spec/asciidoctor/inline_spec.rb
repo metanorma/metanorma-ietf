@@ -180,6 +180,7 @@ RSpec.describe Asciidoctor::Ietf do
          <bibitem id="ISO713">
          <formattedref format="application/x-isodoc+xml">Reference</formattedref>
          <docidentifier>ISO713</docidentifier>
+         <docnumber>713</docnumber>
        </bibitem>
        </references>
        </bibliography>

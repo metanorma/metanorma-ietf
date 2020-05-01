@@ -153,6 +153,7 @@ RSpec.describe Asciidoctor::Ietf do
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216:2001</docidentifier>
+         <docnumber>216</docnumber>
          <date type="published">
            <on>2001</on>
          </date>
@@ -193,6 +194,7 @@ RSpec.describe Asciidoctor::Ietf do
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>
+         <docnumber>216</docnumber>
          <contributor>
            <role type="publisher"/>
            <organization>
@@ -229,6 +231,7 @@ RSpec.describe Asciidoctor::Ietf do
   <bibitem id="iso216" type="standard">
   <title format="text/plain">Reference</title>
   <docidentifier>ISO 216</docidentifier>
+         <docnumber>216</docnumber>
   <contributor>
     <role type="publisher"/>
     <organization>
@@ -288,6 +291,7 @@ RSpec.describe Asciidoctor::Ietf do
              <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>
+         <docnumber>216</docnumber>
          <contributor>
            <role type="publisher"/>
            <organization>
@@ -326,6 +330,7 @@ RSpec.describe Asciidoctor::Ietf do
   <bibitem id="iso124" type="standard">
   <title format="text/plain">Standard 124</title>
   <docidentifier>ISO 124</docidentifier>
+  <docnumber>124</docnumber>
   <contributor>
     <role type="publisher"/>
     <organization>
@@ -381,6 +386,7 @@ OUTPUT
          <bibitem id="iso124" type="standard">
          <title format="text/plain">Standard 124</title>
          <docidentifier>ISO 124</docidentifier>
+         <docnumber>124</docnumber>
          <contributor>
            <role type="publisher"/>
            <organization>
@@ -400,6 +406,7 @@ OUTPUT
          <bibitem id="iso125" type="standard">
          <title format="text/plain">Standard 124</title>
          <docidentifier>ISO 125</docidentifier>
+         <docnumber>125</docnumber>
          <contributor>
            <role type="publisher"/>
            <organization>
