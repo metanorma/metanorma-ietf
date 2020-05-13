@@ -65,6 +65,7 @@ module IsoDoc::Ietf
     def initialize(options)
       super
       @xinclude = options[:use_xinclude] == "true"
+      @format = :rfc
     end
   end
 end

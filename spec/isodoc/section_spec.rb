@@ -77,13 +77,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <clause id="Q1" inline-header="false" obligation="normative">
          <title>Annex A.1a</title>
          </clause>
-         <references id="Q2"><title>Annex Bibliography</title></references>
+         <references id="Q2" normative="false"><title>Annex Bibliography</title></references>
        </clause>
-       </annex><bibliography><references id="R" obligation="informative">
+       </annex><bibliography><references id="R" obligation="informative" normative="true">
          <title>Normative References</title>
        </references><clause id="S" obligation="informative">
          <title>Bibliography</title>
-         <references id="T" obligation="informative">
+         <references id="T" obligation="informative" normative="false">
          <title>Bibliography Subsection</title>
        </references>
        </clause>

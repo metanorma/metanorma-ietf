@@ -458,7 +458,7 @@ OUTPUT
    end
 
    it "cleans up annotated bibliography" do
-      expect((IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to (<<~"OUTPUT")
+      expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' xml:lang='en' version='3'>
          <front>
            <abstract>

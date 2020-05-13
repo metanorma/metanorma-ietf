@@ -17,7 +17,7 @@ RSpec.describe IsoDoc::Ietf do
   <eref bibitemid="ref12"/>
   </p>
     </foreword></preface>
-    <bibliography><references id="_normative_references" obligation="informative"><title>Normative References</title>
+    <bibliography><references id="_normative_references" obligation="informative"  normative="true"><title>Normative References</title>
 <bibitem id="ISO712" type="standard">
   <title format="text/plain">Cereals or cereal products</title>
   <title type="main" format="text/plain">Cereals and cereal products</title>
@@ -95,7 +95,7 @@ RSpec.describe IsoDoc::Ietf do
 </bibitem>
 <note><p>This is an annotation of ISO 20483:2013-2014</p></note>
 
-</references><references id="_bibliography" obligation="informative">
+</references><references id="_bibliography" obligation="informative" normative="false">
   <title>Bibliography</title>
 <bibitem id="ISBN" type="ISBN">
   <title format="text/plain">Chemicals for analytical laboratory use</title>
@@ -318,7 +318,7 @@ RSpec.describe IsoDoc::Ietf do
   <eref bibitemid="ref12"/>
   </p>
     </foreword></preface>
-    <bibliography><references id="_normative_references" obligation="informative"><title>Normative References</title>
+    <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
 <bibitem id="ISO712" type="standard">
   <title format="text/plain">Cereals or cereal products</title>
   <title type="main" format="text/plain">Cereals and cereal products</title>
@@ -396,7 +396,7 @@ RSpec.describe IsoDoc::Ietf do
 </bibitem>
 <note><p>This is an annotation of ISO 20483:2013-2014</p></note>
 
-</references><references id="_bibliography" obligation="informative">
+</references><references id="_bibliography" obligation="informative" normative="false">
   <title>Bibliography</title>
 <bibitem id="ISBN" type="ISBN">
   <title format="text/plain">Chemicals for analytical laboratory use</title>

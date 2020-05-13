@@ -27,7 +27,7 @@ RSpec.describe Asciidoctor::Ietf do
     INPUT
         #{BLANK_HDR}
        <sections>
-       <abc>X &gt; Y</abc>
+       <passthrough>&lt;abc&gt;X &amp;gt; Y&lt;/abc&gt;</passthrough>
        </sections>
        </ietf-standard>
     OUTPUT

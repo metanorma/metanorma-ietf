@@ -140,7 +140,7 @@ RSpec.describe Asciidoctor::Ietf do
            </clause>
          </sections>
          <bibliography>
-           <references id='reference' obligation='informative'>
+           <references id='reference' obligation='informative' normative="true">
              <title>Normative References</title>
              <bibitem id='doc'>
                <formattedref format='application/x-isodoc+xml'>Reference</formattedref>
@@ -171,7 +171,7 @@ RSpec.describe Asciidoctor::Ietf do
             #{BLANK_HDR}
        <sections>
 
-       </sections><bibliography><references id="_" obligation="informative">
+       </sections><bibliography><references id="_" obligation="informative" normative="true">
          <title>Normative References</title>
          <bibitem id="ISO712">
          <formattedref format="application/x-isodoc+xml">Reference</formattedref>

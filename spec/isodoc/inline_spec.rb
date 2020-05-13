@@ -353,7 +353,7 @@ OUTPUT
     <eref type="inline" bibitemid="ISO712" citeas="ISO 712" relative="#abc" displayFormat="of">A</stem>
     </p>
     </foreword></preface>
-    <bibliography><references id="_normative_references" obligation="informative"><title>Normative References</title>
+    <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
 <bibitem id="ISO712" type="standard">
   <title format="text/plain">Cereals and cereal products</title>
   <docidentifier>ISO 712</docidentifier>
@@ -411,7 +411,7 @@ OUTPUT
     <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="table"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
     </p>
     </foreword></preface>
-    <bibliography><references id="_normative_references" obligation="informative"><title>Normative References</title>
+    <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
 <bibitem id="ISO712" type="standard">
   <title format="text/plain">Cereals and cereal products</title>
   <docidentifier>ISO 712</docidentifier>
@@ -461,5 +461,24 @@ OUTPUT
     OUTPUT
   end
 
-
+  it "processes passthrough content" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    <iso-standard xmlns="http://riboseinc.com/isoxml">
+    <preface><foreword>
+    <p>
+    <passthrough>&lt;abc&gt;X &amp;gt; Y</passthrough>
+    A
+    <passthrough>&lt;/abc&gt;</passthrough>
+    </p>
+    </preface>
+    </iso-standard>
+INPUT
+    #{XML_HDR}
+    <t>
+  <abc>X &gt; Y</abc>
+   A 
+</t>
+    </abstract></front><middle/><back/></rfc>
+OUTPUT
+  end
 end

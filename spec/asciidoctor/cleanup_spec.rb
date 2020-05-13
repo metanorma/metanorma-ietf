@@ -148,7 +148,7 @@ RSpec.describe Asciidoctor::Ietf do
 <xref target='biblio' format='counter'>text1</xref>
       </p>
       </foreword></preface><sections>
-      </sections><bibliography><references id="biblio" obligation="informative">
+      </sections><bibliography><references id="biblio" obligation="informative" normative="true">
         <title>Normative References</title>
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
@@ -189,7 +189,7 @@ RSpec.describe Asciidoctor::Ietf do
         </localityStack>the reference</eref>
         </p>
       </foreword></preface><sections>
-      </sections><bibliography><references id="_" obligation="informative">
+      </sections><bibliography><references id="_" obligation="informative" normative="true">
         <title>Normative References</title>
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
@@ -226,7 +226,7 @@ RSpec.describe Asciidoctor::Ietf do
          <eref type="inline" bibitemid="iso216" citeas="ISO 216"/>
        </p>
        </foreword></preface><sections>
-       </sections><bibliography><references id="_" obligation="informative">
+       </sections><bibliography><references id="_" obligation="informative" normative="false">
   <title>Bibliography</title>
   <bibitem id="iso216" type="standard">
   <title format="text/plain">Reference</title>
@@ -287,7 +287,7 @@ RSpec.describe Asciidoctor::Ietf do
     INPUT
       #{BLANK_HDR}
       <sections></sections>
-      <bibliography><references id="_" obligation="informative"><title>Normative References</title>
+      <bibliography><references id="_" obligation="informative" normative="true"><title>Normative References</title>
              <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>
@@ -325,7 +325,7 @@ RSpec.describe Asciidoctor::Ietf do
   <p id="_"><eref type="inline" bibitemid="iso123" citeas="[2]"/>
 <eref type="inline" bibitemid="iso124" citeas="ISO 124"/></p>
 </clause>
-</sections><bibliography><references id="_" obligation="informative">
+</sections><bibliography><references id="_" obligation="informative" normative="false">
   <title>Bibliography</title>
   <bibitem id="iso124" type="standard">
   <title format="text/plain">Standard 124</title>
@@ -381,7 +381,7 @@ OUTPUT
        <eref type="inline" bibitemid="iso125" citeas="ISO 125"/>
        <eref type="inline" bibitemid="iso126" citeas="[4]"/></p>
        </clause>
-       </sections><bibliography><clause id="_" obligation="informative"><title>Bibliography</title><references id="_" obligation="informative">
+       </sections><bibliography><clause id="_" obligation="informative"><title>Bibliography</title><references id="_" obligation="informative" normative="false">
          <title>Clause 1</title>
          <bibitem id="iso124" type="standard">
          <title format="text/plain">Standard 124</title>
@@ -401,7 +401,7 @@ OUTPUT
          <docidentifier type="metanorma">[2]</docidentifier>
        </bibitem>
        </references>
-       <references id="_" obligation="informative">
+       <references id="_" obligation="informative" normative="false">
          
          <bibitem id="iso125" type="standard">
          <title format="text/plain">Standard 124</title>
