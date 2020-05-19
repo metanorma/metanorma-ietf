@@ -50,8 +50,9 @@ module IsoDoc::Ietf
           r.format nil, **attr_code(target: u.text, type: u["type"])
         end
         docidentifiers = b.xpath(ns("./docidentifier"))
-        id = bibitem_ref_code(b) and id.text != "(NO ID)" and
-          r.refcontent render_identifier(id)
+        id = render_identifier(bibitem_ref_code(b))
+        !id[1].nil? and id[1] != "(NO ID)" and
+          r.refcontent id[1]
         docidentifiers&.each do |u|
           if %w(DOI IETF).include? u["type"]
             r.seriesInfo nil, **attr_code(value: u.text, name: u["type"])
@@ -65,15 +66,6 @@ module IsoDoc::Ietf
       f.title do |t|
         title.children.each { |n| parse(n, t) }
       end
-    end
-
-    def bibitem_ref_code(b)
-      id =  b.at(ns("./docidentifier[not(@type = 'DOI' or @type = 'metanorma' "\
-                    "or @type = 'ISSN' or @type = 'ISBN' or @type = 'IETF')]"))
-      return id if id
-      id = Nokogiri::XML::Node.new("docidentifier", b.document)
-      id << "(NO ID)"
-      id
     end
 
     def relaton_to_author(b, f)
