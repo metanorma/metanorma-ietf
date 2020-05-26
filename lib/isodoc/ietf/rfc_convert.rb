@@ -50,8 +50,13 @@ module IsoDoc::Ietf
       end
     end
 
+     def textcleanup(docxml)
+      passthrough_cleanup(docxml)
+     end
+
     def postprocess(result, filename, dir)
-      result = from_xhtml(cleanup(to_xhtml(result))).sub(/<!DOCTYPE[^>]+>\n/, "").
+      result = from_xhtml(cleanup(to_xhtml(textcleanup(result)))).
+        sub(/<!DOCTYPE[^>]+>\n/, "").
         sub(/(<rfc[^<]+? )lang="[^"]+"/, "\\1")
       File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }
       @files_to_delete.each { |f| FileUtils.rm_rf f }

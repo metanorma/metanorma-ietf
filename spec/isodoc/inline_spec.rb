@@ -462,7 +462,8 @@ OUTPUT
   end
 
   it "processes passthrough content" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    FileUtils.rm_f "test.rfc.xml"
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false)
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
     <p>
@@ -473,10 +474,12 @@ OUTPUT
     </preface>
     </iso-standard>
 INPUT
+    expect( File.read("test.rfc.xml")).to be_equivalent_to xmlpp(<<~"OUTPUT")
     #{XML_HDR}
     <t>
-  <abc>X &gt; Y</abc>
+  <abc>X &gt; Y
    A 
+   </abc>
 </t>
     </abstract></front><middle/><back/></rfc>
 OUTPUT
