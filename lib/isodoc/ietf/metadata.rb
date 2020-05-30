@@ -19,14 +19,6 @@ module IsoDoc
         # = item describedby convertedfrom alternate
       end
 
-      def keywords(isoxml, _out)
-        ret = []
-        isoxml.xpath(ns("//bibdata/keyword")).each do |kw|
-          ret << kw.text
-        end
-        set(:keywords, ret)
-      end
-
       def areas(isoxml, _out)
         ret = []
         isoxml.xpath(ns("//bibdata/ext/area")).each do |kw|
@@ -45,18 +37,18 @@ module IsoDoc
         wg(xml)
       end
 
-       def wg(xml)
-         workgroups = []
-         xml.xpath(ns("//bibdata/ext/editorialgroup/workgroup")).each do |wg|
-           workgroups << wg.text
+      def wg(xml)
+        workgroups = []
+        xml.xpath(ns("//bibdata/ext/editorialgroup/workgroup")).each do |wg|
+          workgroups << wg.text
         end
-         set(:wg, workgroups)
+        set(:wg, workgroups)
       end
 
-       def doctype(isoxml, _out)
-         super
-         set(:doctype, "Rfc") if get[:doctype].nil?
-       end
+      def doctype(isoxml, _out)
+        super
+        set(:doctype, "Rfc") if get[:doctype].nil?
+      end
     end
   end
 end
