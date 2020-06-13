@@ -153,13 +153,13 @@ RSpec.describe IsoDoc::Ietf do
     INPUT
            #{XML_HDR}
            <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <relref target='ISO712' section=''/>
-               <relref target='ISBN' section=''/>
-               <relref target='ISSN' section=''/>
-               <relref target='ISO16634' section=''/>
-               <relref target='ref1' section=''/>
-               <relref target='ref10' section=''/>
-               <relref target='ref12' section=''/>
+               <relref target='ISO712' section='' relative=''/>
+               <relref target='ISBN' section='' relative=''/>
+               <relref target='ISSN' section='' relative=''/>
+               <relref target='ISO16634' section='' relative=''/>
+               <relref target='ref1' section='' relative=''/>
+               <relref target='ref10' section='' relative=''/>
+               <relref target='ref12' section='' relative=''/>
              </t>
            </abstract>
          </front>
@@ -455,13 +455,13 @@ RSpec.describe IsoDoc::Ietf do
     INPUT
            #{XML_HDR}
            <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <relref target='ISO712' section=''/>
-               <relref target='ISBN' section=''/>
-               <relref target='ISSN' section=''/>
-               <relref target='ISO16634' section=''/>
-               <relref target='ref1' section=''/>
-               <relref target='ref10' section=''/>
-               <relref target='ref12' section=''/>
+               <relref target='ISO712'  section='' relative=''/>
+               <relref target='ISBN'  section='' relative=''/>
+               <relref target='ISSN'  section='' relative=''/>
+               <relref target='ISO16634'  section='' relative=''/>
+               <relref target='ref1'  section='' relative=''/>
+               <relref target='ref10'  section='' relative=''/>
+               <relref target='ref12'  section='' relative=''/>
              </t>
            </abstract>
          </front>

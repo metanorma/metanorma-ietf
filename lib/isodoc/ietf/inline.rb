@@ -120,11 +120,15 @@ module IsoDoc::Ietf
 
     def eref_parse(node, out)
       linkend = node.children.reject { |c| %w{locality localityStack}.include? c.name }
+      relative = node["relative"] ||
+        node.at(ns(".//locality[@type = 'anchor']/referenceFrom"))&.text || ""
       section = eref_clause(node.xpath(ns("./locality | ./localityStack")), nil) || ""
+      section = "" if relative.empty?
       out.relref **attr_code(target: node["bibitemid"], section: section,
+                             relative: relative,
                              displayFormat: node["displayFormat"]) do |l|
-        linkend.each { |n| parse(n, l) }
-      end
+                               linkend.each { |n| parse(n, l) }
+                             end
     end
 
     def eref_clause(refs, target)

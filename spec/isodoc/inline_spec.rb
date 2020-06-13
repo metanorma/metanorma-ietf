@@ -34,7 +34,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
     <p>
-    <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" format="title" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
+    <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" format="title" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
     </p>
     </foreword></preface>
     <sections>
@@ -52,11 +52,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  Requirement
                  <tt>/req/core/http</tt>
                </xref>
-               <relref target='ISO712' section=''>
+               <relref target='ISO712' section='' relative=''>
                  Requirement
                  <tt>/req/core/http</tt>
                </relref>
-               <relref target='ISO712' section='3.1' displayFormat="of"/>
+               <relref target='ISO712' section='3.1' displayFormat="of" relative="xyz"/>
              </t>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -370,7 +370,7 @@ OUTPUT
     INPUT
     #{XML_HDR}
     <t>
-  <relref target='ISO712' section='' displayFormat='of'>A</relref>
+  <relref target='ISO712' section='' displayFormat='of' relative="#abc">A</relref>
 </t>
 </abstract></front><middle/>
 <back>
@@ -409,6 +409,14 @@ OUTPUT
     <eref type="inline" bibitemid="ISO712" citeas="ISO 712">A</eref>
     <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="clause"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
     <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="table"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
+    <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><localityStack><locality type="anchor">><referenceFrom>1</referenceFrom></locality></localityStack>A</eref>
+    <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="anchor"><referenceFrom>xyz</referenceFrom></locality></localityStack><localityStack><locality type="clause"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
+    <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="table"><referenceFrom>1</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
+    <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
+    <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1.5</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
+    <eref type="inline" bibitemid="ISO712"><locality type="table"><referenceFrom>1</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality>A</eref>
+    <eref type="inline" bibitemid="ISO712"><locality type="whole"></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
+    <eref type="inline" bibitemid="ISO712"><locality type="locality:prelude"><referenceFrom>7</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
     </p>
     </foreword></preface>
     <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
@@ -428,19 +436,27 @@ OUTPUT
     INPUT
     #{XML_HDR}
     <t>
-  <relref target='ISO712' section=''/>
-  <relref target='ISO712' section=''/>
-  <relref target='ISO712' section=''/>
-  <relref target='ISO712' section=''/>
-  <relref target='ISO712' section='1'/>
-  <relref target='ISO712' section='1'/>
-  <relref target='ISO712' section='1.5'/>
-  <relref target='ISO712' section=''>A</relref>
-  <relref target='ISO712' section=''/>
-  <relref target='ISO712' section=''/>
-  <relref target='ISO712' section=''>A</relref>
-  <relref target='ISO712' section='1; 3'/>
-  <relref target='ISO712' section='1'/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''>A</relref>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''>A</relref>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative=''/>
+  <relref target='ISO712' section='' relative='1'>A</relref>
+  <relref target='ISO712' section='1; 3' relative='xyz'/>
+  <relref target='ISO712' section='1' relative='1'/>
+<relref target='ISO712' section='1' relative='1'/>
+<relref target='ISO712' section='1.5' relative='1'/>
+<relref target='ISO712' section='' relative='1'>A</relref>
+<relref target='ISO712' section='' relative='1'/>
+<relref target='ISO712' section='' relative='1'/>
 </t>
 </abstract></front><middle/>
 <back>
