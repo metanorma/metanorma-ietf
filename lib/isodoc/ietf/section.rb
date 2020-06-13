@@ -60,7 +60,8 @@ module IsoDoc::Ietf
       {
         docName:        @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
         number:         @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
-        category:       docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text || "std",
+        category:       series2category(
+          docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text),
         ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
         obsoletes:      obs,
         updates:        upd,
@@ -76,6 +77,20 @@ module IsoDoc::Ietf
         version:        "3",
         'xmlns:xi':        "http://www.w3.org/2001/XInclude",
       }
+    end
+
+    def series2category(series)
+      case series&.downcase
+      when "standard" then "std"
+      when "informational" then "info"
+      when "experimental" then "exp"
+      when "bcp" then "bcp"
+      when "fyi" then "info"
+      when "full-standard" then "std"
+      when "historic" then "historic"
+      else
+        "std"
+      end
     end
 
     def xpath_comma(xpath)
