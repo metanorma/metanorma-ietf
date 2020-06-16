@@ -7,13 +7,13 @@ module Asciidoctor
                   id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node))
       end
 
-      def ul_attr(node)
+      def ul_attrs(node)
         attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
                   nobullet: node.attr("nobullet"),
                   spacing: node.attr("spacing"))
       end
 
-      def ol_attr(node)
+      def ol_attrs(node)
         attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
                   type: node.attr("format") || olist_style(node.style),
                   group: node.attr("group"),
@@ -21,7 +21,7 @@ module Asciidoctor
                   start: node.attr("start"))
       end
 
-      def dl_attr(node)
+      def dl_attrs(node)
         attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
                   newline: node.attr("newline"),
                   indent: node.attr("indent"),
