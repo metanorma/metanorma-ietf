@@ -11,7 +11,7 @@ RSpec.describe Asciidoctor::Ietf do
     INPUT
         #{BLANK_HDR}
        <sections>
-       <p keepWithNext='true' keepWithPrevious='true' id='_'>Hello</p>
+       <p keep-with-next='true' keep-with-previous='true' id='_'>Hello</p>
        </sections>
        </ietf-standard>
     OUTPUT

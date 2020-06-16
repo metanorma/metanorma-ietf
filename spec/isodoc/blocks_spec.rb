@@ -428,10 +428,10 @@ B</pre>
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
-    <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keepWithNext="true">Vache Equipment<br/>
+    <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true">Vache Equipment<br/>
 Fictitious<br/>
 World</p>
-    <p align="justify" keepWithPrevious="true">Justify</p>
+    <p align="justify" keep-with-previous="true">Justify</p>
     </foreword></preface>
     </iso-standard>
     INPUT

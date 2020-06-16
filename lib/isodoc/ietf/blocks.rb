@@ -1,8 +1,8 @@
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def para_attrs(node)
-      { keepWithNext: node["keepWithNext"],
-        keepWithPrevious: node["keepWithPrevious"],
+      { keepWithNext: node["keep-with-next"],
+        keepWithPrevious: node["keep-with-previous"],
         anchor: node["id"] }
     end
 
