@@ -69,12 +69,12 @@
         </attribute>
       </optional>
       <optional>
-        <attribute name="keepWithNext">
+        <attribute name="keep-with-next">
           <data type="boolean"/>
         </attribute>
       </optional>
       <optional>
-        <attribute name="keepWithPrevious">
+        <attribute name="keep-with-previous">
           <data type="boolean"/>
         </attribute>
       </optional>
