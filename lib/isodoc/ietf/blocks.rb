@@ -63,9 +63,9 @@ module IsoDoc::Ietf
                 spacing: node["spacing"])
     end
 
-     def dt_parse(dt, term)
+    def dt_parse(dt, term)
       if dt.elements.empty?
-          term << dt.text
+        term << dt.text
       else
         dt.children.each { |n| parse(n, term) }
       end
@@ -112,8 +112,8 @@ module IsoDoc::Ietf
         div.sourcecode **attr_code(type: node["lang"], name: node["filename"],
                                    markers: node["markers"],
                                    src: node["src"]) do |s|
-          node.children.each { |x| parse(x, s) unless x.name == "name" }
-        end
+                                     node.children.each { |x| parse(x, s) unless x.name == "name" }
+                                   end
       end
     end
 
@@ -147,6 +147,15 @@ module IsoDoc::Ietf
         lbl = anchor(node['id'], :label, false)
         lbl.nil? or
           p << "    (#{lbl})"
+      end
+    end
+
+    def formula_parse(node, out)
+      formula_parse1(node, out)
+      formula_where(node.at(ns("./dl")), out)
+      node.children.each do |n|
+        next if %w(stem dl).include? n.name
+        parse(n, out)
       end
     end
 

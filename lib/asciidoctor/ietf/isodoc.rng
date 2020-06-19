@@ -568,6 +568,9 @@
             <data type="boolean"/>
           </attribute>
         </optional>
+        <optional>
+          <attribute name="type"/>
+        </optional>
         <oneOrMore>
           <choice>
             <ref name="paragraph"/>

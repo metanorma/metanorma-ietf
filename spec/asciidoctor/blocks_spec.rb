@@ -17,22 +17,6 @@ RSpec.describe Asciidoctor::Ietf do
     OUTPUT
   end
 
-    it "processes pass blocks" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-      #{ASCIIDOC_BLANK_HDR}
-      
-      ++++
-      <abc>X &gt; Y</abc>
-      ++++
-    INPUT
-        #{BLANK_HDR}
-       <sections>
-       <passthrough>&lt;abc&gt;X &amp;gt; Y&lt;/abc&gt;</passthrough>
-       </sections>
-       </ietf-standard>
-    OUTPUT
-  end
-
   it "processes open blocks" do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
