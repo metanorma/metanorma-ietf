@@ -58,7 +58,7 @@ module IsoDoc::Ietf
       result = from_xhtml(cleanup(to_xhtml(textcleanup(result)))).
         sub(/<!DOCTYPE[^>]+>\n/, "").
         sub(/(<rfc[^<]+? )lang="[^"]+"/, "\\1")
-      File.open("#{filename}.rfc.xml", "w:UTF-8") { |f| f.write(result) }
+      File.open(filename, "w:UTF-8") { |f| f.write(result) }
       @files_to_delete.each { |f| FileUtils.rm_rf f }
     end
 
@@ -71,6 +71,7 @@ module IsoDoc::Ietf
       super
       @xinclude = options[:use_xinclude] == "true"
       @format = :rfc
+      @suffix = "rfc.xml"
     end
   end
 end
