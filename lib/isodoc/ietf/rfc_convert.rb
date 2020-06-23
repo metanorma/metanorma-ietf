@@ -9,11 +9,12 @@ require_relative "./cleanup"
 require_relative "./footnotes"
 require_relative "./references"
 require_relative "./section"
+require_relative "./xref"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def convert1(docxml, filename, dir)
-      anchor_names docxml
+      @xrefs.parse docxml
       info docxml, nil
       xml = noko do |xml|
         xml.rfc **attr_code(rfc_attributes(docxml)) do |html|
@@ -29,6 +30,10 @@ module IsoDoc::Ietf
     def metadata_init(lang, script, labels)
       @meta = Metadata.new(lang, script, labels)
     end
+
+    def xref_init(lang, script, klass, labels, options)
+        @xrefs = Xref.new(lang, script, klass, labels, options)
+      end
 
     def extract_delims(text)
       @openmathdelim = "$$"

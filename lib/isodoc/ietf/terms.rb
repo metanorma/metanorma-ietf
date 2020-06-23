@@ -48,18 +48,5 @@ module IsoDoc::Ietf
 
     def termdocsource_parse(_node, _out)
     end
-
-    def termnote_anchor_names(docxml)
-      docxml.xpath(ns("//term[descendant::termnote]")).each do |t|
-        c = Counter.new
-        notes = t.xpath(ns(".//termnote"))
-        notes.each do |n|
-          next if n["id"].nil? || n["id"].empty?
-          idx = notes.size == 1 ? "" : " #{c.increment(n).print}"
-          @anchors[n["id"]] =
-            anchor_struct(idx, n, @note_xref_lbl, "note", false)
-        end
-      end
-    end
   end
 end
