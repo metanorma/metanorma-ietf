@@ -52,10 +52,11 @@ module Metanorma
         !which("xml2rfc").nil?
       end
 
-      def output(isodoc_node, outname, format, options={})
+      def output(isodoc_node, inname, outname, format, options={})
         case format
         when :rfc
-          IsoDoc::Ietf::RfcConvert.new(options).convert(outname, isodoc_node)
+          outname ||= inname.sub(/\.xml$/, ".rfc.xml")
+          IsoDoc::Ietf::RfcConvert.new(options).convert(inname, isodoc_node, nil, outname)
           @done_rfc = true
 
         when :txt
@@ -64,9 +65,10 @@ module Metanorma
             return
           end
 
-          rfcname = outname.sub(/\.txt$/, ".rfc.xml")
-          output(isodoc_node, outname, :rfc, options) unless @done_rfc
+          rfcname = inname.sub(/\.xml$/, ".rfc.xml")
+          output(isodoc_node, inname, rfcname, :rfc, options) unless @done_rfc
 
+          outname ||= inname.sub(/\.xml$/, ".txt")
           system("xml2rfc --text #{rfcname} -o #{outname}")
 
         when :pdf
@@ -75,9 +77,10 @@ module Metanorma
             return
           end
 
-          rfcname = outname.sub(/\.pdf$/, ".rfc.xml")
-          output(isodoc_node, outname, :rfc, options) unless @done_rfc
+          rfcname = inname.sub(/\.xml$/, ".rfc.xml")
+          output(isodoc_node, inname, rfcname, :rfc, options) unless @done_rfc
 
+          outname ||= inname.sub(/\.xml$/, ".pdf")
           system("xml2rfc --pdf #{rfcname} -o #{outname}")
 
         when :html
@@ -86,9 +89,10 @@ module Metanorma
             return
           end
 
-          rfcname = outname.sub(/\.html$/, ".rfc.xml")
-          output(isodoc_node, outname, :rfc, options) unless @done_rfc
+          rfcname = inname.sub(/\.xml$/, ".rfc.xml")
+          output(isodoc_node, inname, rfcname, :rfc, options) unless @done_rfc
 
+          outname ||= inname.sub(/\.xml$/, ".html")
           system("xml2rfc --html #{rfcname} -o #{outname}")
 
         else

@@ -34,7 +34,8 @@ RSpec.describe Metanorma::Ietf::Processor do
   it "generates HTML from IsoDoc XML" do
     FileUtils.rm_f "test.xml"
     FileUtils.rm_f "test.html"
-    processor.output(<<~"INPUT", "test.html", :html)
+    FileUtils.rm_f "test.rfc.xml"
+    processor.output(<<~"INPUT", "test.xml", "test.html", :html)
            <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
        <bibdata type="standard">
         <title language="en" type="main" format="text/plain">Document title</title>

@@ -94,7 +94,7 @@ module IsoDoc::Ietf
     end
 
     def example_label(node, div, name)
-      n = get_anchors[node["id"]]
+      n = @xrefs.get[node["id"]]
       div.t **attr_code(anchor: node["id"], keepWithNext: "true") do |p|
         lbl = (n.nil? || n[:label].nil? || n[:label].empty?) ? @example_lbl :
           l10n("#{@example_lbl} #{n[:label]}")
@@ -144,7 +144,7 @@ module IsoDoc::Ietf
     def formula_parse1(node, out)
       out.t **attr_code(anchor: node["id"]) do |p|
         parse(node.at(ns("./stem")), p)
-        lbl = anchor(node['id'], :label, false)
+        lbl = @xrefs.anchor(node['id'], :label, false)
         lbl.nil? or
           p << "    (#{lbl})"
       end
