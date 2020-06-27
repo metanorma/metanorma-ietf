@@ -322,10 +322,10 @@ INPUT
          <link href='EQ2' rel='alternate'/>
          <front>
            <title abbrev='Abbreviated Title' ascii='Ascii Title'>Main Title?~@~I?~@~T?~@~ITitle</title>
-           <seriesInfo value='1000' asciiValue='1000' status='10' stream='IRTF' name='RFC' asciiName='RFC'/>
+           <seriesInfo value='1000' status='10' stream='IRTF' name='RFC' asciiName='RFC'/>
            <seriesInfo name='' value='' status='FYI'/>
-            <author fullname='Fred Flintstone' asciiFullname='Fred Flintstone'>
-            <organization ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
+            <author fullname='Fred Flintstone'>
+            <organization>Slate Rock and Gravel Company</organization>
             <address>
 <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
 <phone>123</phone>
@@ -335,7 +335,7 @@ INPUT
 </address>
  </author>
  <author role='editor' initials='B. X.' surname='Rubble'>
-  <organization ascii='Rockhead and Quarry Cave Construction Company'>Rockhead and Quarry Cave Construction Company</organization>
+  <organization>Rockhead and Quarry Cave Construction Company</organization>
   <address>
   <postalLine ascii='6A Rubble Way, Bedrock'>6A Rubble Way, Bedrock</postalLine>
   <phone>123c</phone>
@@ -364,7 +364,7 @@ OUTPUT
   expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
    <ietf-standard xmlns='https://open.ribose.com/standards/ietf'>
          <bibdata type='standard'>
-           <title language='en' type="main" format='text/plain'>Document title</title>
+           <title language='en' type="main" format='text/plain'>Dócument title</title>
            <docidentifier>1000</docidentifier>
            <docnumber>1000</docnumber>
            <contributor>
@@ -377,11 +377,11 @@ OUTPUT
              <role type='author'/>
              <person>
                <name>
-                 <completename>Fred Flintstone</completename>
+                 <completename>Fréd Flintstone</completename>
                </name>
                <affiliation>
                  <organization>
-                   <name>Slate Rock and Gravel Company</name>
+                   <name>Sláte Rock and Gravel Company</name>
                    <address>
                      <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
                    </address>
@@ -481,11 +481,11 @@ INPUT
         <?rfc sortrefs="yes"?>
         <rfc xmlns:xi='http://www.w3.org/2001/XInclude' docName='1000' category='bcp' submissionType='IETF' xml:lang='el' version='3'>
           <front>
-            <title ascii='Document title'>Document title</title>
-            <seriesInfo value='1000' asciiValue='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>
+            <title ascii='Document title'>D&#xF3;cument title</title>
+            <seriesInfo value='1000' status='Published' stream='IETF' name='Internet-Draft' asciiName='Internet-Draft'/>
             <seriesInfo name='' value='' status='BCP'/>
-            <author fullname='Fred Flintstone' asciiFullname='Fred Flintstone'>
-              <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Slate Rock and Gravel Company</organization>
+            <author fullname='Fr&#xE9;d Flintstone' asciiFullname='Fred Flintstone'>
+              <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Sl&#xE1;te Rock and Gravel Company</organization>
               <address>
                 <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
                 <phone>123</phone>

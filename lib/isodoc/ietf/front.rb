@@ -23,11 +23,16 @@ module IsoDoc::Ietf
       super
     end
 
+    def output_if_translit(text)
+      return nil if text.nil?
+      text.transliterate != text ? text.transliterate : nil
+    end
+
     def title(isoxml, front)
       title = @meta.get[:doctitle] or return
       front.title title, **attr_code(abbrev: @meta.get[:docabbrev],
-                                     ascii: @meta.get[:docascii] ||
-                                     title.transliterate)
+                                     ascii: (@meta.get[:docascii] ||
+                                     output_if_translit(title)))
     end
 
     def seriesinfo(isoxml, front)
@@ -37,7 +42,7 @@ module IsoDoc::Ietf
 
     def seriesinfo_attr(isoxml)
       attr_code(value: @meta.get[:docnumber] || "",
-                asciiValue: @meta.get[:docnumber]&.transliterate,
+                asciiValue: output_if_translit(@meta.get[:docnumber]),
                 status: @meta.get[:stage],
                 stream: isoxml&.at(ns("//bibdata/series[@type = 'stream']/"\
                                       "title"))&.text)
@@ -82,9 +87,9 @@ module IsoDoc::Ietf
 
     def pers_author_attrs1(ret, full, init, c)
       full and ret.merge!(attr_code(
-        asciiFullname: full&.transliterate,
-        asciiInitials: init&.transliterate,
-        asciiSurname: c&.at(ns("./surname"))&.text&.transliterate))
+        asciiFullname: output_if_translit(full),
+        asciiInitials: output_if_translit(init),
+        asciiSurname: output_if_translit(c&.at(ns("./surname")))))
       ret
     end
 
@@ -113,8 +118,8 @@ module IsoDoc::Ietf
     def organization(org, out, show)
       name = org.at(ns("./name"))&.text
       out.organization name, **attr_code(
-        showOnFrontPage: show&.text, ascii: name&.transliterate,
-        asciiAbbrev: org&.at(ns("./abbreviation"))&.transliterate,
+        showOnFrontPage: show&.text, ascii: output_if_translit(name),
+        asciiAbbrev: output_if_translit(org.at(ns("./abbreviation"))),
         abbrev: org.at(ns("./abbreviation")))
     end
 
