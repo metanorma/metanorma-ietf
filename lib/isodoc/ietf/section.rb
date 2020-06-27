@@ -81,11 +81,11 @@ module IsoDoc::Ietf
 
     def series2category(series)
       case series&.downcase
-      when "standard" then "std"
-      when "informational" then "info"
-      when "experimental" then "exp"
+      when "standard", "std" then "std"
+      when "informational", "info" then "info"
+      when "experimental", "exp" then "exp"
       when "bcp" then "bcp"
-      when "fyi" then "info"
+      when "fyi", "info" then "info"
       when "full-standard" then "std"
       when "historic" then "historic"
       else
