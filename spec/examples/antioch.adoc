@@ -15,7 +15,7 @@ Arthur son of Uther Pendragon
 :sort-refs: true
 :revdate: 2018-04-15T00:00:00Z
 :fullname: Arthur son of Uther Pendragon
-:initial: A.
+:initials: A.
 :surname: Pendragon
 :email: arthur.pendragon@ribose.com
 :organization: Camelot
