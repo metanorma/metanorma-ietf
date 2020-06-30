@@ -72,7 +72,9 @@ module IsoDoc::Ietf
     end
 
     def note_label(node)
-      l10n("#{super}: ")
+      n = @xrefs.get[node["id"]]
+      return l10n("#{@note_lbl}: ") if n.nil? || n[:label].nil? || n[:label].empty?
+      l10n("#{@note_lbl} #{n[:label]}: ")
     end
 
     def note_parse(node, out)
