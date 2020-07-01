@@ -48,6 +48,10 @@ module Metanorma
         nil
       end
 
+      def uses_presentation_xml
+        false
+      end
+
       def xml2rfc_present?
         !which("xml2rfc").nil?
       end
