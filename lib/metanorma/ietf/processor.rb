@@ -48,7 +48,7 @@ module Metanorma
         nil
       end
 
-      def uses_presentation_xml
+      def use_presentation_xml(ext)
         false
       end
 
