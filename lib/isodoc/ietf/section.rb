@@ -132,7 +132,7 @@ module IsoDoc::Ietf
       end
     end
 
-    def clause_parse_title(node, div, c1, out)
+    def clause_parse_title(node, div, c1, out, _heading_attrs = {})
       return unless c1
       div.name do |n|
         c1&.children&.each { |c2| parse(c2, n) }
