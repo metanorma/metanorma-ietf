@@ -4,7 +4,7 @@ Arthur son of Uther Pendragon
 :abbrev: Hand Grenade of Antioch
 :updates: RFC 8140
 :submission-type: independent
-:intended-series: info
+:intended-series: informational
 :docnumber: draft-camelot-holy-grenade-01
 :status: informational
 :consensus: false

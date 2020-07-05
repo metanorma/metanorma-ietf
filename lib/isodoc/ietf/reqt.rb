@@ -1,5 +1,10 @@
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
+    def recommendation_labels(node)
+      [node.at(ns("./label")), node.at(ns("./title")), 
+       @xrefs.anchor(node['id'], :label, false)]
+    end
+
     def recommendation_name(node, out, type)
       label, title, lbl = recommendation_labels(node)
       out.t **{ keepWithNext: "true" }  do |b|
