@@ -26,11 +26,6 @@ module Metanorma
         "Metanorma::Ietf #{::Metanorma::Ietf::VERSION}"
       end
 
-      def input_to_isodoc(file, filename)
-        # This is XML RFC v3 output in text
-        Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
-      end
-
       def extract_options(isodocxml)
         {}
       end
