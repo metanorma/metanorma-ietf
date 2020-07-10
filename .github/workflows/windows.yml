@@ -36,7 +36,6 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-          architecture: 'x64'
       - name: Update gems
         shell: pwsh
         run: |
