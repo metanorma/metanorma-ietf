@@ -73,8 +73,8 @@ module IsoDoc::Ietf
 
     def note_label(node)
       n = @xrefs.get[node["id"]]
-      return l10n("#{@note_lbl}: ") if n.nil? || n[:label].nil? || n[:label].empty?
-      l10n("#{@note_lbl} #{n[:label]}: ")
+      return l10n("#{@i18n.note}: ") if n.nil? || n[:label].nil? || n[:label].empty?
+      l10n("#{@i18n.note} #{n[:label]}: ")
     end
 
     def note_parse(node, out)
@@ -98,8 +98,8 @@ module IsoDoc::Ietf
     def example_label(node, div, name)
       n = @xrefs.get[node["id"]]
       div.t **attr_code(anchor: node["id"], keepWithNext: "true") do |p|
-        lbl = (n.nil? || n[:label].nil? || n[:label].empty?) ? @example_lbl :
-          l10n("#{@example_lbl} #{n[:label]}")
+        lbl = (n.nil? || n[:label].nil? || n[:label].empty?) ? @i18n.example :
+          l10n("#{@i18n.example} #{n[:label]}")
         p << lbl
         name and !lbl.nil? and p << ": "
         name and name.children.each { |n| parse(n, p) }
@@ -139,7 +139,7 @@ module IsoDoc::Ietf
 
     def formula_where(dl, out)
       return unless dl
-      out.t { |p| p << @where_lbl }
+      out.t { |p| p << @i18n.where }
       parse(dl, out)
     end
 

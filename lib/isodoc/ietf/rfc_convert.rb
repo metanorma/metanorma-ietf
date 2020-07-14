@@ -27,12 +27,12 @@ module IsoDoc::Ietf
           set_pis(docxml, Nokogiri::XML(xml))
     end
 
-    def metadata_init(lang, script, labels)
-      @meta = Metadata.new(lang, script, labels)
+    def metadata_init(lang, script, i18n)
+      @meta = Metadata.new(lang, script, i18n)
     end
 
-    def xref_init(lang, script, klass, labels, options)
-        @xrefs = Xref.new(lang, script, klass, labels, options)
+    def xref_init(lang, script, klass, i18n, options)
+        @xrefs = Xref.new(lang, script, klass, i18n, options)
       end
 
     def extract_delims(text)

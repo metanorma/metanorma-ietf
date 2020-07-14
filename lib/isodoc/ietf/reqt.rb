@@ -32,7 +32,7 @@ module IsoDoc::Ietf
     end
 
     def recommendation_parse(node, out)
-      recommendation_name(node, out, @recommendation_lbl)
+      recommendation_name(node, out, @i18n.recommendation)
       recommendation_attributes(node, out)
       node.children.each do |n|
         parse(n, out) unless %w(label title).include? n.name
@@ -40,7 +40,7 @@ module IsoDoc::Ietf
     end
 
     def requirement_parse(node, out)
-      recommendation_name(node, out, @requirement_lbl)
+      recommendation_name(node, out, @i18n.requirement)
       recommendation_attributes(node, out)
       node.children.each do |n|
         parse(n, out) unless %w(label title).include? n.name
@@ -48,7 +48,7 @@ module IsoDoc::Ietf
     end
 
     def permission_parse(node, out)
-      recommendation_name(node, out, @permission_lbl)
+      recommendation_name(node, out, @i18n.permission)
       recommendation_attributes(node, out)
       node.children.each do |n|
         parse(n, out) unless %w(label title).include? n.name

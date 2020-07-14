@@ -13,7 +13,7 @@ module IsoDoc::Ietf
 
     def deprecated_term_parse(node, out)
       out.t do |p|
-        p << l10n("#{@deprecated_lbl}: ")
+        p << l10n("#{@i18n.deprecated}: ")
         node.children.each { |c| parse(c, p) }
       end
     end
