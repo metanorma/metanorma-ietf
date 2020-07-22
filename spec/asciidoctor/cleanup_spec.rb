@@ -149,7 +149,7 @@ RSpec.describe Asciidoctor::Ietf do
       </p>
       </foreword></preface><sections>
       </sections><bibliography><references id="biblio" obligation="informative" normative="true">
-        <title>Normative References</title>
+        <title>Normative references</title>
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216:2001</docidentifier>
@@ -190,7 +190,7 @@ RSpec.describe Asciidoctor::Ietf do
         </p>
       </foreword></preface><sections>
       </sections><bibliography><references id="_" obligation="informative" normative="true">
-        <title>Normative References</title>
+        <title>Normative references</title>
         <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>
@@ -287,7 +287,7 @@ RSpec.describe Asciidoctor::Ietf do
     INPUT
       #{BLANK_HDR}
       <sections></sections>
-      <bibliography><references id="_" obligation="informative" normative="true"><title>Normative References</title>
+      <bibliography><references id="_" obligation="informative" normative="true"><title>Normative references</title>
              <bibitem id="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>

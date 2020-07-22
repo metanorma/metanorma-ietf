@@ -550,6 +550,7 @@ Author
          </bibdata>
          <preface>
            <abstract id='_'>
+           <title>Abstract</title>
              <p id='_'>This is the abstract of the document</p>
              <p id='_'>This is the second paragraph of the abstract of the document.</p>
              <note removeInRFC='true' id='_'>
