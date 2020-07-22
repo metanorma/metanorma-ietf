@@ -168,7 +168,7 @@ module IsoDoc::Ietf
 
     def date(isoxml, front)
       date = @meta.get[:publisheddate] || @meta.get[:circulateddate] || return
-      date.gsub!(/T.*$/, "")
+      date = date.gsub(/T.*$/, "")
       attr = date_attr(date) || return
       front.date **attr_code(attr)
     end

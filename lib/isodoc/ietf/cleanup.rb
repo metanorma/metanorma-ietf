@@ -157,7 +157,8 @@ module IsoDoc::Ietf
         s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n").
           gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
         sourcecode_remove_markup(s)
-        s.children = "<![CDATA[#{s.children.to_xml.sub(/\A\n+/, "")}]]>"
+        text = HTMLEntities.new.decode(s.children.to_xml.sub(/\A\n+/, ""))
+        s.children = "<![CDATA[#{text}]]>"
       end
     end
 

@@ -412,14 +412,14 @@ INPUT
    end
 
    it "cleans up sourcecode" do
-      expect((IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to (<<~"OUTPUT")
+      expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to (<<~"OUTPUT")
       #{XML_HDR}
              <figure anchor='_'>
                <name>Label</name>
                <sourcecode>
                  <t anchor="_">&#xA0;&#xA0;<strong><em>A</em></strong><br/>
 &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B<br/>B1</t>
-<t anchor="_">&#xA0;&#xA0;<em>C</em></t>
+<t anchor="_">&#xA0;&#xA0;<em>C &gt; E</em></t>
                </sourcecode>
              </figure>
              <figure anchor='samplecode'>
@@ -437,23 +437,24 @@ INPUT
 INPUT
 #{XML_HDR}
                     <figure anchor="_">
-                    <name>Label</name><sourcecode><![CDATA[&#xA0;&#xA0;A
-&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B
+
+
+                    <name>Label</name><sourcecode><![CDATA[  A
+        B
 B1
 
-&#xA0;&#xA0;C]]></sourcecode></figure>
-<figure anchor='samplecode'>
-               <name>
-                 Ruby
-                 <em>code</em>
-               </name>
-               <sourcecode type='ruby'><![CDATA[         puts x;
+  C  E]]></sourcecode></figure>
+                    <figure anchor="samplecode">
+
+                    <name>
+                        Ruby
+                        <em>code</em>
+                      </name><sourcecode type="ruby"><![CDATA[         puts x;
          puts y;
 
          puts z
-       ]]></sourcecode>
-             </figure>
-</abstract></front><middle/><back/></rfc>
+       ]]></sourcecode></figure>
+       </abstract></front><middle/><back/></rfc>
 OUTPUT
    end
 
