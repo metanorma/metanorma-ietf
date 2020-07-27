@@ -267,7 +267,7 @@ B</pre>
     <preface><foreword>
     <sourcecode lang="ruby" id="samplecode" markers="true">
     <name>Ruby <em>code</em></name>
-  puts x;
+  puts x &lt; y;
   puts y
 </sourcecode>
     <sourcecode lang="ruby" id="samplecode2" src="http://www.example.com"/>
@@ -281,7 +281,7 @@ B</pre>
                  <em>code</em>
                </name>
                <sourcecode type='ruby' markers='true'>
-         puts x;
+         puts x &lt; y;
          puts y
        </sourcecode>
        </figure>
