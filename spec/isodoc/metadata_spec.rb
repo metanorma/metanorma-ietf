@@ -311,7 +311,7 @@ INPUT
 <?rfc tocdepth="4"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' number='1000' category='info' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3'>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' number='1000' category='info' ipr='noModificationTrust200902,pre5378Trust200902' obsoletes='OB1, OB2' updates='UPD1, UPD2' indexInclude='false' iprExtract='Section 3' sortRefs='false' symRefs='false' tocInclude='false' tocDepth='9' submissionType='IRTF' xml:lang='en' version='3' consensus='false'>
          <link href='INC1' rel='item'/>
          <link href='INCL2' rel='item'/>
          <link href='DESC1' rel='describedby'/>

@@ -63,6 +63,7 @@ module IsoDoc::Ietf
         category:       series2category(
           docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text),
         ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
+        consensus:      docxml&.at(ns("//bibdata/ext/consensus"))&.text,
         obsoletes:      obs,
         updates:        upd,
         indexInclude:   docxml&.at(ns("//bibdata/ext/indexInclude"))&.text,
