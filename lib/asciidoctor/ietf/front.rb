@@ -11,7 +11,7 @@ module Asciidoctor
 
       def metadata_publisher(node, xml)
         publishers = node.attr("publisher") || "IETF"
-        publishers.split(/,[ ]?/).each do |p|
+        csv_split(publishers)&.each do |p|
           xml.contributor do |c|
             c.role **{ type: "publisher" }
             c.organization { |a| organization(a, p) }
@@ -20,8 +20,8 @@ module Asciidoctor
       end
 
       def metadata_copyright(node, xml)
-        publishers = node.attr("publisher") || "IETF"
-        publishers.split(/,[ ]?/).each do |p|
+        publishers = node.attr("copyright-holder") || node.attr("publisher") || "IETF"
+        csv_split(publishers)&.each do |p|
           xml.copyright do |c|
             c.from (node.attr("copyright-year") || Date.today.year)
             c.owner do |owner|

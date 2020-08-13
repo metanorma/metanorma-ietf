@@ -102,6 +102,7 @@ Author
       :address_2: 6A Rubble Way, Bedrock
       :email_2: barney@rockhead.example.com
       :publisher: Hanna Barbera, Cartoon Network
+      :copyright-holder: Cartoon Network
       :part-of: ABC
       :translated-from: DEF,GHI;JKL MNO,PQR
       :keywords: a, b, c
@@ -274,14 +275,6 @@ Author
              <substage>20</substage>
              <iteration>3</iteration>
            </status>
-           <copyright>
-             <from>2001</from>
-             <owner>
-               <organization>
-                 <name>Hanna Barbera</name>
-               </organization>
-             </owner>
-           </copyright>
            <copyright>
              <from>2001</from>
              <owner>
