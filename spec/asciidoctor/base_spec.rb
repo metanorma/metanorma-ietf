@@ -365,7 +365,7 @@ Author
            <keyword>b</keyword>
            <keyword>c</keyword>
            <ext>
-           <doctype>RFC</doctype>
+           <doctype>rfc</doctype>
 <editorialgroup>
   <workgroup number='3' type='C'>WG</workgroup>
   <workgroup number='31' type='C1'>WG1</workgroup>
@@ -535,7 +535,7 @@ Author
   <number>111</number>
            </series>
            <ext>
-  <doctype>Internet-Draft</doctype>
+  <doctype>internet-draft</doctype>
   <pi>
   <toc>yes</toc>
 </pi>

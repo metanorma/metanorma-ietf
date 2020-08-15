@@ -117,7 +117,7 @@ BLANK_HDR = <<~"HDR"
            <title>IETF</title>
          </series>
          <ext>
-  <doctype>Internet-Draft</doctype>
+  <doctype>internet-draft</doctype>
   <pi>
   <toc>yes</toc>
 </pi>

@@ -32,8 +32,8 @@ module Asciidoctor
       end
 
       def doctype(node)
-        ret = node.attr("doctype")
-        ret = "Internet-Draft" if ret == "article"
+        ret = super
+        ret = "internet-draft" if ret == "article"
         ret
       end
 
