@@ -751,4 +751,20 @@ OUTPUT
 
 end
 
+      it "reports parsing errors on RFC XML output" do
+    FileUtils.rm_f "test.rfc.xml"
+    expect { IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false) }.to output(/RFC XML: Line/).to_stderr
+    <iso-standard xmlns="http://riboseinc.com/isoxml">
+    <preface><foreword>
+    <p>
+    <passthrough>&lt;abc&gt;X &amp;gt; Y</passthrough>
+    A
+    <passthrough>&lt;/abc&gt;</passthrough>
+    </p>
+    </preface>
+    </iso-standard>
+INPUT
+  end
+
+
 end
