@@ -115,11 +115,18 @@ module Asciidoctor
       def cleanup(xmldoc)
         bcp14_cleanup(xmldoc)
         rfc_anchor_cleanup(xmldoc)
+        abstract_cleanup(xmldoc)
         super
       end
 
       BCP_KEYWORDS = ["MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
                       "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", "OPTIONAL"].freeze
+
+      def abstract_cleanup(xmldoc)
+        xmldoc.xpath("//abstract[not(text())]").each do |x|
+          x.remove
+        end
+      end
 
       def bcp14_cleanup(xmldoc)
         return unless @bcp_bold

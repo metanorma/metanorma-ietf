@@ -109,6 +109,7 @@ RSpec.describe Asciidoctor::Ietf do
            </series>
          <ext>
   <doctype>internet-draft</doctype>
+  <ipr>trust200902</ipr>
   <pi>
   <toc>yes</toc>
 </pi>

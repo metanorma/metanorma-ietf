@@ -480,7 +480,7 @@ OUTPUT
   it "processes passthrough content" do
     FileUtils.rm_f "test.rfc.xml"
     IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false)
-    <iso-standard xmlns="http://riboseinc.com/isoxml">
+    #{BLANK_HDR}
     <preface><foreword>
     <p>
     <passthrough>&lt;abc&gt;X &amp;gt; Y</passthrough>
@@ -491,13 +491,28 @@ OUTPUT
     </iso-standard>
 INPUT
     expect( File.read("test.rfc.xml")).to be_equivalent_to xmlpp(<<~"OUTPUT")
-    #{XML_HDR}
-    <t>
-  <abc>X &gt; Y
-   A 
-   </abc>
-</t>
-    </abstract></front><middle/><back/></rfc>
+          <?xml version="1.0"?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
+         <front>
+           <title>Document title</title>
+           <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
+           <abstract>
+       <t>
+       <abc>X &gt; Y
+       A
+       </abc>
+       </t>
+       </abstract>
+         </front>
+         <middle></middle>
+         <back></back>
+       </rfc>
 OUTPUT
   end
 end

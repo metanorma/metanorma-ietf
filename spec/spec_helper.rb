@@ -118,6 +118,7 @@ BLANK_HDR = <<~"HDR"
          </series>
          <ext>
   <doctype>internet-draft</doctype>
+  <ipr>trust200902</ipr>
   <pi>
   <toc>yes</toc>
 </pi>

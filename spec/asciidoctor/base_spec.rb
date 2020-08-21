@@ -117,7 +117,7 @@ Author
       :toc-depth: 9
       :included-in: INC1;INCL2
       :described-by: DESC1;DESC2
-      :derived-from: DER1;DER2
+      :derived-from: https://datatracker.ietf.org/doc/draft-DER1;https://datatracker.ietf.org/doc/draft-DER2
       :instance: EQ1;EQ2
       :obsoletes: OB1;OB2
       :updates: UPD1;UPD2
@@ -310,13 +310,13 @@ Author
            <relation type='derivedFrom'>
              <bibitem>
                <title>--</title>
-               <docidentifier>DER1</docidentifier>
+               <docidentifier>https://datatracker.ietf.org/doc/draft-DER1</docidentifier>
              </bibitem>
            </relation>
            <relation type='derivedFrom'>
              <bibitem>
                <title>--</title>
-               <docidentifier>DER2</docidentifier>
+               <docidentifier>https://datatracker.ietf.org/doc/draft-DER2</docidentifier>
              </bibitem>
            </relation>
            <relation type='instance'>
@@ -536,6 +536,7 @@ Author
            </series>
            <ext>
   <doctype>internet-draft</doctype>
+  <ipr>trust200902</ipr>
   <pi>
   <toc>yes</toc>
 </pi>

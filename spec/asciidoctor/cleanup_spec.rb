@@ -18,6 +18,20 @@ RSpec.describe Asciidoctor::Ietf do
     OUTPUT
   end
 
+  it "removes empty abstracts" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR}
+      
+      [abstract]
+      ABC
+    INPUT
+       #{BLANK_HDR}
+              <sections>
+       </sections>
+       </ietf-standard>
+    OUTPUT
+  end
+
   it "processes stem-only terms as admitted" do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}

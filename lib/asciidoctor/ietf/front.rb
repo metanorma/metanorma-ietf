@@ -80,7 +80,7 @@ module Asciidoctor
         x = node.attr("area") and x.split(/,\s*/).each do |a|
           xml.area a
         end
-        x = node.attr("ipr") and xml.ipr x
+        xml.ipr (node.attr("ipr") || "trust200902")
         x = node.attr("consensus") and xml.consensus x
         x = node.attr("index-include") and xml.indexInclude x
         x = node.attr("ipr-extract") and xml.iprExtract x

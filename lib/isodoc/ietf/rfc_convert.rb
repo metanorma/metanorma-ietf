@@ -9,8 +9,8 @@ require_relative "./cleanup"
 require_relative "./footnotes"
 require_relative "./references"
 require_relative "./section"
+require_relative "./validation"
 require_relative "./xref"
-require "jing"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -60,25 +60,14 @@ module IsoDoc::Ietf
       passthrough_cleanup(docxml)
      end
 
-    def postprocess(result, filename, dir)
+    def postprocess(result, filename, _dir)
       result = from_xhtml(cleanup(to_xhtml(textcleanup(result)))).
         sub(/<!DOCTYPE[^>]+>\n/, "").
         sub(/(<rfc[^<]+? )lang="[^"]+"/, "\\1")
       File.open(filename, "w:UTF-8") { |f| f.write(result) }
       schema_validate(filename)
       @files_to_delete.each { |f| FileUtils.rm_rf f }
-    end
-
-    def schema_validate(filename)
-      begin
-      errors = Jing.new(File.join(File.dirname(__FILE__), "v3.rng")).
-        validate(filename)
-      errors.each do |error|
-        warn "RFC XML: Line #{"%06d" % error[:line]}:#{error[:column]} #{error[:message]}"
-      end
-      rescue Jing::Error => e
-        abort "Jing failed with error: #{e}"
-      end
+      content_validate(to_xhtml(result), filename)
     end
 
     def init_file(filename, debug)
