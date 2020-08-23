@@ -125,6 +125,7 @@ module Asciidoctor
       def abstract_cleanup(xmldoc)
         xmldoc.xpath("//abstract[not(text())]").each do |x|
           x.remove
+          warn "Empty abstract section removed"
         end
       end
 
