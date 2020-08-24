@@ -182,6 +182,13 @@ module Asciidoctor
         super
       end
 
+      def annex_parse(attrs, xml, node)
+        attrs[:numbered] = node.attr("numbered")
+        attrs[:removeInRFC] = node.attr("removeInRFC")
+        attrs[:toc] = node.attr("toc")
+        super
+      end
+
       def introduction_parse(attrs, xml, node)
         clause_parse(attrs, xml, node)
       end

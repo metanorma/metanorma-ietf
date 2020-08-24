@@ -241,5 +241,33 @@ OUTPUT
 OUTPUT
     end
 
+        it "processes section attributes" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      <ietf-standard xmlns="http://riboseinc.com/isoxml">
+           <sections>
+   <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+     <title>Clause</title>
+   </clause>
+ </sections>
+ <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+   <title>Appendix</title>
+ </annex>
+</ietf-standard>
+INPUT
+    #{RFC_HDR}
+  <middle>
+    <section anchor='_' numbered='true' removeInRFC='true' toc='true'>
+      <name>Clause</name>
+    </section>
+  </middle>
+  <back>
+    <section anchor='_' numbered='true' removeInRFC='true' toc='true'>
+      <name>Appendix</name>
+    </section>
+  </back>
+</rfc>
+OUTPUT
+        end
+
 
 end

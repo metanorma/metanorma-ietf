@@ -581,6 +581,34 @@ INPUT
     end
     end
 
+    it "processes clause attributes" do
+expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+
+      [numbered=true,removeInRFC=true,toc=true]
+      == Clause
+
+      [appendix,numbered=true,removeInRFC=true,toc=true]
+      == Appendix
+
+    INPUT
+        #{BLANK_HDR}
+         <sections>
+           <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+             <title>Clause</title>
+           </clause>
+         </sections>
+         <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+           <title>Appendix</title>
+         </annex>
+       </ietf-standard>
+OUTPUT
+    end
+
 end
 
 
