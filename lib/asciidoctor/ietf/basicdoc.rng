@@ -158,7 +158,17 @@
         <data type="ID"/>
       </attribute>
       <oneOrMore>
-        <ref name="paragraph"/>
+        <choice>
+          <ref name="formula"/>
+          <ref name="ul"/>
+          <ref name="ol"/>
+          <ref name="dl"/>
+          <ref name="quote"/>
+          <ref name="sourcecode"/>
+          <ref name="paragraph"/>
+          <ref name="table"/>
+          <ref name="figure"/>
+        </choice>
       </oneOrMore>
     </element>
   </define>
@@ -402,6 +412,16 @@
           </choice>
         </attribute>
       </optional>
+      <optional>
+        <attribute name="valign">
+          <choice>
+            <value>top</value>
+            <value>middle</value>
+            <value>bottom</value>
+            <value>baseline</value>
+          </choice>
+        </attribute>
+      </optional>
       <choice>
         <zeroOrMore>
           <ref name="TextElement"/>
@@ -426,6 +446,16 @@
             <value>left</value>
             <value>right</value>
             <value>center</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="valign">
+          <choice>
+            <value>top</value>
+            <value>middle</value>
+            <value>bottom</value>
+            <value>baseline</value>
           </choice>
         </attribute>
       </optional>

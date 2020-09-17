@@ -87,7 +87,7 @@ HDR
 
 BLANK_HDR = <<~"HDR"
 <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns="https://www.metanorma.org/ns/ietf">
+       <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
        <bibdata type="standard">
         <title language="en" type="main" format="text/plain">Document title</title>
          <contributor>

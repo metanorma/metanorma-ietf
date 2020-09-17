@@ -868,6 +868,13 @@
   </define>
   <define name="ietf-standard">
     <element name="ietf-standard">
+      <attribute name="version"/>
+      <attribute name="type">
+        <choice>
+          <value>semantic</value>
+          <value>presentation</value>
+        </choice>
+      </attribute>
       <ref name="bibdata"/>
       <zeroOrMore>
         <ref name="termdocsource"/>

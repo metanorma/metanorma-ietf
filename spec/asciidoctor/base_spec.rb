@@ -7,7 +7,7 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "processes a blank document" do
-    VCR.use_cassette "workgroup_fetch" do
+    VCR.use_cassette "workgroup_fetch", :re_record_interval => 25200 do
     expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
 = Document title
 Author
@@ -41,7 +41,7 @@ Author
   end
 
   it "processes default metadata" do
-    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~'OUTPUT')
+    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
@@ -168,7 +168,7 @@ Author
       :sortrefs: 35
     INPUT
     <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf'>
+       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
          <bibdata type='standard'>
            <title language='en' format='text/plain' type='main'>Main Title — Title</title>
         <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
@@ -465,7 +465,7 @@ Author
       == Clause 1
     INPUT
      <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf'>
+       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
          <bibdata type='standard'>
            <title language='en' type="main" format='text/plain'>Document title</title>
            <docidentifier>1000</docidentifier>
@@ -563,7 +563,7 @@ Author
   end
 
     it "cites drafts of internet drafts" do
-      VCR.use_cassette "abarth-02" do
+      VCR.use_cassette "abarth-02", :re_record_interval => 25200 do
     doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))
       = Document title
       Author
