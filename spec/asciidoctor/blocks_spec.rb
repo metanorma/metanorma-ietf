@@ -790,7 +790,7 @@ RSpec.describe Asciidoctor::Ietf do
        <recommendation id="_"  obligation="permission,recommendation" filename="reqt1.rq"><label>/ogc/recommendation/wfs/2</label><subject>user</subject>
 <classification><tag>control-class</tag><value>Technical</value></classification><classification><tag>priority</tag><value>P0</value></classification><classification><tag>family</tag><value>System and Communications Protection</value></classification><classification><tag>family</tag><value>System and Communications Protocols</value></classification>
         <description><p id="_">I recommend <em>this</em>.</p>
-       </description><specification exclude="false" type="tabular"><p id="_">This is the object of the recommendation:</p><table id="_">  <tbody>    <tr>      <td align="left">Object</td>      <td align="left">Value</td>    </tr>    <tr>      <td align="left">Mission</td>      <td align="left">Accomplished</td>    </tr>  </tbody></table></specification><description>
+       </description><specification exclude="false" type="tabular"><p id="_">This is the object of the recommendation:</p><table id="_">  <tbody>    <tr>      <td valign="top" align="left">Object</td>      <td valign="top" align="left">Value</td>    </tr>    <tr>      <td valign="top" align="left">Mission</td>      <td valign="top" align="left">Accomplished</td>    </tr>  </tbody></table></specification><description>
        <p id="_">As for the measurement targets,</p>
        </description><measurement-target exclude="false"><p id="_">The measurement target shall be measured as:</p><formula id="_">  <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow>
   <mi>r</mi>
@@ -827,14 +827,14 @@ end</sourcecode></verification>
            <table id='_' align='right'>
              <thead>
                <tr>
-                 <th align='left'>A</th>
-                 <th align='left'>B</th>
+                 <th valign="top" align='left'>A</th>
+                 <th valign="top" align='left'>B</th>
                </tr>
              </thead>
              <tbody>
                <tr>
-                 <td align='left'>C</td>
-                 <td align='left'>D</td>
+                 <td valign="top" align='left'>C</td>
+                 <td valign="top" align='left'>D</td>
                </tr>
              </tbody>
            </table>
