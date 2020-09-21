@@ -31,14 +31,8 @@ module Asciidoctor
         end
       end
 
-      def organization(org, orgname)
-        if ["IETF",
-            "Internet Engineering Task Force"].include? orgname
-          org.name "Internet Engineering Task Force"
-          org.abbreviation "IETF"
-        else
-          org.name orgname
-        end
+      def org_abbrev
+        { "Internet Engineering Task Force" => "IETF" }
       end
 
       def metadata_series(node, xml)
