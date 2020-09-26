@@ -78,7 +78,7 @@ RSpec.describe Asciidoctor::Ietf do
       For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
       ****
       INPUT
-      <ietf-standard xmlns="https://www.metanorma.org/ns/ietf">
+      <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
        <bibdata type="standard">
          <title language="en" type="main" format="text/plain">Document title</title>
 <contributor>
