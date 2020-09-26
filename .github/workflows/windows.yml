@@ -48,7 +48,7 @@ jobs:
           architecture: 'x64'
       - name: Install xml2rfc
         run: |
-          pip install xml2rfc
+          pip install python-magic-bin xml2rfc
       - name: Run specs
         run: |
           bundle exec rake

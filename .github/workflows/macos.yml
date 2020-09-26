@@ -47,6 +47,7 @@ jobs:
           architecture: 'x64'
       - name: Install xml2rfc
         run: |
+          brew install libmagic
           pip install xml2rfc
       - name: Run specs
         run: |
