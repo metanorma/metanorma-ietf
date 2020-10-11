@@ -102,6 +102,8 @@ RSpec.describe Metanorma::Ietf::Processor do
 </terms>
 </sections>
     INPUT
+    expect(File.exist?("test.rfc.xml")).to be true
+    expect(File.exist?("test.html")).to be true
     expect(File.read("test.html", encoding: "utf-8")).to include "No terms and definitions are listed in this document."
   end
 end
