@@ -58,42 +58,31 @@ module Metanorma
           IsoDoc::Ietf::RfcConvert.new(options).convert(inname, isodoc_node, nil, outname)
           @done_rfc = true
 
-        when :txt
+        when :txt, :pdf, :html
           unless xml2rfc_present?
             warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
             return
           end
 
           rfcname = inname.sub(/\.xml$/, ".rfc.xml")
-          output(isodoc_node, inname, rfcname, :rfc, options) unless @done_rfc
-
-          outname ||= inname.sub(/\.xml$/, ".txt")
-          system("xml2rfc --text #{rfcname} -o #{outname}")
-
-        when :pdf
-          unless xml2rfc_present?
-            warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
-            return
+          unless @done_rfc && File.exist?(rfcname)
+            output(isodoc_node, inname, rfcname, :rfc, options)
           end
 
-          rfcname = inname.sub(/\.xml$/, ".rfc.xml")
-          output(isodoc_node, inname, rfcname, :rfc, options) unless @done_rfc
-
-          outname ||= inname.sub(/\.xml$/, ".pdf")
-          system("xml2rfc --pdf #{rfcname} -o #{outname}")
-
-        when :html
-          unless xml2rfc_present?
-            warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
-            return
+          outext = case format
+            when :txt then ".txt"
+            when :pdf then ".pdf"
+            when :html then ".html"
           end
 
-          rfcname = inname.sub(/\.xml$/, ".rfc.xml")
-          output(isodoc_node, inname, rfcname, :rfc, options) unless @done_rfc
+          outflag = case format
+            when :txt then "--text"
+            when :pdf then "--pdf"
+            when :html then "--html"
+          end
 
-          outname ||= inname.sub(/\.xml$/, ".html")
-          system("xml2rfc --html #{rfcname} -o #{outname}")
-
+          outname ||= inname.sub(/\.xml$/, outext)
+          system("xml2rfc #{outflag} #{rfcname} -o #{outname}")
         else
           super
         end
