@@ -75,6 +75,12 @@ RSpec.describe Metanorma::Ietf::Processor do
              </organization>
            </owner>
          </copyright>
+         <relation type="derivedFrom">
+<bibitem>
+<title>--</title>
+<docidentifier>https://www.rfc-editor.org/rfc/rfc1149.txt</docidentifier>
+</bibitem>
+</relation>
          <series type="stream">
            <title>IETF</title>
          </series>
@@ -86,7 +92,7 @@ RSpec.describe Metanorma::Ietf::Processor do
   <pi>
   <toc>yes</toc>
 </pi>
-  <ipr>*trust200902</ipr>
+  <ipr>trust200902</ipr>
 </ext>
        </bibdata>
               <sections>
