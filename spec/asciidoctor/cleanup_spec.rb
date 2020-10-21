@@ -511,7 +511,9 @@ OUTPUT
     end
 
     it "imposes anchor loaded with RFC references" do
-      expect(xmlpp(strip_guid(Asciidoctor::Ietf::Converter.new(nil, nil).rfc_anchor_cleanup(Nokogiri::XML(<<~INPUT)).to_xml))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      conv = Asciidoctor::Ietf::Converter.new(nil, backend: :ietf, header_footer: true)
+      conv.init(Asciidoctor::Document.new [])
+      expect(xmlpp(strip_guid(conv.cleanup(Nokogiri::XML(<<~INPUT)).to_xml))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <ietf-standard>
     <sections>
     <clause>
@@ -533,17 +535,17 @@ OUTPUT
     INPUT
  <ietf-standard>
          <sections>
-           <clause>
-             <p>
+           <clause obligation="normative">
+             <p id="_">
                <eref bibitemid='A'/>
              </p>
              <termsource>
-               <origin bibitemid='B'/>
+               <origin bibitemid='B' citeas="B"/>
              </termsource>
            </clause>
          </sections>
          <bibliography>
-           <references>
+           <references obligation="informative">
              <bibitem id='A'>
                <docidentifier type='rfc-anchor'>A</docidentifier>
              </bibitem>
@@ -555,5 +557,24 @@ OUTPUT
        </ietf-standard>
     OUTPUT
     end
+
+    it "imposes anchor loaded with RFC references #2" do
+            VCR.use_cassette "abarth-02", :re_record_interval => 25200 do
+    doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))
+      = Document title
+      Author
+      :docfile: test.adoc
+
+      <<A>>
+
+      [bibliography]
+      == References
+      * [[[A,IETF(I-D.abarth-cake-02)]]], _Title_
+INPUT
+      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
+      expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
+    end
+    end
+
 
 end
