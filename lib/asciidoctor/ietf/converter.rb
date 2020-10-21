@@ -114,9 +114,9 @@ module Asciidoctor
 
       def cleanup(xmldoc)
         bcp14_cleanup(xmldoc)
-        rfc_anchor_cleanup(xmldoc)
         abstract_cleanup(xmldoc)
         super
+        rfc_anchor_cleanup(xmldoc)
       end
 
       BCP_KEYWORDS = ["MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
