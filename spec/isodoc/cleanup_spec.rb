@@ -751,6 +751,39 @@ OUTPUT
 
 end
 
+=begin
+      it "cleans up xrefs and relrefs" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
+         <front>
+           <abstract>
+           <t id="id0">
+           <xref relative="" section=""/>
+           <relref relative="" section=""/>
+           </t>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
+INPUT
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
+  <front>
+    <abstract>
+    <t id='id0'>
+  <xref/>
+  <relref/>
+</t>
+    </abstract>
+  </front>
+  <middle/>
+  <back/>
+</rfc>
+OUTPUT
+
+end
+=end
+
       it "reports parsing errors on RFC XML output" do
     FileUtils.rm_f "test.rfc.xml"
     expect { IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false) }.to output(/RFC XML: Line/).to_stderr

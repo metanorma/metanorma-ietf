@@ -90,6 +90,8 @@ module IsoDoc::Ietf
           xml.at(".//*[@pn = '#{x['target']}']") or
           ret << "#{x.name} target #{x['target']} does not exist in the document"
         next unless t
+        x.delete("relative") if x["relative"]&.empty?
+        x.delete("section") if x["section"]&.empty?
         if x["format"] == "title" && t.name == "reference"
           t.at("./front/title") or
             ret << "reference #{t['anchor']} has been referenced by #{x.name} "\
@@ -133,7 +135,7 @@ module IsoDoc::Ietf
               "since it does not point to a RFC or Internet-Draft reference"
           end
         end
-        if x["relative"]
+        if x["relative"] 
           unless t.at(".//seriesInfo[@name = 'RFC' or @name = "\
               "'Internet-Draft']") || t["target"]
             ret << "need an explicit target= URL attribute in the reference "\
