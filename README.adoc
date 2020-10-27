@@ -2,8 +2,7 @@
 :source-highlighter: coderay
 :icons: font
 
-`metanorma-ietf` lets you write Internet-Drafts and RFCs in AsciiDoc, the
-"`http://asciidoctor.org/[asciidoctor]-way`".
+`metanorma-ietf` lets you write IETF Internet-Drafts and RFCs via Metanorma.
 
 image:https://img.shields.io/gem/v/metanorma-ietf.svg["Gem Version", link="https://rubygems.org/gems/metanorma-ietf"]
 image:https://github.com/metanorma/metanorma-ietf/workflows/macos/badge.svg["Build Status (macOS)", link="https://github.com/metanorma/metanorma-ietf/actions?workflow=macos"]
@@ -13,15 +12,13 @@ image:https://codeclimate.com/github/metanorma/metanorma-ietf/badges/gpa.svg["Co
 image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-ietf.svg["Pull Requests", link="https://github.com/metanorma/metanorma-ietf/pulls"]
 image:https://img.shields.io/github/commits-since/metanorma/metanorma-ietf/latest.svg["Commits since latest",link="https://github.com/metanorma/metanorma-ietf/releases"]
 
-_Formerly known as_ `asciidoctor-rfc`.
-
-
 == Functionality
 
-This gem processes http://asciidoctor.org/[Asciidoctor] documents following
-a template for generating IETF International Standards.
+This gem processes https://www.metanorma.com[Metanorma documents] following
+a template for generating IETF deliverables.
 
-This AsciiDoc syntax for writing IETF standards is called "`AsciiRFC`".
+Metanorma-IETF adheres to AsciiRFC syntax, an AsciiDoc syntax for writing IETF documents
+developed by the Metanorma team.
 
 The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
 gem, and aligns closely to it.
@@ -221,3 +218,6 @@ This gem is developed, maintained and funded by https://www.ribose.com[Ribose In
 
 * Document templates are available at the https://github.com/metanorma/mn-templates-ietf[mn-templates-ietf] repository.
 
+== Notes
+
+Metanorma-IETF was formerly published as the `asciidoctor-rfc` gem.
