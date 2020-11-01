@@ -33,22 +33,19 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Use Ruby
-        uses: actions/setup-ruby@v1
+      - uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
 
       - uses: actions/cache@v1
         with:
           path: vendor/bundle
-          key: bundle-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: bundle
+          key: bundle-${{ matrix.os }}-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}
+          restore-keys: bundle-${{ matrix.os }}-${{ matrix.ruby }}
 
-      - name: Update gems
-        run: bundle install --jobs 4 --retry 3
+      - run: bundle install --jobs 4 --retry 3 --path vendor/bundle
 
-      - name: Use Python
-        uses: actions/setup-python@v1
+      - uses: actions/setup-python@v1
         with:
           python-version: '3.6'
           architecture: 'x64'
@@ -68,16 +65,13 @@ jobs:
 
           print(f"::set-env name=PIP_DOWNLOAD_CACHE::{cache_path[platform.system()]}")
 
-      - name: Install xml2rfc's deps macOS
-        if: matrix.os == 'macos-latest'
+      - if: matrix.os == 'macos-latest'
         run: brew install libmagic
 
-      - name: Install xml2rfc's deps Windows
-        if: matrix.os == 'windows-latest'
+      - if: matrix.os == 'windows-latest'
         run: pip install python-magic-bin
 
-      - name: Install xml2rfc
-        run: pip install xml2rfc
+      - run: pip install xml2rfc
 
       - uses: actions/cache@v2
         with:
@@ -91,6 +85,4 @@ jobs:
           key: xml2rfc
           restore-key: xml2rfc
 
-      - name: Run specs
-        run: |
-          bundle exec rake
+      - run: bundle exec rake
