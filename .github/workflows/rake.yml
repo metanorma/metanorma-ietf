@@ -45,7 +45,7 @@ jobs:
           restore-keys: bundle
 
       - name: Update gems
-        run: bundle install --jobs 4 --retry 3 --deployment
+        run: bundle install --jobs 4 --retry 3
 
       - name: Use Python
         uses: actions/setup-python@v1
