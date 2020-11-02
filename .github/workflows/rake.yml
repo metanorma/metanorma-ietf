@@ -4,7 +4,8 @@ name: rake
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, main  ]
+    tags: [ v* ]
   pull_request:
 
 jobs:
@@ -31,26 +32,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Cache xml2rfc
-        id: cache-xml2rfc
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/xml2rfc
-          key: xml2rfc
-          restore-key: xml2rfc
 
-      - name: Use Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
 
-      - name: Update gems
-        run: |
-          bundle install --jobs 4 --retry 3
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: bundle-${{ matrix.os }}-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}
+          restore-keys: bundle-${{ matrix.os }}-${{ matrix.ruby }}
 
-      - name: Use Python
-        uses: actions/setup-python@v1
+      - run: bundle config set path 'vendor/bundle'
+
+      - run: bundle install --jobs 4 --retry 3
+
+      - uses: actions/setup-python@v1
         with:
           python-version: '3.6'
           architecture: 'x64'
@@ -70,23 +67,24 @@ jobs:
 
           print(f"::set-env name=PIP_DOWNLOAD_CACHE::{cache_path[platform.system()]}")
 
+      - if: matrix.os == 'macos-latest'
+        run: brew install libmagic
+
+      - if: matrix.os == 'windows-latest'
+        run: pip install python-magic-bin
+
+      - run: pip install xml2rfc
+
       - uses: actions/cache@v2
         with:
           path: ${{ env.PIP_DOWNLOAD_CACHE }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
-      - name: Install xml2rfc's deps macOS
-        if: matrix.os == 'macos-latest'
-        run: brew install libmagic
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/xml2rfc
+          key: xml2rfc
+          restore-key: xml2rfc
 
-      - name: Install xml2rfc's deps Windows
-        if: matrix.os == 'windows-latest'
-        run: pip install python-magic-bin
-
-      - name: Install xml2rfc
-        run: pip install xml2rfc
-
-      - name: Run specs
-        run: |
-          bundle exec rake
+      - run: bundle exec rake
