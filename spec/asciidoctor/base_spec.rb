@@ -7,7 +7,7 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "processes a blank document" do
-    VCR.use_cassette "workgroup_fetch", :re_record_interval => 25200 do
+    VCR.use_cassette "workgroup_fetch" do
     expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
 = Document title
 Author
@@ -563,7 +563,7 @@ Author
   end
 
     it "cites drafts of internet drafts" do
-      VCR.use_cassette "abarth-02", :re_record_interval => 25200 do
+      VCR.use_cassette "abarth-02" do
     doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))
       = Document title
       Author

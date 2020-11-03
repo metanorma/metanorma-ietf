@@ -25,7 +25,7 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "warns of invalid workgroup" do
-        VCR.use_cassette "workgroup_fetch", :re_record_interval => 25200 do
+        VCR.use_cassette "workgroup_fetch" do
       FileUtils.rm_f "test.err"
      Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)
   = Document title
@@ -41,7 +41,7 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "does not warn of valid workgroup suffixed with Working Group" do
-        VCR.use_cassette "workgroup_fetch", :re_record_interval => 25200 do
+        VCR.use_cassette "workgroup_fetch" do
       FileUtils.rm_f "test.err"
      Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)
   = Document title

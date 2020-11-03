@@ -559,22 +559,24 @@ OUTPUT
     end
 
     it "imposes anchor loaded with RFC references #2" do
-            VCR.use_cassette "abarth-02", :re_record_interval => 25200 do
+            VCR.use_cassette "abarth-02" do
     doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))
       = Document title
       Author
       :docfile: test.adoc
 
       <<A>>
+      <<B>>
 
       [bibliography]
       == References
       * [[[A,IETF(I-D.abarth-cake-02)]]], _Title_
+      * [[[B,RFC 1149]]], _Title_
+      * [[[C,ISO 690]]], _Title_
 INPUT
       expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
     end
     end
-
 
 end
