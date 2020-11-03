@@ -18,7 +18,7 @@ _Formerly known as_ `asciidoctor-rfc`.
 
 == Functionality
 
-This gem processes http://asciidoctor.org/[Asciidoctor] documents following
+This gem processes https://www.metanorma.com[Metanorma documents] following
 a template for generating IETF International Standards.
 
 This AsciiDoc syntax for writing IETF standards is called "`AsciiRFC`".
