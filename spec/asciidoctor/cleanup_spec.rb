@@ -566,13 +566,10 @@ OUTPUT
       :docfile: test.adoc
 
       <<A>>
-      <<B>>
 
       [bibliography]
       == References
       * [[[A,IETF(I-D.abarth-cake-02)]]], _Title_
-      * [[[B,RFC 1149]]], _Title_
-      * [[[C,ISO 690]]], _Title_
 INPUT
       expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
