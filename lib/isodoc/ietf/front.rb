@@ -135,12 +135,12 @@ module IsoDoc::Ietf
     end
 
     def postal(addr, out)
-      if line = addr.at(ns("./formattedAddress"))
-        line.text.split(/\n/).each do |l|
-          out.postalLine l, **attr_code(ascii: l.transliterate)
-        end
-      else
-        out.postal do |p|
+      out.postal do |p|
+        if line = addr.at(ns("./formattedAddress"))
+          line.text.split(/\n/).each do |l|
+            p.postalLine l, **attr_code(ascii: l.transliterate)
+          end
+        else
           postal_detailed(addr, p)
         end
       end
