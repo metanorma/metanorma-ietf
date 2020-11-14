@@ -327,7 +327,9 @@ INPUT
             <author fullname='Fred Flintstone'>
             <organization>Slate Rock and Gravel Company</organization>
             <address>
+            <postal>
 <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
+</postal>
 <phone>123</phone>
 <facsimile>123b</facsimile>
 <email/>
@@ -337,7 +339,9 @@ INPUT
  <author role='editor' initials='B. X.' surname='Rubble'>
   <organization>Rockhead and Quarry Cave Construction Company</organization>
   <address>
+  <postal>
   <postalLine ascii='6A Rubble Way, Bedrock'>6A Rubble Way, Bedrock</postalLine>
+  </postal>
   <phone>123c</phone>
   <facsimile>123d</facsimile>
   <email>barney@rockhead.example.com</email>
@@ -487,7 +491,9 @@ INPUT
             <author fullname='Fr&#xE9;d Flintstone' asciiFullname='Fred Flintstone'>
               <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Sl&#xE1;te Rock and Gravel Company</organization>
               <address>
+              <postal>
                 <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
+                </postal>
                 <phone>123</phone>
                 <facsimile>123b</facsimile>
                 <email/>
