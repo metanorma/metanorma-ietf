@@ -598,4 +598,109 @@ RSpec.describe IsoDoc::Ietf do
     OUTPUT
   end
 
+    it "processes nested bibliographies" do
+          expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+<ietf-standard  xmlns="http://riboseinc.com/isoxml">
+<sections><clause id="_clause" inline-header="false" obligation="normative">
+<title>Clause</title>
+<p id="_c401175c-2d9b-4758-ba27-d4f50ddb062a">A</p>
+</clause>
+<clause id="_references" inline-header="false" obligation="normative"><title>References</title><references id="_normative_references" normative="true" obligation="informative">
+<title>Normative references</title>
+<bibitem id="A">
+<formattedref format="application/x-isodoc+xml">X</formattedref>
+<docidentifier>B</docidentifier>
+
+</bibitem>
+</references>
+<references id="_informative_references" normative="false" obligation="informative">
+<title>Bibliography</title><bibitem id="C">
+<formattedref format="application/x-isodoc+xml">Y</formattedref>
+<docidentifier>D</docidentifier>
+
+</bibitem>
+
+</references></clause>
+<clause id="_references_2" inline-header="false" obligation="normative"><title>References 2</title><p id="_849e5255-ca89-4667-b517-743ab74a032e">Z</p>
+<references id="_normative_references_2" normative="false" obligation="informative">
+<title>Normative References</title><bibitem id="E">
+<formattedref format="application/x-isodoc+xml">X</formattedref>
+<docidentifier>F</docidentifier>
+
+</bibitem>
+
+</references>
+<references id="_informative_references_2" normative="false" obligation="informative">
+<title>Informative References</title><bibitem id="G">
+<formattedref format="application/x-isodoc+xml">Y</formattedref>
+<docidentifier>H</docidentifier>
+
+</bibitem>
+
+</references></clause></sections>
+</ietf-standard>
+INPUT
+<?xml version='1.0'?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+         <front>
+           <seriesInfo value='' name='RFC' asciiName='RFC'/>
+         </front>
+         <middle>
+           <section anchor='_clause'>
+             <name>Clause</name>
+             <t anchor='_c401175c-2d9b-4758-ba27-d4f50ddb062a'>A</t>
+           </section>
+           <section anchor='_references_2'>
+             <name>References 2</name>
+             <t anchor='_849e5255-ca89-4667-b517-743ab74a032e'>Z</t>
+           </section>
+         </middle>
+         <back>
+           <references anchor='_normative_references'>
+             <name>Normative references</name>
+             <reference anchor='A'>
+               <front>
+                 <title>X</title>
+               </front>
+               <refcontent>B</refcontent>
+             </reference>
+           </references>
+           <references anchor='_informative_references'>
+             <name>Bibliography</name>
+             <reference anchor='C'>
+               <front>
+                 <title>Y</title>
+               </front>
+               <refcontent>D</refcontent>
+             </reference>
+           </references>
+           <references anchor='_normative_references_2'>
+             <name>Normative References</name>
+             <reference anchor='E'>
+               <front>
+                 <title>X</title>
+               </front>
+               <refcontent>F</refcontent>
+             </reference>
+           </references>
+           <references anchor='_informative_references_2'>
+             <name>Informative References</name>
+             <reference anchor='G'>
+               <front>
+                 <title>Y</title>
+               </front>
+               <refcontent>H</refcontent>
+             </reference>
+           </references>
+         </back>
+       </rfc>
+OUTPUT
+    end
+
 end
