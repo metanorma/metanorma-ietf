@@ -4,7 +4,7 @@ name: rake
 
 on:
   push:
-    branches: [ master, main  ]
+    branches: [ master, main ]
     tags: [ v* ]
   pull_request:
 
@@ -55,6 +55,7 @@ jobs:
       - name: set PIP_DOWNLOAD_CACHE
         shell: python
         run: |
+          import os
           import platform
           from os.path import expanduser
 
@@ -62,18 +63,10 @@ jobs:
           cache_path = {
             "Linux": f"{home}/.cache/pip",
             "Darwin": f"{home}Library/Caches/pip",
-            "Windows": f"{home}/AppData/Local/pip/Cache"
-          }
+            "Windows": f"{home}\\AppData\\Local\\pip\\Cache"
+          }[platform.system()]
 
-          print(f"::set-env name=PIP_DOWNLOAD_CACHE::{cache_path[platform.system()]}")
-
-      - if: matrix.os == 'macos-latest'
-        run: brew install libmagic
-
-      - if: matrix.os == 'windows-latest'
-        run: pip install python-magic-bin
-
-      - run: pip install xml2rfc
+          os.system(f"echo PIP_DOWNLOAD_CACHE={cache_path} >> {os.environ['GITHUB_ENV']}")
 
       - uses: actions/cache@v2
         with:
@@ -86,5 +79,13 @@ jobs:
           path: ~/.cache/xml2rfc
           key: xml2rfc
           restore-key: xml2rfc
+
+      - if: matrix.os == 'macos-latest'
+        run: brew install libmagic
+
+      - if: matrix.os == 'windows-latest'
+        run: pip install python-magic-bin
+
+      - run: pip install xml2rfc
 
       - run: bundle exec rake
