@@ -3,16 +3,27 @@ module IsoDoc::Ietf
     # TODO displayreference will be implemented as combination of autofetch and user-provided citations
 
     def bibliography(isoxml, out)
-      isoxml.xpath(ns("//references")).each do |f|
-        out.references **attr_code(anchor: f["id"]) do |div|
-          title = f.at(ns("./title")) and div.name do |name|
-            title.children.each { |n| parse(n, name) }
-          end
-          f.elements.reject do |e|
-            %w(reference title bibitem note).include? e.name
-          end.each { |e| parse(e, div) }
-          biblio_list(f, div, true)
+      isoxml.xpath(ns("//bibliography/references | "\
+                      "//bibliography/clause[.//references] | "\
+                      "//annex/clause[.//references] | "\
+                      "//annex/references | "\
+                      "//sections/clause[.//references]")).each do |f|
+        bibliography1(f, out)
+      end
+    end
+
+    def bibliography1(f, out)
+      out.references **attr_code(anchor: f["id"]) do |div|
+        title = f.at(ns("./title")) and div.name do |name|
+          title.children.each { |n| parse(n, name) }
         end
+        f.elements.select do |e|
+          %w(references clause).include? e.name
+        end.each { |e| bibliography1(e, out) }
+        f.elements.reject do |e|
+          %w(references title bibitem note).include? e.name
+        end.each { |e| parse(e, div) }
+        biblio_list(f, div, true)
       end
     end
 
