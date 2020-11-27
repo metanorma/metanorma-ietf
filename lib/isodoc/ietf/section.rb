@@ -141,6 +141,7 @@ module IsoDoc::Ietf
     end
 
     def clause_parse(node, out)
+      return if node.at(ns(".//references"))
       out.section **attr_code( anchor: node["id"], numbered: node["numbered"],
                               removeInRFC: node["removeInRFC"], toc: node["toc"]) do |div|
         clause_parse_title(node, div, node.at(ns("./title")), out)
