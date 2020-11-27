@@ -69,6 +69,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        <clause id="O1" inline-header="false" obligation="normative">
        </clause>
         </clause>
+        <clause id="O4"><title>Refs</title>
+        <references id="Q2" normative="false"><title>Annex Bibliography</title></references>
+        </clause>
 
        </sections><annex id="P" inline-header="false" obligation="normative">
          <title>Annex</title>
@@ -77,7 +80,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <clause id="Q1" inline-header="false" obligation="normative">
          <title>Annex A.1a</title>
          </clause>
-         <references id="Q2" normative="false"><title>Annex Bibliography</title></references>
        </clause>
        </annex><bibliography><references id="R" obligation="informative" normative="true">
          <title>Normative References</title>
@@ -151,14 +153,20 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             </section>
           </middle>
           <back>
+          <references anchor='O4'>
+  <name>Refs</name>
             <references anchor='Q2'>
               <name>Annex Bibliography</name>
+            </references>
             </references>
             <references anchor='R'>
               <name>Normative References</name>
             </references>
+            <references anchor='S'>
+  <name>Bibliography</name>
             <references anchor='T'>
               <name>Bibliography Subsection</name>
+            </references>
             </references>
             <section anchor='P'>
               <name>Annex</name>
@@ -167,9 +175,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <section anchor='Q1'>
                   <name>Annex A.1a</name>
                 </section>
-                <div>
-                  <name>Annex Bibliography</name>
-                </div>
               </section>
             </section>
           </back>
