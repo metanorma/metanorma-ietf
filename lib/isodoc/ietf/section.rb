@@ -154,6 +154,9 @@ module IsoDoc::Ietf
     def clause(isoxml, out)
       isoxml.xpath("//xmlns:preface/child::*[not(name() = 'abstract' or name() = 'foreword')] "\
                    "| //xmlns:sections/child::*").each do |c|
+        #cdup = c.dup
+        #cdup.xpath(ns(".//references")).each { |r| r.remove }
+        #cdup.at("./*[local-name() != 'title'][normalize-space(text()) != '']") or next
         clause_parse(c, out)
       end
     end
