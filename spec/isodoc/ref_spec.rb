@@ -656,47 +656,50 @@ INPUT
              <name>Clause</name>
              <t anchor='_c401175c-2d9b-4758-ba27-d4f50ddb062a'>A</t>
            </section>
-           <section anchor='_references_2'>
-             <name>References 2</name>
-             <t anchor='_849e5255-ca89-4667-b517-743ab74a032e'>Z</t>
-           </section>
          </middle>
          <back>
-           <references anchor='_normative_references'>
-             <name>Normative references</name>
-             <reference anchor='A'>
-               <front>
-                 <title>X</title>
-               </front>
-               <refcontent>B</refcontent>
-             </reference>
+           <references anchor='_references'>
+             <name>References</name>
+             <references anchor='_normative_references'>
+               <name>Normative references</name>
+               <reference anchor='A'>
+                 <front>
+                   <title>X</title>
+                 </front>
+                 <refcontent>B</refcontent>
+               </reference>
+             </references>
+             <references anchor='_informative_references'>
+               <name>Bibliography</name>
+               <reference anchor='C'>
+                 <front>
+                   <title>Y</title>
+                 </front>
+                 <refcontent>D</refcontent>
+               </reference>
+             </references>
            </references>
-           <references anchor='_informative_references'>
-             <name>Bibliography</name>
-             <reference anchor='C'>
-               <front>
-                 <title>Y</title>
-               </front>
-               <refcontent>D</refcontent>
-             </reference>
-           </references>
-           <references anchor='_normative_references_2'>
-             <name>Normative References</name>
-             <reference anchor='E'>
-               <front>
-                 <title>X</title>
-               </front>
-               <refcontent>F</refcontent>
-             </reference>
-           </references>
-           <references anchor='_informative_references_2'>
-             <name>Informative References</name>
-             <reference anchor='G'>
-               <front>
-                 <title>Y</title>
-               </front>
-               <refcontent>H</refcontent>
-             </reference>
+           <references anchor='_references_2'>
+             <name>References 2</name>
+             <references anchor='_normative_references_2'>
+               <name>Normative References</name>
+               <reference anchor='E'>
+                 <front>
+                   <title>X</title>
+                 </front>
+                 <refcontent>F</refcontent>
+               </reference>
+             </references>
+             <references anchor='_informative_references_2'>
+               <name>Informative References</name>
+               <reference anchor='G'>
+                 <front>
+                   <title>Y</title>
+                 </front>
+                 <refcontent>H</refcontent>
+               </reference>
+             </references>
+             <t anchor='_849e5255-ca89-4667-b517-743ab74a032e'>Z</t>
            </references>
          </back>
        </rfc>
