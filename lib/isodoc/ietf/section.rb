@@ -141,6 +141,7 @@ module IsoDoc::Ietf
     end
 
     def clause_parse(node, out)
+      return if node.at(ns(".//references"))
       out.section **attr_code( anchor: node["id"], numbered: node["numbered"],
                               removeInRFC: node["removeInRFC"], toc: node["toc"]) do |div|
         clause_parse_title(node, div, node.at(ns("./title")), out)
@@ -156,23 +157,13 @@ module IsoDoc::Ietf
         cdup = c.dup
         cdup.xpath(ns(".//references")).each { |r| r.remove }
         cdup.at("./*[local-name() != 'title'][normalize-space(text()) != '']") or next
-        clause1(cdup, out)
-      end
-    end
-
-    def clause1(c, out)
-      out.section **attr_code( anchor: c["id"], numbered: c["numbered"],
-                              removeInRFC: c["removeInRFC"], toc: c["toc"]) do |div|
-        clause_parse_title(c, div, c.at(ns("./title")), out)
-        c.elements.reject { |c1| c1.name == "title" }.each do |c1|
-          parse(c1, div)
-        end
+        clause_parse(cdup, out)
       end
     end
 
     def annex(isoxml, out)
       isoxml.xpath(ns("//annex")).each do |c|
-        clause1(c, out)
+        clause_parse(c, out)
       end
     end
   end
