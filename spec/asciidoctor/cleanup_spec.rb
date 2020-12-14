@@ -48,7 +48,7 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+         <term id="term-t90"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
   <mi>t</mi>
 </mrow>
 <mrow>
@@ -82,7 +82,7 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_">
+         <term id="term-tempus">
          <preferred>Tempus</preferred>
          <domain>relativity</domain><definition><p id="_"> Time</p></definition>
        </term>
@@ -117,7 +117,7 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+         <term id="term-t90"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
   <mi>t</mi>
 </mrow>
 <mrow>
@@ -158,7 +158,7 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative"><title>Terms and definitions</title>
          <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
 
-       <term id="_">
+       <term id="term-time">
        <preferred>Time</preferred>
          <definition><p id="_">This paragraph is extraneous</p></definition>
        </term></terms>
@@ -297,7 +297,7 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_">
+         <term id="term-term1">
          <preferred>Term1</preferred>
          <termsource status="identical">
          <origin bibitemid="ISO2191" type="inline" citeas="">
