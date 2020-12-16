@@ -66,13 +66,21 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
    <iso-standard xmlns="http://riboseinc.com/isoxml">
     <preface><foreword>
-    <p>D<index primary="A" secondary="B" tertiary="C"/>.</p>
+    <p>D<index>
+    <primary>A<sub>B</sub></primary>
+    <secondary>A<sub>B</sub></secondary>
+    <tertiary>A<sub>B</sub></tertiary>
+    </index>.<index>
+    <primary>D</primary></index></p>
     </foreword></preface>
     <sections>
     </iso-standard>
    INPUT
    #{XML_HDR}
-   <t>D<iref item='A' subitem='B'/>.</t>
+   <t>D
+               <iref item='AB' subitem='AB'/>
+               .
+               <iref item='D'/></t>
    </abstract></front><middle/><back/></rfc>
    OUTPUT
   end
