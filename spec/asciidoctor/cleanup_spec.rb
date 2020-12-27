@@ -137,7 +137,7 @@ RSpec.describe Asciidoctor::Ietf do
     OUTPUT
   end
 
-  it "strips any initial boilerplate from terms and definitions" do
+  it "keeps any initial boilerplate from terms and definitions" do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
@@ -153,7 +153,12 @@ RSpec.describe Asciidoctor::Ietf do
        #{BLANK_HDR}
               <sections>
          <terms id="_" obligation="normative"><title>Terms and definitions</title>
-
+<p id='_'>I am boilerplate</p>
+<ul id='_'>
+  <li>
+    <p id='_'>So am I</p>
+  </li>
+</ul>
        <term id="term-time">
        <preferred>Time</preferred>
          <definition><p id="_">This paragraph is extraneous</p></definition>
