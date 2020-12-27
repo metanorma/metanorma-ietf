@@ -101,7 +101,7 @@ Author
       :affiliation_2: Rockhead and Quarry Cave Construction Company
       :address_2: 6A Rubble Way, Bedrock
       :email_2: barney@rockhead.example.com
-      :publisher: Hanna Barbera, Cartoon Network
+      :publisher: Hanna Barbera; Cartoon Network
       :copyright-holder: Cartoon Network
       :part-of: ABC
       :translated-from: DEF,GHI;JKL MNO,PQR
@@ -445,7 +445,7 @@ Author
       :docnumber: 1000
       :language: el
       :script: Grek
-      :publisher: IEC,IETF,ISO
+      :publisher: IEC;IETF;ISO
       :intended-series: BCP 111
       :sortrefs: 35
 

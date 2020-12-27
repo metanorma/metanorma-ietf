@@ -11,6 +11,7 @@ require_relative "./references"
 require_relative "./section"
 require_relative "./validation"
 require_relative "./xref"
+require_relative "./init"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
@@ -81,5 +82,7 @@ module IsoDoc::Ietf
       @format = :rfc
       @suffix = "rfc.xml"
     end
+
+    include ::IsoDoc::Ietf::Init
   end
 end
