@@ -42,6 +42,10 @@ module IsoDoc::Ietf
       node.children.each { |n| parse(n, out) }
     end
 
+    def underline_parse(node, out)
+      node.children.each { |n| parse(n, out) }
+    end
+
     def smallcap_parse(node, out)
       node.children.each { |n| parse(n, out) }
     end
@@ -106,8 +110,8 @@ module IsoDoc::Ietf
     def xref_parse(node, out)
       out.xref **attr_code(target: node["target"], format: node["format"],
                            relative: node["relative"]) do |l|
-                             l << get_linkend(node)
-                           end
+        l << get_linkend(node)
+      end
     end
 
     def get_linkend(node)

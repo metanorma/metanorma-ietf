@@ -7,8 +7,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <preface><foreword>
     <p>
     <em>A</em> <strong>B</strong> <sup>C</sup> <sub>D</sub> <tt>E</tt>
-    <strike>F</strike> <smallcap>G</smallcap> <keyword>I</keyword> <bcp14>must</bcp14> <br/> <hr/>
-    <bookmark id="H"/> <pagebreak/>
+    <strike>F</strike> <smallcap>G</smallcap> <keyword>I</keyword> <underline>J</underline> <bcp14>must</bcp14> <br/> <hr/>
+    <bookmark id="H"/> <pagebreak/> 
     </p>
     </foreword></preface>
     <sections>
@@ -21,7 +21,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   <sup>C</sup>
   <sub>D</sub>
   <tt>E</tt>
-   F G I
+   F G I J
   <bcp14>must</bcp14>
   <bookmark anchor='H'/>
 </t>
