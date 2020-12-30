@@ -56,6 +56,13 @@
           </data>
         </attribute>
         <optional>
+          <attribute name="to">
+            <data type="string">
+              <param name="pattern">\i\c*|\c+#\c+</param>
+            </data>
+          </attribute>
+        </optional>
+        <optional>
           <attribute name="type">
             <ref name="ReferenceFormat"/>
           </attribute>
@@ -245,6 +252,9 @@
           <attribute name="keep-lines-together">
             <data type="boolean"/>
           </attribute>
+        </optional>
+        <optional>
+          <ref name="colgroup"/>
         </optional>
         <optional>
           <ref name="tname"/>
@@ -764,6 +774,18 @@
     </define>
   </include>
   <!-- end overrides -->
+  <define name="colgroup">
+    <element name="colgroup">
+      <oneOrMore>
+        <ref name="col"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="col">
+    <element name="col">
+      <attribute name="width"/>
+    </element>
+  </define>
   <define name="TextElement" combine="choice">
     <ref name="concept"/>
   </define>

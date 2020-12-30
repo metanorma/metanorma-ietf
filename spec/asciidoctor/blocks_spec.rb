@@ -138,8 +138,7 @@ RSpec.describe Asciidoctor::Ietf do
        <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_">
+         <term id="term-term1">
          <preferred>Term1</preferred>
          <termnote id="_">
          <p id="_">This is a note</p>
@@ -165,7 +164,6 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
   <terms id="_" obligation="normative">
   <title>Terms and definitions</title>
-         <p id="_">No terms and definitions are listed in this document.</p>
   <clause id="_" inline-header="false" obligation="normative">
   <title>Term1</title>
   <note id="_">
@@ -193,8 +191,7 @@ RSpec.describe Asciidoctor::Ietf do
               #{BLANK_HDR}
               <sections>
   <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
-<p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-<term id="_">
+<term id="term-term1">
   <preferred>Term1</preferred>
 </term>
 <definitions id="_" obligation="normative" type="symbols">
@@ -323,8 +320,7 @@ RSpec.describe Asciidoctor::Ietf do
       <sections>
   <terms id="_" obligation="normative">
   <title>Terms and definitions</title>
-<p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-  <term id="_">
+  <term id="term-term1">
   <preferred>Term1</preferred>
 
 <termexample id="_">
@@ -351,7 +347,6 @@ RSpec.describe Asciidoctor::Ietf do
 <sections> 
   <terms id="_" obligation="normative">  
   <title>Terms and definitions</title>  
-<p id="_">No terms and definitions are listed in this document.</p>
   <clause id="_" inline-header="false" obligation="normative">   
   <title>Term1</title>   
   <example id="_">    
@@ -379,7 +374,7 @@ RSpec.describe Asciidoctor::Ietf do
               #{BLANK_HDR}
 <sections> 
   <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
-<p id="_">For the purposes of this document, the following terms and definitions apply.</p><term id="_">   
+<term id="term-term1">   
   <preferred>Term1</preferred>   
 </term>  
 <definitions id="_" obligation="normative" type="symbols">   
@@ -580,9 +575,8 @@ RSpec.describe Asciidoctor::Ietf do
       #{BLANK_HDR}
        <sections>
          <terms id="_" obligation="normative">
-         <title>Terms and definitions</title><p id="_">For the purposes of this document,
-       the following terms and definitions apply.</p>
-         <term id="_">
+         <title>Terms and definitions</title>
+         <term id="term-term1">
          <preferred>Term1</preferred>
          <termsource status="identical">
          <origin bibitemid="ISO2191" type="inline" citeas="">
@@ -612,9 +606,7 @@ RSpec.describe Asciidoctor::Ietf do
             <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p id="_">For the purposes of this document,
-       the following terms and definitions apply.</p>
-         <term id="_">
+         <term id="term-term1">
          <preferred>Term1</preferred>
          <termsource status="modified">
          <origin bibitemid="ISO2191" type="inline" citeas="">

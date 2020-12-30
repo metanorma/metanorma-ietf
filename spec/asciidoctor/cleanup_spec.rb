@@ -47,8 +47,7 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+         <term id="term-t90"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
   <mi>t</mi>
 </mrow>
 <mrow>
@@ -81,8 +80,7 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_">
+         <term id="term-tempus">
          <preferred>Tempus</preferred>
          <domain>relativity</domain><definition><p id="_"> Time</p></definition>
        </term>
@@ -116,8 +114,7 @@ RSpec.describe Asciidoctor::Ietf do
               <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+         <term id="term-t90"><preferred><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
   <mi>t</mi>
 </mrow>
 <mrow>
@@ -140,7 +137,7 @@ RSpec.describe Asciidoctor::Ietf do
     OUTPUT
   end
 
-  it "strips any initial boilerplate from terms and definitions" do
+  it "keeps any initial boilerplate from terms and definitions" do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
@@ -156,9 +153,13 @@ RSpec.describe Asciidoctor::Ietf do
        #{BLANK_HDR}
               <sections>
          <terms id="_" obligation="normative"><title>Terms and definitions</title>
-         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-
-       <term id="_">
+<p id='_'>I am boilerplate</p>
+<ul id='_'>
+  <li>
+    <p id='_'>So am I</p>
+  </li>
+</ul>
+       <term id="term-time">
        <preferred>Time</preferred>
          <definition><p id="_">This paragraph is extraneous</p></definition>
        </term></terms>
@@ -296,8 +297,7 @@ RSpec.describe Asciidoctor::Ietf do
        <sections>
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
-         <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
-         <term id="_">
+         <term id="term-term1">
          <preferred>Term1</preferred>
          <termsource status="identical">
          <origin bibitemid="ISO2191" type="inline" citeas="">
