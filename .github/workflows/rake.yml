@@ -4,7 +4,7 @@ name: rake
 
 on:
   push:
-    branches: [ master, main  ]
+    branches: [ master, main ]
     tags: [ v* ]
   pull_request:
 
@@ -37,7 +37,10 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
 
-      - uses: actions/cache@v1
+      - if: matrix.os == 'macos-latest'
+        run: brew install autoconf automake libtool
+
+      - uses: actions/cache@v2
         with:
           path: vendor/bundle
           key: bundle-${{ matrix.os }}-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}
@@ -55,6 +58,7 @@ jobs:
       - name: set PIP_DOWNLOAD_CACHE
         shell: python
         run: |
+          import os
           import platform
           from os.path import expanduser
 
@@ -62,10 +66,22 @@ jobs:
           cache_path = {
             "Linux": f"{home}/.cache/pip",
             "Darwin": f"{home}Library/Caches/pip",
-            "Windows": f"{home}/AppData/Local/pip/Cache"
-          }
+            "Windows": f"{home}\\AppData\\Local\\pip\\Cache"
+          }[platform.system()]
 
-          print(f"::set-env name=PIP_DOWNLOAD_CACHE::{cache_path[platform.system()]}")
+          os.system(f"echo PIP_DOWNLOAD_CACHE={cache_path} >> {os.environ['GITHUB_ENV']}")
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ env.PIP_DOWNLOAD_CACHE }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/xml2rfc
+          key: xml2rfc
+          restore-key: xml2rfc
 
       - if: matrix.os == 'macos-latest'
         run: brew install libmagic
@@ -75,16 +91,18 @@ jobs:
 
       - run: pip install xml2rfc
 
-      - uses: actions/cache@v2
-        with:
-          path: ${{ env.PIP_DOWNLOAD_CACHE }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
-
-      - uses: actions/cache@v1
-        with:
-          path: ~/.cache/xml2rfc
-          key: xml2rfc
-          restore-key: xml2rfc
-
       - run: bundle exec rake
+
+  tests-passed:
+    needs: rake
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Trigger tests passed event
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{ secrets.METANORMA_CI_PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          context: 'tests-passed-successfully'
+          description: 'Tests passed successfully'
+          state: 'success'
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
