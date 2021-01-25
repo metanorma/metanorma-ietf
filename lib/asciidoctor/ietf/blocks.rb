@@ -6,17 +6,17 @@ module Asciidoctor
                   node.attr("keep-with-next"),
                   "keep-with-previous": node.attr("keepWithPrevious") ||
                   node.attr("keep-with-previous"),
-                  id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node))
+                  id: ::Metanorma::Utils::anchor_or_uuid(node))
       end
 
       def ul_attrs(node)
-        attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
+        attr_code(id: ::Metanorma::Utils::anchor_or_uuid(node),
                   nobullet: node.attr("nobullet"),
                   spacing: node.attr("spacing"))
       end
 
       def ol_attrs(node)
-        attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
+        attr_code(id: ::Metanorma::Utils::anchor_or_uuid(node),
                   type: node.attr("format") || olist_style(node.style),
                   group: node.attr("group"),
                   spacing: node.attr("spacing"),
@@ -24,7 +24,7 @@ module Asciidoctor
       end
 
       def dl_attrs(node)
-        attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(node),
+        attr_code(id: ::Metanorma::Utils::anchor_or_uuid(node),
                   newline: node.attr("newline"),
                   indent: node.attr("indent"),
                   spacing: node.attr("spacing"))
@@ -46,7 +46,7 @@ module Asciidoctor
 
       def note(n)
         noko do |xml|
-          xml.note **attr_code(id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(n),
+          xml.note **attr_code(id: ::Metanorma::Utils::anchor_or_uuid(n),
                                removeInRFC: n.attr("remove-in-rfc")) do |c|
             n.title.nil? or c.name { |name| name << n.title }
             wrap_in_para(n, c)
@@ -60,7 +60,7 @@ module Asciidoctor
             figure_title(node, f)
             f.pre node.lines.join("\n"),
               **attr_code(align: node.attr("align"),
-                          id: ::Asciidoctor::Standoc::Utils::anchor_or_uuid(nil),
+                          id: ::Metanorma::Utils::anchor_or_uuid(nil),
                           alt: node.attr("alt"))
           end
         end

@@ -73,7 +73,7 @@ RSpec.describe Asciidoctor::Ietf do
       expect do
         Metanorma::Compile
           .new
-          .compile("spec/assets/xref_error.adoc", type: "ietf")
+          .compile("spec/assets/xref_error.adoc", type: "ietf", :"agree-to-terms" => true)
       end.to(change { File.exist?("spec/assets/xref_error.err") }
               .from(false).to(true))
     end
