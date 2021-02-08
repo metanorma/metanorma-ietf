@@ -158,3 +158,9 @@ RFC_HDR = <<~"HDR"
   <seriesInfo value='' name='RFC' asciiName='RFC'/>
 </front>
 HDR
+
+def mock_pdf
+  allow(::Mn2pdf).to receive(:convert) do |url, output, c, d|
+    FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
+  end
+end
