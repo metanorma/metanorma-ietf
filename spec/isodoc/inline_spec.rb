@@ -70,7 +70,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <primary>A<sub>B</sub></primary>
     <secondary>A<sub>B</sub></secondary>
     <tertiary>A<sub>B</sub></tertiary>
-    </index>.<index>
+    </index>.<index primary="true">
     <primary>D</primary></index></p>
     </foreword></preface>
     <sections>
@@ -80,7 +80,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
    <t>D
                <iref item='AB' subitem='AB'/>
                .
-               <iref item='D'/></t>
+               <iref item='D' primary="true"/></t>
    </abstract></front><middle/><back/></rfc>
    OUTPUT
   end

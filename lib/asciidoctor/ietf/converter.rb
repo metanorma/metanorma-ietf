@@ -204,6 +204,22 @@ module Asciidoctor
         end
       end
 
+      def inline_indexterm(node)
+        noko do |xml|
+          node.type == :visible and xml << node.text.sub(/^primary:(?=\S)/, "")
+          terms = (node.attr("terms") || [node.text]).map { |x| xml_encode(x) }
+          if /^primary:\S/.match(terms[0])
+            terms[0].sub!(/^primary:/, "")
+            has_primary = true
+          end
+          xml.index **attr_code(primary: has_primary) do |i|
+            i.primary { |x| x << terms[0] }
+            a = terms.dig(1) and i.secondary { |x| x << a }
+            a = terms.dig(2) and i.tertiary { |x| x << a }
+          end
+        end.join
+      end
+
       def html_extract_attributes(node)
         super.merge(use_xinclude: node.attr("use-xinclude"))
       end

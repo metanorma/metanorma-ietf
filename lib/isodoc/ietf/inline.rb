@@ -156,7 +156,7 @@ module IsoDoc::Ietf
     end
 
     def index_parse(node, out)
-      out.iref nil, **attr_code(item: node.at(ns("./primary")).text,
+      out.iref nil, **attr_code(item: node.at(ns("./primary")).text, primary: node["primary"],
                                 subitem: node&.at(ns("./secondary"))&.text)
     end
 
