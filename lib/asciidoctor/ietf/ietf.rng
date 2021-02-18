@@ -564,6 +564,39 @@
         </zeroOrMore>
       </element>
     </define>
+    <define name="index">
+      <element name="index">
+        <optional>
+          <attribute name="to">
+            <data type="IDREF"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="primary">
+            <data type="boolean"/>
+          </attribute>
+        </optional>
+        <element name="primary">
+          <oneOrMore>
+            <ref name="PureTextElement"/>
+          </oneOrMore>
+        </element>
+        <optional>
+          <element name="secondary">
+            <oneOrMore>
+              <ref name="PureTextElement"/>
+            </oneOrMore>
+          </element>
+        </optional>
+        <optional>
+          <element name="tertiary">
+            <oneOrMore>
+              <ref name="PureTextElement"/>
+            </oneOrMore>
+          </element>
+        </optional>
+      </element>
+    </define>
   </include>
   <define name="TextElement" combine="choice">
     <ref name="bcp14"/>
@@ -880,6 +913,9 @@
         <ref name="termdocsource"/>
       </zeroOrMore>
       <optional>
+        <ref name="misccontainer"/>
+      </optional>
+      <optional>
         <ref name="boilerplate"/>
       </optional>
       <ref name="preface"/>
@@ -890,6 +926,9 @@
         <ref name="annex"/>
       </zeroOrMore>
       <ref name="bibliography"/>
+      <zeroOrMore>
+        <ref name="indexsect"/>
+      </zeroOrMore>
     </element>
   </define>
 </grammar>
