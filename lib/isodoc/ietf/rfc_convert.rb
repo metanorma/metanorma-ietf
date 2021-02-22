@@ -26,7 +26,7 @@ module IsoDoc::Ietf
           make_back(html, docxml)
         end
       end.join("\n").sub(/<!DOCTYPE[^>]+>\n/, "")
-          set_pis(docxml, Nokogiri::XML(xml))
+      set_pis(docxml, Nokogiri::XML(xml))
     end
 
     def metadata_init(lang, script, i18n)
@@ -34,8 +34,8 @@ module IsoDoc::Ietf
     end
 
     def xref_init(lang, script, klass, i18n, options)
-        @xrefs = Xref.new(lang, script, klass, i18n, options)
-      end
+      @xrefs = Xref.new(lang, script, klass, i18n, options)
+    end
 
     def extract_delims(text)
       @openmathdelim = "$$"
@@ -57,9 +57,14 @@ module IsoDoc::Ietf
       end
     end
 
-     def textcleanup(docxml)
+    def omit_docid_prefix(prefix)
+      return true if prefix == "IETF"
+      super
+    end
+
+    def textcleanup(docxml)
       passthrough_cleanup(docxml)
-     end
+    end
 
     def postprocess(result, filename, _dir)
       result = from_xhtml(cleanup(to_xhtml(textcleanup(result)))).

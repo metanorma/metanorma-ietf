@@ -284,7 +284,7 @@ RSpec.describe IsoDoc::Ietf do
                  <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                </front>
                <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-               <refcontent>IETF RFC 10</refcontent>
+               <refcontent>RFC 10</refcontent>
                <seriesInfo value='RFC 10' name='IETF'/>
              </reference>
              <reference anchor='ref12'>
