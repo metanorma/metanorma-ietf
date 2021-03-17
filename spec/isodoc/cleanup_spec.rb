@@ -335,12 +335,8 @@ INPUT
 <aside>
   <t>X</t>
 </aside>
-<figure>
                <artwork src='spec/assets/Example.svg' align='right' anchor='_56cb3ff4-1775-40c6-b75d-d5c2283e8338' type='svg' alt='Orb'/>
-             </figure>
-             <figure>
   <sourcecode><![CDATA[]]></sourcecode>
-</figure>
                  <t anchor='AAA'>Random text</t>
              <figure anchor='figureA-1'>
                 [a]
@@ -351,12 +347,8 @@ INPUT
                </name>
                <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
                </figure>
-               <figure>
                  <artwork src='rice_images/rice_image1.png' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f1' type='svg'/>
-                 </figure>
-                 <figure>
                  <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f2' type='svg'/>
-                 </figure>
                  <dl>
                    <dt>
                      <p>A</p>
@@ -397,12 +389,8 @@ INPUT
     INPUT
      #{XML_HDR}
              <t> [IMAGE 1] [IMAGE 2] </t>
-             <figure>
              <artwork src='rice_images/rice_image1.png' title='titletxt 1' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
-             </figure>
-             <figure>
              <artwork src='rice_images/rice_image1.png' title='titletxt 2' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
-             </figure>
            </abstract>
          </front>
          <middle/>
