@@ -515,6 +515,13 @@ OUTPUT
       conv.init(Asciidoctor::Document.new [])
       expect(xmlpp(strip_guid(conv.cleanup(Nokogiri::XML(<<~INPUT)).to_xml))).to be_equivalent_to xmlpp(<<~"OUTPUT")
     <ietf-standard>
+    <bibdata>
+    <relation>
+    <bibitem>
+    <docidentifier type='rfc-anchor'>A</docidentifier>
+    </bibitem>
+    </relation>
+    </bibdata>
     <sections>
     <clause>
     <p><eref bibitemid="B"/></p>
@@ -534,6 +541,13 @@ OUTPUT
     </ietf-standard>
     INPUT
  <ietf-standard>
+    <bibdata>
+    <relation>
+    <bibitem>
+    <docidentifier type='rfc-anchor'>A</docidentifier>
+    </bibitem>
+    </relation>
+    </bibdata>
          <sections>
            <clause obligation="normative">
              <p id="_">
