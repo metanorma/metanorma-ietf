@@ -46,16 +46,8 @@ module IsoDoc::Ietf
 
     def figure_cleanup(docxml)
       figure_postamble(docxml)
-      figure_wrap_artwork(docxml)
       figure_unnest(docxml)
       figure_footnote_cleanup(docxml)
-    end
-
-    def figure_wrap_artwork(docxml)
-      docxml.xpath("//artwork[not(parent::figure)] | "\
-                   "//sourcecode[not(parent::figure)]").each do |a|
-        a.wrap("<figure></figure>")
-      end
     end
 
     def figure_unnest(docxml)
