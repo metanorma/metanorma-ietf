@@ -436,7 +436,7 @@ Author
   end
 
   it "processes complex metadata" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~'INPUT', backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
@@ -448,6 +448,10 @@ Author
       :publisher: IEC;IETF;ISO
       :intended-series: BCP 111
       :sortrefs: 35
+      :fullname: Fred Flintstone
+      :affiliation: Slate Rock and Gravel Company
+      :address: 6 Bedrock Way + \
+      Bedrock
 
       [abstract]
       == Abstract
@@ -476,6 +480,26 @@ Author
                <name>IEC</name>
              </organization>
            </contributor>
+            <contributor>
+   <role type='author'/>
+   <person>
+     <name>
+       <completename>Fred Flintstone</completename>
+     </name>
+     <affiliation>
+       <organization>
+         <name>Slate Rock and Gravel Company</name>
+         <address>
+           <formattedAddress>
+             6 Bedrock Way
+             <br/>
+             Bedrock
+           </formattedAddress>
+         </address>
+       </organization>
+     </affiliation>
+   </person>
+ </contributor>
            <contributor>
              <role type='publisher'/>
              <organization>

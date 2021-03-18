@@ -137,7 +137,8 @@ module IsoDoc::Ietf
     def postal(addr, out)
       out.postal do |p|
         if line = addr.at(ns("./formattedAddress"))
-          line.text.split(/\n/).each do |l|
+          line.xpath(ns("./br")).each { |br| br.replace("\u0091") }
+          line.text.split(/\u0091/).each do |l|
             p.postalLine l, **attr_code(ascii: l.transliterate)
           end
         else

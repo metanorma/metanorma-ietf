@@ -78,7 +78,7 @@ expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))
                  <organization>
                    <name>Rockhead and Quarry Cave Construction Company</name>
                    <address>
-                     <formattedAddress>6A Rubble Way, Bedrock</formattedAddress>
+                     <formattedAddress>6A Rubble Way<br/>Bedrock</formattedAddress>
                    </address>
                  </organization>
                </affiliation>
@@ -340,7 +340,8 @@ INPUT
   <organization>Rockhead and Quarry Cave Construction Company</organization>
   <address>
   <postal>
-  <postalLine ascii='6A Rubble Way, Bedrock'>6A Rubble Way, Bedrock</postalLine>
+  <postalLine ascii='6A Rubble Way'>6A Rubble Way</postalLine>
+<postalLine ascii='Bedrock'>Bedrock</postalLine>
   </postal>
   <phone>123c</phone>
   <facsimile>123d</facsimile>
