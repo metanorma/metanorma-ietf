@@ -221,6 +221,9 @@ module Asciidoctor
         end.join
       end
 
+      def section_names_refs_cleanup(x)
+      end
+
       def html_extract_attributes(node)
         super.merge(use_xinclude: node.attr("use-xinclude"))
       end
