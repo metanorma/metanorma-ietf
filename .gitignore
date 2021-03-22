@@ -16,3 +16,5 @@
 .ruby-gemset
 
 **/.byebug_history
+
+.rubocop-https--*
