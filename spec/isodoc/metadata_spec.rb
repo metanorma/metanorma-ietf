@@ -387,7 +387,7 @@ OUTPUT
                  <organization>
                    <name>Sláte Rock and Gravel Company</name>
                    <address>
-                     <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
+                     <formattedAddress>6 Rubble Way<br/>Bedrock</formattedAddress>
                    </address>
                  </organization>
                </affiliation>
@@ -492,7 +492,8 @@ INPUT
               <organization showOnFrontPage='true' ascii='Slate Rock and Gravel Company'>Sl&#xE1;te Rock and Gravel Company</organization>
               <address>
               <postal>
-                <postalLine ascii='6 Rubble Way, Bedrock'>6 Rubble Way, Bedrock</postalLine>
+                <postalLine ascii='6 Rubble Way'>6 Rubble Way</postalLine>
+                <postalLine ascii='Bedrock'>Bedrock</postalLine>
                 </postal>
                 <phone>123</phone>
                 <facsimile>123b</facsimile>
