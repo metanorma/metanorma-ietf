@@ -73,7 +73,8 @@ module IsoDoc::Ietf
 
     def note_label(node)
       n = @xrefs.get[node["id"]]
-      return l10n("#{@i18n.note}: ") if n.nil? || n[:label].nil? || n[:label].empty?
+      return l10n("#{@i18n.note}: ") if n.nil? || n[:label].nil? ||
+        n[:label].empty?
       l10n("#{@i18n.note} #{n[:label]}: ")
     end
 
@@ -107,16 +108,11 @@ module IsoDoc::Ietf
     end
 
     def sourcecode_parse(node, out)
-      out.figure **attr_code(anchor: node["id"]) do |div|
-        name = node&.at(ns("./name"))&.remove and div.name do |n|
-          name.children.each { |nn| parse(nn, n) }
+      out.sourcecode **attr_code(
+        anchor: node["id"], type: node["lang"], name: node["filename"],
+        markers: node["markers"], src: node["src"]) do |s|
+          node.children.each { |x| parse(x, s) unless x.name == "name" }
         end
-        div.sourcecode **attr_code(type: node["lang"], name: node["filename"],
-                                   markers: node["markers"],
-                                   src: node["src"]) do |s|
-                                     node.children.each { |x| parse(x, s) unless x.name == "name" }
-                                   end
-      end
     end
 
     def pre_parse(node, out) 
