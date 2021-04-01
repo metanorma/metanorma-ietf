@@ -275,17 +275,11 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-        <figure anchor='samplecode'>
-               <name>
-                 Ruby
-                 <em>code</em>
-               </name>
-               <sourcecode type='ruby' markers='true'>
+               <sourcecode type='ruby' markers='true' anchor='samplecode'>
          puts x &lt; y;
          puts y
        </sourcecode>
-       </figure>
-       <figure anchor="samplecode2"><sourcecode type="ruby" src="http://www.example.com"/></figure>
+       <sourcecode anchor="samplecode2" type="ruby" src="http://www.example.com"/>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -302,10 +296,7 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-        <figure anchor='samplecode'>
-               <name>XML code</name>
-               <sourcecode> &lt;xml&gt; </sourcecode>
-             </figure>
+               <sourcecode anchor='samplecode'> &lt;xml&gt; </sourcecode>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -326,8 +317,7 @@ B</pre>
     </iso-standard>
     INPUT
         #{XML_HDR}
-             <figure anchor='_'>
-               <sourcecode>
+               <sourcecode anchor='_'>
                  puts "Hello, world."  &lt;1&gt;
           %w{a b c}.each do |x|
             puts x  &lt;2&gt;
@@ -336,7 +326,6 @@ B</pre>
        &lt;1&gt; This is one callout
        &lt;2&gt; This is another callout
                </sourcecode>
-             </figure>
        </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -602,14 +591,12 @@ World</p>
              <t anchor='_'>The measurement target shall be measured as:</t>
              <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
              <t anchor='_'>The following code will be run for verification:</t>
-             <figure anchor='_'>
-               <sourcecode>
+               <sourcecode anchor='_'>
                  CoreRoot(success): HttpResponse
       if (success)
       recommendation(label: success-response)
       end
                </sourcecode>
-             </figure>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -686,14 +673,12 @@ World</p>
              <t anchor='_'>The measurement target shall be measured as:</t>
              <t anchor='B'>$$ r/1 = 0 $$ (1)</t>
              <t anchor='_'>The following code will be run for verification:</t>
-             <figure anchor='_'>
-               <sourcecode>
+               <sourcecode anchor='_'>
                  CoreRoot(success): HttpResponse
       if (success)
       recommendation(label: success-response)
       end
                </sourcecode>
-             </figure>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -780,14 +765,12 @@ World</p>
              <t anchor='_'>The measurement target shall be measured as:</t>
              <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
              <t anchor='_'>The following code will be run for verification:</t>
-             <figure anchor='_'>
-               <sourcecode>
+               <sourcecode anchor='_'>
                  CoreRoot(success): HttpResponse
       if (success)
       recommendation(label: success-response)
       end
                </sourcecode>
-             </figure>
 </abstract></front><middle/><back/></rfc>
     OUTPUT
   end
@@ -802,14 +785,11 @@ World</p>
 </preface></itu-standard>
 INPUT
     #{XML_HDR}
-             <figure anchor='_'>
-               <name>Label</name>
-               <sourcecode>
+               <sourcecode anchor="_">
                  <t anchor="_">&#xA0;&#xA0;<strong>A</strong>
 &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B</t>
 <t anchor="_">&#xA0;&#xA0;<em>C</em></t>
                </sourcecode>
-             </figure>
 </abstract></front><middle/><back/></rfc>
 OUTPUT
   end
