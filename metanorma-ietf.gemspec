@@ -1,6 +1,6 @@
 # coding: utf-8
 
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "metanorma/ietf/version"
 
@@ -35,9 +35,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
-  spec.add_dependency "metanorma-standoc", "~> 1.8.0"
-  spec.add_dependency "isodoc", "~> 1.5.0"
+  spec.add_dependency "isodoc", "~> 1.6.0"
   spec.add_dependency "mathml2asciimath"
+  spec.add_dependency "metanorma-standoc", "~> 1.9.0"
   spec.add_dependency "nokogiri", "~> 1.10.4"
 
   spec.add_development_dependency "byebug"
