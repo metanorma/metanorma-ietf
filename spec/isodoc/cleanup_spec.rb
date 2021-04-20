@@ -271,10 +271,6 @@ INPUT
      <figure anchor='figureA-0'>
      <name>Unnested figure</name>
      <figure anchor="figureA-00">
-     <name>Unnested figure 1</name>
-     <figure anchor="figureA-000">
-     <name>Unnested figure 2</name>
-     </figure>
      </figure>
      </figure>
      <figure anchor="figureA-001">
@@ -322,14 +318,8 @@ INPUT
        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
          <front>
            <abstract>
-           <figure anchor='figureA-0'>
-  <name>Unnested figure</name>
-</figure>
 <figure anchor='figureA-00'>
-  <name>Unnested figure 1</name>
-</figure>
-<figure anchor='figureA-000'>
-  <name>Unnested figure 2</name>
+  <name>Unnested figure</name>
 </figure>
 <figure anchor='figureA-001'> </figure>
 <aside>
