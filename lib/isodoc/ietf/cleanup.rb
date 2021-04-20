@@ -15,14 +15,14 @@ module IsoDoc::Ietf
     end
 
     # TODO: insert <u>
-    
+
     def front_cleanup(xmldoc)
-        xmldoc.xpath("//title").each { |s| s.children = s.text }
-        xmldoc.xpath("//reference/front[not(author)]").each do |f|
-          insert = f.at("./seriesInfo[last()]") || f.at("./title")
-          insert.next = "<author surname='Unknown'/>"
-        end
+      xmldoc.xpath("//title").each { |s| s.children = s.text }
+      xmldoc.xpath("//reference/front[not(author)]").each do |f|
+        insert = f.at("./seriesInfo[last()]") || f.at("./title")
+        insert.next = "<author surname='Unknown'/>"
       end
+    end
 
     def table_footnote_cleanup(docxml)
       docxml.xpath("//table[descendant::fn]").each do |t|
@@ -54,9 +54,11 @@ module IsoDoc::Ietf
       docxml.xpath("//figure[descendant::figure]").each do |f|
         insert = f
         f.xpath(".//figure").each do |a|
+          title = f.at("./name") and a.children.first.previous = title.remove
           insert.next = a.remove
           insert = insert.next_element
         end
+        f.remove
       end
     end
 
@@ -126,8 +128,10 @@ module IsoDoc::Ietf
 
     def make_endnotes(docxml)
       return unless docxml.at("//fn")
-      endnotes = docxml.at("//back") or
-      docxml << "<back/>" and endnotes = docxml.at("//back")
+
+      unless endnotes = docxml.at("//back")
+        docxml << "<back/>" and endnotes = docxml.at("//back")
+      end
       endnotes << "<section><name>Endnotes</name></section>"
       endnotes = docxml.at("//back/section[last()]")
     end
@@ -138,7 +142,7 @@ module IsoDoc::Ietf
         t.xpath(".//artwork").each_with_index do |a, i|
           insert.next = a.dup
           insert = insert.next
-          a.replace("[IMAGE #{i+1}]")
+          a.replace("[IMAGE #{i + 1}]")
         end
       end
     end
@@ -146,8 +150,8 @@ module IsoDoc::Ietf
     # for markup in pseudocode
     def sourcecode_cleanup(docxml)
       docxml.xpath("//sourcecode").each do |s|
-        s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n").
-          gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
+        s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n")
+          .gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
         sourcecode_remove_markup(s)
         text = HTMLEntities.new.decode(s.children.to_xml.sub(/\A\n+/, ""))
         s.children = "<![CDATA[#{text}]]>"
@@ -158,8 +162,10 @@ module IsoDoc::Ietf
       s.traverse do |n|
         next if n.text?
         next if %w(name callout annotation note sourcecode).include? n.name
-        if n.name == "br" then n.replace("\n")
-        elsif n.name == "t" then n.replace("\n\n#{n.children}")
+
+        case n.name
+        when "br" then n.replace("\n")
+        when "t" then n.replace("\n\n#{n.children}")
         else
           n.replace(n.children)
         end
@@ -169,6 +175,7 @@ module IsoDoc::Ietf
     def annotation_cleanup(docxml)
       docxml.xpath("//reference").each do |r|
         next unless r&.next_element&.name == "aside"
+
         aside = r.next_element
         aside.name = "annotation"
         aside.traverse do |n|
@@ -176,7 +183,7 @@ module IsoDoc::Ietf
         end
         r << aside
       end
-      docxml.xpath("//references/aside").each { |r| r.remove }
+      docxml.xpath("//references/aside").each(&:remove)
     end
 
     def deflist_cleanup(docxml)
@@ -203,9 +210,7 @@ module IsoDoc::Ietf
     end
 
     def bookmark_cleanup(docxml)
-      docxml.xpath("//bookmark").each do |b|
-        b.remove
-      end
+      docxml.xpath("//bookmark").each(&:remove)
     end
 
     def aside_cleanup(docxml)

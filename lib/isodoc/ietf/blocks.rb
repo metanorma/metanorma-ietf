@@ -43,7 +43,7 @@ module IsoDoc::Ietf
     end
 
     def ol_attrs(node)
-      { anchor: node["id"], 
+      { anchor: node["id"],
         spacing: node["spacing"],
         type: ol_style(node["type"]),
         group: node["group"],
@@ -75,6 +75,7 @@ module IsoDoc::Ietf
       n = @xrefs.get[node["id"]]
       return l10n("#{@i18n.note}: ") if n.nil? || n[:label].nil? ||
         n[:label].empty?
+
       l10n("#{@i18n.note} #{n[:label]}: ")
     end
 
@@ -99,7 +100,7 @@ module IsoDoc::Ietf
     def example_label(node, div, name)
       n = @xrefs.get[node["id"]]
       div.t **attr_code(anchor: node["id"], keepWithNext: "true") do |p|
-        lbl = (n.nil? || n[:label].nil? || n[:label].empty?) ? @i18n.example :
+        lbl = n.nil? || n[:label].nil? || n[:label].empty? ? @i18n.example :
           l10n("#{@i18n.example} #{n[:label]}")
         p << lbl
         name and !lbl.nil? and p << ": "
@@ -110,9 +111,10 @@ module IsoDoc::Ietf
     def sourcecode_parse(node, out)
       out.sourcecode **attr_code(
         anchor: node["id"], type: node["lang"], name: node["filename"],
-        markers: node["markers"], src: node["src"]) do |s|
-          node.children.each { |x| parse(x, s) unless x.name == "name" }
-        end
+        markers: node["markers"], src: node["src"]
+      ) do |s|
+        node.children.each { |x| parse(x, s) unless x.name == "name" }
+      end
     end
 
     def pre_parse(node, out) 
@@ -135,6 +137,7 @@ module IsoDoc::Ietf
 
     def formula_where(dl, out)
       return unless dl
+
       out.t { |p| p << @i18n.where }
       parse(dl, out)
     end
@@ -142,7 +145,7 @@ module IsoDoc::Ietf
     def formula_parse1(node, out)
       out.t **attr_code(anchor: node["id"]) do |p|
         parse(node.at(ns("./stem")), p)
-        lbl = @xrefs.anchor(node['id'], :label, false)
+        lbl = @xrefs.anchor(node["id"], :label, false)
         lbl.nil? or
           p << "    (#{lbl})"
       end
@@ -153,6 +156,7 @@ module IsoDoc::Ietf
       formula_where(node.at(ns("./dl")), out)
       node.children.each do |n|
         next if %w(stem dl).include? n.name
+
         parse(n, out)
       end
     end
@@ -172,7 +176,7 @@ module IsoDoc::Ietf
     end
 
     def admonition_name_parse(_node, div, name)
-      div.t **{keepWithNext: "true" } do |p|
+      div.t **{ keepWithNext: "true" } do |p|
         name.children.each { |n| parse(n, p) }
       end
     end
@@ -196,8 +200,9 @@ module IsoDoc::Ietf
       end
     end
 
-    def figure_name_parse(node, div, name)
+    def figure_name_parse(_node, div, name)
       return if name.nil?
+
       div.name do |n|
         name.children.each { |n| parse(n, div) }
       end
@@ -210,6 +215,7 @@ module IsoDoc::Ietf
     def figure_parse(node, out)
       return pseudocode_parse(node, out) if node["class"] == "pseudocode" ||
         node["type"] == "pseudocode"
+
       @in_figure = true
       out.figure **attr_code(anchor: node["id"]) do |div|
         figure_name_parse(node, div, node.at(ns("./name")))
