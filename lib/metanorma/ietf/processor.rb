@@ -60,8 +60,8 @@ module Metanorma
 
         when :txt, :pdf, :html
           unless xml2rfc_present?
-            warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
-            return
+            raise "[metanorma-ietf] Fatal: unable to generate #{format}," \
+                  " the command `xml2rfc` is not found in path."
           end
 
           rfcname = inname.sub(/\.xml$/, ".rfc.xml")
