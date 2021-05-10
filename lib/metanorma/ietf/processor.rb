@@ -1,11 +1,14 @@
 require "metanorma/processor"
 require "tempfile"
 
+require "isodoc/ietf/rfc_convert"
+
 module Metanorma
   module Ietf
-    class Processor < Metanorma::Processor
+    RfcConvert = ::IsoDoc::Ietf::RfcConvert
 
-      def initialize
+    class Processor < Metanorma::Processor
+      def initialize # rubocop:disable Lint/MissingSuper
         @short = :ietf
         @input_format = :asciidoc
         @asciidoctor_backend = :ietf
@@ -18,7 +21,7 @@ module Metanorma
           rfc: "rfc.xml",
           html: "html",
           txt: "txt",
-          pdf: "pdf"
+          pdf: "pdf",
         }
       end
 
@@ -26,15 +29,15 @@ module Metanorma
         "Metanorma::Ietf #{::Metanorma::Ietf::VERSION}"
       end
 
-      def extract_options(isodocxml)
+      def extract_options(_isodocxml)
         {}
       end
 
       # From mislav: https://stackoverflow.com/questions/2108727
       #        /which-in-ruby-checking-if-program-exists-in-path-from-ruby
       def which(cmd)
-        exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
-        ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+        exts = ENV["PATHEXT"] ? ENV["PATHEXT"].split(";") : [""]
+        ENV["PATH"].split(File::PATH_SEPARATOR).each do |path|
           exts.each do |ext|
             exe = File.join(path, "#{cmd}#{ext}")
             return exe if File.executable?(exe) && !File.directory?(exe)
@@ -43,49 +46,43 @@ module Metanorma
         nil
       end
 
-      def use_presentation_xml(ext)
+      def use_presentation_xml(_ext)
         false
       end
 
-      def xml2rfc_present?
-        !which("xml2rfc").nil?
+      def check_xml2rfc_present?
+        if which("xml2rfc").nil?
+          raise "[metanorma-ietf] Fatal: unable to generate #{format}," \
+                " the command `xml2rfc` is not found in path."
+        end
       end
 
-      def output(isodoc_node, inname, outname, format, options={})
+      def output(isodoc_node, inname, outname, format, options = {})
         case format
         when :rfc
           outname ||= inname.sub(/\.xml$/, ".rfc.xml")
-          IsoDoc::Ietf::RfcConvert.new(options).convert(inname, isodoc_node, nil, outname)
+          RfcConvert.new(options).convert(inname, isodoc_node, nil, outname)
           @done_rfc = true
-
         when :txt, :pdf, :html
-          unless xml2rfc_present?
-            warn "[metanorma-ietf] Error: unable to generate #{format}, the command `xml2rfc` is not found in path."
-            return
-          end
-
-          rfcname = inname.sub(/\.xml$/, ".rfc.xml")
-          unless @done_rfc && File.exist?(rfcname)
-            output(isodoc_node, inname, rfcname, :rfc, options)
-          end
-
-          outext = case format
-            when :txt then ".txt"
-            when :pdf then ".pdf"
-            when :html then ".html"
-          end
-
-          outflag = case format
-            when :txt then "--text"
-            when :pdf then "--pdf"
-            when :html then "--html"
-          end
-
-          outname ||= inname.sub(/\.xml$/, outext)
-          system("xml2rfc #{outflag} #{rfcname} -o #{outname}")
+          xml2rfc(isodoc_node, inname, outname, format, options)
         else
           super
         end
+      end
+
+      def xml2rfc(isodoc_node, inname, outname, format, options)
+        check_xml2rfc_present?
+
+        rfcname = inname.sub(/\.xml$/, ".rfc.xml")
+        unless @done_rfc && File.exist?(rfcname)
+          output(isodoc_node, inname, rfcname, :rfc, options)
+        end
+
+        outext = { txt: ".txt", pdf: ".pdf", html: ".html" }[format]
+        outflag = { txt: "--text", pdf: "--pdf", html: "--html" }[format]
+
+        outname ||= inname.sub(/\.xml$/, outext)
+        system("xml2rfc #{outflag} #{rfcname} -o #{outname}")
       end
     end
   end
