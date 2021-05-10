@@ -2,7 +2,6 @@ require "spec_helper"
 require "metanorma"
 
 RSpec.describe Metanorma::Ietf::Processor do
-
   registry = Metanorma::Registry.instance
   registry.register(Metanorma::Ietf::Processor)
   processor = registry.find_processor(:ietf)
@@ -13,7 +12,7 @@ RSpec.describe Metanorma::Ietf::Processor do
 
   it "registers output formats against metanorma" do
     expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
-    [[:html, "html"], [:pdf, "pdf"], [:rfc, "rfc.xml"], [:rxl, "rxl"], [:txt, "txt"], [:xml, "xml"]]
+      [[:html, "html"], [:pdf, "pdf"], [:rfc, "rfc.xml"], [:rxl, "rxl"], [:txt, "txt"], [:xml, "xml"]]
     OUTPUT
   end
 
@@ -22,94 +21,96 @@ RSpec.describe Metanorma::Ietf::Processor do
   end
 
   it "generates IsoDoc XML from a blank document" do
-    expect(processor.input_to_isodoc(<<~"INPUT", nil)).to be_equivalent_to <<~"OUTPUT"
-    #{ASCIIDOC_BLANK_HDR}
-    INPUT
-    #{BLANK_HDR}
-<sections/>
-</csd-standard>
-    OUTPUT
+    expect(processor.input_to_isodoc(ASCIIDOC_BLANK_HDR, nil))
+      .to be_equivalent_to <<~"OUTPUT"
+            #{BLANK_HDR}
+        <sections/>
+        </csd-standard>
+      OUTPUT
   end
 
-  it "generates HTML from IsoDoc XML" do
+  input = <<~INPUT
+                 <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
+           <bibdata type="standard">
+            <title language="en" type="main" format="text/plain">Document title</title>
+            <docidentifier>1149</docidentifier>
+    <docnumber>1149</docnumber>
+             <contributor>
+               <role type="publisher"/>
+               <organization>
+               <name>Internet Engineering Task Force</name>
+           <abbreviation>IETF</abbreviation>
+               </organization>
+             </contributor>
+    <contributor>
+    <role type="author"/>
+    <person>
+    <name>
+    <forename>David</forename>
+    <surname>Waitzman</surname>
+    </name>
+    <phone>(617) 873-4323</phone>
+    <email>dwaitzman@BBN.COM</email>
+    </person>
+    </contributor>
+             <language>en</language>
+             <script>Latn</script>
+    <status>
+      <stage>published</stage>
+    </status>
+             <copyright>
+               <from>2000</from>
+               <owner>
+                 <organization>
+               <name>Internet Engineering Task Force</name>
+           <abbreviation>IETF</abbreviation>
+                 </organization>
+               </owner>
+             </copyright>
+             <relation type="derivedFrom">
+    <bibitem>
+    <title>--</title>
+    <docidentifier>https://www.rfc-editor.org/rfc/rfc1149.txt</docidentifier>
+    </bibitem>
+    </relation>
+             <series type="stream">
+               <title>IETF</title>
+             </series>
+             <series type="intended">
+             <title>std</title>
+             </series>
+             <ext>
+      <doctype>rfc</doctype>
+      <pi>
+      <toc>yes</toc>
+    </pi>
+      <ipr>trust200902</ipr>
+    </ext>
+           </bibdata>
+                  <sections>
+      <terms id="A" obligation="normative">
+      <title>Terms and definitions</title>
+             <p>No terms and definitions are listed in this document.</p>
+      <clause id="B" inline-header="false" obligation="normative">
+      <title>Term1</title>
+      <note id="C">
+      <p id="D">This is a note</p>
+    </note>
+    </clause>
+    </terms>
+    </sections>
+  INPUT
+
+  it "does not find xml2rfc" do
     FileUtils.rm_f "test.xml"
     FileUtils.rm_f "test.html"
     FileUtils.rm_f "test.rfc.xml"
-    processor.output(<<~"INPUT", "test.xml", "test.html", :html)
-           <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
-       <bibdata type="standard">
-        <title language="en" type="main" format="text/plain">Document title</title>
-        <docidentifier>1149</docidentifier>
-<docnumber>1149</docnumber>
-         <contributor>
-           <role type="publisher"/>
-           <organization>
-           <name>Internet Engineering Task Force</name>
-       <abbreviation>IETF</abbreviation>
-           </organization>
-         </contributor>
-<contributor>
-<role type="author"/>
-<person>
-<name>
-<forename>David</forename>
-  
-<surname>Waitzman</surname>
-</name>
-<phone>(617) 873-4323</phone>
-<email>dwaitzman@BBN.COM</email>
-</person>
-</contributor>
-         <language>en</language>
-         <script>Latn</script>
-<status>
-  <stage>published</stage>
-</status>
-
-         <copyright>
-           <from>2000</from>
-           <owner>
-             <organization>
-           <name>Internet Engineering Task Force</name>
-       <abbreviation>IETF</abbreviation>
-             </organization>
-           </owner>
-         </copyright>
-         <relation type="derivedFrom">
-<bibitem>
-<title>--</title>
-<docidentifier>https://www.rfc-editor.org/rfc/rfc1149.txt</docidentifier>
-</bibitem>
-</relation>
-         <series type="stream">
-           <title>IETF</title>
-         </series>
-         <series type="intended">
-         <title>std</title>
-         </series>
-         <ext>
-  <doctype>rfc</doctype>
-  <pi>
-  <toc>yes</toc>
-</pi>
-  <ipr>trust200902</ipr>
-</ext>
-       </bibdata>
-              <sections>
-  <terms id="A" obligation="normative">
-  <title>Terms and definitions</title>
-         <p>No terms and definitions are listed in this document.</p>
-  <clause id="B" inline-header="false" obligation="normative">
-  <title>Term1</title>
-  <note id="C">
-  <p id="D">This is a note</p>
-</note>
-</clause>
-</terms>
-</sections>
-    INPUT
-    expect(File.exist?("test.rfc.xml")).to be true
-    expect(File.exist?("test.html")).to be true
-    expect(File.read("test.html", encoding: "utf-8")).to include "No terms and definitions are listed in this document."
+    allow_any_instance_of(Metanorma::Ietf::Processor)
+      .to receive(:which).with("xml2rfc").and_return(nil)
+    begin
+      expect { processor.output(input, "test.xml", "test.html", :html) }
+        .to raise_error(RuntimeError)
+    rescue RuntimeError
+    end
   end
 end
