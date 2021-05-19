@@ -50,6 +50,8 @@ RSpec.configure do |config|
   end
 end
 
+OPTIONS = [backend: :ietf, header_footer: true].freeze
+
 def htmlencode(x)
   HTMLEntities.new.encode(x, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n").
     gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, '&').gsub(/&#x27;/, "'").

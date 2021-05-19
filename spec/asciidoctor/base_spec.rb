@@ -8,40 +8,39 @@ RSpec.describe Asciidoctor::Ietf do
 
   it "processes a blank document" do
     VCR.use_cassette "workgroup_fetch" do
-    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-= Document title
-Author
-:docfile: test.adoc
-:nodoc:
-:novalid:
-:no-isobib:
-:flush-caches: true
-
-    INPUT
-    #{BLANK_HDR}
-<sections/>
-</ietf-standard>
-    OUTPUT
-  end
+      expect(xmlpp(Asciidoctor.convert(<<~"INPUT", *OPTIONS))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        = Document title
+        Author
+        :docfile: test.adoc
+        :nodoc:
+        :novalid:
+        :no-isobib:
+        :flush-caches: true
+      INPUT
+            #{BLANK_HDR}
+        <sections/>
+        </ietf-standard>
+      OUTPUT
+    end
   end
 
   it "converts a blank document" do
     FileUtils.rm_f "test.rfc.xml"
-    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", *OPTIONS))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
       :novalid:
     INPUT
-    #{BLANK_HDR}
-<sections/>
-</ietf-standard>
+          #{BLANK_HDR}
+      <sections/>
+      </ietf-standard>
     OUTPUT
     expect(File.exist?("test.rfc.xml")).to be true
   end
 
   it "processes default metadata" do
-    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", *OPTIONS))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
@@ -167,276 +166,276 @@ Author
       :symrefs: 34
       :sortrefs: 35
     INPUT
-    <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
-         <bibdata type='standard'>
-           <title language='en' format='text/plain' type='main'>Main Title — Title</title>
-        <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
-        <title language='en' format='text/plain' type='ascii'>Ascii Title</title>
-           <docidentifier>1000</docidentifier>
-           <docnumber>1000</docnumber>
-           <date type='published'>
-             <on>1000-01-01</on>
-           </date>
-           <date type='accessed'>
-             <on>1001-01-01</on>
-           </date>
-           <date type='created'>
-             <on>1002-01-01</on>
-           </date>
-           <date type='implemented'>
-             <on>1003-01-01</on>
-           </date>
-           <date type='obsoleted'>
-             <on>1004-01-01</on>
-           </date>
-           <date type='confirmed'>
-             <on>1005-01-01</on>
-           </date>
-           <date type='updated'>
-             <on>1006-01-01</on>
-           </date>
-           <date type='issued'>
-             <on>1007-01-01</on>
-           </date>
-           <date type='circulated'>
-             <on>1008-01-01</on>
-           </date>
-           <date type='unchanged'>
-             <on>1009-01-01</on>
-           </date>
-           <date type='Fred'>
-             <on>1010-01-01</on>
-           </date>
-           <date type='Jack'>
-             <on>1010-01-01</on>
-           </date>
-           <contributor>
-             <role type='author'/>
-             <person>
-               <name>
-                 <completename>Fred Flintstone</completename>
-               </name>
-               <affiliation>
-                 <organization>
-                   <name>Slate Rock and Gravel Company</name>
-                   <address>
-                     <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
-                   </address>
-                 </organization>
-               </affiliation>
-               <phone>123</phone>
-<phone type='fax'>123b</phone>
-               <uri>http://slate.example.com</uri>
-             </person>
-           </contributor>
-           <contributor>
-             <role type='editor'/>
-             <person>
-               <name>
-                 <forename>Barney</forename>
-                 <initial>B. X.</initial>
-                 <surname>Rubble</surname>
-               </name>
-               <affiliation>
-                 <organization>
-                   <name>Rockhead and Quarry Cave Construction Company</name>
-                   <address>
-                     <formattedAddress>6A Rubble Way, Bedrock</formattedAddress>
-                   </address>
-                 </organization>
-               </affiliation>
-               <phone>123c</phone>
-<phone type='fax'>123d</phone>
-               <email>barney@rockhead.example.com</email>
-             </person>
-           </contributor>
-           <contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>Hanna Barbera</name>
-             </organization>
-           </contributor>
-           <contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>Cartoon Network</name>
-             </organization>
-           </contributor>
-           <edition>2</edition>
-           <version>
-             <revision-date>2000-01-01</revision-date>
-             <draft>3.4</draft>
-           </version>
-           <language>en</language>
-           <script>Latn</script>
-           <status>
-             <stage>10</stage>
-             <substage>20</substage>
-             <iteration>3</iteration>
-           </status>
-           <copyright>
-             <from>2001</from>
-             <owner>
-               <organization>
-                 <name>Cartoon Network</name>
-               </organization>
-             </owner>
-           </copyright>
-           <relation type='includedIn'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>INC1</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='includedIn'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>INCL2</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='describedBy'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>DESC1</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='describedBy'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>DESC2</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='derivedFrom'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>https://datatracker.ietf.org/doc/draft-DER1</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='derivedFrom'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>https://datatracker.ietf.org/doc/draft-DER2</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='instance'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>EQ1</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='instance'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>EQ2</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='obsoletes'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>OB1</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='obsoletes'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>OB2</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='updates'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>UPD1</docidentifier>
-             </bibitem>
-           </relation>
-           <relation type='updates'>
-             <bibitem>
-               <title>--</title>
-               <docidentifier>UPD2</docidentifier>
-             </bibitem>
-           </relation>
-           <series type='stream'>
-             <title>IRTF</title>
-             </series>
-<series type='intended'>
-  <title>BCP</title>
-           </series>
-           <keyword>a</keyword>
-           <keyword>b</keyword>
-           <keyword>c</keyword>
-           <ext>
-           <doctype>rfc</doctype>
-<editorialgroup>
-  <workgroup number='3' type='C'>WG</workgroup>
-  <workgroup number='31' type='C1'>WG1</workgroup>
-</editorialgroup>
-<ics>
-  <code>1</code>
-</ics>
-<ics>
-  <code>2</code>
-</ics>
-<ics>
-  <code>3</code>
-</ics>
-<area>A</area>
-<area>B</area>
-<area>C</area>
-             <ipr>noModificationTrust200902,pre5378Trust200902</ipr>
-             <consensus>false</consensus>
-             <indexInclude>false</indexInclude>
-             <iprExtract>Section 3</iprExtract>
-             <sortRefs>false</sortRefs>
-             <symRefs>false</symRefs>
-             <tocInclude>false</tocInclude>
-             <tocDepth>9</tocDepth>
-             <showOnFrontPage>false</showOnFrontPage>
-             <pi>
-  <artworkdelimiter>1</artworkdelimiter>
-  <artworklines>2</artworklines>
-  <authorship>3</authorship>
-  <autobreaks>4</autobreaks>
-  <background>5</background>
-  <colonspace>6</colonspace>
-  <comments>7</comments>
-  <docmapping>8</docmapping>
-  <editing>9</editing>
-  <emoticonic>10</emoticonic>
-  <footer>11</footer>
-  <header>12</header>
-  <inline>13</inline>
-  <iprnotified>14</iprnotified>
-  <linkmailto>15</linkmailto>
-  <linefile>16</linefile>
-  <notedraftinprogress>17</notedraftinprogress>
-  <private>18</private>
-  <refparent>19</refparent>
-  <rfcedstyle>20</rfcedstyle>
-  <slides>21</slides>
-  <text-list-symbols>22</text-list-symbols>
-  <tocappendix>23</tocappendix>
-  <tocindent>24</tocindent>
-  <tocnarrow>25</tocnarrow>
-  <tocompact>26</tocompact>
-  <topblock>27</topblock>
-  <useobject>28</useobject>
-  <strict>29</strict>
-  <compact>30</compact>
-  <subcompact>31</subcompact>
-  <toc>no</toc>
-  <tocdepth>9</tocdepth>
-  <symrefs>false</symrefs>
-  <sortrefs>false</sortrefs>
-</pi>
-           </ext>
-         </bibdata>
-         <sections/>
-       </ietf-standard>
+          <?xml version='1.0' encoding='UTF-8'?>
+             <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
+               <bibdata type='standard'>
+                 <title language='en' format='text/plain' type='main'>Main Title — Title</title>
+              <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
+              <title language='en' format='text/plain' type='ascii'>Ascii Title</title>
+                 <docidentifier>1000</docidentifier>
+                 <docnumber>1000</docnumber>
+                 <date type='published'>
+                   <on>1000-01-01</on>
+                 </date>
+                 <date type='accessed'>
+                   <on>1001-01-01</on>
+                 </date>
+                 <date type='created'>
+                   <on>1002-01-01</on>
+                 </date>
+                 <date type='implemented'>
+                   <on>1003-01-01</on>
+                 </date>
+                 <date type='obsoleted'>
+                   <on>1004-01-01</on>
+                 </date>
+                 <date type='confirmed'>
+                   <on>1005-01-01</on>
+                 </date>
+                 <date type='updated'>
+                   <on>1006-01-01</on>
+                 </date>
+                 <date type='issued'>
+                   <on>1007-01-01</on>
+                 </date>
+                 <date type='circulated'>
+                   <on>1008-01-01</on>
+                 </date>
+                 <date type='unchanged'>
+                   <on>1009-01-01</on>
+                 </date>
+                 <date type='Fred'>
+                   <on>1010-01-01</on>
+                 </date>
+                 <date type='Jack'>
+                   <on>1010-01-01</on>
+                 </date>
+                 <contributor>
+                   <role type='author'/>
+                   <person>
+                     <name>
+                       <completename>Fred Flintstone</completename>
+                     </name>
+                     <affiliation>
+                       <organization>
+                         <name>Slate Rock and Gravel Company</name>
+                         <address>
+                           <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
+                         </address>
+                       </organization>
+                     </affiliation>
+                     <phone>123</phone>
+      <phone type='fax'>123b</phone>
+                     <uri>http://slate.example.com</uri>
+                   </person>
+                 </contributor>
+                 <contributor>
+                   <role type='editor'/>
+                   <person>
+                     <name>
+                       <forename>Barney</forename>
+                       <initial>B. X.</initial>
+                       <surname>Rubble</surname>
+                     </name>
+                     <affiliation>
+                       <organization>
+                         <name>Rockhead and Quarry Cave Construction Company</name>
+                         <address>
+                           <formattedAddress>6A Rubble Way, Bedrock</formattedAddress>
+                         </address>
+                       </organization>
+                     </affiliation>
+                     <phone>123c</phone>
+      <phone type='fax'>123d</phone>
+                     <email>barney@rockhead.example.com</email>
+                   </person>
+                 </contributor>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>Hanna Barbera</name>
+                   </organization>
+                 </contributor>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>Cartoon Network</name>
+                   </organization>
+                 </contributor>
+                 <edition>2</edition>
+                 <version>
+                   <revision-date>2000-01-01</revision-date>
+                   <draft>3.4</draft>
+                 </version>
+                 <language>en</language>
+                 <script>Latn</script>
+                 <status>
+                   <stage>10</stage>
+                   <substage>20</substage>
+                   <iteration>3</iteration>
+                 </status>
+                 <copyright>
+                   <from>2001</from>
+                   <owner>
+                     <organization>
+                       <name>Cartoon Network</name>
+                     </organization>
+                   </owner>
+                 </copyright>
+                 <relation type='includedIn'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>INC1</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='includedIn'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>INCL2</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='describedBy'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>DESC1</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='describedBy'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>DESC2</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='derivedFrom'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>https://datatracker.ietf.org/doc/draft-DER1</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='derivedFrom'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>https://datatracker.ietf.org/doc/draft-DER2</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='instance'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>EQ1</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='instance'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>EQ2</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='obsoletes'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>OB1</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='obsoletes'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>OB2</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='updates'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>UPD1</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <relation type='updates'>
+                   <bibitem>
+                     <title>--</title>
+                     <docidentifier>UPD2</docidentifier>
+                   </bibitem>
+                 </relation>
+                 <series type='stream'>
+                   <title>IRTF</title>
+                   </series>
+      <series type='intended'>
+        <title>BCP</title>
+                 </series>
+                 <keyword>a</keyword>
+                 <keyword>b</keyword>
+                 <keyword>c</keyword>
+                 <ext>
+                 <doctype>rfc</doctype>
+      <editorialgroup>
+        <workgroup number='3' type='C'>WG</workgroup>
+        <workgroup number='31' type='C1'>WG1</workgroup>
+      </editorialgroup>
+      <ics>
+        <code>1</code>
+      </ics>
+      <ics>
+        <code>2</code>
+      </ics>
+      <ics>
+        <code>3</code>
+      </ics>
+      <area>A</area>
+      <area>B</area>
+      <area>C</area>
+                   <ipr>noModificationTrust200902,pre5378Trust200902</ipr>
+                   <consensus>false</consensus>
+                   <indexInclude>false</indexInclude>
+                   <iprExtract>Section 3</iprExtract>
+                   <sortRefs>false</sortRefs>
+                   <symRefs>false</symRefs>
+                   <tocInclude>false</tocInclude>
+                   <tocDepth>9</tocDepth>
+                   <showOnFrontPage>false</showOnFrontPage>
+                   <pi>
+        <artworkdelimiter>1</artworkdelimiter>
+        <artworklines>2</artworklines>
+        <authorship>3</authorship>
+        <autobreaks>4</autobreaks>
+        <background>5</background>
+        <colonspace>6</colonspace>
+        <comments>7</comments>
+        <docmapping>8</docmapping>
+        <editing>9</editing>
+        <emoticonic>10</emoticonic>
+        <footer>11</footer>
+        <header>12</header>
+        <inline>13</inline>
+        <iprnotified>14</iprnotified>
+        <linkmailto>15</linkmailto>
+        <linefile>16</linefile>
+        <notedraftinprogress>17</notedraftinprogress>
+        <private>18</private>
+        <refparent>19</refparent>
+        <rfcedstyle>20</rfcedstyle>
+        <slides>21</slides>
+        <text-list-symbols>22</text-list-symbols>
+        <tocappendix>23</tocappendix>
+        <tocindent>24</tocindent>
+        <tocnarrow>25</tocnarrow>
+        <tocompact>26</tocompact>
+        <topblock>27</topblock>
+        <useobject>28</useobject>
+        <strict>29</strict>
+        <compact>30</compact>
+        <subcompact>31</subcompact>
+        <toc>no</toc>
+        <tocdepth>9</tocdepth>
+        <symrefs>false</symrefs>
+        <sortrefs>false</sortrefs>
+      </pi>
+                 </ext>
+               </bibdata>
+               <sections/>
+             </ietf-standard>
     OUTPUT
   end
 
   it "processes complex metadata" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
@@ -464,125 +463,125 @@ Author
       [language=en]
       == Clause 1
     INPUT
-     <?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
-         <bibdata type='standard'>
-           <title language='en' type="main" format='text/plain'>Document title</title>
-           <docidentifier>1000</docidentifier>
-           <docnumber>1000</docnumber>
-           <contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>IEC</name>
-             </organization>
-           </contributor>
-           <contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>Internet Engineering Task Force</name>
-               <abbreviation>IETF</abbreviation>
-             </organization>
-           </contributor>
-           <contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>ISO</name>
-             </organization>
-           </contributor>
-           <language>el</language>
-           <script>Grek</script>
-           <abstract>
-             <p>This is the abstract of the document</p>
-             <p>This is the second paragraph of the abstract of the document.</p>
-             <note removeInRFC='true'>
-  <name>Note Title</name>
-  <p>Note contents</p>
-</note>
-           </abstract>
-           <status>
-             <stage>published</stage>
-           </status>
-           <copyright>
-             <from>2000</from>
-             <owner>
-               <organization>
-                 <name>IEC</name>
-               </organization>
-             </owner>
-           </copyright>
-           <copyright>
-             <from>2000</from>
-             <owner>
-               <organization>
-                 <name>Internet Engineering Task Force</name>
-                 <abbreviation>IETF</abbreviation>
-               </organization>
-             </owner>
-           </copyright>
-           <copyright>
-             <from>2000</from>
-             <owner>
-               <organization>
-                 <name>ISO</name>
-               </organization>
-             </owner>
-           </copyright>
-           <series type='stream'>
-             <title>IETF</title>
-             </series>
-<series type='intended'>
-  <title>BCP</title>
-  <number>111</number>
-           </series>
-           <ext>
-  <doctype>internet-draft</doctype>
-  <ipr>trust200902</ipr>
-  <pi>
-  <toc>yes</toc>
-</pi>
-</ext>
-         </bibdata>
-         <preface>
-           <abstract id='_'>
-           <title>Abstract</title>
-             <p id='_'>This is the abstract of the document</p>
-             <p id='_'>This is the second paragraph of the abstract of the document.</p>
-             <note removeInRFC='true' id='_'>
-  <name>Note Title</name>
-  <p id='_'>Note contents</p>
-</note>
-           </abstract>
-         </preface>
-         <sections>
-           <clause id='_' language='en' inline-header='false' obligation='normative'>
-             <title>Clause 1</title>
-           </clause>
-         </sections>
-       </ietf-standard>
+           <?xml version='1.0' encoding='UTF-8'?>
+             <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
+               <bibdata type='standard'>
+                 <title language='en' type="main" format='text/plain'>Document title</title>
+                 <docidentifier>1000</docidentifier>
+                 <docnumber>1000</docnumber>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>IEC</name>
+                   </organization>
+                 </contributor>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>Internet Engineering Task Force</name>
+                     <abbreviation>IETF</abbreviation>
+                   </organization>
+                 </contributor>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>ISO</name>
+                   </organization>
+                 </contributor>
+                 <language>el</language>
+                 <script>Grek</script>
+                 <abstract>
+                   <p>This is the abstract of the document</p>
+                   <p>This is the second paragraph of the abstract of the document.</p>
+                   <note removeInRFC='true'>
+        <name>Note Title</name>
+        <p>Note contents</p>
+      </note>
+                 </abstract>
+                 <status>
+                   <stage>published</stage>
+                 </status>
+                 <copyright>
+                   <from>2000</from>
+                   <owner>
+                     <organization>
+                       <name>IEC</name>
+                     </organization>
+                   </owner>
+                 </copyright>
+                 <copyright>
+                   <from>2000</from>
+                   <owner>
+                     <organization>
+                       <name>Internet Engineering Task Force</name>
+                       <abbreviation>IETF</abbreviation>
+                     </organization>
+                   </owner>
+                 </copyright>
+                 <copyright>
+                   <from>2000</from>
+                   <owner>
+                     <organization>
+                       <name>ISO</name>
+                     </organization>
+                   </owner>
+                 </copyright>
+                 <series type='stream'>
+                   <title>IETF</title>
+                   </series>
+      <series type='intended'>
+        <title>BCP</title>
+        <number>111</number>
+                 </series>
+                 <ext>
+        <doctype>internet-draft</doctype>
+        <ipr>trust200902</ipr>
+        <pi>
+        <toc>yes</toc>
+      </pi>
+      </ext>
+               </bibdata>
+               <preface>
+                 <abstract id='_'>
+                 <title>Abstract</title>
+                   <p id='_'>This is the abstract of the document</p>
+                   <p id='_'>This is the second paragraph of the abstract of the document.</p>
+                   <note removeInRFC='true' id='_'>
+        <name>Note Title</name>
+        <p id='_'>Note contents</p>
+      </note>
+                 </abstract>
+               </preface>
+               <sections>
+                 <clause id='_' language='en' inline-header='false' obligation='normative'>
+                   <title>Clause 1</title>
+                 </clause>
+               </sections>
+             </ietf-standard>
     OUTPUT
   end
 
-    it "cites drafts of internet drafts" do
-      VCR.use_cassette "abarth-02" do
-    doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))
-      = Document title
-      Author
-      :docfile: test.adoc
+  it "cites drafts of internet drafts" do
+    VCR.use_cassette "abarth-02" do
+      doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))
+        = Document title
+        Author
+        :docfile: test.adoc
 
-      <<I-D.abarth-cake>>
+        <<I-D.abarth-cake>>
 
-      [bibliography]
-      == References
-      * [[[I-D.abarth-cake,IETF(I-D.abarth-cake-02)]]], _Title_
-INPUT
+        [bibliography]
+        == References
+        * [[[I-D.abarth-cake,IETF(I-D.abarth-cake-02)]]], _Title_
+      INPUT
       expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
       expect(doc).to include "<uri type='TXT'>http://www.ietf.org/internet-drafts/draft-abarth-cake-02.txt</uri>"
     end
-    end
+  end
 
-    it "processes clause attributes" do
-expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes clause attributes" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
@@ -596,20 +595,16 @@ expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_f
       == Appendix
 
     INPUT
-        #{BLANK_HDR}
-         <sections>
-           <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
-             <title>Clause</title>
-           </clause>
-         </sections>
-         <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
-           <title>Appendix</title>
-         </annex>
-       </ietf-standard>
-OUTPUT
-    end
-
+       #{BLANK_HDR}
+        <sections>
+          <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+            <title>Clause</title>
+          </clause>
+        </sections>
+        <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+          <title>Appendix</title>
+        </annex>
+      </ietf-standard>
+    OUTPUT
+  end
 end
-
-
-

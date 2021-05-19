@@ -2,23 +2,23 @@ require "spec_helper"
 require "open3"
 
 RSpec.describe Asciidoctor::Ietf do
-      it "processes paragraphs" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes paragraphs" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
 
       [keepWithNext=true,keepWithPrevious=true]
       Hello
     INPUT
-        #{BLANK_HDR}
-       <sections>
-       <p keep-with-next='true' keep-with-previous='true' id='_'>Hello</p>
-       </sections>
-       </ietf-standard>
+       #{BLANK_HDR}
+      <sections>
+      <p keep-with-next='true' keep-with-previous='true' id='_'>Hello</p>
+      </sections>
+      </ietf-standard>
     OUTPUT
   end
 
   it "processes open blocks" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       --
       x
@@ -28,16 +28,16 @@ RSpec.describe Asciidoctor::Ietf do
       z
       --
     INPUT
-        #{BLANK_HDR}
-       <sections><p id="_">x</p>
-       <p id="_">y</p>
-       <p id="_">z</p></sections>
-       </ietf-standard>
+       #{BLANK_HDR}
+      <sections><p id="_">x</p>
+      <p id="_">y</p>
+      <p id="_">z</p></sections>
+      </ietf-standard>
     OUTPUT
   end
 
-    it "ignores review blocks unless document is in draft mode" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "ignores review blocks unless document is in draft mode" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       [[foreword]]
       .Foreword
@@ -49,16 +49,16 @@ RSpec.describe Asciidoctor::Ietf do
 
       For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
       ****
-      INPUT
-              #{BLANK_HDR}
-       <sections><p id="foreword">Foreword</p>
-       </sections>
-       </ietf-standard>
-      OUTPUT
-    end
+    INPUT
+             #{BLANK_HDR}
+      <sections><p id="foreword">Foreword</p>
+      </sections>
+      </ietf-standard>
+    OUTPUT
+  end
 
   it "processes review blocks if document is in draft mode" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       = Document title
       Author
       :docfile: test.adoc
@@ -77,81 +77,79 @@ RSpec.describe Asciidoctor::Ietf do
 
       For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
       ****
-      INPUT
-      <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
-       <bibdata type="standard">
-         <title language="en" type="main" format="text/plain">Document title</title>
-<contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>Internet Engineering Task Force</name>
-               <abbreviation>IETF</abbreviation>
-             </organization>
-           </contributor>
-
-         <version>
-           <draft>1.2</draft>
-         </version>
-         <language>en</language>
-         <script>Latn</script>
-         <status><stage>published</stage></status>
-         <copyright>
-           <from>#{Date.today.year}</from>
-           <owner>
-               <organization>
-                 <name>Internet Engineering Task Force</name>
-                 <abbreviation>IETF</abbreviation>
-               </organization>
-             </owner>
-         </copyright>
-          <series type='stream'>
-             <title>IETF</title>
-           </series>
-         <ext>
-  <doctype>internet-draft</doctype>
-  <ipr>trust200902</ipr>
-  <pi>
-  <toc>yes</toc>
-</pi>
-</ext>
-       </bibdata>
-       <sections><p id="foreword">Foreword</p>
-       <review reviewer="ISO" id="_" date="20170101T00:00:00Z" from="foreword" to="foreword" display='false'>
-       <name>Title</name>
-<p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
-       <p id="_">For further information on the Foreword, see <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong></p></review></sections>
-       </ietf-standard>
-
-      OUTPUT
+    INPUT
+            <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
+             <bibdata type="standard">
+               <title language="en" type="main" format="text/plain">Document title</title>
+      <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>Internet Engineering Task Force</name>
+                     <abbreviation>IETF</abbreviation>
+                   </organization>
+                 </contributor>
+               <version>
+                 <draft>1.2</draft>
+               </version>
+               <language>en</language>
+               <script>Latn</script>
+               <status><stage>published</stage></status>
+               <copyright>
+                 <from>#{Date.today.year}</from>
+                 <owner>
+                     <organization>
+                       <name>Internet Engineering Task Force</name>
+                       <abbreviation>IETF</abbreviation>
+                     </organization>
+                   </owner>
+               </copyright>
+                <series type='stream'>
+                   <title>IETF</title>
+                 </series>
+               <ext>
+        <doctype>internet-draft</doctype>
+        <ipr>trust200902</ipr>
+        <pi>
+        <toc>yes</toc>
+      </pi>
+      </ext>
+             </bibdata>
+             <sections><p id="foreword">Foreword</p>
+             <review reviewer="ISO" id="_" date="20170101T00:00:00Z" from="foreword" to="foreword" display='false'>
+             <name>Title</name>
+      <p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
+             <p id="_">For further information on the Foreword, see <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong></p></review></sections>
+             </ietf-standard>
+    OUTPUT
   end
 
   it "processes term notes" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
       === Term1
 
       NOTE: This is a note
-      INPUT
-              #{BLANK_HDR}
-       <sections>
-         <terms id="_" obligation="normative">
-         <title>Terms and definitions</title>
-         <term id="term-term1">
-         <preferred>Term1</preferred>
-         <termnote id="_">
-         <p id="_">This is a note</p>
-       </termnote>
-       </term>
-       </terms>
-       </sections>
-       </ietf-standard>
-      OUTPUT
+    INPUT
+             #{BLANK_HDR}
+      <sections>
+        <terms id="_" obligation="normative">
+        <title>Terms and definitions</title>
+        <term id="term-term1">
+        <preferred>Term1</preferred>
+        <termnote id="_">
+        <p id="_">This is a note</p>
+      </termnote>
+      </term>
+      </terms>
+      </sections>
+      </ietf-standard>
+    OUTPUT
   end
 
-    it "processes term notes as plain notes in nonterm clauses" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes term notes as plain notes in nonterm clauses" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -159,26 +157,25 @@ RSpec.describe Asciidoctor::Ietf do
       === Term1
 
       NOTE: This is a note
-      INPUT
-              #{BLANK_HDR}
-              <sections>
-  <terms id="_" obligation="normative">
-  <title>Terms and definitions</title>
-  <clause id="_" inline-header="false" obligation="normative">
-  <title>Term1</title>
-  <note id="_">
-  <p id="_">This is a note</p>
-</note>
-</clause>
-</terms>
-</sections>
-</ietf-standard>
-
-      OUTPUT
+    INPUT
+                    #{BLANK_HDR}
+                    <sections>
+        <terms id="_" obligation="normative">
+        <title>Terms and definitions</title>
+        <clause id="_" inline-header="false" obligation="normative">
+        <title>Term1</title>
+        <note id="_">
+        <p id="_">This is a note</p>
+      </note>
+      </clause>
+      </terms>
+      </sections>
+      </ietf-standard>
+    OUTPUT
   end
 
-        it "processes term notes as plain notes in definitions subclauses of terms & definitions" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes term notes as plain notes in definitions subclauses of terms & definitions" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -187,27 +184,26 @@ RSpec.describe Asciidoctor::Ietf do
       === Symbols
 
       NOTE: This is a note
-      INPUT
-              #{BLANK_HDR}
-              <sections>
-  <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
-<term id="term-term1">
-  <preferred>Term1</preferred>
-</term>
-<definitions id="_" obligation="normative" type="symbols">
-  <title>Symbols</title>
-  <note id="_">
-  <p id="_">This is a note</p>
-</note>
-</definitions></terms>
-</sections>
-</ietf-standard>
-
-      OUTPUT
+    INPUT
+                    #{BLANK_HDR}
+                    <sections>
+        <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
+      <term id="term-term1">
+        <preferred>Term1</preferred>
+      </term>
+      <definitions id="_" obligation="normative" type="symbols">
+        <title>Symbols</title>
+        <note id="_">
+        <p id="_">This is a note</p>
+      </note>
+      </definitions></terms>
+      </sections>
+      </ietf-standard>
+    OUTPUT
   end
 
-    it "processes notes" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes notes" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       NOTE: This is a note
 
@@ -215,36 +211,35 @@ RSpec.describe Asciidoctor::Ietf do
 
 
       NOTE: This is a note
-      INPUT
-              #{BLANK_HDR}
-              <preface><foreword id="_" obligation="informative">
-         <title>Foreword</title>
-         <note id="_">
-         <p id="_">This is a note</p>
-       </note>
-       </foreword></preface><sections>
-       <clause id="_" inline-header="false" obligation="normative">
-         <title>Clause 1</title>
-         <note id="_">
-         <p id="_">This is a note</p>
-       </note>
-       </clause></sections>
+    INPUT
+             #{BLANK_HDR}
+             <preface><foreword id="_" obligation="informative">
+        <title>Foreword</title>
+        <note id="_">
+        <p id="_">This is a note</p>
+      </note>
+      </foreword></preface><sections>
+      <clause id="_" inline-header="false" obligation="normative">
+        <title>Clause 1</title>
+        <note id="_">
+        <p id="_">This is a note</p>
+      </note>
+      </clause></sections>
 
-       </ietf-standard>
+      </ietf-standard>
 
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes literals" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes literals" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
-     
       [[lit]]
       [align=left,alt=hello]
       ....
       <LITERAL>
       ....
-      INPUT
+    INPUT
       #{BLANK_HDR}
        <sections>
            <figure id="lit">
@@ -253,14 +248,14 @@ RSpec.describe Asciidoctor::Ietf do
        </sections>
        </ietf-standard>
 
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes simple admonitions with Asciidoc names" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes simple admonitions with Asciidoc names" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       CAUTION: Only use paddy or parboiled rice for the determination of husked rice yield.
-      INPUT
+    INPUT
       #{BLANK_HDR}
        <sections>
          <admonition id="_" type="caution">
@@ -269,12 +264,11 @@ RSpec.describe Asciidoctor::Ietf do
        </sections>
        </ietf-standard>
 
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-
-    it "processes complex admonitions with non-Asciidoc names" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes complex admonitions with non-Asciidoc names" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       [CAUTION,type=Safety Precautions]
       .Precautions
@@ -285,7 +279,7 @@ RSpec.describe Asciidoctor::Ietf do
       . More than two glasses of orange juice in 24 hours makes them howl in harmony with alarms and sirens.
       . Celery makes them sad.
       ====
-      INPUT
+    INPUT
       #{BLANK_HDR}
       <sections>
          <admonition id="_" type="safety precautions"><name>Precautions</name><p id="_">While werewolves are hardy community members, keep in mind the following dietary concerns:</p>
@@ -303,11 +297,11 @@ RSpec.describe Asciidoctor::Ietf do
        </sections>
        </ietf-standard>
 
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes term examples" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes term examples" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -315,25 +309,24 @@ RSpec.describe Asciidoctor::Ietf do
 
       [example]
       This is an example
-      INPUT
-      #{BLANK_HDR}
-      <sections>
-  <terms id="_" obligation="normative">
-  <title>Terms and definitions</title>
-  <term id="term-term1">
-  <preferred>Term1</preferred>
+    INPUT
+            #{BLANK_HDR}
+            <sections>
+        <terms id="_" obligation="normative">
+        <title>Terms and definitions</title>
+        <term id="term-term1">
+        <preferred>Term1</preferred>
+      <termexample id="_">
+        <p id="_">This is an example</p>
+      </termexample></term>
+      </terms>
+      </sections>
+      </ietf-standard>
+    OUTPUT
+  end
 
-<termexample id="_">
-  <p id="_">This is an example</p>
-</termexample></term>
-</terms>
-</sections>
-</ietf-standard>
-      OUTPUT
-    end
-
-    it "processes term examples as plain examples in nonterm clauses" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes term examples as plain examples in nonterm clauses" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -342,25 +335,25 @@ RSpec.describe Asciidoctor::Ietf do
 
       [example]
       This is an example
-      INPUT
-      #{BLANK_HDR}
-<sections> 
-  <terms id="_" obligation="normative">  
-  <title>Terms and definitions</title>  
-  <clause id="_" inline-header="false" obligation="normative">   
-  <title>Term1</title>   
-  <example id="_">    
-  <p id="_">This is an example</p>    
-</example>   
-</clause>  
-</terms> 
-</sections>
-</ietf-standard>
-      OUTPUT
-    end
+    INPUT
+            #{BLANK_HDR}
+      <sections>
+        <terms id="_" obligation="normative">
+        <title>Terms and definitions</title>
+        <clause id="_" inline-header="false" obligation="normative">
+        <title>Term1</title>
+        <example id="_">
+        <p id="_">This is an example</p>
+      </example>
+      </clause>
+      </terms>
+      </sections>
+      </ietf-standard>
+    OUTPUT
+  end
 
   it "processes term examples as plain examples in definitions subclauses of terms & definitions" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -370,27 +363,26 @@ RSpec.describe Asciidoctor::Ietf do
 
       [example]
       This is an example
-      INPUT
-              #{BLANK_HDR}
-<sections> 
-  <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
-<term id="term-term1">   
-  <preferred>Term1</preferred>   
-</term>  
-<definitions id="_" obligation="normative" type="symbols">   
-  <title>Symbols</title>   
-  <example id="_">    
-  <p id="_">This is an example</p>    
-</example>   
-</definitions></terms> 
-</sections>
-</ietf-standard>
-      OUTPUT
+    INPUT
+                    #{BLANK_HDR}
+      <sections>
+        <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
+      <term id="term-term1">
+        <preferred>Term1</preferred>
+      </term>
+      <definitions id="_" obligation="normative" type="symbols">
+        <title>Symbols</title>
+        <example id="_">
+        <p id="_">This is an example</p>
+      </example>
+      </definitions></terms>
+      </sections>
+      </ietf-standard>
+    OUTPUT
   end
 
-
-    it "processes examples" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes examples" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       [example,subsequence=A]
       .Title
@@ -404,7 +396,7 @@ RSpec.describe Asciidoctor::Ietf do
       ====
       This is another example
       ====
-      INPUT
+    INPUT
       #{BLANK_HDR}
        <sections>
          <example id="_" subsequence="A">
@@ -414,16 +406,16 @@ RSpec.describe Asciidoctor::Ietf do
          <example id="_" unnumbered="true"><p id="_">This is another example</p></example>
        </sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes preambles" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes preambles" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       This is a preamble
 
       == Section 1
-      INPUT
+    INPUT
       #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
          <title>Foreword</title>
@@ -433,17 +425,17 @@ RSpec.describe Asciidoctor::Ietf do
          <title>Section 1</title>
        </clause></sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes preambles with titles" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes preambles with titles" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       .Preamble
       This is a preamble
 
       == Section 1
-      INPUT
+    INPUT
       #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
          <title>Foreword</title>
@@ -453,17 +445,17 @@ RSpec.describe Asciidoctor::Ietf do
          <title>Section 1</title>
        </clause></sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "accepts attributes on images" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "accepts attributes on images" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       [height=4,width=3,alt="IMAGE",filename="riceimg1.png",titleattr="TITLE",align=left]
       .Caption
       image::spec/assets/rice_image1.png[]
 
-      INPUT
+    INPUT
       #{BLANK_HDR}
               <sections>
          <figure id="_"><name>Caption</name>
@@ -471,11 +463,11 @@ RSpec.describe Asciidoctor::Ietf do
        </figure>
        </sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes blockquotes" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes blockquotes" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       [quote, ISO, "ISO7301,section 1"]
       ____
@@ -485,30 +477,30 @@ RSpec.describe Asciidoctor::Ietf do
       ____
       Block quotation 2
       ____
-      INPUT
-      #{BLANK_HDR}
-       <sections>
-         <quote id="_">
-         <source type="inline" bibitemid="ISO7301" citeas="">
-         <localityStack>
-        <locality type="section"><referenceFrom>1</referenceFrom></locality>
-         </localityStack>
-        </source>
-         <author>ISO</author>
-         <p id="_">Block quotation</p>
-       </quote>
-       <quote id='_'>
-  <source type='inline' uri='http://www.example.com'/>
-  <author>ISO</author>
-  <p id='_'>Block quotation 2</p>
-</quote>
-       </sections>
-       </ietf-standard>
-      OUTPUT
-    end
+    INPUT
+            #{BLANK_HDR}
+             <sections>
+               <quote id="_">
+               <source type="inline" bibitemid="ISO7301" citeas="">
+               <localityStack>
+              <locality type="section"><referenceFrom>1</referenceFrom></locality>
+               </localityStack>
+              </source>
+               <author>ISO</author>
+               <p id="_">Block quotation</p>
+             </quote>
+             <quote id='_'>
+        <source type='inline' uri='http://www.example.com'/>
+        <author>ISO</author>
+        <p id='_'>Block quotation 2</p>
+      </quote>
+             </sections>
+             </ietf-standard>
+    OUTPUT
+  end
 
-    it "processes source code" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes source code" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       .Caption
       [source,ruby,filename=sourcecode1.rb,markers=true]
@@ -522,7 +514,7 @@ RSpec.describe Asciidoctor::Ietf do
       [source,ruby,src="http://www.example.com"]
       --
       --
-      INPUT
+    INPUT
       #{BLANK_HDR}
        <sections>
          <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name>Caption</name>puts "Hello, world."
@@ -532,11 +524,11 @@ RSpec.describe Asciidoctor::Ietf do
        <sourcecode lang='ruby' id='_' src='http://www.example.com'/>
        </sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes callouts" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes callouts" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       [source,ruby]
       --
@@ -547,7 +539,7 @@ RSpec.describe Asciidoctor::Ietf do
       --
       <1> This is one callout
       <2> This is another callout
-      INPUT
+    INPUT
       #{BLANK_HDR}
               <sections><sourcecode id="_" lang="ruby">puts "Hello, world." <callout target="_">1</callout>
        %w{a b c}.each do |x|
@@ -559,11 +551,11 @@ RSpec.describe Asciidoctor::Ietf do
        </annotation></sourcecode>
        </sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes unmodified term sources" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes unmodified term sources" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -571,7 +563,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       [.source]
       <<ISO2191,section=1>>
-      INPUT
+    INPUT
       #{BLANK_HDR}
        <sections>
          <terms id="_" obligation="normative">
@@ -589,11 +581,11 @@ RSpec.describe Asciidoctor::Ietf do
        </terms>
        </sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-    it "processes modified term sources" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes modified term sources" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -601,7 +593,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       [.source]
       <<ISO2191,section=1>>, with adjustments
-      INPUT
+    INPUT
       #{BLANK_HDR}
             <sections>
          <terms id="_" obligation="normative">
@@ -622,10 +614,10 @@ RSpec.describe Asciidoctor::Ietf do
        </terms>
        </sections>
        </ietf-standard>
-      OUTPUT
-    end
+    OUTPUT
+  end
 
-        it "processes recommendation" do
+  it "processes recommendation" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       [.recommendation,label="/ogc/recommendation/wfs/2",subject="user",inherit="/ss/584/2015/level/1",options="unnumbered"]
@@ -633,23 +625,23 @@ RSpec.describe Asciidoctor::Ietf do
       I recommend this
       ====
     INPUT
-             output = <<~"OUTPUT"
-            #{BLANK_HDR}
-       <sections>
-  <recommendation id="_" unnumbered="true">
-  <label>/ogc/recommendation/wfs/2</label>
-<subject>user</subject>
-<inherit>/ss/584/2015/level/1</inherit>
-  <description><p id="_">I recommend this</p></description>
-</recommendation>
-       </sections>
-       </ietf-standard>
+    output = <<~"OUTPUT"
+                  #{BLANK_HDR}
+             <sections>
+        <recommendation id="_" unnumbered="true">
+        <label>/ogc/recommendation/wfs/2</label>
+      <subject>user</subject>
+      <inherit>/ss/584/2015/level/1</inherit>
+        <description><p id="_">I recommend this</p></description>
+      </recommendation>
+             </sections>
+             </ietf-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(output)
   end
 
-    it "processes requirement" do
+  it "processes requirement" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       [.requirement,subsequence="A"]
@@ -658,20 +650,20 @@ RSpec.describe Asciidoctor::Ietf do
       I recommend this
       ====
     INPUT
-             output = <<~"OUTPUT"
-            #{BLANK_HDR}
-       <sections>
-  <requirement id="_" subsequence="A"><title>Title</title>
-  <description><p id="_">I recommend this</p></description>
-</requirement>
-       </sections>
-       </ietf-standard>
+    output = <<~"OUTPUT"
+                  #{BLANK_HDR}
+             <sections>
+        <requirement id="_" subsequence="A"><title>Title</title>
+        <description><p id="_">I recommend this</p></description>
+      </requirement>
+             </sections>
+             </ietf-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(output)
   end
 
-        it "processes permission" do
+  it "processes permission" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       [.permission]
@@ -679,21 +671,20 @@ RSpec.describe Asciidoctor::Ietf do
       I recommend this
       ====
     INPUT
-             output = <<~"OUTPUT"
-            #{BLANK_HDR}
-       <sections>
-  <permission id="_">
-  <description><p id="_">I recommend this</p></description>
-</permission>
-       </sections>
-       </ietf-standard>
+    output = <<~"OUTPUT"
+                  #{BLANK_HDR}
+             <sections>
+        <permission id="_">
+        <description><p id="_">I recommend this</p></description>
+      </permission>
+             </sections>
+             </ietf-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(output)
   end
 
-
-       it "processes nested permissions" do
+  it "processes nested permissions" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       [.permission]
@@ -710,24 +701,24 @@ RSpec.describe Asciidoctor::Ietf do
       =====
       ====
     INPUT
-             output = <<~"OUTPUT"
-            #{BLANK_HDR}
-       <sections>
-         <permission id="_"><description><p id="_">I permit this</p>
-<example id="_">
-  <p id="_">Example 2</p>
-</example></description>
-<permission id="_">
-  <description><p id="_">I also permit this</p></description>
-</permission></permission>
-</sections>
-</ietf-standard>
+    output = <<~"OUTPUT"
+                  #{BLANK_HDR}
+             <sections>
+               <permission id="_"><description><p id="_">I permit this</p>
+      <example id="_">
+        <p id="_">Example 2</p>
+      </example></description>
+      <permission id="_">
+        <description><p id="_">I also permit this</p></description>
+      </permission></permission>
+      </sections>
+      </ietf-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(output)
   end
 
-        it "processes recommendation with internal markup of structure" do
+  it "processes recommendation with internal markup of structure" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       [.recommendation,label="/ogc/recommendation/wfs/2",subject="user",classification="control-class:Technical;priority:P0;family:System and Communications Protection,System and Communications Protocols",obligation="permission,recommendation",filename="reqt1.rq"]
@@ -741,7 +732,7 @@ RSpec.describe Asciidoctor::Ietf do
       |Object |Value
       |Mission | Accomplished
       |===
-      -- 
+      --
 
       As for the measurement targets,
 
@@ -766,7 +757,7 @@ RSpec.describe Asciidoctor::Ietf do
       end
       ----
       --
-      
+
       [.import%exclude]
       --
       [source,CoreRoot]
@@ -776,35 +767,35 @@ RSpec.describe Asciidoctor::Ietf do
       --
       ====
     INPUT
-             output = <<~"OUTPUT"
-            #{BLANK_HDR}
-       <sections>
-       <recommendation id="_"  obligation="permission,recommendation" filename="reqt1.rq"><label>/ogc/recommendation/wfs/2</label><subject>user</subject>
-<classification><tag>control-class</tag><value>Technical</value></classification><classification><tag>priority</tag><value>P0</value></classification><classification><tag>family</tag><value>System and Communications Protection</value></classification><classification><tag>family</tag><value>System and Communications Protocols</value></classification>
-        <description><p id="_">I recommend <em>this</em>.</p>
-       </description><specification exclude="false" type="tabular"><p id="_">This is the object of the recommendation:</p><table id="_">  <tbody>    <tr>      <td valign="top" align="left">Object</td>      <td valign="top" align="left">Value</td>    </tr>    <tr>      <td valign="top" align="left">Mission</td>      <td valign="top" align="left">Accomplished</td>    </tr>  </tbody></table></specification><description>
-       <p id="_">As for the measurement targets,</p>
-       </description><measurement-target exclude="false"><p id="_">The measurement target shall be measured as:</p><formula id="_">  <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow>
-  <mi>r</mi>
-</mrow>
-<mrow>
-  <mn>1</mn>
-</mrow>
-</mfrac><mo>=</mo><mn>0</mn></math></stem></formula></measurement-target>
-       <verification exclude="false"><p id="_">The following code will be run for verification:</p><sourcecode  lang="CoreRoot" id="_">CoreRoot(success): HttpResponse
-if (success)
-  recommendation(label: success-response)
-end</sourcecode></verification>
-       <import exclude="true">  <sourcecode  lang="CoreRoot" id="_">success-response()</sourcecode></import></recommendation>
-       </sections>
-       </ietf-standard>
+    output = <<~"OUTPUT"
+                  #{BLANK_HDR}
+             <sections>
+             <recommendation id="_"  obligation="permission,recommendation" filename="reqt1.rq"><label>/ogc/recommendation/wfs/2</label><subject>user</subject>
+      <classification><tag>control-class</tag><value>Technical</value></classification><classification><tag>priority</tag><value>P0</value></classification><classification><tag>family</tag><value>System and Communications Protection</value></classification><classification><tag>family</tag><value>System and Communications Protocols</value></classification>
+              <description><p id="_">I recommend <em>this</em>.</p>
+             </description><specification exclude="false" type="tabular"><p id="_">This is the object of the recommendation:</p><table id="_">  <tbody>    <tr>      <td valign="top" align="left">Object</td>      <td valign="top" align="left">Value</td>    </tr>    <tr>      <td valign="top" align="left">Mission</td>      <td valign="top" align="left">Accomplished</td>    </tr>  </tbody></table></specification><description>
+             <p id="_">As for the measurement targets,</p>
+             </description><measurement-target exclude="false"><p id="_">The measurement target shall be measured as:</p><formula id="_">  <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow>
+        <mi>r</mi>
+      </mrow>
+      <mrow>
+        <mn>1</mn>
+      </mrow>
+      </mfrac><mo>=</mo><mn>0</mn></math></stem></formula></measurement-target>
+             <verification exclude="false"><p id="_">The following code will be run for verification:</p><sourcecode  lang="CoreRoot" id="_">CoreRoot(success): HttpResponse
+      if (success)
+        recommendation(label: success-response)
+      end</sourcecode></verification>
+             <import exclude="true">  <sourcecode  lang="CoreRoot" id="_">success-response()</sourcecode></import></recommendation>
+             </sections>
+             </ietf-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes table attribute" do
-      expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :ietf, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
 
       [align=right]
@@ -813,7 +804,7 @@ end</sourcecode></verification>
 
       |C |D
       |===
-      INPUT
+    INPUT
       #{BLANK_HDR}
        <sections>
            <table id='_' align='right'>
@@ -832,8 +823,6 @@ end</sourcecode></verification>
            </table>
          </sections>
        </ietf-standard>
-      OUTPUT
-    end
-
-    end
-
+    OUTPUT
+  end
+end
