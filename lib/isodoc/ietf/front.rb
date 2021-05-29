@@ -25,10 +25,11 @@ module IsoDoc::Ietf
 
     def output_if_translit(text)
       return nil if text.nil?
+
       text.transliterate != text ? text.transliterate : nil
     end
 
-    def title(isoxml, front)
+    def title(_isoxml, front)
       title = @meta.get[:doctitle] or return
       front.title title, **attr_code(abbrev: @meta.get[:docabbrev],
                                      ascii: (@meta.get[:docascii] ||
@@ -49,18 +50,20 @@ module IsoDoc::Ietf
     end
 
     def rfc_seriesinfo(isoxml, front)
-      front.seriesInfo **seriesinfo_attr(isoxml).merge({name: "RFC",
-                                                        asciiName: "RFC"})
+      front.seriesInfo **seriesinfo_attr(isoxml).merge({ name: "RFC",
+                                                         asciiName: "RFC" })
       i = isoxml&.at(ns("//bibdata/series[@type = 'intended']")) and
         front.seriesInfo nil,
-        **attr_code(name: "", status: i&.at(ns("./title"))&.text,
-                    value: i&.at(ns("./number"))&.text || "")
+                         **attr_code(name: "",
+                                     status: i&.at(ns("./title"))&.text,
+                                     value: i&.at(ns("./number"))&.text || "")
     end
 
     def id_seriesinfo(isoxml, front)
       front.seriesInfo nil,
-        **seriesinfo_attr(isoxml).merge({name: "Internet-Draft",
-                                         asciiName: "Internet-Draft"})
+                       **seriesinfo_attr(isoxml)
+                         .merge({ name: "Internet-Draft",
+                                  asciiName: "Internet-Draft" })
       i = isoxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text and
         front.seriesInfo **attr_code(name: "", value: "", status: i)
     end
@@ -74,44 +77,49 @@ module IsoDoc::Ietf
       end
     end
 
-    def person_author_attrs(c, role)
-      return {} if c.nil?
-      full = c&.at(ns("./completename"))&.text
-      init = c&.at(ns("./initial"))&.text ||
-        c&.xpath(ns("./forename")).map { |n| n.text[0] }.join(".")
+    def person_author_attrs(contrib, role)
+      return {} if contrib.nil?
+
+      full = contrib&.at(ns("./completename"))&.text
+      init = contrib&.at(ns("./initial"))&.text ||
+        contrib&.xpath(ns("./forename"))&.map { |n| n.text[0] }&.join(".")
       init = nil if init.empty?
       ret = attr_code(role: role, fullname: full, initials: init,
-                      surname: c&.at(ns("./surname"))&.text)
-      pers_author_attrs1(ret, full, init, c)
+                      surname: contrib&.at(ns("./surname"))&.text)
+      pers_author_attrs1(ret, full, init, contrib)
     end
 
-    def pers_author_attrs1(ret, full, init, c)
-      full and ret.merge!(attr_code(
-        asciiFullname: output_if_translit(full),
-        asciiInitials: output_if_translit(init),
-        asciiSurname: output_if_translit(c&.at(ns("./surname")))))
+    def pers_author_attrs1(ret, full, init, contrib)
+      full and ret.merge!(
+        attr_code(
+          asciiFullname: output_if_translit(full),
+          asciiInitials: output_if_translit(init),
+          asciiSurname: output_if_translit(contrib&.at(ns("./surname"))),
+        ),
+      )
       ret
     end
 
-    def person_author(c, role, front)
-      front.author **person_author_attrs(c.at(ns("./person/name")), role) do |a|
-        org = c.at(ns("./person/affiliation/organization")) and
-          organization(org, a, c.document.at(ns("//showOnFrontPage")))
-        address(c.xpath(ns(".//address")),
-                c.at(ns(".//phone[not(@type = 'fax')]")),
-                c.at(ns(".//phone[@type = 'fax']")),
-                c.xpath(ns(".//email")), c.xpath(ns(".//uri")), a)
+    def person_author(contrib, role, front)
+      attrs = person_author_attrs(contrib.at(ns("./person/name")), role)
+      front.author **attrs do |a|
+        org = contrib.at(ns("./person/affiliation/organization")) and
+          organization(org, a, contrib.document.at(ns("//showOnFrontPage")))
+        address(contrib.xpath(ns(".//address")),
+                contrib.at(ns(".//phone[not(@type = 'fax')]")),
+                contrib.at(ns(".//phone[@type = 'fax']")),
+                contrib.xpath(ns(".//email")), contrib.xpath(ns(".//uri")), a)
       end
     end
 
-    def org_author(c, role, front)
+    def org_author(contrib, role, front)
       front.author **attr_code(role: role) do |a|
-        organization(c.at(ns("./organization")), a,
-                     c.document.at(ns("//showOnFrontPage")))
-        address(c.at(ns(".//address")),
-                c.at(ns(".//phone[not(@type = 'fax')]")),
-                c.at(ns(".//phone[@type = 'fax']")),
-                c.at(ns(".//email")), c.at(ns(".//uri")), a)
+        organization(contrib.at(ns("./organization")), a,
+                     contrib.document.at(ns("//showOnFrontPage")))
+        address(contrib.at(ns(".//address")),
+                contrib.at(ns(".//phone[not(@type = 'fax')]")),
+                contrib.at(ns(".//phone[@type = 'fax']")),
+                contrib.at(ns(".//email")), contrib.at(ns(".//uri")), a)
       end
     end
 
@@ -120,11 +128,13 @@ module IsoDoc::Ietf
       out.organization name, **attr_code(
         showOnFrontPage: show&.text, ascii: output_if_translit(name),
         asciiAbbrev: output_if_translit(org.at(ns("./abbreviation"))),
-        abbrev: org.at(ns("./abbreviation")))
+        abbrev: org.at(ns("./abbreviation"))
+      )
     end
 
     def address(addr, phone, fax, email, uri, out)
       return unless addr || phone || fax || email || uri
+
       out.address do |a|
         addr and postal(addr, a)
         phone and a.phone phone.text
@@ -164,10 +174,10 @@ module IsoDoc::Ietf
     def email(email, out)
       ascii = email.text.transliterate
       out.email email.text,
-        **attr_code(ascii: ascii == email.text ? nil : ascii )
+                **attr_code(ascii: ascii == email.text ? nil : ascii)
     end
 
-    def date(isoxml, front)
+    def date(_isoxml, front)
       date = @meta.get[:publisheddate] || @meta.get[:circulateddate] || return
       date = date.gsub(/T.*$/, "")
       attr = date_attr(date) || return
@@ -176,8 +186,9 @@ module IsoDoc::Ietf
 
     def date_attr(date)
       return nil if date.nil?
+
       if date.length == 4 && date =~ /^\d\d\d\d$/ then { year: date }
-      elsif date =~ /^\d\d\d\d-?\d\d$/
+      elsif /^\d\d\d\d-?\d\d$/.match?(date)
         m = /^(?<year>\d\d\d\d)-(?<month>\d\d)$/.match date
         { month: Date::MONTHNAMES[(m[:month]).to_i], year: m[:year] }
       else
@@ -185,25 +196,25 @@ module IsoDoc::Ietf
           d = Date.iso8601 date
           { day: d.day.to_s.gsub(/^0/, ""), year: d.year,
             month: Date::MONTHNAMES[d.month] }
-        rescue
+        rescue StandardError
           nil
         end
       end
     end
 
-    def area(isoxml, front)
+    def area(_isoxml, front)
       @meta.get[:areas].each do |w|
         front.area w
       end
     end
 
-    def workgroup(isoxml, front)
+    def workgroup(_isoxml, front)
       @meta.get[:wg].each do |w|
         front.workgroup w
       end
     end
 
-    def keyword(isoxml, front)
+    def keyword(_isoxml, front)
       @meta.get[:keywords].each do |kw|
         front.keyword kw
       end
@@ -231,7 +242,6 @@ module IsoDoc::Ietf
       end
     end
 
-    def boilerplate(isoxml, front)
-    end
+    def boilerplate(isoxml, front); end
   end
 end
