@@ -1,3 +1,5 @@
+require "open-uri"
+
 module Asciidoctor
   module Ietf
     class Converter < ::Asciidoctor::Standoc::Converter
