@@ -2,7 +2,7 @@ module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
     def common_rfc_pis(node)
       rfc_pis = {
-         artworkdelimiter: node&.at(ns("//pi/artworkdelimiter"))&.text,
+        artworkdelimiter: node&.at(ns("//pi/artworkdelimiter"))&.text,
         artworklines: node&.at(ns("//pi/artworklines"))&.text,
         authorship: node&.at(ns("//pi/authorship"))&.text,
         autobreaks: node&.at(ns("//pi/autobreaks"))&.text,
@@ -53,30 +53,32 @@ module IsoDoc::Ietf
 
     def rfc_attributes(docxml)
       t = Time.now.getutc
-      obs = xpath_comma(docxml.xpath(ns(
-        "//bibdata/relation[@type = 'obsoletes']/bibitem/docidentifier")))
-      upd = xpath_comma(docxml.xpath(ns(
-        "//bibdata/relation[@type = 'updates']/bibitem/docidentifier")))
+      obs = xpath_comma(docxml
+        .xpath(ns("//bibdata/relation[@type = 'obsoletes']/bibitem/docidentifier")))
+      upd = xpath_comma(docxml
+        .xpath(ns("//bibdata/relation[@type = 'updates']/bibitem/docidentifier")))
       {
-        docName:        @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
-        number:         @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
-        category:       series2category(
-          docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text),
-        ipr:            docxml&.at(ns("//bibdata/ext/ipr"))&.text,
-        consensus:      docxml&.at(ns("//bibdata/ext/consensus"))&.text,
-        obsoletes:      obs,
-        updates:        upd,
-        indexInclude:   docxml&.at(ns("//bibdata/ext/indexInclude"))&.text,
-        iprExtract:     docxml&.at(ns("//bibdata/ext/iprExtract"))&.text,
-        sortRefs:       docxml&.at(ns("//bibdata/ext/sortRefs"))&.text,
-        symRefs:        docxml&.at(ns("//bibdata/ext/symRefs"))&.text,
-        tocInclude:     docxml&.at(ns("//bibdata/ext/tocInclude"))&.text,
-        tocDepth:       docxml&.at(ns("//bibdata/ext/tocDepth"))&.text,
+        docName: @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
+        number: @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
+        category: series2category(
+          docxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text,
+        ),
+        ipr: docxml&.at(ns("//bibdata/ext/ipr"))&.text,
+        consensus: docxml&.at(ns("//bibdata/ext/consensus"))&.text,
+        obsoletes: obs,
+        updates: upd,
+        indexInclude: docxml&.at(ns("//bibdata/ext/indexInclude"))&.text,
+        iprExtract: docxml&.at(ns("//bibdata/ext/iprExtract"))&.text,
+        sortRefs: docxml&.at(ns("//bibdata/ext/sortRefs"))&.text,
+        symRefs: docxml&.at(ns("//bibdata/ext/symRefs"))&.text,
+        tocInclude: docxml&.at(ns("//bibdata/ext/tocInclude"))&.text,
+        tocDepth: docxml&.at(ns("//bibdata/ext/tocDepth"))&.text,
         submissionType: docxml&.at(ns(
-          "//bibdata/series[@type = 'stream']/title"))&.text || "IETF",
-        'xml:lang':     docxml&.at(ns("//bibdata/language"))&.text,
-        version:        "3",
-        'xmlns:xi':        "http://www.w3.org/2001/XInclude",
+          "//bibdata/series[@type = 'stream']/title",
+        ))&.text || "IETF",
+        'xml:lang': docxml&.at(ns("//bibdata/language"))&.text,
+        version: "3",
+        'xmlns:xi': "http://www.w3.org/2001/XInclude",
       }
     end
 
@@ -86,7 +88,7 @@ module IsoDoc::Ietf
       when "informational", "info" then "info"
       when "experimental", "exp" then "exp"
       when "bcp" then "bcp"
-      when "fyi", "info" then "info"
+      when "fyi" then "info"
       when "full-standard" then "std"
       when "historic" then "historic"
       else
@@ -96,17 +98,19 @@ module IsoDoc::Ietf
 
     def xpath_comma(xpath)
       return nil if xpath.empty?
-      xpath.map { |x| x.text }.join(", ")
+
+      xpath.map(&:text).join(", ")
     end
 
     def make_link(out, isoxml)
-      links = isoxml.xpath(ns(
-        "//bibdata/relation[@type = 'includedIn' or @type = 'describedBy' or "\
-        "@type = 'derivedFrom' or @type = 'instance']")) || return
-        links.each do |l|
-          out.link **{ href: l&.at(ns("./bibitem/docidentifier"))&.text,
-                       rel: rel2iana(l["type"]) }
-        end
+      links = isoxml
+        .xpath(ns("//bibdata/relation[@type = 'includedIn' or "\
+      "@type = 'describedBy' or @type = 'derivedFrom' or "\
+      "@type = 'instance']")) || return
+      links.each do |l|
+        out.link **{ href: l&.at(ns("./bibitem/docidentifier"))&.text,
+                     rel: rel2iana(l["type"]) }
+      end
     end
 
     def rel2iana(type)
@@ -115,7 +119,7 @@ module IsoDoc::Ietf
       when "describedBy" then "describedby"
       when "derivedFrom" then "convertedfrom"
       when "instance" then "alternate"
-      else 
+      else
         "alternate"
       end
     end
@@ -133,17 +137,21 @@ module IsoDoc::Ietf
       end
     end
 
-    def clause_parse_title(node, div, c1, out, _heading_attrs = {})
-      return unless c1
+    def clause_parse_title(_node, div, clause, _out, _heading_attrs = {})
+      return unless clause
+
       div.name do |n|
-        c1&.children&.each { |c2| parse(c2, n) }
+        clause&.children&.each { |c2| parse(c2, n) }
       end
     end
 
     def clause_parse(node, out)
       return if node.at(ns(".//references"))
-      out.section **attr_code( anchor: node["id"], numbered: node["numbered"],
-                              removeInRFC: node["removeInRFC"], toc: node["toc"]) do |div|
+
+      out.section **attr_code(
+        anchor: node["id"], numbered: node["numbered"],
+        removeInRFC: node["removeInRFC"], toc: node["toc"]
+      ) do |div|
         clause_parse_title(node, div, node.at(ns("./title")), out)
         node.children.reject { |c1| c1.name == "title" }.each do |c1|
           parse(c1, div)
@@ -152,11 +160,12 @@ module IsoDoc::Ietf
     end
 
     def clause(isoxml, out)
-      isoxml.xpath("//xmlns:preface/child::*[not(name() = 'abstract' or name() = 'foreword')] "\
+      isoxml.xpath("//xmlns:preface/child::*"\
+                   "[not(name() = 'abstract' or name() = 'foreword')] "\
                    "| //xmlns:sections/child::*").each do |c|
-        #cdup = c.dup
-        #cdup.xpath(ns(".//references")).each { |r| r.remove }
-        #cdup.at("./*[local-name() != 'title'][normalize-space(text()) != '']") or next
+        # cdup = c.dup
+        # cdup.xpath(ns(".//references")).each { |r| r.remove }
+        # cdup.at("./*[local-name() != 'title'][normalize-space(text()) != '']") or next
         clause_parse(c, out)
       end
     end
