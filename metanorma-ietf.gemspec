@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "isodoc", "~> 1.6.0"
   spec.add_dependency "mathml2asciimath"
   spec.add_dependency "metanorma-standoc", "~> 1.9.0"
-  spec.add_dependency "nokogiri", "~> 1.10.4"
+  spec.add_dependency "nokogiri", "~> 1.11.6"
   spec.add_dependency "open-uri"
 
   spec.add_development_dependency "byebug"
