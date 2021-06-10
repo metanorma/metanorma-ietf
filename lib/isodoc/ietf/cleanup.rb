@@ -48,6 +48,17 @@ module IsoDoc::Ietf
       figure_postamble(docxml)
       figure_unnest(docxml)
       figure_footnote_cleanup(docxml)
+      figure_data_uri(docxml)
+    end
+
+    def figure_data_uri(docxml)
+      docxml.xpath("//artwork").each do |a|
+        next unless %r{^data:image/svg\+xml;base64}.match?(a["src"])
+
+        f = Metanorma::Utils::save_dataimage(a["src"])
+        a.delete("src")
+        a.children = File.read(f).sub(%r{<\?.+\?>}, "")
+      end
     end
 
     def figure_unnest(docxml)
@@ -133,7 +144,7 @@ module IsoDoc::Ietf
         docxml << "<back/>" and endnotes = docxml.at("//back")
       end
       endnotes << "<section><name>Endnotes</name></section>"
-      endnotes = docxml.at("//back/section[last()]")
+      docxml.at("//back/section[last()]")
     end
 
     def image_cleanup(docxml)
@@ -153,13 +164,13 @@ module IsoDoc::Ietf
         s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n")
           .gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
         sourcecode_remove_markup(s)
-        text = HTMLEntities.new.decode(s.children.to_xml.sub(/\A\n+/, ""))
-        s.children = "<![CDATA[#{text}]]>"
+        s.children = "<![CDATA[#{HTMLEntities.new.decode(s
+        .children.to_xml.sub(/\A\n+/, ''))}]]>"
       end
     end
 
-    def sourcecode_remove_markup(s)
-      s.traverse do |n|
+    def sourcecode_remove_markup(node)
+      node.traverse do |n|
         next if n.text?
         next if %w(name callout annotation note sourcecode).include? n.name
 
