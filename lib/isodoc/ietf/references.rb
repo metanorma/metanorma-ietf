@@ -3,6 +3,9 @@ module IsoDoc::Ietf
     # TODO displayreference will be implemented as combination of autofetch and user-provided citations
 
     def bibliography(isoxml, out)
+      isoxml.xpath(ns("//references/bibitem/docidentifier")).each do |i|
+        i.children = docid_prefix(i["type"], i.text)
+      end
       isoxml.xpath(ns("//bibliography/references | "\
                       "//bibliography/clause[.//references] | "\
                       "//annex/clause[.//references] | "\
@@ -31,22 +34,21 @@ module IsoDoc::Ietf
       i = 0
       f.xpath(ns("./bibitem | ./note")).each do |b|
         next if implicit_reference(b)
+
         i += 1 if b.name == "bibitem"
         if b.name == "note" then note_parse(b, div)
-        elsif(is_ietf(b)) then ietf_bibitem_entry(div, b, i)
+        elsif is_ietf(b) then ietf_bibitem_entry(div, b, i)
         else
           nonstd_bibitem(div, b, i, biblio)
         end
       end
     end
 
-    def nonstd_bibitem(list, b, ordinal, bibliography)
+    def nonstd_bibitem(list, b, _ordinal, _bibliography)
       uris = b.xpath(ns("./uri"))
       target = nil
       uris&.each do |u|
-        if u["type"] == "src" then
-          target = u.text
-        end
+        target = u.text if u["type"] == "src"
       end
       list.reference **attr_code(target: target,
                                  anchor: b["id"]) do |r|
@@ -66,7 +68,8 @@ module IsoDoc::Ietf
           r.refcontent id[1]
         docidentifiers&.each do |u|
           if %w(DOI IETF).include? u["type"]
-            r.seriesInfo nil, **attr_code(value: u.text, name: u["type"])
+            r.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI /, ""),
+                                          name: u["type"])
           end
         end
       end
@@ -86,7 +89,7 @@ module IsoDoc::Ietf
                                           "'publisher']"))
       auths.each do |a|
         role = a.at(ns("./role[@type = 'editor']")) ? "editor" : nil
-        p = a&.at(ns("./person/name")) and 
+        p = a&.at(ns("./person/name")) and
           relaton_person_to_author(p, role, f) or
           relaton_org_to_author(a&.at(ns("./organization")), role, f)
       end
@@ -99,17 +102,17 @@ module IsoDoc::Ietf
         p&.xpath(ns("./forename"))&.map { |i| i.text[0] }&.join(" ")
       initials = nil if initials.empty?
       f.author nil,
-        **attr_code(fullname: fullname, asciiFullname: fullname&.transliterate,
-                    role: role, surname: surname, initials: initials,
-                    asciiSurname: fullname ? surname&.transliterate : nil,
-                    asciiInitials: fullname ? initials&.transliterate : nil)
+               **attr_code(fullname: fullname, asciiFullname: fullname&.transliterate,
+                           role: role, surname: surname, initials: initials,
+                           asciiSurname: fullname ? surname&.transliterate : nil,
+                           asciiInitials: fullname ? initials&.transliterate : nil)
     end
 
-    def relaton_org_to_author(o, role, f)
+    def relaton_org_to_author(o, _role, f)
       name = o&.at(ns("./name"))&.text
       abbrev = o&.at(ns("./abbreviation"))&.text
-      f.author do |a|
-        f.organization name, **attr_code(ascii: name&.transliterate, 
+      f.author do |_a|
+        f.organization name, **attr_code(ascii: name&.transliterate,
                                          abbrev: abbrev)
       end
     end
@@ -119,6 +122,7 @@ module IsoDoc::Ietf
         b.at(ns("./date[@type = 'issued']")) ||
         b.at(ns("./date[@type = 'circulated']"))
       return unless date
+
       attr = date_attr(date&.at(ns("./on | ./from"))&.text) || return
       f.date **attr_code(attr)
     end
@@ -145,13 +149,14 @@ module IsoDoc::Ietf
       end
     end
 
-    def ietf_bibitem_entry(div, b, i)
+    def ietf_bibitem_entry(div, b, _i)
       url = b&.at(ns("./uri[@type = 'xml']"))&.text
       div << "<xi:include href='#{url}'/>"
     end
 
     def is_ietf(b)
       return false if !@xinclude
+
       url = b.at(ns("./uri[@type = 'xml']")) or return false
       /xml2rfc\.tools\.ietf\.org/.match(url)
     end
