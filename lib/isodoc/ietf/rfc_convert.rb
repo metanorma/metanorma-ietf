@@ -15,7 +15,7 @@ require_relative "./init"
 
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
-    def convert1(docxml, filename, dir)
+    def convert1(docxml, _filename, _dir)
       @xrefs.parse docxml
       info docxml, nil
       xml = noko do |xml|
@@ -51,6 +51,7 @@ module IsoDoc::Ietf
     def error_parse(node, out)
       case node.name
       when "bcp14" then bcp14_parse(node, out)
+      when "concept" then concept_parse(node, out)
       else
         text = node.to_xml.gsub(/</, "&lt;").gsub(/>/, "&gt;")
         out.t { |p| p << text }
@@ -59,6 +60,7 @@ module IsoDoc::Ietf
 
     def omit_docid_prefix(prefix)
       return true if prefix == "IETF"
+
       super
     end
 
@@ -67,9 +69,9 @@ module IsoDoc::Ietf
     end
 
     def postprocess(result, filename, _dir)
-      result = from_xhtml(cleanup(to_xhtml(textcleanup(result)))).
-        sub(/<!DOCTYPE[^>]+>\n/, "").
-        sub(/(<rfc[^<]+? )lang="[^"]+"/, "\\1")
+      result = from_xhtml(cleanup(to_xhtml(textcleanup(result))))
+        .sub(/<!DOCTYPE[^>]+>\n/, "")
+        .sub(/(<rfc[^<]+? )lang="[^"]+"/, "\\1")
       File.open(filename, "w:UTF-8") { |f| f.write(result) }
       schema_validate(filename)
       @files_to_delete.each { |f| FileUtils.rm_rf f }

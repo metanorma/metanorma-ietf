@@ -1,6 +1,5 @@
 module IsoDoc::Ietf
   class RfcConvert < ::IsoDoc::Convert
-
     def definition_parse(node, out)
       node.children.each { |n| parse(n, out) }
     end
@@ -46,7 +45,19 @@ module IsoDoc::Ietf
       clause_parse(node, out)
     end
 
-    def termdocsource_parse(_node, _out)
+    def termdocsource_parse(_node, _out); end
+
+    def concept_parse(node, out)
+      if d = node.at(ns("./renderterm"))
+        out.em do |em|
+          d.children.each { |n| parse(n, em) }
+        end
+        out << " "
+      end
+      out << "[term defined in "
+      r = node.at(ns("./xref | ./eref | ./termref"))
+      parse(r, out)
+      out << "]"
     end
   end
 end

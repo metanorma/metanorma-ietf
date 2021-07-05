@@ -35,9 +35,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
 
-  spec.add_dependency "isodoc", "~> 1.6.0"
+  spec.add_dependency "isodoc", "~> 1.7.0"
   spec.add_dependency "mathml2asciimath"
-  spec.add_dependency "metanorma-standoc", "~> 1.9.0"
+  spec.add_dependency "metanorma-standoc", "~> 1.10.0"
   spec.add_dependency "nokogiri", "~> 1.11.6"
   spec.add_dependency "open-uri"
 
