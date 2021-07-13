@@ -4,10 +4,11 @@ require "fileutils"
 
 RSpec.describe Asciidoctor::Ietf do
   it "removes empty text elements" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == {blank}
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
              <sections>
         <clause id="_" inline-header="false" obligation="normative">
@@ -16,24 +17,29 @@ RSpec.describe Asciidoctor::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "removes empty abstracts" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       [abstract]
       ABC
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
              <sections>
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes stem-only terms as admitted" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -43,6 +49,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       Time
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
                     <sections>
                <terms id="_" obligation="normative">
@@ -65,10 +72,12 @@ RSpec.describe Asciidoctor::Ietf do
              </sections>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "moves term domains out of the term definition paragraph" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -76,6 +85,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       domain:[relativity] Time
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
              <sections>
         <terms id="_" obligation="normative">
@@ -88,10 +98,12 @@ RSpec.describe Asciidoctor::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "permits multiple blocks in term definition paragraph" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -110,6 +122,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       This paragraph is extraneous
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
                     <sections>
                <terms id="_" obligation="normative">
@@ -135,10 +148,12 @@ RSpec.describe Asciidoctor::Ietf do
              </sections>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "keeps any initial boilerplate from terms and definitions" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -150,6 +165,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       This paragraph is extraneous
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
                     <sections>
                <terms id="_" obligation="normative"><title>Terms and definitions</title>
@@ -166,10 +182,12 @@ RSpec.describe Asciidoctor::Ietf do
              </sections>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "converts xrefs to references into erefs" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       <<iso216#123,of,text>>
       <<biblio,format=counter:text1>>
@@ -179,6 +197,7 @@ RSpec.describe Asciidoctor::Ietf do
       == Normative References
       * [[[iso216,ISO 216:2001]]], _Reference_
     INPUT
+    output = <<~OUTPUT
             #{BLANK_HDR}
               <preface><foreword id="_" obligation="informative">
               <title>Foreword</title>
@@ -207,10 +226,12 @@ RSpec.describe Asciidoctor::Ietf do
             </bibliography>
             </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "extracts localities from erefs" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       <<iso216,whole,clause=3,example=9-11,locality:prelude=33,locality:entirety:the reference>>
 
@@ -218,6 +239,7 @@ RSpec.describe Asciidoctor::Ietf do
       == Normative References
       * [[[iso216,ISO 216]]], _Reference_
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
       <preface><foreword id="_" obligation="informative">
         <title>Foreword</title>
@@ -245,10 +267,12 @@ RSpec.describe Asciidoctor::Ietf do
       </bibliography>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "strips type from xrefs" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       <<iso216>>
 
@@ -256,6 +280,7 @@ RSpec.describe Asciidoctor::Ietf do
       == Clause
       * [[[iso216,ISO 216]]], _Reference_
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
              <preface>
              <foreword id="_" obligation="informative">
@@ -280,10 +305,12 @@ RSpec.describe Asciidoctor::Ietf do
       </references></bibliography>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes localities in term sources" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -292,6 +319,7 @@ RSpec.describe Asciidoctor::Ietf do
       [.source]
       <<ISO2191,section=1>>
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
       <sections>
         <terms id="_" obligation="normative">
@@ -310,10 +338,12 @@ RSpec.describe Asciidoctor::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "removes extraneous material from Normative References" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [bibliography]
       == Normative References
@@ -322,6 +352,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       * [[[iso216,ISO 216]]], _Reference_
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
       <sections></sections>
       <bibliography><references id="_" obligation="informative" normative="true"><title>Normative References</title>
@@ -340,10 +371,12 @@ RSpec.describe Asciidoctor::Ietf do
       </bibliography>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "renumbers numeric references in Bibliography sequentially" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       == Clause
@@ -356,6 +389,7 @@ RSpec.describe Asciidoctor::Ietf do
       * [[[iso124,ISO 124]]] _Standard 124_
       * [[[iso123,1]]] _Standard 123_
     INPUT
+    output = <<~OUTPUT
           #{BLANK_HDR}
       <sections><clause id="_" inline-header="false" obligation="normative">
         <title>Clause</title>
@@ -384,10 +418,12 @@ RSpec.describe Asciidoctor::Ietf do
       </references></bibliography>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "renumbers numeric references in Bibliography subclauses sequentially" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       == Clause
@@ -410,6 +446,7 @@ RSpec.describe Asciidoctor::Ietf do
       * [[[iso126,1]]] _Standard 123_
 
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
       <sections><clause id="_" inline-header="false" obligation="normative">
            <title>Clause</title>
@@ -459,10 +496,12 @@ RSpec.describe Asciidoctor::Ietf do
          </references></clause></bibliography>
          </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "converts boldface BCP to bcp markup if not no-rfc-bold-bcp14" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -472,6 +511,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       I *MUST NOT* do this.
     INPUT
+    output = <<~OUTPUT
               #{BLANK_HDR}
             <sections>
           <p id='_'>
@@ -482,10 +522,12 @@ RSpec.describe Asciidoctor::Ietf do
         </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "does not convert boldface BCP to bcp markup if no-rfc-bold-bcp14" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -496,6 +538,7 @@ RSpec.describe Asciidoctor::Ietf do
 
       I *MUST NOT* do this.
     INPUT
+    output = <<~OUTPUT
           #{BLANK_HDR}
             <sections>
           <p id='_'>
@@ -506,12 +549,14 @@ RSpec.describe Asciidoctor::Ietf do
         </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "imposes anchor loaded with RFC references" do
     conv = Asciidoctor::Ietf::Converter.new(nil, *OPTIONS)
     conv.init(Asciidoctor::Document.new([]))
-    expect(xmlpp(strip_guid(conv.cleanup(Nokogiri::XML(<<~INPUT)).to_xml))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <ietf-standard>
       <bibdata>
       <relation>
@@ -538,6 +583,7 @@ RSpec.describe Asciidoctor::Ietf do
       </bibliography>
       </ietf-standard>
     INPUT
+    output = <<~OUTPUT
       <ietf-standard>
          <bibdata>
          <relation>
@@ -568,6 +614,8 @@ RSpec.describe Asciidoctor::Ietf do
               </bibliography>
             </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(conv.cleanup(Nokogiri::XML(input)).to_xml)))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "imposes anchor loaded with RFC references #2" do

@@ -140,7 +140,8 @@ module Asciidoctor
       def rfc_anchor_cleanup(xmldoc)
         map = {}
         xmldoc.xpath("//bibitem[docidentifier/@type = 'rfc-anchor']").each do |b|
-          next if b.at("./ancestor::bibdata")
+          next if b.at("./ancestor::bibdata | ./ancestor::bibitem")
+
           map[b["id"]] = b.at("./docidentifier[@type = 'rfc-anchor']").text
           b["id"] = b.at("./docidentifier[@type = 'rfc-anchor']").text
         end
