@@ -684,7 +684,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 </li>
                 <li>
                   <em>word</em>
-                   [term defined in Termbase IEV, term ID 135-13-13]
+                   [term defined in The IEV database]
                 </li>
               </ul>
             </t>

@@ -4,6 +4,7 @@ require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
 require_relative "./validate"
+require_relative "./cleanup"
 
 module Asciidoctor
   module Ietf
@@ -22,13 +23,13 @@ module Asciidoctor
         @draft = node.attributes.has_key?("draft")
         @workgroups = cache_workgroup(node)
         @bcp_bold = !node.attr?("no-rfc-bold-bcp14")
-        @xinclude = node.attr?("use-xinclude") 
+        @xinclude = node.attr?("use-xinclude")
         super
       end
 
       def outputs(node, ret)
-        File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
-        rfc_converter(node).convert(@filename + ".xml")
+        File.open("#{@filename}.xml", "w:UTF-8") { |f| f.write(ret) }
+        rfc_converter(node).convert("#{@filename}.xml")
       end
 
       def doctype(node)
@@ -63,12 +64,12 @@ module Asciidoctor
         f, c = xref_text(node)
         f1, c = eref_text(node) if f.nil?
         t, rel = xref_rel(node)
+        attrs = { target: t, type: "inline", displayFormat: f1, format: f,
+                  relative: rel }
         noko do |xml|
-          xml.xref **attr_code(target: t, type: "inline",
-                               displayFormat: f1, format: f,
-                               relative: rel ) do |x|
-                                 x << c
-                               end
+          xml.xref **attr_code(attrs) do |x|
+            x << c
+          end
         end.join
       end
 
@@ -195,34 +196,24 @@ module Asciidoctor
         clause_parse(attrs, xml, node)
       end
 
-      def quotesource_cleanup(xmldoc)
-        xmldoc.xpath("//quote/source | //terms/source").each do |x|
-          if x["target"] =~ URI::DEFAULT_PARSER.make_regexp
-            x["uri"] = x["target"]
-            x.delete("target")
-          else
-            xref_to_eref(x)
-          end
-        end
-      end
-
       def inline_indexterm(node)
         noko do |xml|
           node.type == :visible and xml << node.text.sub(/^primary:(?=\S)/, "")
           terms = (node.attr("terms") || [node.text]).map { |x| xml_encode(x) }
-          if /^primary:\S/.match(terms[0])
+          if /^primary:\S/.match?(terms[0])
             terms[0].sub!(/^primary:/, "")
             has_primary = true
           end
-          xml.index **attr_code(primary: has_primary) do |i|
-            i.primary { |x| x << terms[0] }
-            a = terms.dig(1) and i.secondary { |x| x << a }
-            a = terms.dig(2) and i.tertiary { |x| x << a }
-          end
+          inline_indexterm1(has_primary, terms, xml)
         end.join
       end
 
-      def section_names_refs_cleanup(x)
+      def inline_indexterm1(has_primary, terms, xml)
+        xml.index **attr_code(primary: has_primary) do |i|
+          i.primary { |x| x << terms[0] }
+          a = terms[1] and i.secondary { |x| x << a }
+          a = terms[2] and i.tertiary { |x| x << a }
+        end
       end
 
       def html_extract_attributes(node)
