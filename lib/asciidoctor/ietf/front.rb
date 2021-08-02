@@ -119,7 +119,7 @@ module Asciidoctor
           strict: node.attr("strict"),
           compact: node.attr("compact"),
           subcompact: node.attr("subcompact"),
-          toc: node.attr("toc-include") == "false" ? "no" : "yes",
+          tocinclude: node.attr("toc-include") == "false" ? "no" : "yes",
           tocdepth: node.attr("toc-depth"),
           symrefs: node.attr("sym-refs"),
           sortrefs: node.attr("sort-refs"),

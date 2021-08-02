@@ -82,7 +82,7 @@ RSpec.describe Metanorma::Ietf::Processor do
              <ext>
       <doctype>rfc</doctype>
       <pi>
-      <toc>yes</toc>
+      <tocinclude>yes</tocinclude>
     </pi>
       <ipr>trust200902</ipr>
     </ext>

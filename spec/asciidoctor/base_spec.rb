@@ -422,7 +422,7 @@ RSpec.describe Asciidoctor::Ietf do
         <strict>29</strict>
         <compact>30</compact>
         <subcompact>31</subcompact>
-        <toc>no</toc>
+        <tocinclude>no</tocinclude>
         <tocdepth>9</tocdepth>
         <symrefs>false</symrefs>
         <sortrefs>false</sortrefs>
@@ -537,7 +537,7 @@ RSpec.describe Asciidoctor::Ietf do
         <doctype>internet-draft</doctype>
         <ipr>trust200902</ipr>
         <pi>
-        <toc>yes</toc>
+        <tocinclude>yes</tocinclude>
       </pi>
       </ext>
                </bibdata>

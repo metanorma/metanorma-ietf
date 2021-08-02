@@ -33,7 +33,7 @@ module IsoDoc::Ietf
         strict: node&.at(ns("//pi/strict"))&.text || "yes",
         compact: node&.at(ns("//pi/compact"))&.text || "yes",
         subcompact: node&.at(ns("//pi/subcompact"))&.text || "no",
-        toc: node&.at(ns("//pi/toc-include"))&.text,
+        toc: node&.at(ns("//pi/tocinclude"))&.text,
         tocdepth: node&.at(ns("//pi/toc-depth"))&.text || "4",
         symrefs: node&.at(ns("//pi/sym-refs"))&.text || "yes",
         sortrefs: node&.at(ns("//pi/sort-refs"))&.text || "yes",

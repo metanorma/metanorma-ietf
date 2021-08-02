@@ -270,7 +270,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <strict>29</strict>
         <compact>30</compact>
         <subcompact>31</subcompact>
-        <toc>no</toc>
+        <tocinclude>no</tocinclude>
         <tocdepth>9</tocdepth>
         <symrefs>false</symrefs>
         <sortrefs>false</sortrefs>

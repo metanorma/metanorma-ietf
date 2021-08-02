@@ -842,7 +842,7 @@
         </element>
       </optional>
       <optional>
-        <element name="toc">
+        <element name="tocinclude">
           <text/>
         </element>
       </optional>
