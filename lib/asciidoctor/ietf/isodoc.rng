@@ -32,6 +32,18 @@
         <ref name="DocumentType"/>
       </element>
     </define>
+    <define name="section-title">
+      <element name="title">
+        <zeroOrMore>
+          <ref name="TextElement"/>
+        </zeroOrMore>
+      </element>
+      <zeroOrMore>
+        <element name="variant-title">
+          <ref name="TypedTitleString"/>
+        </element>
+      </zeroOrMore>
+    </define>
     <define name="hyperlink">
       <element name="link">
         <attribute name="target">
@@ -158,15 +170,17 @@
             <data type="boolean"/>
           </attribute>
         </optional>
-        <attribute name="type">
-          <choice>
-            <value>roman</value>
-            <value>alphabet</value>
-            <value>arabic</value>
-            <value>roman_upper</value>
-            <value>alphabet_upper</value>
-          </choice>
-        </attribute>
+        <optional>
+          <attribute name="type">
+            <choice>
+              <value>roman</value>
+              <value>alphabet</value>
+              <value>arabic</value>
+              <value>roman_upper</value>
+              <value>alphabet_upper</value>
+            </choice>
+          </attribute>
+        </optional>
         <oneOrMore>
           <ref name="li"/>
         </oneOrMore>

@@ -1,6 +1,29 @@
 require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
+  it "ignores toc" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <sections><clause>
+          <toc>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
+      </toc>
+          </clause></sections>
+          </iso-standard>
+    INPUT
+    output = <<~OUTPUT
+      #{RFC_HDR}
+               <middle>
+                 <section>
+                 </section>
+               </middle>
+               <back/>
+             </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+  end
+
   it "processes labelled notes" do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">

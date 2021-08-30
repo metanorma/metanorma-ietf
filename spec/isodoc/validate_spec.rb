@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "validates document against ISO XML schema" do
     FileUtils.rm_f "test.rfc.xml"
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(<<~"INPUT", "test.rfc.xml", nil) }.to output(/RFC XML: Line \d+:\d+ element "rfc" incomplete; missing required element "middle"/).to_stderr
+    input = <<~INPUT
           <rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-camelot-holy-grenade-01" category="info" sortRefs="true" tocInclude="true" submissionType="independent" xml:lang="en" version="3" >
         <front>
           <title abbrev="Hand Grenade of Antioch">The Holy Hand Grenade of Antioch</title>
@@ -25,12 +25,17 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </front>
         </rfc>
     INPUT
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(input, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Line \d+:\d+ element "rfc" incomplete; missing required element "middle"/)
+      .to_stderr
   end
 
   it "aborts if content error" do
     FileUtils.rm_f "test.rfc.xml"
     FileUtils.rm_f "test.rfc.xml.err"
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(<<~"INPUT", "test.rfc.xml", nil) }.to output(/Cannot continue processing/).to_stderr
+    input = <<~INPUT
           <rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-camelot-holy-grenade-01" ipr="trust200902" category="info" sortRefs="true" tocInclude="true" submissionType="independent" xml:lang="en" version="3" >
         <front>
           <title abbrev="Hand Grenade of Antioch">The Holy Hand Grenade of Antioch</title>
@@ -60,6 +65,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(input, "test.rfc.xml", nil)
+    end
+      .to output(/Cannot continue processing/)
+      .to_stderr
     expect(File.exist?("test.rfc.xml")).to be false
     expect(File.exist?("test.rfc.xml.err")).to be true
   end
@@ -67,7 +77,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "does not abort if no content error" do
     FileUtils.rm_f "test.rfc.xml"
     FileUtils.rm_f "test.rfc.xml.err"
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(<<~"INPUT", "test.rfc.xml", nil) }.not_to output(/Cannot continue processing/).to_stderr
+    input = <<~INPUT
           <rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-camelot-holy-grenade-01" ipr="trust200902" category="info" sortRefs="true" tocInclude="true" submissionType="independent" xml:lang="en" version="3" >
         <front>
           <title abbrev="Hand Grenade of Antioch">The Holy Hand Grenade of Antioch</title>
@@ -97,6 +107,10 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(input, "test.rfc.xml", nil)
+    end
+      .not_to output(/Cannot continue processing/).to_stderr
     expect(File.exist?("test.rfc.xml")).to be true
     expect(File.exist?("test.rfc.xml.err")).to be false
   end
@@ -139,10 +153,26 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Numbered section Subclause under unnumbered section Clause/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Numbered section B under unnumbered section Clause/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Numbered section New Clause following unnumbered section Clause/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Numbered section C following unnumbered section Clause/).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Numbered section Subclause under unnumbered section Clause/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Numbered section B under unnumbered section Clause/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Numbered section New Clause following unnumbered section Clause/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Numbered section C following unnumbered section Clause/)
+      .to_stderr
   end
 
   it "reports error on table of content tagging" do
@@ -176,7 +206,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Section Subclause with toc=include is included in section Clause with toc=exclude/).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Section Subclause with toc=include is included in section Clause with toc=exclude/)
+      .to_stderr
   end
 
   it "reports error on references" do
@@ -243,10 +277,26 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </back>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Cannot generate table of contents entry for B, as it has no title/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: Cannot generate table of contents entry for _normative_references, as it has no title/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: for reference RFC2119, the seriesInfo with name=RFC has been given no value/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(/RFC XML: for reference RFC7991, the seriesInfo with name=RFC has been given no value/).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Cannot generate table of contents entry for B, as it has no title/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: Cannot generate table of contents entry for _normative_references, as it has no title/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: for reference RFC2119, the seriesInfo with name=RFC has been given no value/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(/RFC XML: for reference RFC7991, the seriesInfo with name=RFC has been given no value/)
+      .to_stderr
   end
 
   it "reports error on xref and relref" do
@@ -357,32 +407,136 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: xref target _normative_references1 does not exist in the document/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(/RFC XML: xref target _normative_references does not exist in the document/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: relref target RFC21191 does not exist in the document/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(/RFC XML: relref target RFC2119 does not exist in the document/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(/RFC XML: reference RFC2119 has been referenced by relref with format=title, but the reference has no title/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(/RFC XML: reference RFC7991 has been referenced by relref with format=title, but the reference has no title/).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<xref format="counter" target="C1"/> with format=counter is only allowed for clauses, tables, figures, list entries, definition terms, paragraphs, bibliographies, and bibliographic entries}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<xref format="counter" target="C"/> with format=counter is only allowed for clauses, tables, figures, list entries, definition terms, paragraphs, bibliographies, and bibliographic entries}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{reference RFC2119 has been referenced by xref <relref format="counter" target="RFC2119"/> with format=counter, which requires a section attribute}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{reference RFC7991 has been referenced by xref <relref format="counter" target="RFC7991"/> with format=counter, which requires a section attribute}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<xref format="counter" target="C4"/> with format=counter refers to an unnumbered list entry}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<xref format="counter" target="C2"/> with format=counter refers to an unnumbered list entry}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<xref format="title" target="AUTH"/> with format=title cannot reference a <author> element}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<relref format="title" target="RFC2119"/> with format=title cannot reference a <reference> element}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<relref format="counter" target="RFC2119" relative="A"/> with relative attribute requires a section attribute}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<relref format="counter" target="RFC7991" relative="A" section="3"/> with relative attribute requires a section attribute}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<xref format="counter" target="C" relative="A"/> has a relative attribute, but C points to a section}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<xref format="counter" target="C" section="A"/> has a section attribute, but C points to a section}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<relref format="counter" target="RFC7991" relative="A" section="3"/> has a relative attribute, but C points to a reference}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<relref format="counter" target="RFC7991" relative="A" section="3"/> has a section attribute, but C points to a reference}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{<relref format="counter" target="ACVP" section="3"/> must use a relative attribute, since it does not point to a RFC or Internet-Draft reference}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<relref format="counter" target="ACVP" section="3" relative="B"/> must use a relative attribute, since it does not point to a RFC or Internet-Draft reference}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{<relref format="counter" target="RFC7991" section="3"/> must use a relative attribute, since it does not point to a RFC or Internet-Draft reference}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{need an explicit target= URL attribute in the reference pointed to by <relref format="counter" target="ACVP" relative="B"/>}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{need an explicit target= URL attribute in the reference pointed to by <relref format="counter" target="ACVP1" relative="B"/>}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{need an explicit target= URL attribute in the reference pointed to by <relref format="counter" target="RFC2119" relative="A"/>}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: xref target _normative_references1 does not exist in the document/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(/RFC XML: xref target _normative_references does not exist in the document/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: relref target RFC21191 does not exist in the document/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(/RFC XML: relref target RFC2119 does not exist in the document/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(/RFC XML: reference RFC2119 has been referenced by relref with format=title, but the reference has no title/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(/RFC XML: reference RFC7991 has been referenced by relref with format=title, but the reference has no title/)
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<xref format="counter" target="C1"/> with format=counter is only allowed for clauses, tables, figures, list entries, definition terms, paragraphs, bibliographies, and bibliographic entries})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<xref format="counter" target="C"/> with format=counter is only allowed for clauses, tables, figures, list entries, definition terms, paragraphs, bibliographies, and bibliographic entries})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{reference RFC2119 has been referenced by xref <relref format="counter" target="RFC2119"/> with format=counter, which requires a section attribute})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{reference RFC7991 has been referenced by xref <relref format="counter" target="RFC7991"/> with format=counter, which requires a section attribute})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<xref format="counter" target="C4"/> with format=counter refers to an unnumbered list entry})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<xref format="counter" target="C2"/> with format=counter refers to an unnumbered list entry})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<xref format="title" target="AUTH"/> with format=title cannot reference a <author> element})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<relref format="title" target="RFC2119"/> with format=title cannot reference a <reference> element})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<relref format="counter" target="RFC2119" relative="A"/> with relative attribute requires a section attribute})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<relref format="counter" target="RFC7991" relative="A" section="3"/> with relative attribute requires a section attribute})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<xref format="counter" target="C" relative="A"/> has a relative attribute, but C points to a section})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<xref format="counter" target="C" section="A"/> has a section attribute, but C points to a section})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<relref format="counter" target="RFC7991" relative="A" section="3"/> has a relative attribute, but C points to a reference})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<relref format="counter" target="RFC7991" relative="A" section="3"/> has a section attribute, but C points to a reference})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{<relref format="counter" target="ACVP" section="3"/> must use a relative attribute, since it does not point to a RFC or Internet-Draft reference})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<relref format="counter" target="ACVP" section="3" relative="B"/> must use a relative attribute, since it does not point to a RFC or Internet-Draft reference})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{<relref format="counter" target="RFC7991" section="3"/> must use a relative attribute, since it does not point to a RFC or Internet-Draft reference})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{need an explicit target= URL attribute in the reference pointed to by <relref format="counter" target="ACVP" relative="B"/>})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{need an explicit target= URL attribute in the reference pointed to by <relref format="counter" target="ACVP1" relative="B"/>})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{need an explicit target= URL attribute in the reference pointed to by <relref format="counter" target="RFC2119" relative="A"/>})
+      .to_stderr
   end
 
   it "reports error on metadata" do
@@ -417,9 +571,21 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{RFC XML: <link rel='convertedFrom'> \(:derived-from: document attribute\) must start with https://datatracker.ietf.org/doc/draft-}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{Mismatch between <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) and <seriesInfo name='RFC' value='draft-camelot-holy-grenade-02'> \(:intended-series: TYPE NUMBER\)}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{RFC XML: RFC identifier <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) must be a number}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{RFC XML: <link rel='convertedFrom'> \(:derived-from: document attribute\) must start with https://datatracker.ietf.org/doc/draft-})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{Mismatch between <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) and <seriesInfo name='RFC' value='draft-camelot-holy-grenade-02'> \(:intended-series: TYPE NUMBER\)})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{RFC XML: RFC identifier <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) must be a number})
+      .to_stderr
   end
 
   it "does not reports non-error on metadata, 1" do
@@ -453,11 +619,31 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{RFC XML: <link rel='convertedFrom'> \(:derived-from: document attribute\) must start with https://datatracker.ietf.org/doc/draft-}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{Mismatch between <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) and <seriesInfo name='RFC' value='draft-camelot-holy-grenade-02'> \(:intended-series: TYPE NUMBER\)}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{RFC XML: RFC identifier <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) must be a number}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{Missing ipr attribute on <rfc> element \(:ipr:\)}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{RFC XML: Unknown ipr attribute on <rfc> element \(:ipr:\): trust200902}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{RFC XML: <link rel='convertedFrom'> \(:derived-from: document attribute\) must start with https://datatracker.ietf.org/doc/draft-})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{Mismatch between <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) and <seriesInfo name='RFC' value='draft-camelot-holy-grenade-02'> \(:intended-series: TYPE NUMBER\)})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{RFC XML: RFC identifier <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) must be a number})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{Missing ipr attribute on <rfc> element \(:ipr:\)})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{RFC XML: Unknown ipr attribute on <rfc> element \(:ipr:\): trust200902})
+      .to_stderr
   end
 
   it "does not reports non-error on metadata, 2" do
@@ -492,9 +678,21 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{RFC XML: <link rel='convertedFrom'> \(:derived-from: document attribute\) must start with https://datatracker.ietf.org/doc/draft-}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{Mismatch between <rfc number='11'> \(:docnumber: NUMBER\) and <seriesInfo name='RFC' value='11'> \(:intended-series: TYPE NUMBER\)}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{RFC XML: RFC identifier <rfc number='11'> \(:docnumber: NUMBER\) must be a number}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{RFC XML: <link rel='convertedFrom'> \(:derived-from: document attribute\) must start with https://datatracker.ietf.org/doc/draft-})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{Mismatch between <rfc number='11'> \(:docnumber: NUMBER\) and <seriesInfo name='RFC' value='11'> \(:intended-series: TYPE NUMBER\)})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{RFC XML: RFC identifier <rfc number='11'> \(:docnumber: NUMBER\) must be a number})
+      .to_stderr
   end
 
   it "does not reports non-error on metadata, 3" do
@@ -529,8 +727,16 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{Mismatch between <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) and <seriesInfo name='Internet-Draft' value='draft-camelot-holy-grenade-02'> \(:intended-series: TYPE NUMBER\)}).to_stderr
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.not_to output(%r{RFC XML: RFC identifier <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) must be a number}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{Mismatch between <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) and <seriesInfo name='Internet-Draft' value='draft-camelot-holy-grenade-02'> \(:intended-series: TYPE NUMBER\)})
+      .to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .not_to output(%r{RFC XML: RFC identifier <rfc number='draft-camelot-holy-grenade-01'> \(:docnumber: NUMBER\) must be a number})
+      .to_stderr
   end
 
   it "reports missing IPR" do
@@ -565,7 +771,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{RFC XML: Missing ipr attribute on <rfc> element \(:ipr:\)}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{RFC XML: Missing ipr attribute on <rfc> element \(:ipr:\)})
+      .to_stderr
   end
 
   it "reports unrecognised IPR" do
@@ -600,6 +810,10 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </middle>
         </rfc>
     INPUT
-    expect { IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil) }.to output(%r{RFC XML: Unknown ipr attribute on <rfc> element \(:ipr:\): trust2009021}).to_stderr
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).postprocess(rfc, "test.rfc.xml", nil)
+    end
+      .to output(%r{RFC XML: Unknown ipr attribute on <rfc> element \(:ipr:\): trust2009021})
+      .to_stderr
   end
 end
