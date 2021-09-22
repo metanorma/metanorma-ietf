@@ -948,7 +948,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 
   it "reports parsing errors on RFC XML output" do
     FileUtils.rm_f "test.rfc.xml"
-    expect { IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false) }.to output(/RFC XML: Line/).to_stderr
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
@@ -959,5 +959,80 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </preface>
       </iso-standard>
     INPUT
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).convert("test", input,
+                                               false)
+    end.to output(/RFC XML: Line/).to_stderr
+  end
+
+  it "inserts u tags to wrap unicode" do
+    input = <<~INPUT
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
+               <front>
+                 <abstract>
+                 <author>Hello Χello</author>
+                 <t>Hello Χello</t>
+                 </abstract>
+               </front>
+               <middle/>
+               <back/>
+             </rfc>
+    INPUT
+    output = <<~OUTPUT
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
+      <front>
+      <abstract>
+      <author>
+        Hello
+        <u>&#x3A7;</u>
+        ello
+      </author>
+      <t>
+        Hello
+        <u>&#x3A7;</u>
+        ello
+      </t>
+      </abstract> </front> <middle/> <back/> </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+  end
+
+  it "cleans up lists with single paragraphs" do
+    input = <<~INPUT
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
+               <front>
+                 <abstract>
+                 <ol>
+                 <li><t>ABC</t></li>
+                 <li><t>DEF</t><t>GHI</t></li>
+                 <li><figure>A</figure></li>
+                 <li>JKL</li>
+                 </ol>
+                 </abstract>
+               </front>
+               <middle/>
+               <back/>
+             </rfc>
+    INPUT
+    output = <<~OUTPUT
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
+      <front>
+      <abstract>
+      <ol>
+        <li>ABC</li>
+        <li>
+          <t>DEF</t>
+          <t>GHI</t>
+        </li>
+        <li>
+          <figure>A</figure>
+        </li>
+        <li>JKL</li>
+      </ol>
+      </abstract> </front> <middle/> <back/> </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
   end
 end
