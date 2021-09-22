@@ -145,8 +145,7 @@ RSpec.describe IsoDoc::Ietf do
   <formattedref format="application/x-isodoc+xml">CitationWorks. 2019. <em>How to cite a reference</em>.</formattedref>
   <docidentifier type="metanorma">[Citn]</docidentifier>
 </bibitem>
-
-
+<bibitem id="I-D.aboba-context-802" type="standard">  <fetched>2021-09-19</fetched>  <title format="text/plain" language="en" script="Latn">A Model for Context Transfer in IEEE 802</title>  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml</uri>  <uri type="TXT">http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt</uri>  <docidentifier type="IETF">I-D.aboba-context-802</docidentifier>  <docidentifier type="rfc-anchor">I-D.aboba-context-802</docidentifier>  <docidentifier type="Internet-Draft">draft-aboba-context-802-00</docidentifier>  <date type="published">    <on>2003-10</on>  </date>  <contributor>    <role type="author"/>    <person>      <name>        <completename language="en">Bernard Aboba</completename>      </name>      <affiliation>        <organization>          <name>Internet Engineering Task Force</name>          <abbreviation>IETF</abbreviation>        </organization>      </affiliation>    </person>  </contributor>  <contributor>    <role type="publisher"/>    <organization>      <name>Internet Engineering Task Force</name>      <abbreviation>IETF</abbreviation>    </organization>  </contributor>  <language>en</language>  <script>Latn</script>  <series type="main">    <title format="text/plain" language="en" script="Latn">Internet-Draft</title>    <number>draft-aboba-context-802-00</number>  </series>  <place>Fremont, CA</place></bibitem>
 </references>
 </bibliography>
     </iso-standard>
@@ -285,7 +284,7 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
                <refcontent>RFC 10</refcontent>
-               <seriesInfo value='RFC 10' name='IETF'/>
+               <seriesInfo value='10' name='RFC'/>
              </reference>
              <reference anchor='ref12'>
                <front>
@@ -295,6 +294,17 @@ RSpec.describe IsoDoc::Ietf do
                    .
                  </title>
                </front>
+             </reference>
+             <reference anchor='I-D.aboba-context-802'>
+               <front>
+                 <title>A Model for Context Transfer in IEEE 802</title>
+                 <author fullname='Bernard Aboba' asciiFullname='Bernard Aboba'/>
+                 <date month='October' year='2003'/>
+               </front>
+               <format target='https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml' type='xml'/>
+               <format target='http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt' type='TXT'/>
+               <refcontent>I-D.aboba-context-802</refcontent>
+               <seriesInfo value='aboba-context-802' name='Internet-Draft'/>
              </reference>
            </references>
          </back>

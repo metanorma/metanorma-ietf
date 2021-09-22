@@ -7,14 +7,32 @@ module IsoDoc::Ietf
       footnote_cleanup(docxml)
       sourcecode_cleanup(docxml)
       annotation_cleanup(docxml)
+      li_cleanup(docxml)
       deflist_cleanup(docxml)
       bookmark_cleanup(docxml)
       aside_cleanup(docxml)
       front_cleanup(docxml)
+      u_cleanup(docxml)
       docxml
     end
 
-    # TODO: insert <u>
+    def u_cleanup(xmldoc)
+      xmldoc.traverse do |n|
+        next unless n.text?
+        next if %w(author organization street city region code country
+                   postalLine email seriesInfo title%).include? n.parent
+
+        n.replace(n.text.gsub(/[\u0080-\uffff]/, "<u>\\0</u>"))
+      end
+    end
+
+    def li_cleanup(xmldoc)
+      xmldoc.xpath("//li[t]").each do |li|
+        next unless li.elements.size == 1
+
+        li.children = li.elements[0].children
+      end
+    end
 
     def front_cleanup(xmldoc)
       xmldoc.xpath("//title").each { |s| s.children = s.text }

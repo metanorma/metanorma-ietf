@@ -64,11 +64,11 @@ module IsoDoc
                   spacing: node["spacing"])
       end
 
-      def dt_parse(dt, term)
-        if dt.elements.empty?
-          term << dt.text
+      def dt_parse(dterm, term)
+        if dterm.elements.empty?
+          term << dterm.text
         else
-          dt.children.each { |n| parse(n, term) }
+          dterm.children.each { |n| parse(n, term) }
         end
       end
 
@@ -108,7 +108,7 @@ module IsoDoc
                 end
           p << lbl
           name and !lbl.nil? and p << ": "
-          name and name.children.each { |n| parse(n, p) }
+          name&.children&.each { |e| parse(e, p) }
         end
       end
 
@@ -139,11 +139,11 @@ module IsoDoc
         @annotation = false
       end
 
-      def formula_where(dl, out)
-        return unless dl
+      def formula_where(dlist, out)
+        return unless dlist
 
         out.t { |p| p << @i18n.where }
-        parse(dl, out)
+        parse(dlist, out)
       end
 
       def formula_parse1(node, out)

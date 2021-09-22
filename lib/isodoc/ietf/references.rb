@@ -55,15 +55,29 @@ module IsoDoc
           uris&.each do |u|
             r.format nil, **attr_code(target: u.text, type: u["type"])
           end
-          docidentifiers = bib.xpath(ns("./docidentifier"))
-          id = render_identifier(bibitem_ref_code(bib))
-          !id[1].nil? && id[1] != "(NO ID)" and r.refcontent id[1]
-          docidentifiers&.each do |u|
-            if %w(DOI IETF).include? u["type"]
-              r.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI /, ""),
-                                            name: u["type"])
-            end
-          end
+          docidentifier_render(bib, r)
+        end
+      end
+
+      def docidentifier_render(bib, out)
+        docidentifiers = bib.xpath(ns("./docidentifier"))
+        id = render_identifier(bibitem_ref_code(bib))
+        !id[1].nil? && id[1] != "(NO ID)" and out.refcontent id[1]
+        docidentifiers&.each do |u|
+          u["type"] == "DOI" and
+            out.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI /, ""),
+                                            name: "DOI")
+          u["type"] == "IETF" and docidentifier_ietf(u, out)
+        end
+      end
+
+      def docidentifier_ietf(ident, out)
+        if /^RFC /.match?(ident.text)
+          out.seriesInfo nil, **attr_code(value: ident.text.sub(/^RFC 0*/, ""),
+                                          name: "RFC")
+        elsif /^I-D\./.match?(ident.text)
+          out.seriesInfo nil, **attr_code(value: ident.text.sub(/^I-D\./, ""),
+                                          name: "Internet-Draft")
         end
       end
 

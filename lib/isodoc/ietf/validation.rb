@@ -165,7 +165,7 @@ module IsoDoc
       def seriesInfo_check(xml)
         ret = []
         xml.root["ipr"] == "none" and return []
-        rfcinfo = xml.at("//seriesInfo[@name = 'RFC']")
+        rfcinfo = xml.at("//front//seriesInfo[@name = 'RFC']")
         rfcnumber = xml.root["number"]
         rfcinfo && rfcnumber && rfcnumber != rfcinfo["value"] and
           ret << "Mismatch between <rfc number='#{rfcnumber}'> "\

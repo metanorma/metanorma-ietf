@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "processes inline formatting" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
@@ -14,6 +14,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sections>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
         <em>A</em>
@@ -23,14 +24,17 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <tt>E</tt>
          F G I
         <bcp14>must</bcp14>
+        <br/>
         <bookmark anchor='H'/>
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes embedded inline formatting" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
@@ -40,6 +44,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sections>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
                      <em>
@@ -60,10 +65,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes index terms" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
        <preface><foreword>
        <p>D<index>
@@ -76,6 +83,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        <sections>
        </iso-standard>
     INPUT
+    output = <<~OUTPUT
       #{XML_HDR}
       <t>D
                   <iref item='AB' subitem='AB'/>
@@ -83,10 +91,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                   <iref item='D' primary="true"/></t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes inline images" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
         <iso-standard xmlns="http://riboseinc.com/isoxml">
         <preface><foreword>
         <p>
@@ -95,16 +105,19 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </foreword></preface>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
                      <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes links" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
@@ -118,6 +131,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sections>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
                      <eref target='http://example.com'/>
@@ -128,10 +142,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes unrecognised markup" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
@@ -141,16 +157,19 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sections>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
       <t>
         <t>&lt;barry fred="http://example.com"&gt;example&lt;/barry&gt;</t>
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes AsciiMath and MathML" do
-    expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true).sub(/<html/, "<html xmlns:m='m'"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml" xmlns:m="mathml">
       <preface><foreword>
       <p>
@@ -162,6 +181,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sections>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
       $$ &lt;A&gt; $$
@@ -170,10 +190,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true).sub(
+      /<html/, "<html xmlns:m='m'"
+    ))).to be_equivalent_to xmlpp(output)
   end
 
   it "overrides AsciiMath delimiters" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
@@ -184,14 +207,17 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sections>
       </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t> $$$$ A $$$$ $$Hello$$$ </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "cross-references notes" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface>
           <foreword>
@@ -254,6 +280,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </annex>
           </iso-standard>
     INPUT
+    output = <<~OUTPUT
       #{XML_HDR}
                <t>
                  <xref target='N1'>note</xref>
@@ -348,10 +375,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            </back>
          </rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes eref attributes" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
           <p>
@@ -373,6 +402,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </bibliography>
           </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
         <relref target='ISO712' section='' displayFormat='of' relative="#abc">A</relref>
@@ -394,10 +424,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes eref content" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
           <p>
@@ -439,21 +471,22 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </bibliography>
           </iso-standard>
     INPUT
+    output = <<~OUTPUT
           #{XML_HDR}
           <t>
         <relref target='ISO712' section='' relative=''/>
         <relref target='ISO712' section='' relative=''/>
         <relref target='ISO712' section='' relative=''/>
         <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
+        <relref target='ISO712' section='1' relative=''/>
+        <relref target='ISO712' section='1' relative=''/>
+        <relref target='ISO712' section='1.5' relative=''/>
         <relref target='ISO712' section='' relative=''>A</relref>
         <relref target='ISO712' section='' relative=''/>
         <relref target='ISO712' section='' relative=''/>
         <relref target='ISO712' section='' relative=''>A</relref>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
+        <relref target='ISO712' section='1; 3' relative=''/>
+        <relref target='ISO712' section='1' relative=''/>
         <relref target='ISO712' section='' relative='1'>A</relref>
         <relref target='ISO712' section='1; 3' relative='xyz'/>
         <relref target='ISO712' section='1' relative='1'/>
@@ -480,6 +513,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes passthrough content" do
@@ -522,7 +557,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   end
 
   it "processes concept markup" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
              <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
           <p>
@@ -618,6 +653,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </references></bibliography>
           </iso-standard>
     INPUT
+    output = <<~OUTPUT
       <?xml version='1.0'?>
       <?rfc strict="yes"?>
       <?rfc compact="yes"?>
@@ -663,19 +699,19 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <li>
                   <em>word</em>
                    [term defined in
-                  <relref target='ISO712' section='' relative=''> </relref>
+                  <relref target='ISO712' section='3.1' relative=''> </relref>
                   ]
                 </li>
                 <li>
                   <em>word</em>
                    [term defined in
-                  <relref target='ISO712' section='' relative=''> </relref>
+                  <relref target='ISO712' section='3.1' relative=''> </relref>
                   ]
                 </li>
                 <li>
                   <em>word</em>
                    [term defined in
-                  <relref target='ISO712' section='' relative=''> The Aforementioned Citation </relref>
+                  <relref target='ISO712' section='3.1' relative=''> The Aforementioned Citation </relref>
                   ]
                 </li>
                 <li>
@@ -718,5 +754,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </back>
       </rfc>
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 end
