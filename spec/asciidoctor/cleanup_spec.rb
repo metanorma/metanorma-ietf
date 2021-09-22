@@ -635,4 +635,36 @@ RSpec.describe Asciidoctor::Ietf do
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
     end
   end
+
+  it "processes inline cref macro" do
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :draft:
+
+      ABC cref:[def] DEF
+
+      [[def]]
+      ****
+      What?
+      ****
+
+    INPUT
+    output = <<~OUTPUT
+      #{BLANK_HDR.sub(/<language>/, '<version> </version><language>')}
+      <sections>
+      <p id='_'>
+        ABC
+        <review id='def' reviewer='(Unknown)' date='2000-01-01T00:00:00Z'>
+          <p id='_'>What?</p>
+        </review>
+         DEF
+      </p>
+      </sections>
+      </ietf-standard>
+    OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
+  end
 end

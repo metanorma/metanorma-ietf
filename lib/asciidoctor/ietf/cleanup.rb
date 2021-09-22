@@ -6,6 +6,8 @@ module Asciidoctor
         abstract_cleanup(xmldoc)
         super
         rfc_anchor_cleanup(xmldoc)
+        cref_cleanup(xmldoc)
+        xmldoc
       end
 
       def abstract_cleanup(xmldoc)
@@ -14,6 +16,21 @@ module Asciidoctor
           warn "Empty abstract section removed"
         end
       end
+
+      def cref_cleanup(xmldoc)
+        xmldoc.xpath("//crefref").each do |r|
+          if c = xmldoc.at("//review[@id = '#{r.text}']")
+            r.replace(c.remove)
+          else
+            @log.add("Crossrefences", r,
+                     "No matching review for cref:[#{r.text}]")
+          end
+        end
+      end
+
+      BCP_KEYWORDS = ["MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+                      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
+                      "OPTIONAL"].freeze
 
       def bcp14_cleanup(xmldoc)
         return unless @bcp_bold
@@ -26,12 +43,13 @@ module Asciidoctor
       end
 
       def rfc_anchor_cleanup(xmldoc)
-        map = {}
-        xmldoc.xpath("//bibitem[docidentifier/@type = 'rfc-anchor']").each do |b|
-          next if b.at("./ancestor::bibdata")
+        map = xmldoc.xpath("//bibitem[docidentifier/@type = 'rfc-anchor']")
+          .each_with_object({}) do |b, m|
+          next if b.at("./ancestor::bibdata | ./ancestor::bibitem")
 
-          map[b["id"]] = b.at("./docidentifier[@type = 'rfc-anchor']").text
-          b["id"] = b.at("./docidentifier[@type = 'rfc-anchor']").text
+          id = b.at("./docidentifier[@type = 'rfc-anchor']").text
+          m[b["id"]] = id
+          b["id"] = id
         end
         xmldoc.xpath("//eref | //origin").each do |x|
           map[x["bibitemid"]] and x["bibitemid"] = map[x["bibitemid"]]

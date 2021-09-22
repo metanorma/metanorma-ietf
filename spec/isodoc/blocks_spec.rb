@@ -486,10 +486,16 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-              #{XML_HDR}
-              <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>Vache Equipment Fictitious World</t>
+      #{XML_HDR}
+      <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>
+        Vache Equipment
+        <br/>
+         Fictitious
+        <br/>
+         World
+      </t>
       <t keepWithPrevious='true'>Justify</t>
-             </abstract></front><middle/><back/></rfc>
+      </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
@@ -865,7 +871,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
                      <sourcecode anchor="_">
-                       <t anchor="_">&#xA0;&#xA0;<strong>A</strong>
+                       <t anchor="_">&#xA0;&#xA0;<strong>A</strong><br/>
       &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B</t>
       <t anchor="_">&#xA0;&#xA0;<em>C</em></t>
                      </sourcecode>

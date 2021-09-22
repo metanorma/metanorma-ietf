@@ -602,7 +602,10 @@
     </define>
   </include>
   <define name="TextElement" combine="choice">
-    <ref name="bcp14"/>
+    <choice>
+      <ref name="bcp14"/>
+      <ref name="review"/>
+    </choice>
   </define>
   <define name="bcp14">
     <element name="bcp14">

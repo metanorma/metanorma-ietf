@@ -58,6 +58,39 @@ RSpec.describe Asciidoctor::Ietf do
     end
   end
 
+  it "warns of cref macro not pointing to valid element" do
+    FileUtils.rm_f "test.err"
+    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :draft:
+
+      == Clause 1
+
+      cref:[xyz]
+
+      cref:[abc]
+
+      cref:[def]
+
+      [[def]]
+      ****
+      What?
+      ****
+
+      [[abc]]
+      == Clause 2
+
+    INPUT
+    if File.exist?("test.err")
+      expect(File.read("test.err")).to include "No matching review for cref:[xyz]"
+      expect(File.read("test.err")).to include "No matching review for cref:[abc]"
+      expect(File.read("test.err")).not_to include "No matching review for cref:[def]"
+    end
+  end
+
   context "when xref_error.adoc compilation" do
     around do |example|
       FileUtils.rm_f "spec/assets/xref_error.err"
