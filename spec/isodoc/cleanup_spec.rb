@@ -983,9 +983,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <front>
       <abstract>
       <author>
-        Hello
-        <u>&#x3A7;</u>
-        ello
+        Hello &#x3A7;ello
       </author>
       <t>
         Hello

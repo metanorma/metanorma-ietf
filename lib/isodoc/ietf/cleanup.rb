@@ -19,8 +19,8 @@ module IsoDoc::Ietf
     def u_cleanup(xmldoc)
       xmldoc.traverse do |n|
         next unless n.text?
-        next if %w(author organization street city region code country
-                   postalLine email seriesInfo title%).include? n.parent
+        next unless %w(t blockquote li dd preamble td th annotation)
+          .include? n.parent.name
 
         n.replace(n.text.gsub(/[\u0080-\uffff]/, "<u>\\0</u>"))
       end

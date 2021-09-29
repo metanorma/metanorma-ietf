@@ -63,7 +63,10 @@ module Asciidoctor
 
           n.replace(HTMLEntities.new.encode(
                       n.text.gsub(/\u2019|\u2018|\u201a|\u201b/, "'")
-                      .gsub(/\u201c|\u201d|\u201e|\u201f/, '"'), :basic
+                      .gsub(/\u201c|\u201d|\u201e|\u201f/, '"')
+                      .gsub(/[\u2010-\u2015]/, "-")
+                      .gsub(/[\u2000-\u200a]|\u202f|\u205f/, " "),
+                      :basic,
                     ))
         end
         xmldoc

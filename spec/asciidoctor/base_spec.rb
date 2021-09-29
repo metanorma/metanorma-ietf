@@ -169,7 +169,7 @@ RSpec.describe Asciidoctor::Ietf do
           <?xml version='1.0' encoding='UTF-8'?>
              <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
                <bibdata type='standard'>
-                 <title language='en' format='text/plain' type='main'>Main Title — Title</title>
+                 <title language='en' format='text/plain' type='main'>Main Title - Title</title>
               <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
               <title language='en' format='text/plain' type='ascii'>Ascii Title</title>
                  <docidentifier>1000</docidentifier>
