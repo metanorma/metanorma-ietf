@@ -147,6 +147,14 @@
             <data type="boolean"/>
           </attribute>
         </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
+          </attribute>
+        </optional>
         <oneOrMore>
           <ref name="ul_li"/>
         </oneOrMore>
@@ -168,6 +176,14 @@
         <optional>
           <attribute name="keep-lines-together">
             <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
           </attribute>
         </optional>
         <optional>
@@ -207,6 +223,14 @@
         <optional>
           <attribute name="key">
             <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
           </attribute>
         </optional>
         <oneOrMore>
@@ -254,6 +278,14 @@
         <optional>
           <attribute name="keep-lines-together">
             <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
           </attribute>
         </optional>
         <optional>
@@ -317,6 +349,14 @@
           <attribute name="width"/>
         </optional>
         <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
+          </attribute>
+        </optional>
+        <optional>
           <ref name="colgroup"/>
         </optional>
         <optional>
@@ -365,6 +405,14 @@
         </optional>
         <optional>
           <attribute name="class"/>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
+          </attribute>
         </optional>
         <optional>
           <ref name="source"/>
@@ -425,6 +473,14 @@
           <attribute name="lang"/>
         </optional>
         <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
+          </attribute>
+        </optional>
+        <optional>
           <ref name="tname"/>
         </optional>
         <oneOrMore>
@@ -472,6 +528,14 @@
             <data type="boolean"/>
           </attribute>
         </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
+          </attribute>
+        </optional>
         <ref name="stem"/>
         <optional>
           <ref name="dl"/>
@@ -500,6 +564,14 @@
           <data type="boolean"/>
         </attribute>
       </optional>
+      <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
+      </optional>
       <zeroOrMore>
         <ref name="TextElement"/>
       </zeroOrMore>
@@ -525,6 +597,14 @@
         <optional>
           <attribute name="keep-lines-together">
             <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
           </attribute>
         </optional>
         <zeroOrMore>
@@ -556,6 +636,14 @@
         <optional>
           <attribute name="keep-lines-together">
             <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
           </attribute>
         </optional>
         <optional>
@@ -666,6 +754,14 @@
         </optional>
         <optional>
           <attribute name="type"/>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
+          </attribute>
         </optional>
         <oneOrMore>
           <choice>
@@ -924,6 +1020,14 @@
     </define>
   </include>
   <!-- end overrides -->
+  <define name="MultilingualRenderingType">
+    <choice>
+      <value>common</value>
+      <value>all-columns</value>
+      <value>parallel</value>
+      <value>tag</value>
+    </choice>
+  </define>
   <define name="docsubtype">
     <element name="subdoctype">
       <ref name="DocumentSubtype"/>
@@ -1061,6 +1165,14 @@
       <attribute name="action"/>
       <optional>
         <attribute name="class"/>
+      </optional>
+      <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
       </optional>
       <zeroOrMore>
         <choice>
@@ -1824,6 +1936,14 @@
           <data type="boolean"/>
         </attribute>
       </optional>
+      <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
+      </optional>
       <oneOrMore>
         <choice>
           <ref name="paragraph"/>
@@ -1840,6 +1960,24 @@
       <attribute name="id">
         <data type="ID"/>
       </attribute>
+      <optional>
+        <attribute name="keep-with-next">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="keep-lines-together">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
+      </optional>
       <ref name="paragraph"/>
     </element>
   </define>
@@ -2008,6 +2146,14 @@
         <attribute name="title"/>
       </optional>
       <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
+      </optional>
+      <optional>
         <element name="location">
           <zeroOrMore>
             <ref name="locality"/>
@@ -2066,6 +2212,14 @@
   </define>
   <define name="imagemap">
     <element name="imagemap">
+      <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
+      </optional>
       <ref name="figure"/>
       <zeroOrMore>
         <element name="area">
@@ -2110,6 +2264,14 @@
   </define>
   <define name="svgmap">
     <element name="svgmap">
+      <optional>
+        <attribute name="tag"/>
+      </optional>
+      <optional>
+        <attribute name="multilingual-rendering">
+          <ref name="MultilingualRenderingType"/>
+        </attribute>
+      </optional>
       <ref name="figure"/>
       <zeroOrMore>
         <element name="target">

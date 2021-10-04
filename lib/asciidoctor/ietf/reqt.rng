@@ -59,6 +59,14 @@
       <attribute name="type"/>
     </optional>
     <optional>
+      <attribute name="tag"/>
+    </optional>
+    <optional>
+      <attribute name="multilingual-rendering">
+        <ref name="MultilingualRenderingType"/>
+      </attribute>
+    </optional>
+    <optional>
       <ref name="reqtitle"/>
     </optional>
     <optional>
@@ -173,6 +181,14 @@
     <optional>
       <attribute name="keep-lines-together">
         <data type="boolean"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="tag"/>
+    </optional>
+    <optional>
+      <attribute name="multilingual-rendering">
+        <ref name="MultilingualRenderingType"/>
       </attribute>
     </optional>
     <oneOrMore>
