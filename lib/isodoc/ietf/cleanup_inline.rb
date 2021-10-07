@@ -60,6 +60,17 @@ module IsoDoc
       def bookmark_cleanup(docxml)
         docxml.xpath("//bookmark").each(&:remove)
       end
+
+      def cref_cleanup(docxml)
+          require "byebug"; byebug
+        docxml.xpath("//cref").each do |c|
+          c.xref("./t").each do |t|
+            t.replace(t.children)
+          end
+          next unless c.parent == "section"
+          c.wrap("<t></t>")
+        end
+      end
     end
   end
 end

@@ -459,14 +459,9 @@
         <ref name="section-title"/>
       </optional>
       <group>
-        <group>
-          <zeroOrMore>
-            <ref name="BasicBlock"/>
-          </zeroOrMore>
-          <zeroOrMore>
-            <ref name="note"/>
-          </zeroOrMore>
-        </group>
+        <zeroOrMore>
+          <ref name="BasicBlock"/>
+        </zeroOrMore>
         <zeroOrMore>
           <choice>
             <ref name="clause-subsection"/>
@@ -508,14 +503,9 @@
           <ref name="section-title"/>
         </optional>
         <group>
-          <group>
-            <zeroOrMore>
-              <ref name="BasicBlock"/>
-            </zeroOrMore>
-            <zeroOrMore>
-              <ref name="note"/>
-            </zeroOrMore>
-          </group>
+          <zeroOrMore>
+            <ref name="BasicBlock"/>
+          </zeroOrMore>
           <zeroOrMore>
             <ref name="clause-subsection"/>
           </zeroOrMore>
@@ -547,14 +537,9 @@
         <ref name="section-title"/>
       </optional>
       <group>
-        <group>
-          <zeroOrMore>
-            <ref name="BasicBlock"/>
-          </zeroOrMore>
-          <zeroOrMore>
-            <ref name="note"/>
-          </zeroOrMore>
-        </group>
+        <zeroOrMore>
+          <ref name="BasicBlock"/>
+        </zeroOrMore>
         <zeroOrMore>
           <ref name="content-subsection"/>
         </zeroOrMore>

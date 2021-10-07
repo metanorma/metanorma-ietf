@@ -62,7 +62,9 @@
             <data type="boolean"/>
           </attribute>
         </optional>
-        <text/>
+        <oneOrMore>
+          <ref name="PureTextElement"/>
+        </oneOrMore>
       </element>
     </define>
     <define name="xref">
@@ -100,7 +102,9 @@
             <data type="boolean"/>
           </attribute>
         </optional>
-        <text/>
+        <oneOrMore>
+          <ref name="PureTextElement"/>
+        </oneOrMore>
       </element>
     </define>
     <define name="erefType">
@@ -130,7 +134,9 @@
         </attribute>
       </optional>
       <ref name="CitationType"/>
-      <text/>
+      <oneOrMore>
+        <ref name="PureTextElement"/>
+      </oneOrMore>
     </define>
     <define name="ul">
       <element name="ul">
@@ -713,9 +719,6 @@
           <ref name="BasicBlock"/>
         </zeroOrMore>
         <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-        <zeroOrMore>
           <ref name="bibitem"/>
           <zeroOrMore>
             <ref name="note"/>
@@ -799,14 +802,9 @@
       <optional>
         <ref name="section-title"/>
       </optional>
-      <group>
-        <oneOrMore>
-          <ref name="BasicBlock"/>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </group>
+      <oneOrMore>
+        <ref name="BasicBlock"/>
+      </oneOrMore>
     </define>
     <define name="li">
       <element name="li">
@@ -941,6 +939,9 @@
             <ref name="PureTextElement"/>
             <ref name="stem"/>
             <ref name="index"/>
+            <ref name="eref"/>
+            <ref name="xref"/>
+            <ref name="hyperlink"/>
           </choice>
         </zeroOrMore>
       </element>
@@ -952,6 +953,9 @@
             <ref name="PureTextElement"/>
             <ref name="stem"/>
             <ref name="index"/>
+            <ref name="eref"/>
+            <ref name="xref"/>
+            <ref name="hyperlink"/>
           </choice>
         </zeroOrMore>
       </element>
@@ -962,6 +966,9 @@
           <choice>
             <ref name="PureTextElement"/>
             <ref name="index"/>
+            <ref name="eref"/>
+            <ref name="xref"/>
+            <ref name="hyperlink"/>
           </choice>
         </zeroOrMore>
       </element>
@@ -1373,9 +1380,6 @@
       <zeroOrMore>
         <ref name="BasicBlock"/>
       </zeroOrMore>
-      <zeroOrMore>
-        <ref name="note"/>
-      </zeroOrMore>
       <choice>
         <oneOrMore>
           <ref name="reference-clause"/>
@@ -1558,9 +1562,6 @@
         <zeroOrMore>
           <ref name="BasicBlock"/>
         </zeroOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
         <ref name="dl"/>
       </oneOrMore>
     </element>
@@ -1620,14 +1621,9 @@
       <ref name="section-title"/>
     </optional>
     <group>
-      <group>
-        <zeroOrMore>
-          <ref name="BasicBlock"/>
-        </zeroOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </group>
+      <zeroOrMore>
+        <ref name="BasicBlock"/>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content-subsection"/>
       </zeroOrMore>
@@ -1674,14 +1670,9 @@
     </optional>
     <choice>
       <choice>
-        <group>
-          <oneOrMore>
-            <ref name="BasicBlock"/>
-          </oneOrMore>
-          <zeroOrMore>
-            <ref name="note"/>
-          </zeroOrMore>
-        </group>
+        <oneOrMore>
+          <ref name="BasicBlock"/>
+        </oneOrMore>
         <ref name="amend"/>
       </choice>
       <oneOrMore>
@@ -1722,14 +1713,9 @@
       <ref name="section-title"/>
     </optional>
     <group>
-      <group>
-        <zeroOrMore>
-          <ref name="BasicBlock"/>
-        </zeroOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </group>
+      <zeroOrMore>
+        <ref name="BasicBlock"/>
+      </zeroOrMore>
       <zeroOrMore>
         <choice>
           <ref name="annex-subsection"/>
@@ -1787,9 +1773,6 @@
       </optional>
       <zeroOrMore>
         <ref name="BasicBlock"/>
-      </zeroOrMore>
-      <zeroOrMore>
-        <ref name="note"/>
       </zeroOrMore>
       <choice>
         <oneOrMore>
@@ -2103,9 +2086,6 @@
       </optional>
       <zeroOrMore>
         <ref name="BasicBlock"/>
-      </zeroOrMore>
-      <zeroOrMore>
-        <ref name="note"/>
       </zeroOrMore>
       <zeroOrMore>
         <choice>
