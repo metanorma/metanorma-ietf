@@ -62,12 +62,12 @@ module IsoDoc
       end
 
       def cref_cleanup(docxml)
-          require "byebug"; byebug
         docxml.xpath("//cref").each do |c|
-          c.xref("./t").each do |t|
+          c.xpath("./t").each do |t|
             t.replace(t.children)
           end
-          next unless c.parent == "section"
+          next unless %w(section abstract).include? c.parent.name
+
           c.wrap("<t></t>")
         end
       end

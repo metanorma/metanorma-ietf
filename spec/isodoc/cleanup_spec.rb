@@ -1033,4 +1033,76 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
   end
+
+  it "cleans up crefs" do
+    input = <<~INPUT
+           <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+         <front>
+           <seriesInfo value='' name='RFC' asciiName='RFC'/>
+           <abstract>
+             <t anchor='A'>A.</t>
+             <t anchor='B'>B.</t>
+             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
+               Title 
+               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c07'>
+                 A Foreword shall appear in each document. The generic text is shown
+                 here. It does not contain requirements, recommendations or
+                 permissions.
+               </t>
+               <t anchor='_f1a8b9da-ca75-458b-96fa-d4af7328975e'>
+                 For further information on the Foreword, see 
+                 <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+               </t>
+             </cref>
+             <t anchor='C'>C.</t>
+             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
+               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
+             </cref>
+           </abstract>
+         </front>
+         <middle>
+           <section>
+             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
+               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
+             </cref>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
+    INPUT
+    output = <<~OUTPUT
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+         <front>
+           <seriesInfo value='' name='RFC' asciiName='RFC'/>
+           <abstract>
+             <t anchor='A'>A.</t>
+             <t anchor='B'>B.</t>
+             <t>
+             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
+                Title A Foreword shall appear in each document. The generic text is
+               shown here. It does not contain requirements, recommendations or
+               permissions. For further information on the Foreword, see 
+               <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+             </cref>
+             </t>
+             <t anchor='C'>C.</t>
+             <t>
+             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
+             </t>
+           </abstract>
+         </front>
+         <middle>
+           <section>
+           <t>
+             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
+             </t>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+  end
+
 end
