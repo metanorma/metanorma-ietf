@@ -197,8 +197,9 @@ module IsoDoc
       def review_note_parse(node, out)
         out.cref **attr_code(anchor: node["id"], display: node["display"],
                              source: node["reviewer"]) do |c|
-          name = node.at(ns("./name")) and c.name do |div|
-            name.children.each { |n| parse(n, div) }
+          if name = node.at(ns("./name"))
+            name.children.each { |n| parse(n, c) }
+            c << " "
           end
           node.children.each { |n| parse(n, c) unless n.name == "name" }
         end
