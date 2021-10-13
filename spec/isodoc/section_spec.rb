@@ -43,7 +43,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        <clause id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
          <title>Normal Terms</title>
          <term id="J">
-         <preferred>Term2</preferred>
+         <preferred><expression><name>Term2</name></expression></preferred>
        </term>
        </terms>
        <definitions id="K">
@@ -188,7 +188,7 @@ OUTPUT
        <sections>
        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
          <term id="J">
-         <preferred>Term2</preferred>
+         <preferred><expression><name>Term2</name></expression></preferred>
        </term>
         </terms>
         </sections>
