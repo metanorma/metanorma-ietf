@@ -12,7 +12,7 @@ module IsoDoc
       end
 
       def deprecated_term_parse(node, out)
-        name = node.at(ns("./expression/name"))
+        name = node.at(ns(".//name"))
         out.t do |p|
           p << l10n("#{@i18n.deprecated}: ")
           name.children.each { |c| parse(c, p) }
@@ -20,14 +20,14 @@ module IsoDoc
       end
 
       def admitted_term_parse(node, out)
-        name = node.at(ns("./expression/name"))
+        name = node.at(ns(".//name"))
         out.t do |p|
           name.children.each { |c| parse(c, p) }
         end
       end
 
       def term_parse(node, out)
-        name = node.at(ns("./expression/name"))
+        name = node.at(ns(".//name"))
         out.name do |p|
           name.children.each { |n| parse(n, p) }
         end
@@ -46,6 +46,8 @@ module IsoDoc
 
       def termdef_parse(node, out)
         set_termdomain("")
+        node.xpath(ns("./definition")).size > 1 and
+          IsoDoc::PresentationXMLConvert.new({}).multidef(node)
         clause_parse(node, out)
       end
 

@@ -54,21 +54,21 @@ RSpec.describe Asciidoctor::Ietf do
                     <sections>
                <terms id="_" obligation="normative">
                <title>Terms and definitions</title>
-               <term id="term-t90"><preferred><expression><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+               <term id="term-t90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
         <mn>90</mn>
       </mrow>
-      </msub></math></stem></name></expression></preferred>
-      <admitted><expression><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+      </msub></math></stem></name></letter-symbol></preferred>
+      <admitted><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
         <mn>91</mn>
       </mrow>
-      </msub></math></stem></name></expression></admitted>
-             <definition><p id="_">Time</p></definition></term>
+      </msub></math></stem></name></letter-symbol></admitted>
+             <definition><verbaldefinition><p id="_">Time</p></verbaldefinition></definition></term>
              </terms>
              </sections>
              </ietf-standard>
@@ -93,7 +93,8 @@ RSpec.describe Asciidoctor::Ietf do
         <title>Terms and definitions</title>
         <term id="term-tempus">
         <preferred><expression><name>Tempus</name></expression></preferred>
-        <domain>relativity</domain><definition><p id="_"> Time</p></definition>
+        <domain>relativity</domain>
+        <definition><verbaldefinition><p id="_"> Time</p></verbaldefinition></definition>
       </term>
       </terms>
       </sections>
@@ -128,13 +129,17 @@ RSpec.describe Asciidoctor::Ietf do
                     <sections>
                <terms id="_" obligation="normative">
                <title>Terms and definitions</title>
-               <term id="term-t90"><preferred><expression><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+               <term id="term-t90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
         <mn>90</mn>
       </mrow>
-      </msub></math></stem></name></expression></preferred><definition><formula id="_">
+      </msub></math></stem></name></letter-symbol></preferred>
+      <definition>
+             <verbaldefinition><p id="_">This paragraph is extraneous</p></verbaldefinition>
+             <nonverbalrepresentation>
+      <formula id="_">
                <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
@@ -143,7 +148,8 @@ RSpec.describe Asciidoctor::Ietf do
       </mrow>
       </msub></math></stem>
              </formula>
-             <p id="_">This paragraph is extraneous</p></definition>
+             </nonverbalrepresentation>
+      </definition>
              </term>
              </terms>
              </sections>
@@ -178,7 +184,7 @@ RSpec.describe Asciidoctor::Ietf do
       </ul>
              <term id="term-time">
              <preferred><expression><name>Time</name></expression></preferred>
-               <definition><p id="_">This paragraph is extraneous</p></definition>
+               <definition><verbaldefinition><p id="_">This paragraph is extraneous</p></verbaldefinition></definition>
              </term></terms>
              </sections>
              </ietf-standard>
@@ -317,6 +323,8 @@ RSpec.describe Asciidoctor::Ietf do
 
       === Term1
 
+      Definition
+
       [.source]
       <<ISO2191,section=1>>
     INPUT
@@ -327,7 +335,12 @@ RSpec.describe Asciidoctor::Ietf do
         <title>Terms and definitions</title>
         <term id="term-term1">
         <preferred><expression><name>Term1</name></expression></preferred>
-        <termsource status="identical">
+                <definition>
+          <verbaldefinition>
+            <p id='_'>Definition</p>
+          </verbaldefinition>
+        </definition>
+        <termsource status='identical' type='authoritative'>
         <origin bibitemid="ISO2191" type="inline" citeas="">
         <localityStack>
        <locality type="section"><referenceFrom>1</referenceFrom></locality>

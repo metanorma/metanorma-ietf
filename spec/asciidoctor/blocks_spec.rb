@@ -561,6 +561,8 @@ RSpec.describe Asciidoctor::Ietf do
 
       === Term1
 
+      Definition
+
       [.source]
       <<ISO2191,section=1>>
     INPUT
@@ -570,8 +572,13 @@ RSpec.describe Asciidoctor::Ietf do
          <title>Terms and definitions</title>
          <term id="term-term1">
          <preferred><expression><name>Term1</name></expression></preferred>
-         <termsource status="identical">
-         <origin bibitemid="ISO2191" type="inline" citeas="">
+                 <definition>
+          <verbaldefinition>
+            <p id='_'>Definition</p>
+          </verbaldefinition>
+        </definition>
+        <termsource status='identical' type='authoritative'>
+        <origin bibitemid="ISO2191" type="inline" citeas="">
          <localityStack>
         <locality type="section"><referenceFrom>1</referenceFrom></locality>
          </localityStack>
@@ -591,6 +598,8 @@ RSpec.describe Asciidoctor::Ietf do
 
       === Term1
 
+      Definition
+
       [.source]
       <<ISO2191,section=1>>, with adjustments
     INPUT
@@ -600,7 +609,12 @@ RSpec.describe Asciidoctor::Ietf do
          <title>Terms and definitions</title>
          <term id="term-term1">
          <preferred><expression><name>Term1</name></expression></preferred>
-         <termsource status="modified">
+                 <definition>
+          <verbaldefinition>
+            <p id='_'>Definition</p>
+          </verbaldefinition>
+        </definition>
+        <termsource status='modified' type='authoritative'>
          <origin bibitemid="ISO2191" type="inline" citeas="">
          <localityStack>
         <locality type="section"><referenceFrom>1</referenceFrom></locality>

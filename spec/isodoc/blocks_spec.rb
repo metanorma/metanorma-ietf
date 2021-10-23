@@ -556,7 +556,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <term id="_extraneous_matter"><preferred><expression><name>extraneous matter</name></expression></preferred>
       <admitted><expression><name>EM</name></expression></admitted>
       <domain>rice</domain>
-      <definition><p id="_318b3939-be09-46c4-a284-93f9826b981e">organic and inorganic components other than whole or broken kernels</p></definition>
+      <definition><verbaldefinition><p id="_318b3939-be09-46c4-a284-93f9826b981e">organic and inorganic components other than whole or broken kernels</p></verbaldefinition></definition>
       </term>
           </terms>
           </sections>
