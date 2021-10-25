@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mathml2asciimath"
   spec.add_dependency "metanorma-ietf-data"
   spec.add_dependency "metanorma-standoc", "~> 1.11.0"
-  spec.add_dependency "open-uri"
+  spec.add_dependency "open-uri", "~> 0.2.0"
 
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
