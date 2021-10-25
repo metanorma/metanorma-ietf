@@ -81,6 +81,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR"
       :nodoc:
       :novalid:
       :no-isobib:
+      :data-uri-image: false
 
 HDR
 
@@ -89,6 +90,7 @@ VALIDATING_BLANK_HDR = <<~"HDR"
       Author
       :docfile: test.adoc
       :nodoc:
+      :data-uri-image: false
 
 HDR
 
