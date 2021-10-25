@@ -137,7 +137,7 @@ RSpec.describe Asciidoctor::Ietf do
         <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
         <term id="term-term1">
-        <preferred>Term1</preferred>
+        <preferred><expression><name>Term1</name></expression></preferred>
         <termnote id="_">
         <p id="_">This is a note</p>
       </termnote>
@@ -189,7 +189,7 @@ RSpec.describe Asciidoctor::Ietf do
                     <sections>
         <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
       <term id="term-term1">
-        <preferred>Term1</preferred>
+        <preferred><expression><name>Term1</name></expression></preferred>
       </term>
       <definitions id="_" obligation="normative" type="symbols">
         <title>Symbols</title>
@@ -315,7 +315,7 @@ RSpec.describe Asciidoctor::Ietf do
         <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
         <term id="term-term1">
-        <preferred>Term1</preferred>
+        <preferred><expression><name>Term1</name></expression></preferred>
       <termexample id="_">
         <p id="_">This is an example</p>
       </termexample></term>
@@ -368,7 +368,7 @@ RSpec.describe Asciidoctor::Ietf do
       <sections>
         <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
       <term id="term-term1">
-        <preferred>Term1</preferred>
+        <preferred><expression><name>Term1</name></expression></preferred>
       </term>
       <definitions id="_" obligation="normative" type="symbols">
         <title>Symbols</title>
@@ -561,6 +561,8 @@ RSpec.describe Asciidoctor::Ietf do
 
       === Term1
 
+      Definition
+
       [.source]
       <<ISO2191,section=1>>
     INPUT
@@ -569,9 +571,14 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <term id="term-term1">
-         <preferred>Term1</preferred>
-         <termsource status="identical">
-         <origin bibitemid="ISO2191" type="inline" citeas="">
+         <preferred><expression><name>Term1</name></expression></preferred>
+                 <definition>
+          <verbaldefinition>
+            <p id='_'>Definition</p>
+          </verbaldefinition>
+        </definition>
+        <termsource status='identical' type='authoritative'>
+        <origin bibitemid="ISO2191" type="inline" citeas="">
          <localityStack>
         <locality type="section"><referenceFrom>1</referenceFrom></locality>
          </localityStack>
@@ -591,6 +598,8 @@ RSpec.describe Asciidoctor::Ietf do
 
       === Term1
 
+      Definition
+
       [.source]
       <<ISO2191,section=1>>, with adjustments
     INPUT
@@ -599,8 +608,13 @@ RSpec.describe Asciidoctor::Ietf do
          <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <term id="term-term1">
-         <preferred>Term1</preferred>
-         <termsource status="modified">
+         <preferred><expression><name>Term1</name></expression></preferred>
+                 <definition>
+          <verbaldefinition>
+            <p id='_'>Definition</p>
+          </verbaldefinition>
+        </definition>
+        <termsource status='modified' type='authoritative'>
          <origin bibitemid="ISO2191" type="inline" citeas="">
          <localityStack>
         <locality type="section"><referenceFrom>1</referenceFrom></locality>

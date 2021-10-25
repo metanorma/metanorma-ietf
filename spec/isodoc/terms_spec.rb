@@ -8,9 +8,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>
     <p>For the purposes of this document, the following terms and definitions apply.</p>
 
-<term id="paddy1"><preferred>paddy</preferred>
+<term id="paddy1"><preferred><expression><name>paddy</name></expression></preferred>
 <domain>rice</domain>
-<definition><p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">rice retaining its husk after threshing</p></definition>
+<definition><verbaldefinition><p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">rice retaining its husk after threshing</p></verbaldefinition></definition>
 <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f892">
   <p id="_65c9a509-9a89-4b54-a890-274126aeb55c">Foreign seeds, husks, bran, sand, dust.</p>
   <ul>
@@ -30,10 +30,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   </modification>
 </termsource></term>
 
-<term id="paddy"><preferred>paddy</preferred><admitted>paddy rice</admitted>
-<admitted>rough rice</admitted>
-<deprecates>cargo rice</deprecates>
-<definition><p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">rice retaining its husk after threshing</p></definition>
+<term id="paddy"><preferred><expression><name>paddy</name></expression></preferred>
+<admitted><expression><name>paddy rice</name></expression></admitted>
+<admitted><expression><name>rough rice</name></expression></admitted>
+<deprecates><expression><name>cargo rice</name></expression></deprecates>
+<definition><verbaldefinition><p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">rice retaining its husk after threshing</p></verbaldefinition></definition>
 <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
   <ul>
   <li>A</li>
@@ -111,7 +112,55 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          </middle>
   <back/>
 </rfc>
-
 OUTPUT
   end
+
+  it "processes multiple term definitions" do
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        <iso-standard xmlns="http://riboseinc.com/isoxml">
+    <sections>
+    <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>
+    <p>For the purposes of this document, the following terms and definitions apply.</p>
+
+<term id="paddy1"><preferred><expression><name>paddy</name></expression></preferred>
+<domain>rice</domain>
+<definition><verbaldefinition><p id="_eb29b35e-123e-4d1c-b50b-2714d41e747f">rice retaining its husk after threshing</p></verbaldefinition></definition>
+<definition><verbaldefinition><p id="_eb29b35e-123e-4d1c-b50b-2714d41e747e">rice keeping its husk after threshing</p></verbaldefinition></definition>
+</term>
+</terms>
+</sections>
+</iso-standard>
+INPUT
+<?xml version='1.0'?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+  <front>
+    <seriesInfo value='' name='RFC' asciiName='RFC'/>
+  </front>
+  <middle>
+    <section anchor='_terms_and_definitions'>
+      <name>Terms and Definitions</name>
+      <t>For the purposes of this document, the following terms and definitions apply.</t>
+      <section anchor='paddy1'>
+        <name>paddy</name>
+        <ol>
+          <li>
+            <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>&lt;rice&gt; rice retaining its husk after threshing</t>
+          </li>
+          <li>
+            <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747e'>rice keeping its husk after threshing</t>
+          </li>
+        </ol>
+      </section>
+    </section>
+  </middle>
+  <back/>
+</rfc>
+OUTPUT
+    end
 end
