@@ -68,7 +68,7 @@ RSpec.describe Asciidoctor::Ietf do
         <mn>91</mn>
       </mrow>
       </msub></math></stem></name></letter-symbol></admitted>
-             <definition><verbaldefinition><p id="_">Time</p></verbaldefinition></definition></term>
+             <definition><verbal-definition><p id="_">Time</p></verbal-definition></definition></term>
              </terms>
              </sections>
              </ietf-standard>
@@ -94,7 +94,7 @@ RSpec.describe Asciidoctor::Ietf do
         <term id="term-tempus">
         <preferred><expression><name>Tempus</name></expression></preferred>
         <domain>relativity</domain>
-        <definition><verbaldefinition><p id="_"> Time</p></verbaldefinition></definition>
+        <definition><verbal-definition><p id="_"> Time</p></verbal-definition></definition>
       </term>
       </terms>
       </sections>
@@ -137,8 +137,8 @@ RSpec.describe Asciidoctor::Ietf do
       </mrow>
       </msub></math></stem></name></letter-symbol></preferred>
       <definition>
-             <verbaldefinition><p id="_">This paragraph is extraneous</p></verbaldefinition>
-             <nonverbalrepresentation>
+             <verbal-definition><p id="_">This paragraph is extraneous</p></verbal-definition>
+             <non-verbal-representation>
       <formula id="_">
                <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
@@ -148,7 +148,7 @@ RSpec.describe Asciidoctor::Ietf do
       </mrow>
       </msub></math></stem>
              </formula>
-             </nonverbalrepresentation>
+             </non-verbal-representation>
       </definition>
              </term>
              </terms>
@@ -184,7 +184,7 @@ RSpec.describe Asciidoctor::Ietf do
       </ul>
              <term id="term-time">
              <preferred><expression><name>Time</name></expression></preferred>
-               <definition><verbaldefinition><p id="_">This paragraph is extraneous</p></verbaldefinition></definition>
+               <definition><verbal-definition><p id="_">This paragraph is extraneous</p></verbal-definition></definition>
              </term></terms>
              </sections>
              </ietf-standard>
@@ -336,9 +336,9 @@ RSpec.describe Asciidoctor::Ietf do
         <term id="term-term1">
         <preferred><expression><name>Term1</name></expression></preferred>
                 <definition>
-          <verbaldefinition>
+          <verbal-definition>
             <p id='_'>Definition</p>
-          </verbaldefinition>
+          </verbal-definition>
         </definition>
         <termsource status='identical' type='authoritative'>
         <origin bibitemid="ISO2191" type="inline" citeas="">

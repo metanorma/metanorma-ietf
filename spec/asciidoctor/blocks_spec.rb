@@ -573,9 +573,9 @@ RSpec.describe Asciidoctor::Ietf do
          <term id="term-term1">
          <preferred><expression><name>Term1</name></expression></preferred>
                  <definition>
-          <verbaldefinition>
+          <verbal-definition>
             <p id='_'>Definition</p>
-          </verbaldefinition>
+          </verbal-definition>
         </definition>
         <termsource status='identical' type='authoritative'>
         <origin bibitemid="ISO2191" type="inline" citeas="">
@@ -610,9 +610,9 @@ RSpec.describe Asciidoctor::Ietf do
          <term id="term-term1">
          <preferred><expression><name>Term1</name></expression></preferred>
                  <definition>
-          <verbaldefinition>
+          <verbal-definition>
             <p id='_'>Definition</p>
-          </verbaldefinition>
+          </verbal-definition>
         </definition>
         <termsource status='modified' type='authoritative'>
          <origin bibitemid="ISO2191" type="inline" citeas="">
