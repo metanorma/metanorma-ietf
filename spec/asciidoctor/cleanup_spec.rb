@@ -647,8 +647,8 @@ RSpec.describe Asciidoctor::Ietf do
         == References
         * [[[A,IETF(I-D.abarth-cake-02)]]], _Title_
       INPUT
-      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
-      expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
+      expect(doc).to include "<eref type='inline' bibitemid='A' citeas='I-D abarth-cake'/>"
+      expect(doc).to include "<bibitem id='A' type='standard'>"
     end
   end
 
