@@ -1,7 +1,7 @@
 require "spec_helper"
 require "fileutils"
 
-RSpec.describe Asciidoctor::Ietf do
+RSpec.describe Metanorma::Ietf do
   it "warns that image is not SVG" do
     FileUtils.rm_f "test.err"
     Asciidoctor.convert(<<~"INPUT", *OPTIONS)

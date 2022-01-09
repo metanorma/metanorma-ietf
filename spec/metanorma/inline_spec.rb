@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Asciidoctor::Ietf do
+RSpec.describe Metanorma::Ietf do
   it "processes inline_quoted formatting" do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}

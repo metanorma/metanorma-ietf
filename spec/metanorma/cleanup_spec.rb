@@ -2,7 +2,7 @@ require "spec_helper"
 require "relaton_iec"
 require "fileutils"
 
-RSpec.describe Asciidoctor::Ietf do
+RSpec.describe Metanorma::Ietf do
   it "removes empty text elements" do
     input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
@@ -570,7 +570,7 @@ RSpec.describe Asciidoctor::Ietf do
   end
 
   it "imposes anchor loaded with RFC references" do
-    conv = Asciidoctor::Ietf::Converter.new(nil, *OPTIONS)
+    conv = Metanorma::Ietf::Converter.new(nil, *OPTIONS)
     conv.init(Asciidoctor::Document.new([]))
     input = <<~INPUT
       <ietf-standard>

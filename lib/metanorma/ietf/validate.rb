@@ -1,8 +1,8 @@
 require "metanorma/ietf/data/workgroups"
 
-module Asciidoctor
+module Metanorma
   module Ietf
-    class Converter < ::Asciidoctor::Standoc::Converter
+    class Converter < ::Metanorma::Standoc::Converter
       def content_validate(doc)
         super
         image_validate(doc)
