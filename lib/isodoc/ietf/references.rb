@@ -62,7 +62,7 @@ module IsoDoc
       def docidentifier_render(bib, out)
         docidentifiers = bib.xpath(ns("./docidentifier"))
         id = render_identifier(bibitem_ref_code(bib))
-        !id[1].nil? && id[1] != "(NO ID)" and out.refcontent id[1]
+        !id[:sdo].nil? && id[:sdo] != "(NO ID)" and out.refcontent id[:sdo]
         docidentifiers&.each do |u|
           u["type"] == "DOI" and
             out.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI /, ""),

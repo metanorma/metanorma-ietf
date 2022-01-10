@@ -577,7 +577,7 @@ RSpec.describe Asciidoctor::Ietf do
       <bibdata>
       <relation>
       <bibitem>
-      <docidentifier type='rfc-anchor'>A</docidentifier>
+      <docidentifier type='IETF' scope="anchor">A</docidentifier>
       </bibitem>
       </relation>
       </bibdata>
@@ -590,10 +590,10 @@ RSpec.describe Asciidoctor::Ietf do
       <bibliography>
       <references>
       <bibitem id="B">
-      <docidentifier type='rfc-anchor'>A</docidentifier>
+      <docidentifier type='IETF' scope="anchor">A</docidentifier>
       </bibitem>
       <bibitem id="A">
-      <docidentifier type='rfc-anchor'>B</docidentifier>
+      <docidentifier type='IETF' scope="anchor">B</docidentifier>
       </bibitem>
       </references>
       </bibliography>
@@ -604,7 +604,7 @@ RSpec.describe Asciidoctor::Ietf do
          <bibdata>
          <relation>
          <bibitem>
-         <docidentifier type='rfc-anchor'>A</docidentifier>
+         <docidentifier type='IETF' scope="anchor">A</docidentifier>
          </bibitem>
          </relation>
          </bibdata>
@@ -621,10 +621,10 @@ RSpec.describe Asciidoctor::Ietf do
               <bibliography>
                 <references obligation="informative">
                   <bibitem id='A'>
-                    <docidentifier type='rfc-anchor'>A</docidentifier>
+                    <docidentifier type='IETF' scope='anchor'>A</docidentifier>
                   </bibitem>
                   <bibitem id='B'>
-                    <docidentifier type='rfc-anchor'>B</docidentifier>
+                    <docidentifier type='IETF' scope='anchor'>B</docidentifier>
                   </bibitem>
                 </references>
               </bibliography>

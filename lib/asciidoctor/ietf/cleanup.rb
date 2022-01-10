@@ -42,19 +42,19 @@ module Asciidoctor
         end
       end
 
-      def rfc_anchor_cleanup(xmldoc)
-        map = xmldoc.xpath("//bibitem[docidentifier/@type = 'rfc-anchor']")
-          .each_with_object({}) do |b, m|
+      def rfc_anchor_cleanup(xml)
+        map = xml.xpath("//bibitem[docidentifier[@type = 'IETF']"\
+                        "[@scope = 'anchor']]").each_with_object({}) do |b, m|
           next if b.at("./ancestor::bibdata | ./ancestor::bibitem")
 
-          id = b.at("./docidentifier[@type = 'rfc-anchor']").text
+          id = b.at("./docidentifier[@type = 'IETF'][@scope = 'anchor']").text
           m[b["id"]] = id
           b["id"] = id
         end
-        xmldoc.xpath("//eref | //origin").each do |x|
+        xml.xpath("//eref | //origin").each do |x|
           map[x["bibitemid"]] and x["bibitemid"] = map[x["bibitemid"]]
         end
-        xmldoc
+        xml
       end
 
       def smartquotes_cleanup(xmldoc)
