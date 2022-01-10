@@ -1,6 +1,6 @@
-module Asciidoctor
+module Metanorma
   module Ietf
-    class Converter < ::Asciidoctor::Standoc::Converter
+    class Converter < ::Metanorma::Standoc::Converter
       def para_attrs(node)
         attr_code( "keep-with-next": node.attr("keepWithNext") ||
                   node.attr("keep-with-next"),
