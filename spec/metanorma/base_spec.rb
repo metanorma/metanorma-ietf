@@ -1,7 +1,7 @@
 require "spec_helper"
 require "fileutils"
 
-RSpec.describe Asciidoctor::Ietf do
+RSpec.describe Metanorma::Ietf do
   it "has a version number" do
     expect(Metanorma::Ietf::VERSION).not_to be nil
   end

@@ -18,7 +18,7 @@ end
 require "bundler/setup"
 require "asciidoctor"
 require "metanorma-ietf"
-# require "asciidoctor/standoc/converter"
+# require "metanorma/standoc/converter"
 require "rspec/matchers"
 require "timecop"
 require "equivalent-xml"

@@ -1,7 +1,7 @@
 require "spec_helper"
 require "open3"
 
-RSpec.describe Asciidoctor::Ietf do
+RSpec.describe Metanorma::Ietf do
   it "processes paragraphs" do
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}

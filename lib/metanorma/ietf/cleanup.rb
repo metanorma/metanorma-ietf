@@ -1,6 +1,6 @@
-module Asciidoctor
+module Metanorma
   module Ietf
-    class Converter < ::Asciidoctor::Standoc::Converter
+    class Converter < ::Metanorma::Standoc::Converter
       def cleanup(xmldoc)
         bcp14_cleanup(xmldoc)
         abstract_cleanup(xmldoc)

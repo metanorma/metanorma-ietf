@@ -1,6 +1,6 @@
 require "asciidoctor/extensions"
 
-module Asciidoctor
+module Metanorma
   module Ietf
     class InlineCrefMacro < Asciidoctor::Extensions::InlineMacroProcessor
       use_dsl

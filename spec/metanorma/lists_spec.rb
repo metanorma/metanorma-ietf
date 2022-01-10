@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Asciidoctor::Ietf do
+RSpec.describe Metanorma::Ietf do
   it "processes complex lists" do
     output = Asciidoctor.convert(<<~"INPUT", *OPTIONS)
       #{ASCIIDOC_BLANK_HDR}

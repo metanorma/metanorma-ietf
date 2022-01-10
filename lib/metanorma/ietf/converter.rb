@@ -1,5 +1,5 @@
 require "asciidoctor"
-require "asciidoctor/standoc/converter"
+require "metanorma/standoc/converter"
 require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
@@ -7,11 +7,11 @@ require_relative "./validate"
 require_relative "./cleanup"
 require_relative "./macros"
 
-module Asciidoctor
+module Metanorma
   module Ietf
-    class Converter < ::Asciidoctor::Standoc::Converter
+    class Converter < ::Metanorma::Standoc::Converter
       Asciidoctor::Extensions.register do
-        inline_macro Asciidoctor::Ietf::InlineCrefMacro
+        inline_macro Metanorma::Ietf::InlineCrefMacro
       end
 
       XML_ROOT_TAG = "ietf-standard".freeze
