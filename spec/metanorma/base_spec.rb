@@ -574,7 +574,7 @@ RSpec.describe Metanorma::Ietf do
         == References
         * [[[I-D.abarth-cake,IETF(I-D.abarth-cake-02)]]], _Title_
       INPUT
-      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D.abarth-cake'/>"
+      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D abarth-cake'/>"
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
       expect(doc).to include "<uri type='TXT'>http://www.ietf.org/internet-drafts/draft-abarth-cake-02.txt</uri>"
     end
