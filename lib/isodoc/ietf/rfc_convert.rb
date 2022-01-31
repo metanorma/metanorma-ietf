@@ -61,7 +61,7 @@ module IsoDoc::Ietf
     end
 
     def omit_docid_prefix(prefix)
-      return true if prefix == "IETF"
+      return true if %w(IETF RFC).include?(prefix)
 
       super
     end

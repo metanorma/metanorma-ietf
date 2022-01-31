@@ -209,9 +209,6 @@
       <zeroOrMore>
         <ref name="contact"/>
       </zeroOrMore>
-      <zeroOrMore>
-        <ref name="uri"/>
-      </zeroOrMore>
     </element>
   </define>
   <define name="fullname">
@@ -401,9 +398,9 @@
       <choice>
         <!-- iso191606 TODO -->
         <group>
-          <oneOrMore>
+          <zeroOrMore>
             <ref name="street"/>
-          </oneOrMore>
+          </zeroOrMore>
           <ref name="city"/>
           <optional>
             <ref name="state"/>
