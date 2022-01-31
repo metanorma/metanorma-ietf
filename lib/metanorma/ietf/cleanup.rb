@@ -43,11 +43,11 @@ module Metanorma
       end
 
       def rfc_anchor_cleanup(xml)
-        map = xml.xpath("//bibitem[docidentifier[@type = 'IETF']"\
+        map = xml.xpath("//bibitem[docidentifier[@type = 'IETF' or @type = 'RFC']"\
                         "[@scope = 'anchor']]").each_with_object({}) do |b, m|
           next if b.at("./ancestor::bibdata | ./ancestor::bibitem")
 
-          id = b.at("./docidentifier[@type = 'IETF'][@scope = 'anchor']").text
+          id = b.at("./docidentifier[@type = 'IETF' or @type = 'RFC'][@scope = 'anchor']").text
           m[b["id"]] = id
           b["id"] = id
         end

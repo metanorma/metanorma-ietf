@@ -67,7 +67,7 @@ module IsoDoc
           u["type"] == "DOI" and
             out.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI /, ""),
                                             name: "DOI")
-          u["type"] == "IETF" and docidentifier_ietf(u, out)
+          %w(IETF RFC).include?(u["type"]) and docidentifier_ietf(u, out)
         end
       end
 
