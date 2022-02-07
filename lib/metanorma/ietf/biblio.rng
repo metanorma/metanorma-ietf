@@ -825,6 +825,11 @@
       <optional>
         <attribute name="scope"/>
       </optional>
+      <optional>
+        <attribute name="primary">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
       <text/>
     </element>
   </define>
