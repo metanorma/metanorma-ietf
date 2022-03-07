@@ -9,6 +9,7 @@ module IsoDoc
           notes = t.xpath(ns(".//termnote"))
           notes.each do |n|
             next if n["id"].nil? || n["id"].empty?
+
             idx = notes.size == 1 ? "" : " #{c.increment(n).print}"
             @anchors[n["id"]] =
               anchor_struct(idx, n, @labels["note_xref"], "note", false)

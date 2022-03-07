@@ -47,7 +47,7 @@ module IsoDoc
       def termdef_parse(node, out)
         set_termdomain("")
         node.xpath(ns("./definition")).size > 1 and
-          IsoDoc::PresentationXMLConvert.new({}).multidef(node)
+          @isodoc.multidef(node)
         clause_parse(node, out)
       end
 

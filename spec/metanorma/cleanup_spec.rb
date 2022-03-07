@@ -132,7 +132,7 @@ RSpec.describe Metanorma::Ietf do
                     <sections>
                <terms id="_" obligation="normative">
                <title>Terms and definitions</title>
-               <term id="term-_-t90-"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+               <term id="term-t90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
@@ -647,7 +647,7 @@ RSpec.describe Metanorma::Ietf do
         == References
         * [[[A,IETF(I-D.abarth-cake-02)]]], _Title_
       INPUT
-      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D abarth-cake'/>"
+      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='Internet-Draft draft-abarth-cake-02'/>"
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
     end
   end

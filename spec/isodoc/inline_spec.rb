@@ -444,16 +444,15 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <eref type="inline" bibitemid="ISO712"><locality type="whole"></locality></eref>
           <eref type="inline" bibitemid="ISO712"><locality type="locality:prelude"><referenceFrom>7</referenceFrom></locality></eref>
           <eref type="inline" bibitemid="ISO712" citeas="ISO 712">A</eref>
-          <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="clause"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
-          <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack><locality type="table"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
-          <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><localityStack><locality type="anchor">><referenceFrom>1</referenceFrom></locality></localityStack>A</eref>
-          <eref type="inline" bibitemid="ISO712"><localityStack><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="anchor"><referenceFrom>xyz</referenceFrom></locality></localityStack><localityStack><locality type="clause"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
-          <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="table"><referenceFrom>1</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
-          <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
-          <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1.5</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
-          <eref type="inline" bibitemid="ISO712"><locality type="table"><referenceFrom>1</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality>A</eref>
-          <eref type="inline" bibitemid="ISO712"><locality type="whole"></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
-          <eref type="inline" bibitemid="ISO712"><locality type="locality:prelude"><referenceFrom>7</referenceFrom></locality><locality type="anchor">><referenceFrom>1</referenceFrom></locality></eref>
+          <eref type="inline" bibitemid="ISO712"><localityStack connective="and"><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack connective="and"><locality type="clause"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
+          <eref type="inline" bibitemid="ISO712"><localityStack connective="and"><locality type="clause"><referenceFrom>1</referenceFrom></locality></localityStack><localityStack connective="and"><locality type="table"><referenceFrom>3</referenceFrom></locality></localityStack></eref>
+          <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><localityStack connective="and"><locality type="anchor"><referenceFrom>1</referenceFrom></locality></localityStack>A</eref>
+          <eref type="inline" bibitemid="ISO712"><localityStack connective="and"><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="anchor"><referenceFrom>xyz</referenceFrom></locality></localityStack><localityStack connective="and"><locality type="clause"><referenceFrom>9</referenceFrom></locality></localityStack></eref>
+          <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1</referenceFrom></locality><locality type="anchor"><referenceFrom>1</referenceFrom></locality></eref>
+          <eref type="inline" bibitemid="ISO712"><locality type="clause"><referenceFrom>1.5</referenceFrom></locality><locality type="anchor"><referenceFrom>1</referenceFrom></locality></eref>
+          <eref type="inline" bibitemid="ISO712"><locality type="table"><referenceFrom>1</referenceFrom></locality><locality type="anchor"><referenceFrom>1</referenceFrom></locality>A</eref>
+          <eref type="inline" bibitemid="ISO712"><locality type="whole"></locality><locality type="anchor"><referenceFrom>1</referenceFrom></locality></eref>
+          <eref type="inline" bibitemid="ISO712"><locality type="locality:prelude"><referenceFrom>7</referenceFrom></locality><locality type="anchor"><referenceFrom>1</referenceFrom></locality></eref>
           </p>
           </foreword></preface>
           <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
@@ -474,27 +473,26 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='1' relative=''/>
-        <relref target='ISO712' section='1' relative=''/>
-        <relref target='ISO712' section='1.5' relative=''/>
-        <relref target='ISO712' section='' relative=''>A</relref>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''/>
-        <relref target='ISO712' section='' relative=''>A</relref>
-        <relref target='ISO712' section='1; 3' relative=''/>
-        <relref target='ISO712' section='1' relative=''/>
-        <relref target='ISO712' section='' relative='1'>A</relref>
-        <relref target='ISO712' section='1; 3' relative='xyz'/>
-        <relref target='ISO712' section='1' relative='1'/>
-      <relref target='ISO712' section='1' relative='1'/>
-      <relref target='ISO712' section='1.5' relative='1'/>
-      <relref target='ISO712' section='' relative='1'>A</relref>
-      <relref target='ISO712' section='' relative='1'/>
-      <relref target='ISO712' section='' relative='1'/>
+                         <relref target='ISO712' section='' relative=''/>
+               <relref target='ISO712' section='' relative=''/>
+               <relref target='ISO712' section='Table 1' relative=''/>
+               <relref target='ISO712' section='Table 1&#x2013;1' relative=''/>
+               <relref target='ISO712' section='1,  Table 1' relative=''/>
+               <relref target='ISO712' section='1' relative=''/>
+               <relref target='ISO712' section='1.5' relative=''/>
+               <relref target='ISO712' section='Table 1' relative=''>A</relref>
+               <relref target='ISO712' section='Whole of text' relative=''/>
+               <relref target='ISO712' section='Prelude 7' relative=''/>
+               <relref target='ISO712' section='' relative=''>A</relref>
+               <relref target='ISO712' section='1 and  3' relative=''/>
+               <relref target='ISO712' section='1 and  Table 3' relative=''/>
+               <relref target='ISO712' section='' relative='1'>A</relref>
+               <relref target='ISO712' section='1 and  Clause 9' relative='xyz'/>
+               <relref target='ISO712' section='1' relative='1'/>
+               <relref target='ISO712' section='1.5' relative='1'/>
+               <relref target='ISO712' section='Table 1' relative='1'>A</relref>
+               <relref target='ISO712' section='Whole of text' relative='1'/>
+               <relref target='ISO712' section='Prelude 7' relative='1'/>
       </t>
       </abstract></front><middle/>
       <back>
@@ -595,12 +593,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <li><concept><refterm>term</refterm>
               <renderterm>word</renderterm>
               <eref bibitemid="ISO712" type="inline" citeas="ISO 712">
-              <localityStack>
+              <localityStack connective="and">
                 <locality type='clause'>
                   <referenceFrom>3.1</referenceFrom>
                 </locality>
               </localityStack>
-              <localityStack>
+              <localityStack connective="and">
                 <locality type='figure'>
                   <referenceFrom>b</referenceFrom>
                 </locality>
@@ -610,12 +608,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <li><concept><refterm>term</refterm>
               <renderterm>word</renderterm>
               <eref bibitemid="ISO712" type="inline" citeas="ISO 712">
-              <localityStack>
+              <localityStack connective="and">
                 <locality type='clause'>
                   <referenceFrom>3.1</referenceFrom>
                 </locality>
               </localityStack>
-              <localityStack>
+              <localityStack connective="and">
                 <locality type='figure'>
                   <referenceFrom>b</referenceFrom>
                 </locality>
@@ -699,19 +697,19 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <li>
                   <em>word</em>
                    [term defined in
-                  <relref target='ISO712' section='3.1' relative=''> </relref>
+                  <relref target='ISO712' section='3.1,  Figure a' relative=''> </relref>
                   ]
                 </li>
                 <li>
                   <em>word</em>
                    [term defined in
-                  <relref target='ISO712' section='3.1' relative=''> </relref>
+                  <relref target='ISO712' section='3.1 and  Figure b' relative=''> </relref>
                   ]
                 </li>
                 <li>
                   <em>word</em>
                    [term defined in
-                  <relref target='ISO712' section='3.1' relative=''> The Aforementioned Citation </relref>
+                  <relref target='ISO712' section='3.1 and  Figure b' relative=''> The Aforementioned Citation </relref>
                   ]
                 </li>
                 <li>
@@ -756,5 +754,228 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+  end
+
+  it "processes multiple-target xrefs" do
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata/>
+        <sections>
+       <clause id="A" inline-header="false" obligation="normative">
+       <title>Section</title>
+       <p id="A"><xref target="ref1"><location target="ref1" connective="from"/><location target="ref2" connective="to"/></xref>
+       <xref target="ref1"><location target="ref1" connective="from"/><location target="ref2" connective="to"/>text</xref>
+       <xref target="ref1"><location target="ref1" connective="and"/><location target="ref2" connective="and"/></xref>
+       <xref target="ref1"><location target="ref1" connective="and"/><location target="ref2" connective="and"/><location target="ref3" connective="and"/></xref>
+       <xref target="ref1"><location target="ref1" connective="and"/><location target="ref2" connective="and"/>text</xref>
+       <xref target="ref1"><location target="ref1" connective="and"/><location target="ref2" connective="or"/></xref>
+       <xref target="ref1"><location target="ref1" connective="and"/><location target="ref2" connective="or"/><location target="ref3" connective="or"/></xref>
+       <xref target="ref1"><location target="ref1" connective="from"/><location target="ref2" connective="to"/><location target="ref3" connective="and"/><location target="ref4" connective="to"/></xref></p>
+       </clause>
+       <clause id="ref1"/>
+       <clause id="ref2"/>
+       <clause id="ref3"/>
+       <clause id="ref4"/>
+         </sections>
+       </iso-standard>
+    INPUT
+    output = <<~OUTPUT
+      <?xml version='1.0'?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+         <front>
+           <seriesInfo value='' name='RFC' asciiName='RFC'/>
+         </front>
+         <middle>
+           <section anchor='A'>
+             <name>Section</name>
+             <t anchor='A'>
+               <xref target='ref1'/>
+               <xref target='ref1'>text</xref>
+               <xref target='ref1'/>
+               <xref target='ref1'/>
+               <xref target='ref1'>text</xref>
+               <xref target='ref1'/>
+               <xref target='ref1'/>
+               <xref target='ref1'/>
+             </t>
+           </section>
+           <section anchor='ref1'/>
+           <section anchor='ref2'/>
+           <section anchor='ref3'/>
+           <section anchor='ref4'/>
+         </middle>
+         <back/>
+       </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+        .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+  end
+
+  it "combines locality stacks with connectives" do
+    input = <<~INPUT
+      <itu-standard xmlns="https://www.calconnect.org/standards/itu">
+        <sections>
+       <clause id="A" inline-header="false" obligation="normative">
+       <title>Section</title>
+                  <p id='_'>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='from'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='to'>
+                  <locality type='clause'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                </localityStack>
+              </eref>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='from'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='to'>
+                  <locality type='clause'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                  <locality type="table">
+                    <referenceFrom>2</referenceFrom>
+                  </locality>
+                  </locality>
+                </localityStack>
+                text
+              </eref>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                </localityStack>
+              </eref>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>7</referenceFrom>
+                  </locality>
+                </localityStack>
+              </eref>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='and'>
+                  <locality type='annex'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                </localityStack>
+              </eref>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='or'>
+                  <locality type='clause'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                </localityStack>
+                text
+              </eref>
+              <eref type='inline' bibitemid='ref1' citeas='XYZ'>
+                <localityStack connective='from'>
+                  <locality type='clause'>
+                    <referenceFrom>3</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='to'>
+                  <locality type='clause'>
+                    <referenceFrom>5</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='and'>
+                  <locality type='clause'>
+                    <referenceFrom>8</referenceFrom>
+                  </locality>
+                </localityStack>
+                <localityStack connective='to'>
+                  <locality type='clause'>
+                    <referenceFrom>10</referenceFrom>
+                  </locality>
+                </localityStack>
+              </eref>
+            </p>
+          </clause>
+        </sections>
+        <bibliography>
+          <references id='_' normative='false' obligation='informative'>
+            <title>Bibliography</title>
+            <bibitem id='ref1'>
+              <formattedref format='application/x-isodoc+xml'>
+                <em>Standard</em>
+              </formattedref>
+              <docidentifier>XYZ</docidentifier>
+            </bibitem>
+          </references>
+        </bibliography>
+      </itu-standard>
+    INPUT
+    output = <<~OUTPUT
+      <?xml version='1.0'?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+         <front>
+           <seriesInfo value='' name='RFC' asciiName='RFC'/>
+         </front>
+         <middle>
+           <section anchor='A'>
+             <name>Section</name>
+             <t anchor='_'>
+               <relref target='ref1' section='3 to  5' relative=''> </relref>
+               <relref target='ref1' section='3 to  Clause 5,  Table 2' relative=''> </relref>
+                text
+             </t>
+             <relref target='ref1' section='3 and  5' relative=''> </relref>
+             <relref target='ref1' section='3,  5, and  7' relative=''> </relref>
+             <relref target='ref1' section='3 and  Annex 5' relative=''> </relref>
+             <relref target='ref1' section='3 or  5' relative=''> text </relref>
+             <relref target='ref1' section='3 to  5 and  8 to  10' relative=''> </relref>
+           </section>
+         </middle>
+         <back/>
+       </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+        .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 end

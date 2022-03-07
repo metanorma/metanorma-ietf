@@ -345,7 +345,7 @@
         <optional>
           <attribute name="format"/>
         </optional>
-        <text/>
+        <ref name="XrefBody"/>
       </element>
     </define>
     <define name="erefType">

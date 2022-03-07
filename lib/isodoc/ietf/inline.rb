@@ -107,10 +107,10 @@ module IsoDoc
       end
 
       def get_linkend(node)
-        contents = node.children.reject do |c|
-                     %w{locality localityStack}.include? c.name
-                   end
-          .select { |c| !c.text? || /\S/.match(c) }
+        no_loc_contents = node.children.reject do |c|
+          %w{locality localityStack location}.include? c.name
+        end
+        contents = no_loc_contents.select { |c| !c.text? || /\S/.match(c) }
         !contents.empty? and
           return Nokogiri::XML::NodeSet.new(node.document, contents).to_xml
         ""
@@ -122,38 +122,15 @@ module IsoDoc
         end
         relative = node["relative"] ||
           node.at(ns(".//locality[@type = 'anchor']/referenceFrom"))&.text || ""
-        section = eref_clause(node.xpath(ns("./locality | ./localityStack")),
-                              nil) || ""
-        #section = "" unless relative.empty?
+        section = @isodoc.eref_localities(
+          node.xpath(ns("./locality | ./localityStack")), nil, node
+        )&.sub(/^,/, "")&.sub(/^\s*(Section|Clause)/, "")&.strip&.sub(/,$/, "") || ""
+        # section = "" unless relative.empty?
         out.relref **attr_code(target: node["bibitemid"], section: section,
                                relative: relative,
                                displayFormat: node["displayFormat"]) do |l|
                                  linkend.each { |n| parse(n, l) }
                                end
-      end
-
-      def eref_clause(refs, target)
-        ret = []
-        ret1 = ""
-        refs.each do |l|
-          if l.name == "localityStack"
-            ret << ret1
-            ret1 = ""
-            ret << eref_clause1(l.elements, target)
-          else ret1 += eref_clause1([l], target)
-          end
-        end
-        ret << ret1
-        ret.reject { |c| c.nil? || c.empty? }.join("; ")
-      end
-
-      def eref_clause1(refs, _target)
-        refs.each do |l|
-          next unless %w(clause section).include? l["type"]
-
-          return l&.at(ns("./referenceFrom"))&.text
-        end
-        ""
       end
 
       def index_parse(node, out)

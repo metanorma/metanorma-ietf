@@ -62,11 +62,11 @@ def strip_guid(x)
   x.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"}, ' target="_"')
 end
 
-def xmlpp(x)
+def xmlpp(xml)
   s = ""
   f = REXML::Formatters::Pretty.new(2)
   f.compact = true
-  f.write(REXML::Document.new(x),s)
+  f.write(REXML::Document.new(xml), s)
   s
 end
 

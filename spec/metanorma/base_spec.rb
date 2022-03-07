@@ -8,7 +8,7 @@ RSpec.describe Metanorma::Ietf do
 
   it "processes a blank document" do
     VCR.use_cassette "workgroup_fetch" do
-      expect(xmlpp(Asciidoctor.convert(<<~"INPUT", *OPTIONS))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      input = <<~INPUT
         = Document title
         Author
         :docfile: test.adoc
@@ -17,30 +17,36 @@ RSpec.describe Metanorma::Ietf do
         :no-isobib:
         :flush-caches: true
       INPUT
-            #{BLANK_HDR}
+      output = <<~OUTPUT
+        #{BLANK_HDR}
         <sections/>
         </ietf-standard>
       OUTPUT
+      expect(xmlpp(Asciidoctor.convert(input, *OPTIONS)))
+        .to be_equivalent_to xmlpp(output)
     end
   end
 
   it "converts a blank document" do
     FileUtils.rm_f "test.rfc.xml"
-    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", *OPTIONS))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
       :novalid:
     INPUT
+    output = <<~OUTPUT
           #{BLANK_HDR}
       <sections/>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_equivalent_to xmlpp(output)
     expect(File.exist?("test.rfc.xml")).to be true
   end
 
   it "processes default metadata" do
-    expect(xmlpp(Asciidoctor.convert(<<~"INPUT", *OPTIONS))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -166,6 +172,7 @@ RSpec.describe Metanorma::Ietf do
       :symrefs: 34
       :sortrefs: 35
     INPUT
+    output = <<~OUTPUT
           <?xml version='1.0' encoding='UTF-8'?>
              <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
                <bibdata type='standard'>
@@ -432,10 +439,12 @@ RSpec.describe Metanorma::Ietf do
                <sections/>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes complex metadata" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -463,6 +472,7 @@ RSpec.describe Metanorma::Ietf do
       [language=en]
       == Clause 1
     INPUT
+    output = <<~OUTPUT
            <?xml version='1.0' encoding='UTF-8'?>
              <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
                <bibdata type='standard'>
@@ -559,6 +569,8 @@ RSpec.describe Metanorma::Ietf do
                </sections>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "cites drafts of internet drafts" do
@@ -574,14 +586,14 @@ RSpec.describe Metanorma::Ietf do
         == References
         * [[[I-D.abarth-cake,IETF(I-D.abarth-cake-02)]]], _Title_
       INPUT
-      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='I-D abarth-cake'/>"
+      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='Internet-Draft draft-abarth-cake-02'/>"
       expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
       expect(doc).to include "<uri type='TXT'>http://www.ietf.org/internet-drafts/draft-abarth-cake-02.txt</uri>"
     end
   end
 
   it "processes clause attributes" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -595,6 +607,7 @@ RSpec.describe Metanorma::Ietf do
       == Appendix
 
     INPUT
+    output = <<~OUTPUT
        #{BLANK_HDR}
         <sections>
           <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
@@ -606,5 +619,7 @@ RSpec.describe Metanorma::Ietf do
         </annex>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 end
