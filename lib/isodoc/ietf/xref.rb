@@ -6,7 +6,7 @@ module IsoDoc
       def termnote_anchor_names(docxml)
         docxml.xpath(ns("//term[descendant::termnote]")).each do |t|
           c = IsoDoc::XrefGen::Counter.new
-          notes = t.xpath(ns(".//termnote"))
+          notes = t.xpath(ns("./termnote"))
           notes.each do |n|
             next if n["id"].nil? || n["id"].empty?
 
