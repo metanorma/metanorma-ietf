@@ -91,7 +91,7 @@ RSpec.describe Metanorma::Ietf do
              <sections>
         <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
-        <term id="term-tempus">
+        <term id="term-Tempus">
         <preferred><expression><name>Tempus</name></expression></preferred>
         <domain>relativity</domain>
         <definition><verbal-definition><p id="_"> Time</p></verbal-definition></definition>
@@ -184,7 +184,7 @@ RSpec.describe Metanorma::Ietf do
           <p id='_'>So am I</p>
         </li>
       </ul>
-             <term id="term-time">
+             <term id="term-Time">
              <preferred><expression><name>Time</name></expression></preferred>
                <definition><verbal-definition><p id="_">This paragraph is extraneous</p></verbal-definition></definition>
              </term></terms>
@@ -335,7 +335,7 @@ RSpec.describe Metanorma::Ietf do
       <sections>
         <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
-        <term id="term-term1">
+        <term id="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
                 <definition>
           <verbal-definition>
