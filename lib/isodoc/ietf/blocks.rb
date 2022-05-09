@@ -179,6 +179,15 @@ module IsoDoc
         end
       end
 
+      def admonition_name(node, type)
+        name = node&.at(ns("./name")) and return name
+        name = Nokogiri::XML::Node.new("name", node.document)
+        return unless type && @i18n.admonition[type]
+
+        name << @i18n.admonition[type]&.upcase
+        name
+      end
+
       def admonition_name_parse(_node, div, name)
         div.t **{ keepWithNext: "true" } do |p|
           name.children.each { |n| parse(n, p) }
