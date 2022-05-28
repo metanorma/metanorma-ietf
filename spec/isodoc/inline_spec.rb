@@ -542,7 +542,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
           <abstract>
       <t>
-      <abc>X &gt; Y
+      <abc>X &#x3e; Y
       A
       </abc>
       </t>

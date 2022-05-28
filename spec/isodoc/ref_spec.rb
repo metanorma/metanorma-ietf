@@ -591,7 +591,14 @@ RSpec.describe IsoDoc::Ietf do
                  </title>
                </front>
              </reference>
-             <xi:include href='https://xml2rfc.tools.ietf.org/10.xml'/>
+             <reference anchor='ref11'>
+        <front>
+          <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+        </front>
+        <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
+        <refcontent>RFC 10</refcontent>
+        <seriesInfo value='10' name='RFC'/>
+      </reference>
              <reference anchor='ref12'>
                <front>
                  <title>

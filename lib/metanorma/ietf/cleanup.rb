@@ -5,7 +5,6 @@ module Metanorma
         bcp14_cleanup(xmldoc)
         abstract_cleanup(xmldoc)
         super
-        rfc_anchor_cleanup(xmldoc)
         cref_cleanup(xmldoc)
         xmldoc
       end
@@ -40,21 +39,6 @@ module Metanorma
 
           s.name = "bcp14"
         end
-      end
-
-      def rfc_anchor_cleanup(xml)
-        map = xml.xpath("//bibitem[docidentifier[@type = 'IETF' or @type = 'RFC']"\
-                        "[@scope = 'anchor']]").each_with_object({}) do |b, m|
-          next if b.at("./ancestor::bibdata | ./ancestor::bibitem")
-
-          id = b.at("./docidentifier[@type = 'IETF' or @type = 'RFC'][@scope = 'anchor']").text
-          m[b["id"]] = id
-          b["id"] = id
-        end
-        xml.xpath("//eref | //origin").each do |x|
-          map[x["bibitemid"]] and x["bibitemid"] = map[x["bibitemid"]]
-        end
-        xml
       end
 
       def smartquotes_cleanup(xmldoc)
