@@ -7,7 +7,7 @@ module IsoDoc
             else
               YAML.load_file(File.join(File.dirname(__FILE__), "i18n-en.yaml"))
             end
-        super.merge(y)
+        super.deep_merge(y)
       end
     end
   end
