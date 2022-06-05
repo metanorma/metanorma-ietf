@@ -38,7 +38,6 @@ module IsoDoc
 
           i += 1 if b.name == "bibitem"
           if b.name == "note" then note_parse(b, div)
-          elsif ietf?(b) then ietf_bibitem_entry(div, b, i)
           else
             nonstd_bibitem(div, b, i, biblio)
           end
@@ -170,18 +169,6 @@ module IsoDoc
             end
           end
         end
-      end
-
-      def ietf_bibitem_entry(div, bib, _idx)
-        url = bib&.at(ns("./uri[@type = 'xml']"))&.text
-        div << "<xi:include href='#{url}'/>"
-      end
-
-      def ietf?(bib)
-        return false if !@xinclude
-
-        url = bib.at(ns("./uri[@type = 'xml']")) or return false
-        /xml2rfc\.tools\.ietf\.org/.match(url)
       end
     end
   end

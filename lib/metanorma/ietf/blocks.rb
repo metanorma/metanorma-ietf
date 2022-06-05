@@ -2,10 +2,10 @@ module Metanorma
   module Ietf
     class Converter < ::Metanorma::Standoc::Converter
       def para_attrs(node)
-        attr_code( "keep-with-next": node.attr("keepWithNext") ||
+        attr_code("keep-with-next": node.attr("keepWithNext") ||
                   node.attr("keep-with-next"),
                   "keep-with-previous": node.attr("keepWithPrevious") ||
-                  node.attr("keep-with-previous"),
+                 node.attr("keep-with-previous"),
                   id: ::Metanorma::Utils::anchor_or_uuid(node))
       end
 
@@ -36,20 +36,21 @@ module Metanorma
 
       def sidebar(node)
         return unless draft?
+
         noko do |xml|
-          xml.review **(sidebar_attrs(node)) do |r|
+          xml.review **sidebar_attrs(node) do |r|
             node.title.nil? or r.name { |name| name << node.title }
             wrap_in_para(node, r)
           end
         end
       end
 
-      def note(n)
+      def note(node)
         noko do |xml|
-          xml.note **attr_code(id: ::Metanorma::Utils::anchor_or_uuid(n),
-                               removeInRFC: n.attr("remove-in-rfc")) do |c|
-            n.title.nil? or c.name { |name| name << n.title }
-            wrap_in_para(n, c)
+          xml.note **attr_code(id: ::Metanorma::Utils::anchor_or_uuid(nil),
+                               removeInRFC: node.attr("remove-in-rfc")) do |c|
+            node.title.nil? or c.name { |name| name << node.title }
+            wrap_in_para(node, c)
           end
         end.join("\n")
       end
@@ -59,9 +60,9 @@ module Metanorma
           xml.figure **literal_attrs(node) do |f|
             figure_title(node, f)
             f.pre node.lines.join("\n"),
-              **attr_code(align: node.attr("align"),
-                          id: ::Metanorma::Utils::anchor_or_uuid(nil),
-                          alt: node.attr("alt"))
+                  **attr_code(align: node.attr("align"),
+                              id: ::Metanorma::Utils::anchor_or_uuid(nil),
+                              alt: node.attr("alt"))
           end
         end
       end
@@ -70,9 +71,10 @@ module Metanorma
         super.merge(attr_code(align: node.attr("align")))
       end
 
-       def listing_attrs(node)
-         super.merge(attr_code(markers: node.attr("markers"), src: node.attr("src")))
-       end
+      def listing_attrs(node)
+        super.merge(attr_code(markers: node.attr("markers"),
+                              src: node.attr("src")))
+      end
     end
   end
 end
