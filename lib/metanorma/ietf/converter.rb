@@ -38,7 +38,7 @@ module Metanorma
       end
 
       def doctype(node)
-        ret = super
+        ret = node.attr("doctype")&.gsub(/\s+/, "-")&.downcase || "internet-draft"
         ret = "internet-draft" if ret == "article"
         ret
       end

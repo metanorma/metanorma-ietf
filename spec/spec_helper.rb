@@ -53,9 +53,11 @@ end
 OPTIONS = [backend: :ietf, header_footer: true].freeze
 
 def htmlencode(x)
-  HTMLEntities.new.encode(x, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n").
-    gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, '&').gsub(/&#x27;/, "'").
-    gsub(/\\u(....)/) { |s| "&#x#{$1.downcase};" }
+  HTMLEntities.new.encode(x, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n")
+    .gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, "&").gsub(/&#x27;/, "'")
+    .gsub(/\\u(....)/) do |_s|
+    "&#x#{$1.downcase};"
+  end
 end
 
 def strip_guid(x)
@@ -75,96 +77,96 @@ def dtd_absolute_path
 end
 
 ASCIIDOC_BLANK_HDR = <<~"HDR"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :nodoc:
-      :novalid:
-      :no-isobib:
-      :data-uri-image: false
+  = Document title
+  Author
+  :docfile: test.adoc
+  :nodoc:
+  :novalid:
+  :no-isobib:
+  :data-uri-image: false
 
 HDR
 
 VALIDATING_BLANK_HDR = <<~"HDR"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :nodoc:
-      :data-uri-image: false
+  = Document title
+  Author
+  :docfile: test.adoc
+  :nodoc:
+  :data-uri-image: false
 
 HDR
 
 BLANK_HDR = <<~"HDR"
-<?xml version='1.0' encoding='UTF-8'?>
-       <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
-       <bibdata type="standard">
-        <title language="en" type="main" format="text/plain">Document title</title>
-         <contributor>
-           <role type="publisher"/>
-           <organization>
-           <name>Internet Engineering Task Force</name>
-       <abbreviation>IETF</abbreviation>
-           </organization>
-         </contributor>
-
-         <language>en</language>
-         <script>Latn</script>
-<status>
-  <stage>published</stage>
-</status>
-
-         <copyright>
-           <from>2000</from>
-           <owner>
+  <?xml version='1.0' encoding='UTF-8'?>
+         <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
+         <bibdata type="standard">
+          <title language="en" type="main" format="text/plain">Document title</title>
+           <contributor>
+             <role type="publisher"/>
              <organization>
-           <name>Internet Engineering Task Force</name>
-       <abbreviation>IETF</abbreviation>
+             <name>Internet Engineering Task Force</name>
+         <abbreviation>IETF</abbreviation>
              </organization>
-           </owner>
-         </copyright>
-         <series type="stream">
-           <title>IETF</title>
-         </series>
-         <ext>
-  <doctype>internet-draft</doctype>
-  <ipr>trust200902</ipr>
-  <pi>
-  <tocinclude>yes</tocinclude>
-</pi>
-</ext>
-       </bibdata>
+           </contributor>
+
+           <language>en</language>
+           <script>Latn</script>
+  <status>
+    <stage>published</stage>
+  </status>
+
+           <copyright>
+             <from>2000</from>
+             <owner>
+               <organization>
+             <name>Internet Engineering Task Force</name>
+         <abbreviation>IETF</abbreviation>
+               </organization>
+             </owner>
+           </copyright>
+           <series type="stream">
+             <title>IETF</title>
+           </series>
+           <ext>
+    <doctype>internet-draft</doctype>
+    <ipr>trust200902</ipr>
+    <pi>
+    <tocinclude>yes</tocinclude>
+  </pi>
+  </ext>
+         </bibdata>
 HDR
 
 XML_HDR = <<~"HDR"
-<?xml version='1.0'?>
-<?rfc strict="yes"?>
-<?rfc compact="yes"?>
-<?rfc subcompact="no"?>
-<?rfc tocdepth="4"?>
-<?rfc symrefs="yes"?>
-<?rfc sortrefs="yes"?>
-<rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-  <front>
-  <seriesInfo value='' name='RFC' asciiName='RFC'/>
-    <abstract>
+  <?xml version='1.0'?>
+  <?rfc strict="yes"?>
+  <?rfc compact="yes"?>
+  <?rfc subcompact="no"?>
+  <?rfc tocdepth="4"?>
+  <?rfc symrefs="yes"?>
+  <?rfc sortrefs="yes"?>
+  <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+    <front>
+    <seriesInfo value='' name='RFC' asciiName='RFC'/>
+      <abstract>
 HDR
 
 RFC_HDR = <<~"HDR"
-<?xml version='1.0'?>
-<?rfc strict="yes"?>
-<?rfc compact="yes"?>
-<?rfc subcompact="no"?>
-<?rfc tocdepth="4"?>
-<?rfc symrefs="yes"?>
-<?rfc sortrefs="yes"?>
-       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-         <front>
-  <seriesInfo value='' name='RFC' asciiName='RFC'/>
-</front>
+  <?xml version='1.0'?>
+  <?rfc strict="yes"?>
+  <?rfc compact="yes"?>
+  <?rfc subcompact="no"?>
+  <?rfc tocdepth="4"?>
+  <?rfc symrefs="yes"?>
+  <?rfc sortrefs="yes"?>
+         <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+           <front>
+    <seriesInfo value='' name='RFC' asciiName='RFC'/>
+  </front>
 HDR
 
 def mock_pdf
-  allow(::Mn2pdf).to receive(:convert) do |url, output, c, d|
+  allow(::Mn2pdf).to receive(:convert) do |url, output, _c, _d|
     FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
   end
 end
