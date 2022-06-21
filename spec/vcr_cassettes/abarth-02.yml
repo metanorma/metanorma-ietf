@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.abarth-cake.xml
+    uri: https://raw.githubusercontent.com/ietf-ribose/relaton-data-ids/main/data/draft-abarth-cake-01.yaml
     body:
       encoding: US-ASCII
       string: ''
@@ -23,15 +23,15 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '611'
-      Content-Type:
-      - text/plain; charset=utf-8
+      - '722'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
       - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
       Etag:
-      - W/"6345e72d27a1c5710f75c256986615beb7becf4cf40434b30cff4aebf76f8b5d"
+      - W/"c5013ce26fbb266bad648bc3a943e7a00a73892fbbd0cefad93a86896bbd12bc"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -41,54 +41,99 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - C660:4D20:D704C:F6CC0:602091BA
+      - 5BCC:4AB0:09ED:1A2D:62B1CF61
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 08 Feb 2021 01:19:56 GMT
+      - Tue, 21 Jun 2022 14:05:41 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11269-MEL
+      - cache-mel11282-MEL
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
-      - '0'
+      - '1'
       X-Timer:
-      - S1612747196.069929,VS0,VE380
+      - S1655820341.327140,VS0,VE1
       Vary:
-      - Authorization,Accept-Encoding, Accept-Encoding
+      - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 659c2fb2092f38217fc2bc4f42d14e82d41bc121
+      - 1f52f232707b9904230f18ea03d55c8ea0176bea
       Expires:
-      - Mon, 08 Feb 2021 01:24:56 GMT
+      - Tue, 21 Jun 2022 14:10:41 GMT
       Source-Age:
-      - '0'
+      - '212'
     body:
       encoding: ASCII-8BIT
       string: |
-        <?xml version='1.0' encoding='UTF-8'?>
-
-        <reference anchor='I-D.abarth-cake'>
-        <front>
-        <title>Origin Cookies</title>
-
-        <author initials='A' surname='Barth' fullname='Adam Barth'>
-            <organization />
-        </author>
-
-        <date month='March' day='5' year='2011' />
-
-        <abstract><t>This document defines the Origin attribute for cookies, which lets servers harmonize the security policy of their cookies with the widely used same-origin policy.  Origin cookies provide both confidentiality and integrity, unlike the Secure attribute, which provides only confidentiality.Editorial Note (To be removed by RFC Editor)  If you have suggestions for improving this document, please send email to &lt;mailto:http-state@ietf.org>.  Further Working Group information is available from &lt;https://tools.ietf.org/wg/httpstate/>.</t></abstract>
-
-        </front>
-
-        <seriesInfo name='Internet-Draft' value='draft-abarth-cake-01' />
-        <format type='TXT'
-                target='http://www.ietf.org/internet-drafts/draft-abarth-cake-01.txt' />
-        </reference>
-    http_version:
+        ---
+        id: draft-abarth-cake-01
+        title:
+        - content: Origin Cookies
+          language:
+          - en
+          script:
+          - Latn
+          format: text/plain
+        link:
+        - content: https://www.ietf.org/archive/id/draft-abarth-cake-01.txt
+          type: TXT
+        type: standard
+        docid:
+        - id: draft-abarth-cake-01
+          type: Internet-Draft
+          primary: true
+        - id: I-D.abarth-cake
+          type: IETF
+          scope: anchor
+        docnumber: I-D.abarth-cake
+        date:
+        - type: published
+          value: 2011-03
+        contributor:
+        - person:
+            name:
+              completename:
+                content: Adam Barth
+                language:
+                - en
+          role:
+          - author
+        version:
+          draft:
+          - '01'
+        revdate: 2011-03
+        language:
+        - en
+        script:
+        - Latn
+        abstract:
+        - content: "<p>This document defines the Origin attribute for cookies, which lets
+            servers harmonize the security policy of their cookies with the widely used same-origin
+            policy. Origin cookies provide both confidentiality and integrity, unlike the
+            Secure attribute, which provides only confidentiality.Editorial Note (To be removed
+            by RFC Editor) If you have suggestions for improving this document, please send
+            email to &lt;mailto:http-state@ietf.org&gt;. Further Working Group information
+            is available from &lt;https://tools.ietf.org/wg/httpstate/&gt;.</p>"
+          language:
+          - en
+          script:
+          - Latn
+          format: text/html
+        series:
+        - type: main
+          title:
+            content: Internet-Draft
+            language:
+            - en
+            script:
+            - Latn
+            format: text/plain
+          number: draft-abarth-cake-01
+        fetched: '2022-06-20'
+        doctype: internet-draft
   recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
-recorded_with: VCR 5.0.0
+recorded_with: VCR 6.1.0

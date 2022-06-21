@@ -704,6 +704,9 @@
         <attribute name="tag"/>
       </optional>
       <optional>
+        <attribute name="type"/>
+      </optional>
+      <optional>
         <attribute name="multilingual-rendering">
           <ref name="MultilingualRenderingType"/>
         </attribute>
@@ -737,6 +740,9 @@
         </optional>
         <optional>
           <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="type"/>
         </optional>
         <optional>
           <attribute name="multilingual-rendering">
@@ -2059,6 +2065,7 @@
       <value>compare</value>
       <value>contrast</value>
       <value>see</value>
+      <value>seealso</value>
     </choice>
   </define>
   <define name="deprecates">
