@@ -1285,7 +1285,12 @@
   </define>
   <define name="span">
     <element name="span">
-      <attribute name="class"/>
+      <optional>
+        <attribute name="class"/>
+      </optional>
+      <optional>
+        <attribute name="style"/>
+      </optional>
       <oneOrMore>
         <ref name="TextElement"/>
       </oneOrMore>
@@ -2501,6 +2506,16 @@
       </optional>
       <optional>
         <element name="supplementnumber">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="amendment">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="corrigendum">
           <text/>
         </element>
       </optional>

@@ -2,7 +2,7 @@ module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
       def recommendation_labels(node)
-        [node.at(ns("./label")), node.at(ns("./title")),
+        [node.at(ns("./identifier")), node.at(ns("./title")),
          @xrefs.anchor(node["id"], :label, false)]
       end
 
@@ -37,7 +37,7 @@ module IsoDoc
         recommendation_name(node, out, @i18n.recommendation)
         recommendation_attributes(node, out)
         node.children.each do |n|
-          parse(n, out) unless %w(label title).include? n.name
+          parse(n, out) unless %w(identifier title).include? n.name
         end
       end
 
@@ -45,7 +45,7 @@ module IsoDoc
         recommendation_name(node, out, @i18n.requirement)
         recommendation_attributes(node, out)
         node.children.each do |n|
-          parse(n, out) unless %w(label title).include? n.name
+          parse(n, out) unless %w(identifier title).include? n.name
         end
       end
 
@@ -53,7 +53,7 @@ module IsoDoc
         recommendation_name(node, out, @i18n.permission)
         recommendation_attributes(node, out)
         node.children.each do |n|
-          parse(n, out) unless %w(label title).include? n.name
+          parse(n, out) unless %w(identifier title).include? n.name
         end
       end
 
