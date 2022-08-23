@@ -587,7 +587,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <permission id="_">
+          <permission id="_" model="default">
         <identifier>/ogc/recommendation/wfs/2</identifier>
         <inherit>/ss/584/2015/level/1</inherit>
         <subject>user</subject>
@@ -635,46 +635,43 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-          #{XML_HDR}
-          <t keepWithNext='true'>Permission 1:</t>
-                   <t keepWithNext='true'>/ogc/recommendation/wfs/2</t>
-                   <ul>
-                     <li>
-                       <em>Subject: user</em>
-                     </li>
-                     <li>
-        <em>Inherits: /ss/584/2015/level/1</em>
-      </li>
-                     <li>
-                       <em>Control-class: Technical</em>
-                     </li>
-                     <li>
-                       <em>Priority: P0</em>
-                     </li>
-                     <li>
-                       <em>Family: System and Communications Protection</em>
-                     </li>
-                     <li>
-                       <em>Family: System and Communications Protocols</em>
-                     </li>
-                   </ul>
-                   <t>INHERIT: /ss/584/2015/level/1</t>
-                   <t anchor='_'>
-                     I recommend
-                     <em>this</em>
-                     .
-                   </t>
-                   <t anchor='_'>As for the measurement targets,</t>
-                   <t anchor='_'>The measurement target shall be measured as:</t>
-                   <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
-                   <t anchor='_'>The following code will be run for verification:</t>
-                     <sourcecode anchor='_'>
-                       CoreRoot(success): HttpResponse
-            if (success)
-            recommendation(label: success-response)
-            end
-                     </sourcecode>
-      </abstract></front><middle/><back/></rfc>
+      #{XML_HDR}
+                       <t keepWithNext='true'>
+               Permission 1:
+               <br/>
+               /ogc/recommendation/wfs/2
+             </t>
+             <t>
+               <em>Subject: user</em>
+               <br/>
+               <em>Inherits: /ss/584/2015/level/1</em>
+               <br/>
+               <em>Control-class: Technical</em>
+               <br/>
+               <em>Priority: P0</em>
+               <br/>
+               <em>Family: System and Communications Protection</em>
+               <br/>
+               <em>Family: System and Communications Protocols</em>
+             </t>
+             <t anchor='_'>
+               I recommend
+               <em>this</em>
+               .
+             </t>
+             <t anchor='_'>As for the measurement targets,</t>
+             <t anchor='_'>The measurement target shall be measured as:</t>
+             <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>The following code will be run for verification:</t>
+             <sourcecode anchor='_'>
+               CoreRoot(success): HttpResponse if (success) recommendation(label:
+               success-response) end
+             </sourcecode>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
@@ -684,7 +681,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <requirement id="A" unnumbered="true">
+          <requirement id="A" unnumbered="true" model="default">
         <title>A New Requirement</title>
         <identifier>/ogc/recommendation/wfs/2</identifier>
         <inherit>/ss/584/2015/level/1</inherit>
@@ -732,34 +729,35 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-          #{XML_HDR}
-          <t keepWithNext='true'>Requirement:</t>
-                   <t keepWithNext='true'>/ogc/recommendation/wfs/2. A New Requirement</t>
-                   <ul>
-                     <li>
-                       <em>Subject: user</em>
-                     </li>
-                     <li>
-        <em>Inherits: /ss/584/2015/level/1</em>
-      </li>
-                   </ul>
-                   <t>INHERIT: /ss/584/2015/level/1</t>
-                   <t anchor='_'>
-                     I recommend
-                     <em>this</em>
-                     .
-                   </t>
-                   <t anchor='_'>As for the measurement targets,</t>
-                   <t anchor='_'>The measurement target shall be measured as:</t>
-                   <t anchor='B'>$$ r/1 = 0 $$ (1)</t>
-                   <t anchor='_'>The following code will be run for verification:</t>
-                     <sourcecode anchor='_'>
-                       CoreRoot(success): HttpResponse
-            if (success)
-            recommendation(label: success-response)
-            end
-                     </sourcecode>
-      </abstract></front><middle/><back/></rfc>
+      #{XML_HDR}
+                   <t keepWithNext='true'>
+               Requirement:
+               <br/>
+               /ogc/recommendation/wfs/2. A New Requirement
+             </t>
+             <t>
+               <em>Subject: user</em>
+               <br/>
+               <em>Inherits: /ss/584/2015/level/1</em>
+             </t>
+             <t anchor='_'>
+               I recommend 
+               <em>this</em>
+               .
+             </t>
+             <t anchor='_'>As for the measurement targets,</t>
+             <t anchor='_'>The measurement target shall be measured as:</t>
+             <t anchor='B'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>The following code will be run for verification:</t>
+             <sourcecode anchor='_'>
+               CoreRoot(success): HttpResponse if (success) recommendation(label:
+               success-response) end 
+             </sourcecode>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
@@ -769,7 +767,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <recommendation id="_" obligation="shall,could">
+          <recommendation id="_" obligation="shall,could" model="default">
         <identifier>/ogc/recommendation/wfs/2</identifier>
         <inherit>/ss/584/2015/level/1</inherit>
         <classification><tag>type</tag><value>text</value></classification>
@@ -818,43 +816,41 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-          #{XML_HDR}
-          <t keepWithNext='true'>Recommendation 1:</t>
-                   <t keepWithNext='true'>/ogc/recommendation/wfs/2</t>
-                   <ul>
-                     <li>
-                       <em>Obligation: shall,could</em>
-                     </li>
-                     <li>
-                       <em>Subject: user</em>
-                     </li>
-                     <li>
-        <em>Inherits: /ss/584/2015/level/1</em>
-      </li>
-                     <li>
-                       <em>Type: text</em>
-                     </li>
-                     <li>
-                       <em>Language: BASIC</em>
-                     </li>
-                   </ul>
-                   <t>INHERIT: /ss/584/2015/level/1</t>
-                   <t anchor='_'>
-                     I recommend
-                     <em>this</em>
-                     .
-                   </t>
-                   <t anchor='_'>As for the measurement targets,</t>
-                   <t anchor='_'>The measurement target shall be measured as:</t>
-                   <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
-                   <t anchor='_'>The following code will be run for verification:</t>
-                     <sourcecode anchor='_'>
-                       CoreRoot(success): HttpResponse
-            if (success)
-            recommendation(label: success-response)
-            end
-                     </sourcecode>
-      </abstract></front><middle/><back/></rfc>
+      #{XML_HDR}
+             <t keepWithNext='true'>
+               Recommendation 1:
+               <br/>
+               /ogc/recommendation/wfs/2
+             </t>
+             <t>
+               <em>Obligation: shall,could</em>
+               <br/>
+               <em>Subject: user</em>
+               <br/>
+               <em>Inherits: /ss/584/2015/level/1</em>
+               <br/>
+               <em>Type: text</em>
+               <br/>
+               <em>Language: BASIC</em>
+             </t>
+             <t anchor='_'>
+               I recommend 
+               <em>this</em>
+               .
+             </t>
+             <t anchor='_'>As for the measurement targets,</t>
+             <t anchor='_'>The measurement target shall be measured as:</t>
+             <t anchor='_'>$$ r/1 = 0 $$ (1)</t>
+             <t anchor='_'>The following code will be run for verification:</t>
+             <sourcecode anchor='_'>
+               CoreRoot(success): HttpResponse if (success) recommendation(label:
+               success-response) end 
+             </sourcecode>
+           </abstract>
+         </front>
+         <middle/>
+         <back/>
+       </rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)

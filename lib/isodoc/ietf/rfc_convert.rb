@@ -17,8 +17,7 @@ module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
       def convert1(docxml, _filename, _dir)
-        @xrefs.parse docxml
-        info docxml, nil
+        document_preprocess(docxml)
         ret = noko do |xml|
           xml.rfc **attr_code(rfc_attributes(docxml)) do |html|
             make_link(html, docxml)
@@ -28,6 +27,20 @@ module IsoDoc
           end
         end.join("\n").sub(/<!DOCTYPE[^>]+>\n/, "")
         set_pis(docxml, Nokogiri::XML(ret))
+      end
+
+      def document_preprocess(docxml)
+        @isodoc.reqt_models = Metanorma::Requirements
+          .new({ default: "default", lang: @lang, script: @script,
+                 labels: @i18n.get })
+        info docxml, nil
+        @xrefs.parse docxml
+        @isodoc.xrefs = @xrefs
+        @isodoc.permission(docxml)
+        @isodoc.requirement(docxml)
+        @isodoc.recommendation(docxml)
+        @isodoc.requirement_render(docxml)
+        @xrefs.parse docxml
       end
 
       def metadata_init(lang, script, i18n)
