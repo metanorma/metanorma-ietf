@@ -93,7 +93,6 @@ RSpec.describe Metanorma::Ietf do
       :iteration: 3
       :language: en
       :title: Main Title -- Title
-      :library-ics: 1,2,3
       :fullname: Fred Flintstone
       :role: author
       :affiliation: Slate Rock and Gravel Company
@@ -376,15 +375,6 @@ RSpec.describe Metanorma::Ietf do
         <workgroup number='3' type='C'>WG</workgroup>
         <workgroup number='31' type='C1'>WG1</workgroup>
       </editorialgroup>
-      <ics>
-        <code>1</code>
-      </ics>
-      <ics>
-        <code>2</code>
-      </ics>
-      <ics>
-        <code>3</code>
-      </ics>
       <area>A</area>
       <area>B</area>
       <area>C</area>
