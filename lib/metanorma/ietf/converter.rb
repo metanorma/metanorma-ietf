@@ -166,10 +166,10 @@ module Metanorma
         IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
       end
 
-      def isodoc(lang, script, i18nyaml = nil)
+      def isodoc(lang, script, locale, i18nyaml = nil)
         conv = rfc_converter(EmptyAttr.new)
-        i18n = conv.i18n_init(lang, script, i18nyaml)
-        conv.metadata_init(lang, script, i18n)
+        i18n = conv.i18n_init(lang, script, locale, i18nyaml)
+        conv.metadata_init(lang, script, locale, i18n)
         conv
       end
     end

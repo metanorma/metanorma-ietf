@@ -32,7 +32,7 @@ module IsoDoc
       def document_preprocess(docxml)
         @isodoc.reqt_models = Metanorma::Requirements
           .new({ default: "default", lang: @lang, script: @script,
-                 labels: @i18n.get })
+                 locale: @locale, labels: @i18n.get })
         info docxml, nil
         @xrefs.parse docxml
         @isodoc.xrefs = @xrefs
@@ -43,8 +43,8 @@ module IsoDoc
         @xrefs.parse docxml
       end
 
-      def metadata_init(lang, script, i18n)
-        @meta = Metadata.new(lang, script, i18n)
+      def metadata_init(lang, script, locale, i18n)
+        @meta = Metadata.new(lang, script, locale, i18n)
       end
 
       def xref_init(lang, script, klass, i18n, options)
@@ -105,7 +105,7 @@ module IsoDoc
         @format = :rfc
         @suffix = "rfc.xml"
         @isodoc = IsoDoc::PresentationXMLConvert.new({})
-        @isodoc.i18n_init("en", "Latn")
+        @isodoc.i18n_init("en", "Latn", nil, nil)
       end
 
       include ::IsoDoc::Ietf::Init
