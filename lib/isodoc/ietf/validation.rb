@@ -8,7 +8,7 @@ module IsoDoc
         errors = Jing.new(File.join(File.dirname(__FILE__), "v3.rng"))
           .validate(filename)
         errors.each do |error|
-          warn "RFC XML: Line #{'%06d' % error[:line]}:#{error[:column]} "\
+          warn "RFC XML: Line #{'%06d' % error[:line]}:#{error[:column]} " \
                "#{error[:message]}"
         end
       rescue Jing::Error => e
@@ -38,18 +38,27 @@ module IsoDoc
       def numbered_sections_check(xml)
         ret = []
         xml.xpath("//section[@numbered = 'false']").each do |s1|
-          s1.xpath("./section[not(@numbered) or @numbered = 'true']")
-            .each do |s2|
-            ret << "Numbered section #{label(s2)} under unnumbered section "\
-                   "#{label(s1)}"
-          end
-          s1.xpath("./following-sibling::*[name() = 'section']"\
-                   "[not(@numbered) or @numbered = 'true']").each do |s2|
-            ret << "Numbered section #{label(s2)} following unnumbered "\
-                   "section #{label(s1)}"
-          end
+          ret += numbered_sections_check1(s1)
+          ret += numbered_sections_check2(s1)
         end
         ret
+      end
+
+      def numbered_sections_check1(section)
+        section.xpath("./section[not(@numbered) or @numbered = 'true']")
+          .each_with_object([]) do |s2, m|
+          m << "Numbered section #{label(s2)} under unnumbered section " \
+               "#{label(section)}"
+        end
+      end
+
+      def numbered_sections_check2(section)
+        section.xpath("./following-sibling::*[name() = 'section']" \
+                      "[not(@numbered) or @numbered = 'true']")
+          .each_with_object([]) do |s2, m|
+          m << "Numbered section #{label(s2)} following unnumbered " \
+               "section #{label(section)}"
+        end
       end
 
       # 5.2.7.  Section "toc" attribute
@@ -57,7 +66,7 @@ module IsoDoc
         ret = []
         xml.xpath("//section[@toc = 'exclude']").each do |s1|
           s1.xpath(".//section[@toc = 'include']").each do |s2|
-            ret << "Section #{label(s2)} with toc=include is included in "\
+            ret << "Section #{label(s2)} with toc=include is included in " \
                    "section #{label(s1)} with toc=exclude"
           end
         end
@@ -69,14 +78,14 @@ module IsoDoc
       def references_check(xml)
         ret = []
         xml.xpath("//reference[not(@target)]").each do |s|
-          s.xpath(".//seriesInfo[@name = 'RFC' or @name = 'Internet-Draft' "\
+          s.xpath(".//seriesInfo[@name = 'RFC' or @name = 'Internet-Draft' " \
                   "or @name = 'DOI'][not(@value)]").each do |s1|
-            ret << "for reference #{s['anchor']}, the seriesInfo with "\
+            ret << "for reference #{s['anchor']}, the seriesInfo with " \
                    "name=#{s1['name']} has been given no value"
           end
         end
         xml.xpath("//references | //section").each do |s|
-          s.at("./name") or ret << "Cannot generate table of contents entry "\
+          s.at("./name") or ret << "Cannot generate table of contents entry " \
                                    "for #{label(s)}, as it has no title"
         end
         ret
@@ -95,48 +104,48 @@ module IsoDoc
           x.delete("section") if x["section"] && x["section"].empty?
           if x["format"] == "title" && t.name == "reference"
             t.at("./front/title") or
-              ret << "reference #{t['anchor']} has been referenced by #{x.name} "\
+              ret << "reference #{t['anchor']} has been referenced by #{x.name} " \
                      "with format=title, but the reference has no title"
           end
           if x["format"] == "counter" && !%w(section table figure li
                                              reference references t dt).include?(t.name)
-            ret << "#{x.to_xml} with format=counter is only allowed for "\
-                   "clauses, tables, figures, list entries, definition terms, "\
+            ret << "#{x.to_xml} with format=counter is only allowed for " \
+                   "clauses, tables, figures, list entries, definition terms, " \
                    "paragraphs, bibliographies, and bibliographic entries"
           end
           if x["format"] == "counter" && t.name == "reference" && !x["section"]
-            ret << "reference #{t['anchor']} has been referenced by xref "\
-                   "#{x.to_xml} with format=counter, which requires a "\
+            ret << "reference #{t['anchor']} has been referenced by xref " \
+                   "#{x.to_xml} with format=counter, which requires a " \
                    "section attribute"
           end
           if x["format"] == "counter" && t.name == "li" && t.parent.name != "ol"
-            ret << "#{x.to_xml} with format=counter refers to an unnumbered "\
+            ret << "#{x.to_xml} with format=counter refers to an unnumbered " \
                    "list entry"
           end
           if x["format"] == "title" && %w(u author contact).include?(t.name)
-            ret << "#{x.to_xml} with format=title cannot reference a "\
+            ret << "#{x.to_xml} with format=title cannot reference a " \
                    "<#{t.name}> element"
           end
           if x["relative"] && !x["section"]
-            ret << "#{x.to_xml} with relative attribute requires a section "\
+            ret << "#{x.to_xml} with relative attribute requires a section " \
                    "attribute"
           end
           if (x["section"]) && t.name != "reference"
-            ret << "#{x.to_xml} has a section attribute, but #{x['target']} "\
+            ret << "#{x.to_xml} has a section attribute, but #{x['target']} " \
                    "points to a #{t.name}"
           end
           if (x["relative"]) && t.name != "reference"
-            ret << "#{x.to_xml} has a relative attribute, but #{x['target']} "\
+            ret << "#{x.to_xml} has a relative attribute, but #{x['target']} " \
                    "points to a #{t.name}"
           end
-          if !x["relative"] && x["section"] && !t.at(".//seriesInfo[@name = 'RFC' or @name = "\
+          if !x["relative"] && x["section"] && !t.at(".//seriesInfo[@name = 'RFC' or @name = " \
                                                      "'Internet-Draft']")
-            ret << "#{x.to_xml} must use a relative attribute, "\
+            ret << "#{x.to_xml} must use a relative attribute, " \
                    "since it does not point to a RFC or Internet-Draft reference"
           end
-          if x["relative"] && !(t.at(".//seriesInfo[@name = 'RFC' or @name = "\
+          if x["relative"] && !(t.at(".//seriesInfo[@name = 'RFC' or @name = " \
                                      "'Internet-Draft']") || t["target"])
-            ret << "need an explicit target= URL attribute in the reference "\
+            ret << "need an explicit target= URL attribute in the reference " \
                    "pointed to by #{x.to_xml}"
           end
         end
@@ -155,8 +164,8 @@ module IsoDoc
       def link_check(xml)
         l = xml&.at("//link[@rel = 'convertedFrom']")&.text
         !l || %r{^https://datatracker\.ietf\.org/doc/draft-}.match(l) or
-          return ["<link rel='convertedFrom'> (:derived-from: document "\
-                  "attribute) must start with "\
+          return ["<link rel='convertedFrom'> (:derived-from: document " \
+                  "attribute) must start with " \
                   "https://datatracker.ietf.org/doc/draft-"]
         []
       end
@@ -168,12 +177,12 @@ module IsoDoc
         rfcinfo = xml.at("//front//seriesInfo[@name = 'RFC']")
         rfcnumber = xml.root["number"]
         rfcinfo && rfcnumber && rfcnumber != rfcinfo["value"] and
-          ret << "Mismatch between <rfc number='#{rfcnumber}'> "\
-                 "(:docnumber: NUMBER) "\
-                 "and <seriesInfo name='RFC' value='#{rfcinfo['value']}'> "\
+          ret << "Mismatch between <rfc number='#{rfcnumber}'> " \
+                 "(:docnumber: NUMBER) " \
+                 "and <seriesInfo name='RFC' value='#{rfcinfo['value']}'> " \
                  "(:intended-series: TYPE NUMBER)"
         rfcinfo && !/^\d+$/.match(rfcnumber) and
-          ret << "RFC identifier <rfc number='#{rfcnumber}'> "\
+          ret << "RFC identifier <rfc number='#{rfcnumber}'> " \
                  "(:docnumber: NUMBER) must be a number"
         ret
       end
@@ -183,7 +192,7 @@ module IsoDoc
         xml.root["ipr"] or
           return ["Missing ipr attribute on <rfc> element (:ipr:)"]
         /trust200902$/.match(xml.root["ipr"]) or
-          return ["Unknown ipr attribute on <rfc> element (:ipr:): "\
+          return ["Unknown ipr attribute on <rfc> element (:ipr:): " \
                   "#{xml.root['ipr']}"]
         []
       end
