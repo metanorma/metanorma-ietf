@@ -58,7 +58,7 @@ module Metanorma
         xmldoc
       end
 
-      def xref_to_eref(xref)
+      def xref_to_eref(xref, name)
         super
         xref.delete("format")
       end
@@ -77,7 +77,7 @@ module Metanorma
             x["uri"] = x["target"]
             x.delete("target")
           else
-            xref_to_eref(x)
+            xref_to_eref(x, "source")
           end
         end
       end

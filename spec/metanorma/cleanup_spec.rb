@@ -54,20 +54,24 @@ RSpec.describe Metanorma::Ietf do
                     <sections>
                <terms id="_" obligation="normative">
                <title>Terms and definitions</title>
-               <term id="term-t90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+               <term id="term-t90t_90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
         <mn>90</mn>
       </mrow>
-      </msub></math></stem></name></letter-symbol></preferred>
+      </msub></math>
+      <asciimath>t_90</asciimath>
+      </stem></name></letter-symbol></preferred>
       <admitted><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
         <mn>91</mn>
       </mrow>
-      </msub></math></stem></name></letter-symbol></admitted>
+      </msub></math>
+      <asciimath>t_91</asciimath>
+      </stem></name></letter-symbol></admitted>
              <definition><verbal-definition><p id="_">Time</p></verbal-definition></definition></term>
              </terms>
              </sections>
@@ -128,17 +132,19 @@ RSpec.describe Metanorma::Ietf do
       --
     INPUT
     output = <<~OUTPUT
-             #{BLANK_HDR}
+      #{BLANK_HDR}
                     <sections>
                <terms id="_" obligation="normative">
                <title>Terms and definitions</title>
-               <term id="term-t90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
+               <term id="term-t90t_90"><preferred><letter-symbol><name><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
         <mi>t</mi>
       </mrow>
       <mrow>
         <mn>90</mn>
       </mrow>
-      </msub></math></stem></name></letter-symbol></preferred>
+      </msub></math>
+      <asciimath>t_90</asciimath>
+     </stem></name></letter-symbol></preferred>
       <definition>
              <verbal-definition><p id="_">This paragraph is extraneous</p>
       <formula id="_">
@@ -148,7 +154,9 @@ RSpec.describe Metanorma::Ietf do
       <mrow>
         <mi>A</mi>
       </mrow>
-      </msub></math></stem>
+      </msub></math>
+       <asciimath>t_A</asciimath>
+    </stem>
              </formula>
              </verbal-definition>
       </definition>

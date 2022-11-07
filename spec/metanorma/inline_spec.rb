@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Metanorma::Ietf do
   it "processes inline_quoted formatting" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       _Physical noise
       sources_
@@ -20,6 +20,7 @@ RSpec.describe Metanorma::Ietf do
       [keyword]#keyword#
       [bcp14]#keyword#
     INPUT
+    output = <<~OUTPUT
            #{BLANK_HDR}
       <sections>
       <p id='_'>
@@ -36,10 +37,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes breaks" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       Line break +
       line break
@@ -48,6 +51,7 @@ RSpec.describe Metanorma::Ietf do
 
       <<<
     INPUT
+    output = <<~OUTPUT
            #{BLANK_HDR}
       <sections><p id="_">Line break<br/>
       line break</p>
@@ -55,16 +59,19 @@ RSpec.describe Metanorma::Ietf do
       <pagebreak/></sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes links" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       mailto:fred@example.com
       http://example.com[]
       http://example.com[Link]
       http://example.com[Link,title="tip"]
     INPUT
+    output = <<~OUTPUT
            #{BLANK_HDR}
       <sections>
         <p id="_">mailto:fred@example.com
@@ -74,23 +81,28 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes bookmarks" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       Text [[bookmark]] Text
     INPUT
+    output = <<~OUTPUT
            #{BLANK_HDR}
       <sections>
         <p id="_">Text <bookmark id="bookmark"/> Text</p>
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes crossreferences" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [[reference]]
       == Section
@@ -111,6 +123,7 @@ RSpec.describe Metanorma::Ietf do
       == Normative References
       * [[[doc,x]]] Reference
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
                <sections>
           <clause id='reference' inline-header='false' obligation='normative'>
@@ -150,10 +163,12 @@ RSpec.describe Metanorma::Ietf do
         </bibliography>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes bibliographic anchors" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -168,6 +183,7 @@ RSpec.describe Metanorma::Ietf do
       * [[[ISO713]]] Reference
 
     INPUT
+    output = <<~OUTPUT
            #{BLANK_HDR}
       <sections>
 
@@ -186,15 +202,18 @@ RSpec.describe Metanorma::Ietf do
       </bibliography>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes footnotes" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       Hello!footnote:[Footnote text]
 
       == Title footnote:[Footnote text 2]
     INPUT
+    output = <<~OUTPUT
            #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
         <title>Foreword</title>
@@ -209,18 +228,27 @@ RSpec.describe Metanorma::Ietf do
       </clause></sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes index terms" do
-    expect((strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to (<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       ((primary:See)) Index ((_term_)) and(((primary:A~B~, stem:[alpha], &#x2c80;))).
     INPUT
+    output = <<~OUTPUT
          #{BLANK_HDR}
         <sections>
-            <p id="_">See<index primary="true"><primary>See</primary></index> Index <em>term</em><index><primary><em>term</em></primary></index> and<index primary="true"><primary>A<sub>B</sub></primary><secondary><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>α</mi></math></stem></secondary><tertiary>Ⲁ</tertiary></index>.</p>
+            <p id="_">See<index primary="true"><primary>See</primary></index> 
+            Index <em>term</em><index><primary><em>term</em></primary></index> 
+            and<index primary="true"><primary>A<sub>B</sub></primary>
+            <secondary><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>α</mi></math><asciimath>alpha</asciimath></stem></secondary>
+            <tertiary>Ⲁ</tertiary></index>.</p>
         </sections>
-      </ietf-standards>
+      </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 end
