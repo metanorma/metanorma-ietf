@@ -565,7 +565,7 @@ RSpec.describe Metanorma::Ietf do
 
   it "cites drafts of internet drafts" do
     VCR.use_cassette "abarth-02" do
-      doc = xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))
+      doc = Asciidoctor.convert(<<~"INPUT", *OPTIONS)
         = Document title
         Author
         :docfile: test.adoc
@@ -576,9 +576,9 @@ RSpec.describe Metanorma::Ietf do
         == References
         * [[[I-D.abarth-cake,IETF(I-D.draft-abarth-cake-01)]]], _Title_
       INPUT
-      expect(doc).to include "<eref type='inline' bibitemid='I-D.abarth-cake' citeas='Internet-Draft draft-abarth-cake-01'/>"
-      expect(doc).to include "<bibitem id='I-D.abarth-cake' type='standard'>"
-      expect(doc).to include "<uri type='TXT'>https://www.ietf.org/archive/id/draft-abarth-cake-01.txt</uri>"
+      expect(doc).to include '<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>'
+      expect(doc).to include '<bibitem id="I-D.abarth-cake" type="standard">'
+      expect(doc).to include '<uri type="TXT">https://www.ietf.org/archive/id/draft-abarth-cake-01.txt</uri>'
     end
   end
 

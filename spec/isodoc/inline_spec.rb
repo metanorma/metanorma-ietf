@@ -190,7 +190,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect((IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true).sub(
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true).sub(
       /<html/, "<html xmlns:m='m'"
     ))).to be_equivalent_to xmlpp(output)
   end
@@ -528,7 +528,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </preface>
       </iso-standard>
     INPUT
-    expect(File.read("test.rfc.xml")).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(File.read("test.rfc.xml"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
          <?xml version="1.0"?>
       <?rfc strict="yes"?>
       <?rfc compact="yes"?>
