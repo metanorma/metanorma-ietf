@@ -101,7 +101,7 @@ module IsoDoc
 
       def initialize(options)
         super
-        @xinclude = options[:use_xinclude] == "true"
+        @xinclude = options[:usexinclude]
         @format = :rfc
         @suffix = "rfc.xml"
         @isodoc = IsoDoc::PresentationXMLConvert.new({})

@@ -159,7 +159,7 @@ module Metanorma
       end
 
       def html_extract_attributes(node)
-        super.merge(use_xinclude: node.attr("use-xinclude"))
+        super.merge(usexinclude: node.attr("use-xinclude"))
       end
 
       def rfc_converter(node)
