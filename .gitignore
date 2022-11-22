@@ -19,7 +19,6 @@
 
 .rubocop-https--*
 
-/Gemfile.devel
 /Gemfile.lock
 /test.err
 /test.rfc.xml.err
