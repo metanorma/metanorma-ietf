@@ -99,9 +99,9 @@ module IsoDoc
           c = a&.xpath("./following-sibling::*")&.remove
           a = a.remove
           name and f << name
-          b.empty? or f << "<preamble>#{b.to_xml}</preamble>"
+          b.empty? or f << "<preamble>#{to_xml(b)}</preamble>"
           a and f << a
-          c.empty? or f << "<postamble>#{c.to_xml}</postamble>"
+          c.empty? or f << "<postamble>#{to_xml(c)}</postamble>"
         end
       end
 
@@ -127,11 +127,11 @@ module IsoDoc
       # for markup in pseudocode
       def sourcecode_cleanup(docxml)
         docxml.xpath("//sourcecode").each do |s|
-          s.children = s.children.to_xml.gsub(%r{<br/>\n}, "\n")
+          s.children = to_xml(s.children).gsub(%r{<br/>\n}, "\n")
             .gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
           sourcecode_remove_markup(s)
-          s.children = "<![CDATA[#{HTMLEntities.new.decode(s
-        .children.to_xml.sub(/\A\n+/, ''))}]]>"
+          s.children = "<![CDATA[#{HTMLEntities.new.decode(to_xml(s
+        .children).sub(/\A\n+/, ''))}]]>"
         end
       end
 

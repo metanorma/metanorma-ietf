@@ -112,7 +112,7 @@ module IsoDoc
         end
         contents = no_loc_contents.select { |c| !c.text? || /\S/.match(c) }
         !contents.empty? and
-          return Nokogiri::XML::NodeSet.new(node.document, contents).to_xml
+          return to_xml(Nokogiri::XML::NodeSet.new(node.document, contents))
         ""
       end
 

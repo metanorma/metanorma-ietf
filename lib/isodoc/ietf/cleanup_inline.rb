@@ -14,7 +14,7 @@ module IsoDoc
       def footnote_cleanup(docxml)
         fn = footnote_refs_cleanup(docxml)
         endnotes = make_endnotes(docxml)
-        docxml.xpath("//section[descendant::fn] | "\
+        docxml.xpath("//section[descendant::fn] | " \
                      "//abstract[descendant::fn]").each do |s|
           s.xpath(".//fn").each do |f|
             ref = f.at(".//ref") and ref.replace("[#{fn[ref.text]}] ")
