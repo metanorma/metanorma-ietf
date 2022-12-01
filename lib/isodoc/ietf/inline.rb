@@ -120,17 +120,25 @@ module IsoDoc
         linkend = node.children.reject do |c|
           %w{locality localityStack}.include? c.name
         end
-        relative = node["relative"] ||
-          node.at(ns(".//locality[@type = 'anchor']/referenceFrom"))&.text || ""
-        section = @isodoc.eref_localities(
-          node.xpath(ns("./locality | ./localityStack")), nil, node
-        )&.sub(/^,/, "")&.sub(/^\s*(Section|Clause)/, "")&.strip&.sub(/,$/, "") || ""
         # section = "" unless relative.empty?
-        out.relref **attr_code(target: node["bibitemid"], section: section,
-                               relative: relative,
+        out.relref **attr_code(target: node["bibitemid"],
+                               section: eref_section(node),
+                               relative: eref_relative(node),
                                displayFormat: node["displayFormat"]) do |l|
                                  linkend.each { |n| parse(n, l) }
                                end
+      end
+
+      def eref_relative(node)
+        node["relative"] ||
+          node.at(ns(".//locality[@type = 'anchor']/referenceFrom"))&.text || ""
+      end
+
+      def eref_section(node)
+        @isodoc.eref_localities(
+          node.xpath(ns("./locality | ./localityStack")), nil, node
+        )&.sub(/^,/, "")&.sub(/^\s*(Sections?|Clauses?)/, "")&.strip
+          &.sub(/,$/, "") || ""
       end
 
       def index_parse(node, out)
