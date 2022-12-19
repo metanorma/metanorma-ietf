@@ -565,7 +565,7 @@ RSpec.describe Metanorma::Ietf do
 
   it "cites drafts of internet drafts" do
     VCR.use_cassette "abarth-02" do
-      doc = Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      doc = Asciidoctor.convert(<<~"INPUT", *OPTIONS).gsub(/ schema-version="[^"]+"/, "")
         = Document title
         Author
         :docfile: test.adoc
