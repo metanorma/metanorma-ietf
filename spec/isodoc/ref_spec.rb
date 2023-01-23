@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf do
   it "processes IsoXML bibliographies" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <bibdata>
     </bibdata>
@@ -150,6 +150,7 @@ RSpec.describe IsoDoc::Ietf do
 </bibliography>
     </iso-standard>
     INPUT
+    output = <<~OUTPUT
            #{XML_HDR}
            <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
                <relref target='ISO712' section='' relative=''/>
@@ -174,7 +175,7 @@ RSpec.describe IsoDoc::Ietf do
                  </author>
                </front>
                <format target='http://www.example.com'/>
-               <refcontent>ISO 712</refcontent>
+               <refcontent>ISO&#xa0;712</refcontent>
              </reference>
              <reference anchor='ISO16634'>
                <front>
@@ -208,7 +209,7 @@ RSpec.describe IsoDoc::Ietf do
                    <t>This is an abstract</t>
                  </abstract>
                </front>
-               <refcontent>ISO 20483:2013-2014</refcontent>
+               <refcontent>ISO&#xa0;20483:2013-2014</refcontent>
              </reference>
              <reference anchor='ref1'>
                <front>
@@ -224,7 +225,7 @@ RSpec.describe IsoDoc::Ietf do
                    )
                  </title>
                </front>
-               <refcontent>ICC 167</refcontent>
+               <refcontent>ICC&#xa0;167</refcontent>
              </reference>
              <aside>
                <t>NOTE: This is an annotation of ISO 20483:2013-2014</t>
@@ -261,7 +262,7 @@ RSpec.describe IsoDoc::Ietf do
                    <organization ascii='International Standards Organization' abbrev='ISO'>International Standards Organization</organization>
                  </author>
                </front>
-               <refcontent>ISO 3696</refcontent>
+               <refcontent>ISO&#xa0;3696</refcontent>
              </reference>
              <reference anchor='ref10'>
                <front>
@@ -283,7 +284,7 @@ RSpec.describe IsoDoc::Ietf do
                  <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                </front>
                <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-               <refcontent>RFC 10</refcontent>
+               <refcontent>RFC&#xa0;10</refcontent>
                <seriesInfo value='10' name='RFC'/>
              </reference>
              <reference anchor='ref12'>
@@ -311,10 +312,11 @@ RSpec.describe IsoDoc::Ietf do
        </rfc>
 
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
   it "processes IsoXML bibliographies with xincludes" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({use_xinclude: "true"}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <bibdata>
     </bibdata>
@@ -334,7 +336,7 @@ RSpec.describe IsoDoc::Ietf do
   <title format="text/plain">Cereals or cereal products</title>
   <title type="main" format="text/plain">Cereals and cereal products</title>
   <uri>http://www.example.com</uri>
-  <docidentifier type="ISO">ISO 712</docidentifier>
+  <docidentifier type="ISO">ISO&#xa0;712</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
@@ -463,6 +465,7 @@ RSpec.describe IsoDoc::Ietf do
 </bibliography>
     </iso-standard>
     INPUT
+    output = <<~OUTPUT
            #{XML_HDR}
            <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
                <relref target='ISO712'  section='' relative=''/>
@@ -487,7 +490,7 @@ RSpec.describe IsoDoc::Ietf do
                  </author>
                </front>
                <format target='http://www.example.com'/>
-               <refcontent>ISO 712</refcontent>
+               <refcontent>ISO&#xa0;712</refcontent>
              </reference>
              <reference anchor='ISO16634'>
                <front>
@@ -521,7 +524,7 @@ RSpec.describe IsoDoc::Ietf do
                    <t>This is an abstract</t>
                  </abstract>
                </front>
-               <refcontent>ISO 20483:2013-2014</refcontent>
+               <refcontent>ISO&#xa0;20483:2013-2014</refcontent>
              </reference>
              <reference anchor='ref1'>
                <front>
@@ -537,7 +540,7 @@ RSpec.describe IsoDoc::Ietf do
                    )
                  </title>
                </front>
-               <refcontent>ICC 167</refcontent>
+               <refcontent>ICC&#xa0;167</refcontent>
              </reference>
              <aside>
                <t>NOTE: This is an annotation of ISO 20483:2013-2014</t>
@@ -574,7 +577,7 @@ RSpec.describe IsoDoc::Ietf do
                    <organization ascii='International Standards Organization' abbrev='ISO'>International Standards Organization</organization>
                  </author>
                </front>
-               <refcontent>ISO 3696</refcontent>
+               <refcontent>ISO&#xa0;3696</refcontent>
              </reference>
              <reference anchor='ref10'>
                <front>
@@ -596,7 +599,7 @@ RSpec.describe IsoDoc::Ietf do
           <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
         </front>
         <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-        <refcontent>RFC 10</refcontent>
+        <refcontent>RFC&#xa0;10</refcontent>
         <seriesInfo value='10' name='RFC'/>
       </reference>
              <reference anchor='ref12'>
@@ -613,10 +616,11 @@ RSpec.describe IsoDoc::Ietf do
          </rfc>
 
     OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({use_xinclude: "true"}).convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
     it "processes nested bibliographies" do
-          expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+          input = <<~INPUT
 <ietf-standard  xmlns="http://riboseinc.com/isoxml">
 <sections><clause id="_clause" inline-header="false" obligation="normative">
 <title>Clause</title>
@@ -657,6 +661,7 @@ RSpec.describe IsoDoc::Ietf do
 </references></clause></sections>
 </ietf-standard>
 INPUT
+output = <<~OUTPUT
 <?xml version='1.0'?>
        <?rfc strict="yes"?>
        <?rfc compact="yes"?>
@@ -721,6 +726,7 @@ INPUT
          </back>
        </rfc>
 OUTPUT
+          expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(output)
     end
 
 end

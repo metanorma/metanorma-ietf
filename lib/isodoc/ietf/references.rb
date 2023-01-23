@@ -7,10 +7,10 @@ module IsoDoc
         isoxml.xpath(ns("//references/bibitem/docidentifier")).each do |i|
           i.children = docid_prefix(i["type"], i.text)
         end
-        isoxml.xpath(ns("//bibliography/references | "\
-                        "//bibliography/clause[.//references] | "\
-                        "//annex/clause[.//references] | "\
-                        "//annex/references | "\
+        isoxml.xpath(ns("//bibliography/references | " \
+                        "//bibliography/clause[.//references] | " \
+                        "//annex/clause[.//references] | " \
+                        "//annex/references | " \
                         "//sections/clause[.//references]")).each do |f|
           bibliography1(f, out)
         end
@@ -64,15 +64,15 @@ module IsoDoc
         !id[:sdo].nil? && id[:sdo] != "(NO ID)" and out.refcontent id[:sdo]
         docidentifiers&.each do |u|
           u["type"] == "DOI" and
-            out.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI /, ""),
+            out.seriesInfo nil, **attr_code(value: u.text.sub(/^DOI[  ]/, ""),
                                             name: "DOI")
           %w(IETF RFC).include?(u["type"]) and docidentifier_ietf(u, out)
         end
       end
 
       def docidentifier_ietf(ident, out)
-        if /^RFC /.match?(ident.text)
-          out.seriesInfo nil, **attr_code(value: ident.text.sub(/^RFC 0*/, ""),
+        if /^RFC[  ]/.match?(ident.text)
+          out.seriesInfo nil, **attr_code(value: ident.text.sub(/^RFC[  ]0*/, ""),
                                           name: "RFC")
         elsif /^I-D\./.match?(ident.text)
           out.seriesInfo nil, **attr_code(value: ident.text.sub(/^I-D\./, ""),
@@ -99,15 +99,15 @@ module IsoDoc
       end
 
       def relaton_to_author(bib, node)
-        auths = bib.xpath(ns("./contributor[xmlns:role/@type = 'author' or "\
+        auths = bib.xpath(ns("./contributor[xmlns:role/@type = 'author' or " \
                              "xmlns:role/@type = 'editor']"))
         auths.empty? and
-          auths = bib.xpath(ns("./contributor[xmlns:role/@type = "\
+          auths = bib.xpath(ns("./contributor[xmlns:role/@type = " \
                                "'publisher']"))
         auths.each do |a|
           role = a.at(ns("./role[@type = 'editor']")) ? "editor" : nil
-          p = a&.at(ns("./person/name")) and
-            relaton_person_to_author(p, role, node) or
+          (p = a&.at(ns("./person/name")) and
+            relaton_person_to_author(p, role, node)) or
             relaton_org_to_author(a&.at(ns("./organization")), role, node)
         end
       end
@@ -115,9 +115,7 @@ module IsoDoc
       def relaton_person_to_author(pers, role, node)
         full = pers&.at(ns("./completename"))&.text
         surname = pers&.at(ns("./surname"))&.text
-        initials = pers&.xpath(ns("./initial"))&.map do |i|
-                     i.text
-                   end&.join(" ") ||
+        initials = pers&.xpath(ns("./initial"))&.map(&:text)&.join(" ") ||
           pers&.xpath(ns("./forename"))&.map { |i| i.text[0] }&.join(" ")
         initials = nil if initials.empty?
         node.author nil, **attr_code(
@@ -143,9 +141,8 @@ module IsoDoc
         date = bib.at(ns("./date[@type = 'published']")) ||
           bib.at(ns("./date[@type = 'issued']")) ||
           bib.at(ns("./date[@type = 'circulated']"))
-        return unless date
-
-        attr = date_attr(date&.at(ns("./on | ./from"))&.text) || return
+        date or return
+        attr = date_attr(date.at(ns("./on | ./from"))&.text) or return
         node.date **attr_code(attr)
       end
 

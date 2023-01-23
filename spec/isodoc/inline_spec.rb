@@ -418,7 +418,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <organization abbrev='ISO'/>
         </author>
       </front>
-      <refcontent>ISO 712</refcontent>
+      <refcontent>ISO&#xa0;712</refcontent>
           </reference>
         </references>
       </back>
@@ -505,7 +505,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <organization abbrev='ISO'/>
         </author>
       </front>
-      <refcontent>ISO 712</refcontent>
+      <refcontent>ISO&#xa0;712</refcontent>
           </reference>
         </references>
       </back>
@@ -746,7 +746,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                   <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
                 </author>
               </front>
-              <refcontent>ISO 712</refcontent>
+              <refcontent>ISO&#xa0;712</refcontent>
             </reference>
           </references>
         </back>
