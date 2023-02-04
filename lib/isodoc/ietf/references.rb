@@ -1,8 +1,6 @@
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
-      # TODO displayreference will be implemented as combination of autofetch and user-provided citations
-
       def bibliography(isoxml, out)
         isoxml.xpath(ns("//references/bibitem/docidentifier")).each do |i|
           i.children = docid_prefix(i["type"], i.text)
@@ -113,10 +111,10 @@ module IsoDoc
       end
 
       def relaton_person_to_author(pers, role, node)
-        full = pers&.at(ns("./completename"))&.text
-        surname = pers&.at(ns("./surname"))&.text
-        initials = pers&.xpath(ns("./initial"))&.map(&:text)&.join(" ") ||
-          pers&.xpath(ns("./forename"))&.map { |i| i.text[0] }&.join(" ")
+        full = pers.at(ns("./completename"))&.text
+        surname = pers.at(ns("./surname"))&.text
+        initials = pers.xpath(ns("./initial"))&.map(&:text)&.join(" ") ||
+          pers.xpath(ns("./forename"))&.map { |i| i.text[0] }&.join(" ")
         initials = nil if initials.empty?
         node.author nil, **attr_code(
           fullname: full,
