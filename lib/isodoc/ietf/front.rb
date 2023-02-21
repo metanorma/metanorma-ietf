@@ -26,7 +26,7 @@ module IsoDoc::Ietf
     def output_if_translit(text)
       return nil if text.nil?
 
-      text.transliterate != text ? text.transliterate : nil
+      text.transliterate == text ? nil : text.transliterate
     end
 
     def title(_isoxml, front)
@@ -45,7 +45,7 @@ module IsoDoc::Ietf
       attr_code(value: @meta.get[:docnumber] || "",
                 asciiValue: output_if_translit(@meta.get[:docnumber]),
                 status: @meta.get[:stage],
-                stream: isoxml&.at(ns("//bibdata/series[@type = 'stream']/"\
+                stream: isoxml&.at(ns("//bibdata/series[@type = 'stream']/" \
                                       "title"))&.text)
     end
 
@@ -69,10 +69,10 @@ module IsoDoc::Ietf
     end
 
     def author(isoxml, front)
-      isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = "\
-                    "'author' or xmlns:role/@type = 'editor']")).each do |c|
+      isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = " \
+        "'author' or xmlns:role/@type = 'editor']")).each do |c|
         role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
-        c.at("./organization") and org_author(c, role, front) or
+        (c.at("./organization") and org_author(c, role, front)) or
           person_author(c, role, front)
       end
     end
@@ -148,7 +148,7 @@ module IsoDoc::Ietf
       out.postal do |p|
         if line = addr.at(ns("./formattedAddress"))
           line.xpath(ns(".//br")).each { |br| br.replace("\n") }
-          line.text.split(/\n/).each do |l|
+          line.text.split("\n").each do |l|
             p.postalLine l, **attr_code(ascii: l.transliterate)
           end
         else

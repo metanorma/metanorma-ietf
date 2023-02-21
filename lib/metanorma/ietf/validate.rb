@@ -1,4 +1,5 @@
 require "metanorma/ietf/data/workgroups"
+require "metanorma-utils"
 
 module Metanorma
   module Ietf
@@ -7,6 +8,19 @@ module Metanorma
         super
         image_validate(doc)
         workgroup_validate(doc)
+        submission_validate(doc)
+      end
+
+      def ns(path)
+        ::Metanorma::Utils::ns(path)
+      end
+
+      def submission_validate(doc)
+        stream = doc.at(ns("//bibdata/series[@type = 'stream']/title"))&.text
+        status = doc.at(ns("//bibdata/status/stage"))&.text
+        stream == "editorial" && status != "information" and
+          @log.add("Document Attributes",
+                   "Editorial stream must have Informational status")
       end
 
       def image_validate(doc)
@@ -24,7 +38,8 @@ module Metanorma
           wg_norm = wg.text.sub(/ (Working|Research) Group$/, "")
           next if @workgroups.include?(wg_norm)
 
-          @log.add("Document Attributes", nil, "IETF: unrecognised working group #{wg.text}")
+          @log.add("Document Attributes", nil,
+                   "IETF: unrecognised working group #{wg.text}")
         end
       end
 

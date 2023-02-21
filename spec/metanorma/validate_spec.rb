@@ -9,7 +9,8 @@ RSpec.describe Metanorma::Ietf do
 
       image::spec/assets/rice_image1.png[]
     INPUT
-    expect(File.read("test.err")).to include "image spec/assets/rice_image1.png is not SVG"
+    expect(File.read("test.err"))
+      .to include "image spec/assets/rice_image1.png is not SVG"
   end
 
   it "does not warn that image is SVG" do
@@ -22,6 +23,34 @@ RSpec.describe Metanorma::Ietf do
     if File.exist?("test.err")
       expect(File.read("test.err")).not_to include "is not SVG"
     end
+  end
+
+  it "warns of status in editorial stream" do
+    FileUtils.rm_f "test.err"
+    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :status: standard
+      :submission-type: editorial
+
+    INPUT
+    expect(File.read("test.err"))
+      .to include "Editorial stream must have Informational status"
+
+    FileUtils.rm_f "test.err"
+    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :status: informational
+      :submission-type: editorial
+
+    INPUT
+    expect(File.read("test.err"))
+      .not_to include "Editorial stream must have Informational status"
   end
 
   it "warns of invalid workgroup" do
@@ -104,9 +133,9 @@ RSpec.describe Metanorma::Ietf do
 
     it "generates error file" do
       expect do
-        Metanorma::Compile
-          .new
-          .compile("spec/assets/xref_error.adoc", type: "ietf", "agree-to-terms": true)
+        Metanorma::Compile.new
+          .compile("spec/assets/xref_error.adoc",
+                   type: "ietf", "agree-to-terms": true)
       end.to(change { File.exist?("spec/assets/xref_error.err") }
               .from(false).to(true))
     end

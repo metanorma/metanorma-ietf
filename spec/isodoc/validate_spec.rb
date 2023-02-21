@@ -315,7 +315,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </author>
           <area>General</area>
           <area>Operations and Management</area>
-          <abstract anchor="_absttacr">#{'      '}
+          <abstract anchor="_absttacr">
       <t anchor="_2cf15089-1c6a-4156-a904-94376faa6cd1">Abc
       Def</t>
       </abstract>
