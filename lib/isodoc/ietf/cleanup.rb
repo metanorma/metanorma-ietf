@@ -187,10 +187,10 @@ module IsoDoc
       end
 
       def aside_cleanup(docxml)
-        docxml.xpath("//t[descendant::aside] | //table[descendant::aside] | "\
-                     "//figure[descendant::aside]").each do |p|
+        docxml.xpath("//*[aside]").each do |p|
+          %w(section).include?(p.name) and next
           insert = p
-          p.xpath(".//aside").each do |a|
+          p.xpath("./aside").each do |a|
             insert.next = a.remove
             insert = insert.next_element
           end

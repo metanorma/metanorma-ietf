@@ -125,6 +125,10 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "cleans up table footnotes" do
     input = <<~INPUT
           #{XML_HDR}
+                 </abstract>
+               </front>
+               <middle>
+              <section>
                    <table anchor='tableD-1'>
                      <name>
                        Repeatability and reproducibility of
@@ -190,14 +194,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                        </tr>
                      </tbody>
                    </table>
-                 </abstract>
-               </front>
-               <middle/>
+                 </section>
+               </middle>
                <back/>
              </rfc>
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
+      </abstract></front><middle><section>
                <table anchor='tableD-1'>
                  <name>
                     Repeatability and reproducibility of
@@ -244,7 +248,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </table>
                <aside>
                  <t anchor='_0fe65e9a-5531-408e-8295-eeff35f41a55'>[a] Parboiled rice.</t>
-                 </aside>
+               </aside>
                <dl>
                  <dt>
                    <p>Drago</p>
@@ -261,11 +265,10 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </tr>
                  </tbody>
                </table>
-             </abstract>
-           </front>
-           <middle/>
-           <back/>
-         </rfc>
+                 </section>
+               </middle>
+               <back/>
+             </rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)

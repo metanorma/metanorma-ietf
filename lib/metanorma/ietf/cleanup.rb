@@ -83,6 +83,8 @@ module Metanorma
       end
 
       def section_names_refs_cleanup(xml); end
+
+      def note_cleanup(xmldoc); end
     end
   end
 end

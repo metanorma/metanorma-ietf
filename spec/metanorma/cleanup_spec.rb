@@ -608,4 +608,50 @@ RSpec.describe Metanorma::Ietf do
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to xmlpp(output)
   end
+
+  it "does not fold notes into preceding blocks" do
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :draft:
+
+      |===
+      |A |B
+
+      |C |D
+      |===
+
+      [NOTE]
+      ====
+      That formula does not do much
+      ====
+
+    INPUT
+    output = <<~OUTPUT
+      #{BLANK_HDR.sub(/<language>/, '<version> </version><language>')}
+               <sections>
+           <table id="_">
+             <thead>
+               <tr>
+                 <th valign="top" align="left">A</th>
+                 <th valign="top" align="left">B</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td valign="top" align="left">C</td>
+                 <td valign="top" align="left">D</td>
+               </tr>
+             </tbody>
+             <note id="_">
+               <p id="_">That formula does not do much</p>
+             </note>
+           </table>
+         </sections>
+       </ietf-standard>
+    OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
+  end
 end
