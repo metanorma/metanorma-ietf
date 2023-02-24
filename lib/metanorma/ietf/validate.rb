@@ -16,10 +16,10 @@ module Metanorma
       end
 
       def submission_validate(doc)
-        stream = doc.at(ns("//bibdata/series[@type = 'stream']/title"))&.text
-        status = doc.at(ns("//bibdata/status/stage"))&.text
-        stream == "editorial" && status != "information" and
-          @log.add("Document Attributes",
+        stream = doc.at(("//bibdata/series[@type = 'stream']/title"))&.text
+        status = doc.at(("//bibdata/status/stage"))&.text
+        stream == "editorial" && status != "informational" and
+          @log.add("Document Attributes", nil,
                    "Editorial stream must have Informational status")
       end
 
