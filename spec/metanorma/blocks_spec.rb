@@ -3,22 +3,25 @@ require "open3"
 
 RSpec.describe Metanorma::Ietf do
   it "processes paragraphs" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       [keepWithNext=true,keepWithPrevious=true]
       Hello
     INPUT
+    output = <<~OUTPUT
        #{BLANK_HDR}
       <sections>
       <p keep-with-next='true' keep-with-previous='true' id='_'>Hello</p>
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes open blocks" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       --
       x
@@ -28,16 +31,19 @@ RSpec.describe Metanorma::Ietf do
       z
       --
     INPUT
+    output = <<~OUTPUT
        #{BLANK_HDR}
       <sections><p id="_">x</p>
       <p id="_">y</p>
       <p id="_">z</p></sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "ignores review blocks unless document is in draft mode" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [[foreword]]
       .Foreword
@@ -50,15 +56,18 @@ RSpec.describe Metanorma::Ietf do
       For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
       ****
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
       <sections><p id="foreword">Foreword</p>
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes review blocks if document is in draft mode" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -78,6 +87,7 @@ RSpec.describe Metanorma::Ietf do
       For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
       ****
     INPUT
+    output = <<~OUTPUT
             <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
              <bibdata type="standard">
                <title language="en" type="main" format="text/plain">Document title</title>
@@ -121,10 +131,14 @@ RSpec.describe Metanorma::Ietf do
              <p id="_">For further information on the Foreword, see <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong></p></review></sections>
              </ietf-standard>
     OUTPUT
+    xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
+    xml.at("//xmlns:metanorma-extension").remove
+    expect(xmlpp(strip_guid(xml.to_xml)))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes term notes" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -132,6 +146,7 @@ RSpec.describe Metanorma::Ietf do
 
       NOTE: This is a note
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
       <sections>
         <terms id="_" obligation="normative">
@@ -146,10 +161,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes term notes as plain notes in nonterm clauses" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -158,6 +175,7 @@ RSpec.describe Metanorma::Ietf do
 
       NOTE: This is a note
     INPUT
+    output = <<~OUTPUT
                     #{BLANK_HDR}
                     <sections>
         <terms id="_" obligation="normative">
@@ -172,10 +190,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes term notes as plain notes in definitions subclauses of terms & definitions" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -185,6 +205,7 @@ RSpec.describe Metanorma::Ietf do
 
       NOTE: This is a note
     INPUT
+    output = <<~OUTPUT
                     #{BLANK_HDR}
                     <sections>
         <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
@@ -200,10 +221,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes notes" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       NOTE: This is a note
 
@@ -212,6 +235,7 @@ RSpec.describe Metanorma::Ietf do
 
       NOTE: This is a note
     INPUT
+    output = <<~OUTPUT
              #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
         <title>Foreword</title>
@@ -229,10 +253,12 @@ RSpec.describe Metanorma::Ietf do
       </ietf-standard>
 
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes literals" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [[lit]]
       [align=left,alt=hello]
@@ -240,6 +266,7 @@ RSpec.describe Metanorma::Ietf do
       <LITERAL>
       ....
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
            <figure id="lit">
@@ -249,13 +276,16 @@ RSpec.describe Metanorma::Ietf do
        </ietf-standard>
 
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes simple admonitions with Asciidoc names" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       CAUTION: Only use paddy or parboiled rice for the determination of husked rice yield.
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
          <admonition id="_" type="caution">
@@ -265,10 +295,12 @@ RSpec.describe Metanorma::Ietf do
        </ietf-standard>
 
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes complex admonitions with non-Asciidoc names" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [CAUTION,type=Safety Precautions]
       .Precautions
@@ -280,6 +312,7 @@ RSpec.describe Metanorma::Ietf do
       . Celery makes them sad.
       ====
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
       <sections>
          <admonition id="_" type="safety precautions"><name>Precautions</name><p id="_">While werewolves are hardy community members, keep in mind the following dietary concerns:</p>
@@ -298,10 +331,12 @@ RSpec.describe Metanorma::Ietf do
        </ietf-standard>
 
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes term examples" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -310,6 +345,7 @@ RSpec.describe Metanorma::Ietf do
       [example]
       This is an example
     INPUT
+    output = <<~OUTPUT
             #{BLANK_HDR}
             <sections>
         <terms id="_" obligation="normative">
@@ -323,10 +359,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes term examples as plain examples in nonterm clauses" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -336,6 +374,7 @@ RSpec.describe Metanorma::Ietf do
       [example]
       This is an example
     INPUT
+    output = <<~OUTPUT
             #{BLANK_HDR}
       <sections>
         <terms id="_" obligation="normative">
@@ -350,10 +389,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes term examples as plain examples in definitions subclauses of terms & definitions" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -364,6 +405,7 @@ RSpec.describe Metanorma::Ietf do
       [example]
       This is an example
     INPUT
+    output = <<~OUTPUT
                     #{BLANK_HDR}
       <sections>
         <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
@@ -379,10 +421,12 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes examples" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [example,subsequence=A]
       .Title
@@ -397,6 +441,7 @@ RSpec.describe Metanorma::Ietf do
       This is another example
       ====
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
          <example id="_" subsequence="A">
@@ -407,15 +452,18 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes preambles" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       This is a preamble
 
       == Section 1
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
          <title>Foreword</title>
@@ -426,16 +474,19 @@ RSpec.describe Metanorma::Ietf do
        </clause></sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes preambles with titles" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       .Preamble
       This is a preamble
 
       == Section 1
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
          <title>Foreword</title>
@@ -446,16 +497,19 @@ RSpec.describe Metanorma::Ietf do
        </clause></sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "accepts attributes on images" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [height=4,width=3,alt="IMAGE",filename="riceimg1.png",titleattr="TITLE",align=left]
       .Caption
       image::spec/assets/rice_image1.png[]
 
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
               <sections>
          <figure id="_"><name>Caption</name>
@@ -464,10 +518,12 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes blockquotes" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [quote, ISO, "ISO7301,section 1"]
       ____
@@ -478,6 +534,7 @@ RSpec.describe Metanorma::Ietf do
       Block quotation 2
       ____
     INPUT
+    output = <<~OUTPUT
             #{BLANK_HDR}
              <sections>
                <quote id="_">
@@ -497,10 +554,12 @@ RSpec.describe Metanorma::Ietf do
              </sections>
              </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes source code" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       .Caption
       [source,ruby,filename=sourcecode1.rb,markers=true]
@@ -515,6 +574,7 @@ RSpec.describe Metanorma::Ietf do
       --
       --
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
          <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name>Caption</name>puts "Hello, world."
@@ -525,10 +585,12 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes callouts" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [source,ruby]
       --
@@ -540,6 +602,7 @@ RSpec.describe Metanorma::Ietf do
       <1> This is one callout
       <2> This is another callout
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
               <sections><sourcecode id="_" lang="ruby">puts "Hello, world." <callout target="_">1</callout>
        %w{a b c}.each do |x|
@@ -552,10 +615,12 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes unmodified term sources" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -566,6 +631,7 @@ RSpec.describe Metanorma::Ietf do
       [.source]
       <<ISO2191,section=1>>
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
          <terms id="_" obligation="normative">
@@ -589,10 +655,12 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes modified term sources" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       == Terms and Definitions
 
@@ -603,6 +671,7 @@ RSpec.describe Metanorma::Ietf do
       [.source]
       <<ISO2191,section=1>>, with adjustments
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
             <sections>
          <terms id="_" obligation="normative">
@@ -629,10 +698,12 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes table attribute" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       [align=right]
@@ -642,6 +713,7 @@ RSpec.describe Metanorma::Ietf do
       |C |D
       |===
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
            <table id='_' align='right'>
@@ -661,5 +733,7 @@ RSpec.describe Metanorma::Ietf do
          </sections>
        </ietf-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 end
