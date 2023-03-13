@@ -477,17 +477,17 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <relref target='ISO712' section='' relative=''/>
                <relref target='ISO712' section='Table 1' relative=''/>
                <relref target='ISO712' section='Table 1&#x2013;1' relative=''/>
-               <relref target='ISO712' section='1,  Table 1' relative=''/>
+               <relref target='ISO712' section='1, Table 1' relative=''/>
                <relref target='ISO712' section='1' relative=''/>
                <relref target='ISO712' section='1.5' relative=''/>
                <relref target='ISO712' section='Table 1' relative=''>A</relref>
                <relref target='ISO712' section='Whole of text' relative=''/>
                <relref target='ISO712' section='Prelude 7' relative=''/>
                <relref target='ISO712' section='' relative=''>A</relref>
-               <relref target='ISO712' section='1 and  3' relative=''/>
-               <relref target='ISO712' section='1 and  Table 3' relative=''/>
+               <relref target='ISO712' section='1 and 3' relative=''/>
+               <relref target='ISO712' section='1 and Table 3' relative=''/>
                <relref target='ISO712' section='' relative='1'>A</relref>
-               <relref target='ISO712' section='1 and  Clause 9' relative='xyz'/>
+               <relref target='ISO712' section='1 and Clause 9' relative='xyz'/>
                <relref target='ISO712' section='1' relative='1'/>
                <relref target='ISO712' section='1.5' relative='1'/>
                <relref target='ISO712' section='Table 1' relative='1'>A</relref>
@@ -652,105 +652,51 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-      <?xml version='1.0'?>
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
-      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-        <front>
-          <seriesInfo value='' name='RFC' asciiName='RFC'/>
-          <abstract>
-            <t>
-              <ul>
-                <li>
-                  [term defined in
-                  <xref target='clause1'/>
-                  ]
-                </li>
-                <li>
-                  <em>term</em>
-                   [term defined in
-                  <xref target='clause1'/>
-                  ]
-                </li>
-                <li>
-                  <em>w[o]rd</em>
-                   [term defined in
-                  <xref target='clause1'>Clause #1</xref>
-                  ]
-                </li>
-                <li>
-                  <em>term</em>
-                   [term defined in
-                  <relref target='ISO712' section='' relative=''/>
-                  ]
-                </li>
-                <li>
-                  <em>word</em>
-                   [term defined in
-                  <relref target='ISO712' section='' relative=''>The Aforementioned Citation</relref>
-                  ]
-                </li>
-                <li>
-                  <em>word</em>
-                   [term defined in
-                  <relref target='ISO712' section='3.1,  Figure a' relative=''> </relref>
-                  ]
-                </li>
-                <li>
-                  <em>word</em>
-                   [term defined in
-                  <relref target='ISO712' section='3.1 and  Figure b' relative=''> </relref>
-                  ]
-                </li>
-                <li>
-                  <em>word</em>
-                   [term defined in
-                  <relref target='ISO712' section='3.1 and  Figure b' relative=''> The Aforementioned Citation </relref>
-                  ]
-                </li>
-                <li>
-                  <em>word</em>
-                   [term defined in Termbase IEV, term ID 135-13-13]
-                </li>
-                <li>
-                  <em>word</em>
-                   [term defined in The IEV database]
-                </li>
-              </ul>
-            </t>
-          </abstract>
-        </front>
-        <middle>
-          <section anchor='clause1'>
-            <name>Clause 1</name>
-          </section>
-        </middle>
-        <back>
-          <references anchor='_normative_references'>
-            <name>Normative References</name>
-            <t>
-              The following documents are referred to in the text in such a way that
-              some or all of their content constitutes requirements of this document.
-              For dated references, only the edition cited applies. For undated
-              references, the latest edition of the referenced document (including any
-              amendments) applies.
-            </t>
-            <reference anchor='ISO712'>
-              <front>
-                <title>Cereals or cereal products</title>
-                <author>
-                  <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
-                </author>
-              </front>
-              <refcontent>ISO&#xa0;712</refcontent>
-            </reference>
-          </references>
-        </back>
-      </rfc>
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
+         <front>
+           <seriesInfo value="" name="RFC" asciiName="RFC"/>
+           <abstract>
+             <t>
+               <ul>
+                 <li>[term defined in <xref target="clause1"/>]</li>
+                 <li><em>term</em> [term defined in <xref target="clause1"/>]</li>
+                 <li><em>w[o]rd</em> [term defined in <xref target="clause1">Clause #1</xref>]</li>
+                 <li><em>term</em> [term defined in <relref target="ISO712" section="" relative=""/>]</li>
+                 <li><em>word</em> [term defined in <relref target="ISO712" section="" relative="">The Aforementioned Citation</relref>]</li>
+                 <li><em>word</em> [term defined in <relref target="ISO712" section="3.1, Figure a" relative=""/>]</li>
+                 <li><em>word</em> [term defined in <relref target="ISO712" section="3.1 and Figure b" relative=""/>]</li>
+                 <li><em>word</em> [term defined in <relref target="ISO712" section="3.1 and Figure b" relative="">
+
+
+               The Aforementioned Citation
+               </relref>]</li>
+                 <li><em>word</em> [term defined in Termbase IEV, term ID 135-13-13]</li>
+                 <li><em>word</em> [term defined in The IEV database]</li>
+               </ul>
+             </t>
+           </abstract>
+         </front>
+         <middle>
+           <section anchor="clause1">
+             <name>Clause 1</name>
+           </section>
+         </middle>
+         <back>
+           <references anchor="_normative_references">
+             <name>Normative References</name>
+             <t>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</t>
+             <reference anchor="ISO712">
+               <front>
+                 <title>Cereals or cereal products</title>
+                 <author>
+                   <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                 </author>
+               </front>
+               <refcontent>ISO 712</refcontent>
+             </reference>
+           </references>
+         </back>
+       </rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
@@ -957,19 +903,21 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <front>
            <seriesInfo value='' name='RFC' asciiName='RFC'/>
          </front>
-         <middle>
-           <section anchor='A'>
+                 <middle>
+           <section anchor="A">
              <name>Section</name>
-             <t anchor='_'>
-               <relref target='ref1' section='3 to  5' relative=''> </relref>
-               <relref target='ref1' section='3 to  Clause 5,  Table 2' relative=''> </relref>
-                text
-             </t>
-             <relref target='ref1' section='3 and  5' relative=''> </relref>
-             <relref target='ref1' section='3,  5, and  7' relative=''> </relref>
-             <relref target='ref1' section='3 and  Annex 5' relative=''> </relref>
-             <relref target='ref1' section='3 or  5' relative=''> text </relref>
-             <relref target='ref1' section='3 to  5 and  8 to  10' relative=''> </relref>
+             <t anchor="_"><relref target="ref1" section="3 to 5" relative=""/><relref target="ref1" section="3 to Clause 5, Table 2" relative=""/>
+                 text
+               </t>
+             <relref target="ref1" section="3 and 5" relative=""/>
+             <relref target="ref1" section="3, 5, and 7" relative=""/>
+             <relref target="ref1" section="3 and Annex 5" relative=""/>
+             <relref target="ref1" section="3 or 5" relative="">
+
+
+                 text
+               </relref>
+             <relref target="ref1" section="3 to 5 and 8 to 10" relative=""/>
            </section>
          </middle>
          <back/>
