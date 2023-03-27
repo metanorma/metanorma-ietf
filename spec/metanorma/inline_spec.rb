@@ -11,7 +11,7 @@ RSpec.describe Metanorma::Ietf do
       super^script^
       sub~script~
       sub~__scr__ipt~
-      stem:[<mml:math><mml:msub xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"> <mml:mrow> <mml:mrow> <mml:mi mathvariant="bold-italic">F</mml:mi> </mml:mrow> </mml:mrow> <mml:mrow> <mml:mrow> <mml:mi mathvariant="bold-italic">&#x391;</mml:mi> </mml:mrow> </mml:mrow> </mml:msub> </mml:math>]
+      stem:[<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:msub xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"> <mml:mrow> <mml:mrow> <mml:mi mathvariant="bold-italic">F</mml:mi> </mml:mrow> </mml:mrow> <mml:mrow> <mml:mrow> <mml:mi mathvariant="bold-italic">&#x391;</mml:mi> </mml:mrow> </mml:mrow> </mml:msub> </mml:math>]
       [alt]#alt#
       [deprecated]#deprecated#
       [domain]#domain#
@@ -243,7 +243,7 @@ RSpec.describe Metanorma::Ietf do
             <p id="_">See<index primary="true"><primary>See</primary></index> 
             Index <em>term</em><index><primary><em>term</em></primary></index> 
             and<index primary="true"><primary>A<sub>B</sub></primary>
-            <secondary><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>α</mi></math><asciimath>alpha</asciimath></stem></secondary>
+            <secondary><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>α</mi></mstyle></math><asciimath>alpha</asciimath></stem></secondary>
             <tertiary>Ⲁ</tertiary></index>.</p>
         </sections>
       </ietf-standard>
