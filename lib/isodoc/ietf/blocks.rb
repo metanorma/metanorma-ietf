@@ -112,6 +112,10 @@ module IsoDoc
         end
       end
 
+      def source_parse(node, out)
+        termref_parse(node, out)
+      end
+
       def sourcecode_parse(node, out)
         out.sourcecode **attr_code(
           anchor: node["id"], type: node["lang"], name: node["filename"],

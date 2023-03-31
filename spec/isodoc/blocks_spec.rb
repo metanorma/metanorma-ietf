@@ -213,6 +213,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <figure id="figure-C" unnumbered="true">
       <pre>A &lt;
       B</pre>
+                 <source status="generalisation">
+        <origin bibitemid="ISO2191" type="inline" citeas="">
+          <localityStack>
+            <locality type="section">
+              <referenceFrom>1</referenceFrom>
+            </locality>
+          </localityStack>
+        </origin>
+        <modification>
+          <p id="_">with adjustments</p>
+        </modification>
+      </source>
       </figure>
           </foreword></preface>
           </iso-standard>
@@ -247,6 +259,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <figure anchor='figure-C'>
               <artwork type='ascii-art'><![CDATA[A <
       B]]></artwork>
+            <t>SOURCE: <relref target="ISO2191" section="1" relative=""/> -- with adjustments</t>
             </figure>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
