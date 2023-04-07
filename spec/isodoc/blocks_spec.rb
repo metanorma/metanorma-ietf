@@ -382,14 +382,21 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
        #{XML_HDR}
-              <sourcecode anchor='_'>
-                puts "Hello, world."  &lt;1&gt;
-         %w{a b c}.each do |x|
-           puts x  &lt;2&gt;
-         end
-      &lt;1&gt; This is one callout
-      &lt;2&gt; This is another callout
-              </sourcecode>
+                    <sourcecode anchor="_">puts "Hello, world."  &lt;1&gt;
+          %w{a b c}.each do |x|
+            puts x  &lt;2&gt;
+          end</sourcecode>
+             <t>Key</t>
+             <dl>
+               <dt>1</dt>
+               <dd>
+                 <t anchor="_">This is <em>one</em> callout</t>
+               </dd>
+               <dt>2</dt>
+               <dd>
+                 <t anchor="_">This is another callout</t>
+               </dd>
+             </dl>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})

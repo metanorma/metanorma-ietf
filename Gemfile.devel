@@ -1,5 +1,5 @@
 gem "metanorma-standoc", git: "https://github.com/metanorma/metanorma-standoc", branch: "main"
-gem "isodoc", git: "https://github.com/metanorma/isodoc", branch: "features/fig-source"
+gem "isodoc", git: "https://github.com/metanorma/isodoc", branch: "features/sourcecode-key"
 
 
 

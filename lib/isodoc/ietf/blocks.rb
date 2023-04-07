@@ -87,8 +87,8 @@ module IsoDoc
             p << note_label(node)
             first.name == "p" and first.children.each { |n| parse(n, p) }
           end
-          first.name == "p" and
-            node.elements.drop(1).each { |n| parse(n, out) } or
+          (first.name == "p" and
+            node.elements.drop(1).each { |n| parse(n, out) }) or
             node.children.each { |n| parse(n, out) }
         end
       end
@@ -121,8 +121,12 @@ module IsoDoc
           anchor: node["id"], type: node["lang"], name: node["filename"],
           markers: node["markers"], src: node["src"]
         ) do |s|
-          node.children.each { |x| parse(x, s) unless x.name == "name" }
+          node.children.each do |x|
+            %w(name dl).include?(x.name) and next
+            parse(x, s)
+          end
         end
+        annotation_parse(node, out)
       end
 
       def pre_parse(node, out)
@@ -134,13 +138,20 @@ module IsoDoc
 
       def annotation_parse(node, out)
         @sourcecode = false
-        @annotation = true
-        node.at("./preceding-sibling::*[local-name() = 'annotation']") or
-          out << "\n\n"
-        callout = node.at(ns("//callout[@target='#{node['id']}']"))
-        out << "\n&lt;#{callout.text}&gt; "
-        out << node&.children&.text&.strip
-        @annotation = false
+        node.at(ns("./annotation")) or return
+        out.t { |p| p << @i18n.key }
+        out.dl do |dl|
+          node.xpath(ns("./annotation")).each do |a|
+            annotation_parse1(a, dl)
+          end
+        end
+      end
+
+      def annotation_parse1(ann, dlist)
+        dlist.dt ann.at(ns("//callout[@target='#{ann['id']}']")).text
+        dlist.dd do |dd|
+          ann.children.each { |n| parse(n, dd) }
+        end
       end
 
       def formula_where(dlist, out)
@@ -193,7 +204,7 @@ module IsoDoc
       end
 
       def admonition_name_parse(_node, div, name)
-        div.t **{ keepWithNext: "true" } do |p|
+        div.t keepWithNext: "true" do |p|
           name.children.each { |n| parse(n, p) }
         end
       end
@@ -201,7 +212,7 @@ module IsoDoc
       def admonition_parse(node, out)
         type = node["type"]
         name = admonition_name(node, type)
-        out.aside **{ anchor: node["id"] } do |t|
+        out.aside anchor: node["id"] do |t|
           admonition_name_parse(node, t, name) if name
           node.children.each { |n| parse(n, t) unless n.name == "name" }
         end
