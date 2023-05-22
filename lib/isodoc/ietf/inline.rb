@@ -93,7 +93,7 @@ module IsoDoc
 
       def image_title_parse(out, caption)
         unless caption.nil?
-          out.t **{ align: "center", keepWithPrevious: "true" } do |p|
+          out.t align: "center", keepWithPrevious: "true" do |p|
             p << caption.to_s
           end
         end
@@ -139,6 +139,14 @@ module IsoDoc
           node.xpath(ns("./locality | ./localityStack")), nil, node
         )&.sub(/^,/, "")&.sub(/^\s*(Sections?|Clauses?)/, "")&.strip
           &.sub(/,$/, "") || ""
+      end
+
+      def origin_parse(node, out)
+        if t = node.at(ns("./termref"))
+          termrefelem_parse(t, out)
+        else
+          eref_parse(node, out)
+        end
       end
 
       def index_parse(node, out)
