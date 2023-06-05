@@ -23,7 +23,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '721'
+      - '1903'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -31,7 +31,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"93bffe352e49d8919fb93e077d49cfb784947afadb6161d385d19e2b179c7b38"
+      - W/"3531800b123b8c9b5f556582a01f63caebb331561e5b5473a3960c71d518b34b"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -41,35 +41,36 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 876C:32ED:359D2:4B911:62C2B380
+      - 9076:44C5:48D98E7:4BA0997:647E314E
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 04 Jul 2022 09:31:44 GMT
+      - Mon, 05 Jun 2023 19:04:47 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11241-MEL
+      - cache-fra-eddf8230118-FRA
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
-      - '0'
+      - '1'
       X-Timer:
-      - S1656927104.301907,VS0,VE390
+      - S1685991888.971314,VS0,VE1
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 2fa44f5b0e58d5c4f2f2beae567e052e40730070
+      - a9dcd50425c66851183b2dff6adc05b29faccfd6
       Expires:
-      - Mon, 04 Jul 2022 09:36:44 GMT
+      - Mon, 05 Jun 2023 19:09:47 GMT
       Source-Age:
-      - '0'
+      - '128'
     body:
       encoding: ASCII-8BIT
       string: |
         ---
+        schema-version: v1.2.3
         id: draft-abarth-cake-01
         title:
         - content: Origin Cookies
@@ -79,8 +80,8 @@ http_interactions:
           - Latn
           format: text/plain
         link:
-        - content: https://www.ietf.org/archive/id/draft-abarth-cake-01.txt
-          type: TXT
+        - content: https://datatracker.ietf.org/doc/html/draft-abarth-cake-01
+          type: src
         type: standard
         docid:
         - id: draft-abarth-cake-01
@@ -92,19 +93,39 @@ http_interactions:
         docnumber: I-D.abarth-cake
         date:
         - type: published
-          value: 2011-03
+          value: '2011-03-05'
         contributor:
         - person:
             name:
+              given:
+                forename:
+                - content: Adam
+                  language:
+                  - en
+                - language:
+                  - en
+                  initial: A
+                formatted_initials:
+                  content: A.
+                  language:
+                  - en
+              surname:
+                content: Barth
+                language:
+                - en
               completename:
                 content: Adam Barth
                 language:
                 - en
+            affiliation:
+            - organization:
+                name:
+                - content: Google, Inc.
           role:
-          - author
+          - type: author
         version:
         - draft: '01'
-        revdate: 2011-03
+        revdate: '2011-03-05'
         language:
         - en
         script:
@@ -132,7 +153,8 @@ http_interactions:
             - Latn
             format: text/plain
           number: draft-abarth-cake-01
-        fetched: '2022-07-03'
         doctype: internet-draft
+        ext:
+          schema-version: v1.0.0
   recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
 recorded_with: VCR 6.1.0
