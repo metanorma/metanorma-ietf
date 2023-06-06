@@ -268,6 +268,41 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
+  it "processes figures with raw svg" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <preface><foreword>
+          <figure id="figureA-1">
+        <name>Split-it-right <em>sample</em> divider</name>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+                   <circle fill='#009' r='45' cx='50' cy='50'/>
+                   <path d='M33,26H78A37,37,0,0,1,33,83V57H59V43H33Z' fill='#FFF'/>
+                 </svg>
+      </figure>
+          </foreword></preface>
+          </iso-standard>
+    INPUT
+    output = <<~OUTPUT
+      #{XML_HDR}
+            <figure anchor="figureA-1">
+              <name>Split-it-right <em>sample</em> divider</name>
+              <artwork type="svg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <circle fill="#009" r="45" cx="50" cy="50"/>
+                  <path d="M33,26H78A37,37,0,0,1,33,83V57H59V43H33Z" fill="#FFF"/>
+                </svg>
+              </artwork>
+            </figure>
+          </abstract>
+        </front>
+        <middle/>
+        <back/>
+      </rfc>
+    OUTPUT
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+  end
+
   it "processes examples" do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
@@ -762,7 +797,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <em>Inherits: /ss/584/2015/level/1</em>
              </t>
              <t anchor='_'>
-               I recommend 
+               I recommend#{' '}
                <em>this</em>
                .
              </t>
@@ -772,7 +807,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <t anchor='_'>The following code will be run for verification:</t>
              <sourcecode anchor='_'>
                CoreRoot(success): HttpResponse if (success) recommendation(label:
-               success-response) end 
+               success-response) end#{' '}
              </sourcecode>
            </abstract>
          </front>
@@ -855,7 +890,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <em>Language: BASIC</em>
              </t>
              <t anchor='_'>
-               I recommend 
+               I recommend#{' '}
                <em>this</em>
                .
              </t>
@@ -865,7 +900,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <t anchor='_'>The following code will be run for verification:</t>
              <sourcecode anchor='_'>
                CoreRoot(success): HttpResponse if (success) recommendation(label:
-               success-response) end 
+               success-response) end#{' '}
              </sourcecode>
            </abstract>
          </front>
