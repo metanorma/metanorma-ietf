@@ -99,6 +99,20 @@ module IsoDoc
         end
       end
 
+      def svg_parse(node, out)
+        if node.parent.name == "image" then super
+        else
+          attrs = { src: node["src"], title: node["title"],
+                  align: node["align"], name: node["filename"],
+                  anchor: node["id"], type: "svg",
+                  alt: node["alt"] }
+        out.artwork **attr_code(attrs) do |x|
+          out = x
+          super
+        end
+        end
+      end
+
       def xref_parse(node, out)
         out.xref **attr_code(target: node["target"], format: node["format"],
                              relative: node["relative"]) do |l|
