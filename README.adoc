@@ -23,12 +23,8 @@ gem, and aligns closely to it.
 
 The following outputs are generated:
 
-* RFC XML v2
-** Metanorma `doctype`: `rfc2`
-** Metanorma file extension: `xmlrfc` (not `xml`!)
-
 * RFC XML v3
-** Metanorma `doctype`: `rfc3`
+** Metanorma `doctype`: `ietf`
 ** Metanorma file extension: `xmlrfc` (not `xml`!)
 
 The "`xml2rfc`" Vocabulary (hereinafter "`RFC XML`") is an XML-based language
@@ -37,18 +33,16 @@ https://www.ietf.org/id-info/guidelines.html[Internet-Drafts]
 and https://tools.ietf.org/html/rfc7322[RFCs (RFC7322)].
 
 This gem allows you to author these types of documents in AsciiDoc, and outputs
-RFC XML output in both v3 and v2 formats:
+RFC XML output in v3 format:
 
 * v3 RFC XML (https://tools.ietf.org/html/rfc7991[RFC 7991])
-* v2 RFC XML (https://tools.ietf.org/html/rfc7749[RFC 7749])
 
 Its syntax is designed to be "`native-asciidoctor`" as much as possible, with
 some templated use of attributes to convey added information for RFC XML
 output.
 
-This README documents the AsciiRFC markup in full detail. For further
-information about AsciiRFC, please refer to the
-https://datatracker.ietf.org/doc/draft-ribose-asciirfc/[AsciiRFC IETF Internet-Draft].
+For further information about the markup used, please refer to the
+https://www.metanorma.org/author/ietf/[Writing IETF I-Ds and RFCs using AsciiDoc & Metanorma].
 
 
 
@@ -58,13 +52,12 @@ The preferred way to invoke this gem is via the `metanorma` command:
 
 [source,console]
 ----
-$ metanorma --type rfc3 a.adoc                     # output RFC XML v3
-$ metanorma --type rfc3 --extensions xmlrfc a.adoc # output RFC XML v3
+$ metanorma --type ietf a.adoc                     # output RFC XML v3, text, HTML
+$ metanorma --type ietf --extensions xmlrfc a.adoc # output RFC XML v3
 ----
 
-The gem translates the document into IETF XML RFC format.
-
-Text and HTML versions should be generated using the `xml2rfc` tool.
+The gem translates the document into IETF XML RFC format. By default, the gem
+then runs the `xml2rfc` tool to generate text and HTML versions as well.
 
 
 == Installation
@@ -141,18 +134,6 @@ include::spec/examples/example-v3.adoc[]
 ----
 endif::[]
 
-=== RFC XML v2 Example
-
-ifdef::env-github[]
-include::spec/examples/example-v2.adoc[]
-endif::[]
-ifndef::env-github[]
-[source,asciidoc]
-----
-include::spec/examples/example-v2.adoc[]
-----
-endif::[]
-
 
 == Development
 
@@ -210,9 +191,7 @@ This gem is developed, maintained and funded by https://www.ribose.com[Ribose In
 
 == Examples
 
-////
 * Example documents are avalable at the https://github.com/metanorma/mn-samples-ietf[mn-samples-ietf] repository.
-////
 
 * Document templates are available at the https://github.com/metanorma/mn-templates-ietf[mn-templates-ietf] repository.
 
