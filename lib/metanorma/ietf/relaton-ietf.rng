@@ -27,6 +27,9 @@
         <ref name="area"/>
       </zeroOrMore>
       <optional>
+        <ref name="stream"/>
+      </optional>
+      <optional>
         <ref name="ipr"/>
       </optional>
       <optional>
@@ -313,6 +316,18 @@
           <text/>
         </element>
       </optional>
+    </element>
+  </define>
+  <define name="stream">
+    <element name="stream">
+      <choice>
+        <value>IAB</value>
+        <value>IETF</value>
+        <value>Independent</value>
+        <value>IRTF</value>
+        <value>Legacy</value>
+        <value>Editorial</value>
+      </choice>
     </element>
   </define>
 </grammar>

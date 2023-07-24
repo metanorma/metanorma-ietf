@@ -52,7 +52,7 @@ RSpec.describe Metanorma::Ietf do
              <sections>
         <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
-        <term id="term-Tempus">
+        <term id="term-_lt_relativity_gt_-Tempus">
         <preferred><expression><name>Tempus</name></expression></preferred>
         <domain>relativity</domain>
         <definition><verbal-definition><p id="_"> Time</p></verbal-definition></definition>
