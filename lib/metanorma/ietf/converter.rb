@@ -53,8 +53,8 @@ module Metanorma
           when :single then xml << "'#{node.text}'"
           when :superscript then xml.sup { |s| s << node.text }
           when :subscript then xml.sub { |s| s << node.text }
-          when :asciimath then stem_parse(node.text, xml, :asciimath)
-          when :latexmath then stem_parse(node.text, xml, :latexmath)
+          when :asciimath then stem_parse(node.text, xml, :asciimath, false)
+          when :latexmath then stem_parse(node.text, xml, :latexmath, false)
           else
             case node.role
             when "bcp14" then xml.bcp14 { |s| s << node.text.upcase }

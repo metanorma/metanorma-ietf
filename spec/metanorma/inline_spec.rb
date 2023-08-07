@@ -30,7 +30,7 @@ RSpec.describe Metanorma::Ietf do
       super<sup>script</sup>
       sub<sub>script</sub>
       sub<sub><em>scr</em>ipt</sub>
-      <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub> <mrow> <mrow> <mi mathvariant="bold-italic">F</mi> </mrow> </mrow> <mrow> <mrow> <mi mathvariant="bold-italic">Α</mi> </mrow> </mrow> </msub> </math></stem>
+      <stem type="MathML" block="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub> <mrow> <mrow> <mi mathvariant="bold-italic">F</mi> </mrow> </mrow> <mrow> <mrow> <mi mathvariant="bold-italic">Α</mi> </mrow> </mrow> </msub> </math></stem>
       alt deprecated domain strike smallcap keyword
       <bcp14>KEYWORD</bcp14>
       </p>
@@ -243,7 +243,7 @@ RSpec.describe Metanorma::Ietf do
             <p id="_">See<index primary="true"><primary>See</primary></index> 
             Index <em>term</em><index><primary><em>term</em></primary></index> 
             and<index primary="true"><primary>A<sub>B</sub></primary>
-            <secondary><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>α</mi></mstyle></math><asciimath>alpha</asciimath></stem></secondary>
+            <secondary><stem type="MathML" block="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mi>α</mi></mstyle></math><asciimath>alpha</asciimath></stem></secondary>
             <tertiary>Ⲁ</tertiary></index>.</p>
         </sections>
       </ietf-standard>

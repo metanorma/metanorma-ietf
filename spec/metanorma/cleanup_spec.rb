@@ -93,13 +93,13 @@ RSpec.describe Metanorma::Ietf do
                <sections>
            <terms id="_" obligation="normative">
              <title>Terms and definitions</title>
-             <term id="term-t-90-t_90">
+             <term id="term-t_90">
                <preferred>
                  <letter-symbol>
                    <name>
-                     <stem type="MathML">
+                     <stem type="MathML" block="false">
                        <math xmlns="http://www.w3.org/1998/Math/MathML">
-                         <mstyle displaystyle="true">
+                         <mstyle displaystyle="false">
                            <msub>
                              <mi>t</mi>
                              <mn>90</mn>
@@ -115,7 +115,7 @@ RSpec.describe Metanorma::Ietf do
                  <verbal-definition>
                    <p id="_">This paragraph is extraneous</p>
                    <formula id="_">
-                     <stem type="MathML">
+                     <stem type="MathML" block="true">
                        <math xmlns="http://www.w3.org/1998/Math/MathML">
                          <mstyle displaystyle="true">
                            <msub>
