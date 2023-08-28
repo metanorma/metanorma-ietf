@@ -1,5 +1,3 @@
-require "mathml2asciimath"
-
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
@@ -60,7 +58,8 @@ module IsoDoc
 
       def stem_parse(node, out)
         stem = case node["type"]
-               when "MathML" then MathML2AsciiMath.m2a(node.children.to_xml)
+               when "MathML" then Plurimath::Math
+                 .parse(node.children.to_xml, "mathml").to_asciimath
                else HTMLEntities.new.encode(node.text)
                end
         out << "#{@openmathdelim} #{stem} #{@closemathdelim}"
@@ -82,12 +81,15 @@ module IsoDoc
         end
       end
 
+      def image_parse_attrs(node)
+        { src: node["src"], title: node["title"],
+          align: node["align"], name: node["filename"],
+          anchor: node["id"], type: "svg",
+          alt: node["alt"] }
+      end
+
       def image_parse(node, out, caption)
-        attrs = { src: node["src"], title: node["title"],
-                  align: node["align"], name: node["filename"],
-                  anchor: node["id"], type: "svg",
-                  alt: node["alt"] }
-        out.artwork **attr_code(attrs)
+        out.artwork **attr_code(image_parse_attrs(node))
         image_title_parse(out, caption)
       end
 
@@ -102,14 +104,10 @@ module IsoDoc
       def svg_parse(node, out)
         if node.parent.name == "image" then super
         else
-          attrs = { src: node["src"], title: node["title"],
-                  align: node["align"], name: node["filename"],
-                  anchor: node["id"], type: "svg",
-                  alt: node["alt"] }
-        out.artwork **attr_code(attrs) do |x|
-          out = x
-          super
-        end
+          out.artwork **attr_code(image_parse_attrs(node)) do |x|
+            out = x
+            super
+          end
         end
       end
 
