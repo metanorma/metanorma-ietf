@@ -2,7 +2,7 @@ module Metanorma
   module Ietf
     class Converter < ::Metanorma::Standoc::Converter
       def relaton_relations
-        %w(included-in described-by derived-from instance obsoletes updates)
+        %w(included-in described-by derived-from instance-of obsoletes updates)
       end
 
       def metadata_author(node, xml)

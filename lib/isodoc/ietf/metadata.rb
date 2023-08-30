@@ -15,7 +15,7 @@ module IsoDoc
       end
 
       def relaton_relations
-        %w(included-in described-by derived-from instance)
+        %w(included-in described-by derived-from instance-of)
         # = item describedby convertedfrom alternate
       end
 

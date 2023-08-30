@@ -167,13 +167,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <docidentifier>DER2</docidentifier>
                    </bibitem>
                  </relation>
-                 <relation type='instance'>
+                 <relation type='instanceOf'>
                    <bibitem>
                      <title>--</title>
                      <docidentifier>EQ1</docidentifier>
                    </bibitem>
                  </relation>
-                 <relation type='instance'>
+                 <relation type='instanceOf'>
                    <bibitem>
                      <title>--</title>
                      <docidentifier>EQ2</docidentifier>

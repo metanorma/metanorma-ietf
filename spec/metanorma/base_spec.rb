@@ -122,7 +122,7 @@ RSpec.describe Metanorma::Ietf do
       :included-in: INC1;INCL2
       :described-by: DESC1;DESC2
       :derived-from: https://datatracker.ietf.org/doc/draft-DER1;https://datatracker.ietf.org/doc/draft-DER2
-      :instance: EQ1;EQ2
+      :instance-of: EQ1;EQ2
       :obsoletes: OB1;OB2
       :updates: UPD1;UPD2
       :abbrev: Abbreviated Title
@@ -324,13 +324,13 @@ RSpec.describe Metanorma::Ietf do
                      <docidentifier>https://datatracker.ietf.org/doc/draft-DER2</docidentifier>
                    </bibitem>
                  </relation>
-                 <relation type='instance'>
+                 <relation type='instanceOf'>
                    <bibitem>
                      <title>--</title>
                      <docidentifier>EQ1</docidentifier>
                    </bibitem>
                  </relation>
-                 <relation type='instance'>
+                 <relation type='instanceOf'>
                    <bibitem>
                      <title>--</title>
                      <docidentifier>EQ2</docidentifier>
