@@ -3,31 +3,31 @@ require "fileutils"
 
 RSpec.describe Metanorma::Ietf do
   it "warns that image is not SVG" do
-    FileUtils.rm_f "test.err"
+    FileUtils.rm_f "test.err.html"
     Asciidoctor.convert(<<~"INPUT", *OPTIONS)
       #{VALIDATING_BLANK_HDR}
 
       image::spec/assets/rice_image1.png[]
     INPUT
-    expect(File.read("test.err"))
-      .to include "image spec/assets/rice_image1.png is not SVG"
+    expect(File.read("test.err.html"))
+      .to include "image spec/​assets/rice_​image1.png is not SVG"
   end
 
   it "does not warn that image is SVG" do
-    FileUtils.rm_f "test.err"
+    FileUtils.rm_f "test.err.html"
     Asciidoctor.convert(<<~"INPUT", *OPTIONS)
       #{VALIDATING_BLANK_HDR}
 
       image::spec/assets/Example.svg[]
     INPUT
-    if File.exist?("test.err")
-      expect(File.read("test.err")).not_to include "is not SVG"
+    if File.exist?("test.err.html")
+      expect(File.read("test.err.html")).not_to include "is not SVG"
     end
   end
 
   it "warns of status in editorial stream" do
-    FileUtils.rm_f "test.err"
-    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+    FileUtils.rm_f "test.err.html"
+    Asciidoctor.convert(<<~INPUT, *OPTIONS)
       = Document title
       Author
       :docfile: test.adoc
@@ -36,11 +36,11 @@ RSpec.describe Metanorma::Ietf do
       :submission-type: editorial
 
     INPUT
-    expect(File.read("test.err"))
+    expect(File.read("test.err.html"))
       .to include "Editorial stream must have Informational status"
 
-    FileUtils.rm_f "test.err"
-    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+    FileUtils.rm_f "test.err.html"
+    Asciidoctor.convert(<<~INPUT, *OPTIONS)
       = Document title
       Author
       :docfile: test.adoc
@@ -49,14 +49,14 @@ RSpec.describe Metanorma::Ietf do
       :submission-type: editorial
 
     INPUT
-    expect(File.read("test.err"))
+    expect(File.read("test.err.html"))
       .not_to include "Editorial stream must have Informational status"
   end
 
   it "warns of invalid workgroup" do
     VCR.use_cassette "workgroup_fetch" do
-      FileUtils.rm_f "test.err"
-      Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      FileUtils.rm_f "test.err.html"
+      Asciidoctor.convert(<<~INPUT, *OPTIONS)
         = Document title
         Author
         :docfile: test.adoc
@@ -65,14 +65,14 @@ RSpec.describe Metanorma::Ietf do
         :flush-caches: true
 
       INPUT
-      expect(File.read("test.err")).to include "unrecognised working group"
+      expect(File.read("test.err.html")).to include "unrecognised working group"
     end
   end
 
   it "does not warn of valid workgroup suffixed with Working Group" do
     VCR.use_cassette "workgroup_fetch" do
-      FileUtils.rm_f "test.err"
-      Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      FileUtils.rm_f "test.err.html"
+      Asciidoctor.convert(<<~INPUT, *OPTIONS)
         = Document title
         Author
         :docfile: test.adoc
@@ -81,15 +81,15 @@ RSpec.describe Metanorma::Ietf do
         :flush-caches: true
 
       INPUT
-      if File.exist?("test.err")
-        expect(File.read("test.err")).not_to include "unrecognised working group"
+      if File.exist?("test.err.html")
+        expect(File.read("test.err.html")).not_to include "unrecognised working group"
       end
     end
   end
 
   it "warns of cref macro not pointing to valid element" do
-    FileUtils.rm_f "test.err"
-    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+    FileUtils.rm_f "test.err.html"
+    Asciidoctor.convert(<<~INPUT, *OPTIONS)
       = Document title
       Author
       :docfile: test.adoc
@@ -113,16 +113,16 @@ RSpec.describe Metanorma::Ietf do
       == Clause 2
 
     INPUT
-    if File.exist?("test.err")
-      expect(File.read("test.err")).to include "No matching review for cref:[xyz]"
-      expect(File.read("test.err")).to include "No matching review for cref:[abc]"
-      expect(File.read("test.err")).not_to include "No matching review for cref:[def]"
+    if File.exist?("test.err.html")
+      expect(File.read("test.err.html")).to include "No matching review for cref:​[xyz]"
+      expect(File.read("test.err.html")).to include "No matching review for cref:​[abc]"
+      expect(File.read("test.err.html")).not_to include "No matching review for cref:​[def]"
     end
   end
 
   context "when xref_error.adoc compilation" do
     around do |example|
-      FileUtils.rm_f "spec/assets/xref_error.err"
+      FileUtils.rm_f "spec/assets/xref_error.err.html"
       example.run
       Dir["spec/assets/xref_error*"].each do |file|
         next if file.match?(/adoc$/)
@@ -136,7 +136,7 @@ RSpec.describe Metanorma::Ietf do
         Metanorma::Compile.new
           .compile("spec/assets/xref_error.adoc",
                    type: "ietf", "agree-to-terms": true)
-      end.to(change { File.exist?("spec/assets/xref_error.err") }
+      end.to(change { File.exist?("spec/assets/xref_error.err.html") }
               .from(false).to(true))
     end
   end
