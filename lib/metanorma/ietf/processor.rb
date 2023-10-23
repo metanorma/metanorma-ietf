@@ -58,6 +58,7 @@ module Metanorma
       end
 
       def output(isodoc_node, inname, outname, format, options = {})
+        options_preprocess(options)
         case format
         when :rfc
           outname ||= inname.sub(/\.xml$/, ".rfc.xml")

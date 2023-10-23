@@ -179,7 +179,7 @@ RSpec.describe Metanorma::Ietf do
                     #{BLANK_HDR}
                     <sections>
         <terms id="_" obligation="normative">
-        <title>Terms and definitions</title>
+        <title>Terms and Definitions</title>
         <clause id="_" inline-header="false" obligation="normative">
         <title>Term1</title>
         <note id="_">
@@ -378,7 +378,7 @@ RSpec.describe Metanorma::Ietf do
             #{BLANK_HDR}
       <sections>
         <terms id="_" obligation="normative">
-        <title>Terms and definitions</title>
+        <title>Terms and Definitions</title>
         <clause id="_" inline-header="false" obligation="normative">
         <title>Term1</title>
         <example id="_">
