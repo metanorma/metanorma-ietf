@@ -29,7 +29,7 @@ module Metanorma
 
       BCP_KEYWORDS = ["MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
                       "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
-                      "OPTIONAL"].freeze
+                      "NOT RECOMMENDED", "OPTIONAL"].freeze
 
       def bcp14_cleanup(xmldoc)
         return unless @bcp_bold
