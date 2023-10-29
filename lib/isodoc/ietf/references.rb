@@ -1,17 +1,26 @@
+require_relative "../../relaton/render/general"
+
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
-      def bibliography(isoxml, out)
-        isoxml.xpath(ns("//references/bibitem/docidentifier")).each do |i|
-          i.children = docid_prefix(i["type"], i.text)
-        end
-        isoxml.xpath(ns("//bibliography/references | " \
+      def bibliography(docxml, out)
+        bibliography_prep(docxml)
+        docxml.xpath(ns("//bibliography/references | " \
                         "//bibliography/clause[.//references] | " \
                         "//annex/clause[.//references] | " \
                         "//annex/references | " \
                         "//sections/clause[.//references]")).each do |f|
           bibliography1(f, out)
         end
+      end
+
+      def bibliography_prep(docxml)
+        docxml.xpath(ns("//references/bibitem/docidentifier")).each do |i|
+          i.children = docid_prefix(i["type"], i.text)
+        end
+        @bibrenderer =
+          ::Relaton::Render::Ietf::General.new(language: @lang,
+                                               i18nhash: @i18n.get)
       end
 
       def bibliography1(node, out)
@@ -29,7 +38,7 @@ module IsoDoc
         end
       end
 
-      def biblio_list(node, div, biblio)
+      def biblio_list(node, div, _biblio)
         i = 0
         node.xpath(ns("./bibitem | ./note")).each do |b|
           next if implicit_reference(b)
@@ -37,10 +46,29 @@ module IsoDoc
           i += 1 if b.name == "bibitem"
           if b.name == "note" then note_parse(b, div)
           else
-            nonstd_bibitem(div, b, i, biblio)
+            ietf_bibitem(div, b, i)
           end
         end
       end
+
+      def ietf_bibitem(list, bib, _ordinal)
+        uris = bib.xpath(ns("./uri"))
+        target = nil
+        uris&.each { |u| target = u.text if u["type"] == "src" }
+        list.reference **attr_code(target: target,
+                                   anchor: bib["id"]) do |r|
+                                     bibitem_render(r, bib)
+                                   end
+      end
+
+      def bibitem_render(ref, bib)
+        bib1 = bib.clone
+        @isodoc.prep_for_rendering(bib1)
+        bib1.namespace = nil
+        ref << @bibrenderer.render(bib1.to_xml, embedded: true)
+      end
+
+      # -----
 
       def nonstd_bibitem(list, bib, _ordinal, _bibliography)
         uris = bib.xpath(ns("./uri"))
