@@ -833,7 +833,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 </front>
               <annotation>
                 NOTE: This is an annotation of document ISSN.
-              </annotation></reference>
+              </annotation>
+               <annotation>
+              NOTE: This is another annotation of document ISSN.
+                </annotation>
+              </reference>
               <reference anchor="ISO3696">
                 <front>
                   <title>ISO 3696, Water for analytical laboratory use</title>
