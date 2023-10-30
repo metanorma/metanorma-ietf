@@ -16,6 +16,7 @@ module IsoDoc
       end
 
       def content_validate(xml, filename)
+        #return
         err = []
         err += numbered_sections_check(xml)
         err += toc_sections_check(xml)

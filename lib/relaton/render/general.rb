@@ -1,5 +1,7 @@
 require "relaton-render"
 require_relative "parse"
+require_relative "template"
+require_relative "fields"
 
 module Relaton
   module Render
@@ -12,6 +14,8 @@ module Relaton
         def klass_initialize(_options)
           super
           @parseklass = Relaton::Render::Ietf::Parse
+          @nametemplateklass = Relaton::Render::Ietf::Template::Name
+          @fieldsklass = Relaton::Render::Ietf::Fields
         end
       end
     end

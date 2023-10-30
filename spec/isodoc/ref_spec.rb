@@ -2,9 +2,14 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf do
   it "processes IsoXML bibliographies" do
+    FileUtils.rm_f "test.rfc.xml"
     input = <<~INPUT
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <bibdata>
+    <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
+    <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
+    <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+    <ext><ipr>trust200902</ipr></ext>
     </bibdata>
     <preface><foreword>
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
@@ -12,11 +17,10 @@ RSpec.describe IsoDoc::Ietf do
   <eref bibitemid="ISBN"/>
   <eref bibitemid="ISSN"/>
   <eref bibitemid="ISO16634"/>
-  <eref bibitemid="ref1"/>
-  <eref bibitemid="ref10"/>
-  <eref bibitemid="ref12"/>
+  <eref bibitemid="ref11"/>
   </p>
     </foreword></preface>
+    <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
     <bibliography><references id="_normative_references" obligation="informative"  normative="true"><title>Normative References</title>
 <bibitem id="ISO712" type="standard">
   <title format="text/plain">Cereals or cereal products</title>
@@ -80,41 +84,80 @@ RSpec.describe IsoDoc::Ietf do
   </person>
 </contributor>
 <contributor>
-  <role type="author"/>
+  <role type="editor"/>
   <person>
+  <name>
   <surname>Citizen</surname>
-  <initial>A.</initial>
-  <initial>B.</initial>
+  <formatted-initials>A. B.</formatted-initials>
+  </name>
   </person>
 </contributor>
   <abstract>This is an abstract</abstract>
 </bibitem>
-<bibitem id="ref1">
-  <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>. <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em> (see <link target="http://www.icc.or.at"/>)</formattedref>
-  <docidentifier type="ICC">167</docidentifier>
+
+<bibitem id="ISO20484" type="standard">
+  <title format="text/plain">Cereals and pulses II</title>
+  <docidentifier type="ISO">ISO 20484:2013-2014</docidentifier>
+  <date type="published"><from>2013</from><to>2014</to></date>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>International Organization for Standardization</name>
+    </organization>
+  </contributor>
+  <contributor>
+  <role type="author"/>
+  <person>
+  <name><completename>Ölaf Nürk</ompletename>
+  <surname>Nürk</surname>
+  <forename>Ölaf</forename>
+  </name>
+  </person>
+</contributor>
+<contributor>
+  <role type="author"/>
+  <person>
+  <name>
+  <surname>Citizen</surname>
+  <formatted-initials>A. B.</formatted-initials>
+  </name>
+  </person>
+</contributor>
+<contributor>
+  <role type="editor"/>
+  <person>
+  <name>
+  <surname>Third</surname>
+  <formatted-initials>Th.</formatted-initials>
+  </name>
+  </person>
+</contributor>
+  <abstract>This is an abstract</abstract>
 </bibitem>
-<note><p>This is an annotation of ISO 20483:2013-2014</p></note>
+
 
 </references><references id="_bibliography" obligation="informative" normative="false">
   <title>Bibliography</title>
-<bibitem id="ISBN" type="ISBN">
+<bibitem id="ISBN" type="book">
   <title format="text/plain">Chemicals for analytical laboratory use</title>
   <docidentifier type="ISBN">ISBN</docidentifier>
   <docidentifier type="metanorma">[1]</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
+      <name>International SBN</name>
       <abbreviation>ISBN</abbreviation>
     </organization>
   </contributor>
 </bibitem>
-<bibitem id="ISSN" type="ISSN">
+<bibitem id="ISSN" type="journal">
   <title format="text/plain">Instruments for analytical laboratory use</title>
   <docidentifier type="ISSN">ISSN</docidentifier>
   <docidentifier type="metanorma">[2]</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
+      <name>International SSN</name>
       <abbreviation>ISSN</abbreviation>
     </organization>
   </contributor>
@@ -132,18 +175,17 @@ RSpec.describe IsoDoc::Ietf do
     </organization>
   </contributor>
 </bibitem>
-<bibitem id="ref10">
-  <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>. <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em> (see <link target="http://www.icc.or.at"/>)</formattedref>
-  <docidentifier type="metanorma">[10]</docidentifier>
-</bibitem>
 <bibitem id="ref11">
   <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
   <docidentifier type="IETF">RFC 10</docidentifier>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+    <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
   <uri type="xml">https://xml2rfc.tools.ietf.org/10.xml</uri>
-</bibitem>
-<bibitem id="ref12">
-  <formattedref format="application/x-isodoc+xml">CitationWorks. 2019. <em>How to cite a reference</em>.</formattedref>
-  <docidentifier type="metanorma">[Citn]</docidentifier>
 </bibitem>
 <bibitem id="I-D.aboba-context-802" type="standard">  <fetched>2021-09-19</fetched>  <title format="text/plain" language="en" script="Latn">A Model for Context Transfer in IEEE 802</title>  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml</uri>  <uri type="TXT">http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt</uri>  <docidentifier type="IETF">I-D.aboba-context-802</docidentifier>  <docidentifier type="rfc-anchor">I-D.aboba-context-802</docidentifier>  <docidentifier type="Internet-Draft">draft-aboba-context-802-00</docidentifier>  <date type="published">    <on>2003-10</on>  </date>  <contributor>    <role type="author"/>    <person>      <name>        <completename language="en">Bernard Aboba</completename>      </name>      <affiliation>        <organization>          <name>Internet Engineering Task Force</name>          <abbreviation>IETF</abbreviation>        </organization>      </affiliation>    </person>  </contributor>  <contributor>    <role type="publisher"/>    <organization>      <name>Internet Engineering Task Force</name>      <abbreviation>IETF</abbreviation>    </organization>  </contributor>  <language>en</language>  <script>Latn</script>  <series type="main">    <title format="text/plain" language="en" script="Latn">Internet-Draft</title>    <number>draft-aboba-context-802-00</number>  </series>  <place>Fremont, CA</place></bibitem>
 </references>
@@ -151,36 +193,57 @@ RSpec.describe IsoDoc::Ietf do
     </iso-standard>
     INPUT
     output = <<~OUTPUT
-           #{XML_HDR}
-           <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <relref target='ISO712' section='' relative=''/>
-               <relref target='ISBN' section='' relative=''/>
-               <relref target='ISSN' section='' relative=''/>
-               <relref target='ISO16634' section='' relative=''/>
-               <relref target='ref1' section='' relative=''/>
-               <relref target='ref10' section='' relative=''/>
-               <relref target='ref12' section='' relative=''/>
+           <?xml version="1.0" encoding="UTF-8"?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+         <front>
+           <title>The Holy Hand Grenade of Antioch</title>
+           <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+           <author fullname="Arthur son of Uther Pendragon">
+             <address>
+               <postal/>
+               <email/>
+               <uri/>
+             </address>
+           </author>
+           <abstract>
+             <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+               <relref target="ISO712" section="" relative=""/>
+               <relref target="ISBN" section="" relative=""/>
+               <relref target="ISSN" section="" relative=""/>
+               <relref target="ISO16634" section="" relative=""/>
+               <relref target="ref11" section="" relative=""/>
              </t>
            </abstract>
          </front>
-         <middle/>
+         <middle>
+           <section anchor="A">
+             <name>A-title</name>
+             <t>A</t>
+           </section>
+         </middle>
          <back>
            <references anchor='_normative_references'>
              <name>Normative References</name>
              <reference anchor='ISO712'>
                <front>
-                 <title>Cereals or cereal products</title>
+                 <title>Cereals and cereal products</title>
                  <author>
                    <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
                  </author>
                </front>
-               <format target='http://www.example.com'/>
+               <format target='http://www.example.com' type="HTML"/>
                <refcontent>ISO&#xa0;712</refcontent>
              </reference>
              <reference anchor='ISO16634'>
                <front>
                  <title>
-                   Cereals, pulses, milled cereal products, xxxx, oilseeds and animal
+                   Cereals, pulses, milled cereal products, oilseeds and animal
                    feeding stuffs
                  </title>
                  <author>
@@ -192,18 +255,16 @@ RSpec.describe IsoDoc::Ietf do
                    <t>This is an abstract</t>
                  </abstract>
                </front>
-               <format target='http://www.example.com'/>
+               <format target='http://www.example.com' type='HTML'/>
                <format target='http://www.example.com/rdf' type='RDF'/>
+              <seriesInfo value='1234' name='DOI'/>
                <refcontent>ISO 16634:-- (all parts)</refcontent>
-<seriesInfo value='1234' name='DOI'/>
              </reference>
              <reference anchor='ISO20483'>
                <front>
                  <title>Cereals and pulses</title>
-                 <author fullname='&#xD6;laf N&#xFC;rk' asciiFullname='Olaf Nurk' surname='N&#xFC;rk' asciiSurname='Nurk'/>
-                 <author>
-                   <organization/>
-                 </author>
+                 <author surname='N&#xFC;rk' asciiSurname='Nurk' initials="Ö." asciiInitials="O."/>
+                 <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
                  <date year='2013'/>
                  <abstract>
                    <t>This is an abstract</t>
@@ -211,25 +272,15 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <refcontent>ISO&#xa0;20483:2013-2014</refcontent>
              </reference>
-             <reference anchor='ref1'>
-               <front>
-                 <title>
-                   Standard No I.C.C 167.
-                   <em>
-                     Determination of the protein content in cereal and cereal products
-                     for food and animal feeding stuffs according to the Dumas
-                     combustion method
-                   </em>
-                    (see
-                   <eref target='http://www.icc.or.at'/>
-                   )
-                 </title>
-               </front>
-               <refcontent>ICC&#xa0;167</refcontent>
+             <reference anchor="ISO20484">
+               <front><title>Cereals and pulses II</title>
+                <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
+                <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                <author surname="Third" asciiSurname="Third" initials="Th." asciiInitials="Th."/>
+                <date year="2013"/><abstract><t>This is an abstract</t></abstract></front>
+               <refcontent>ISO 20484:2013-2014</refcontent>
              </reference>
-             <aside>
-               <t>NOTE: This is an annotation of ISO 20483:2013-2014</t>
-             </aside>
+
            </references>
            <references anchor='_bibliography'>
              <name>Bibliography</name>
@@ -237,7 +288,7 @@ RSpec.describe IsoDoc::Ietf do
                <front>
                  <title>Chemicals for analytical laboratory use</title>
                  <author>
-                   <organization abbrev='ISBN'/>
+                   <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
                  </author>
                </front>
              </reference>
@@ -245,16 +296,16 @@ RSpec.describe IsoDoc::Ietf do
                <front>
                  <title>Instruments for analytical laboratory use</title>
                  <author>
-                   <organization abbrev='ISSN'/>
+                   <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
                  </author>
                </front>
+             <annotation>
+               NOTE: This is an annotation of document ISSN.
+             </annotation>
+             <annotation>
+               NOTE: This is another annotation of document ISSN.
+             </annotation>
              </reference>
-             <aside>
-               <t>NOTE: This is an annotation of document ISSN.</t>
-             </aside>
-             <aside>
-               <t>NOTE: This is another annotation of document ISSN.</t>
-             </aside>
              <reference anchor='ISO3696'>
                <front>
                  <title>Water for analytical laboratory use</title>
@@ -264,37 +315,15 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <refcontent>ISO&#xa0;3696</refcontent>
              </reference>
-             <reference anchor='ref10'>
-               <front>
-                 <title>
-                   Standard No I.C.C 167.
-                   <em>
-                     Determination of the protein content in cereal and cereal products
-                     for food and animal feeding stuffs according to the Dumas
-                     combustion method
-                   </em>
-                    (see
-                   <eref target='http://www.icc.or.at'/>
-                   )
-                 </title>
-               </front>
-             </reference>
              <reference anchor='ref11'>
                <front>
                  <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+                 <author>
+                <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+              </author>
                </front>
                <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-               <refcontent>RFC&#xa0;10</refcontent>
                <seriesInfo value='10' name='RFC'/>
-             </reference>
-             <reference anchor='ref12'>
-               <front>
-                 <title>
-                   CitationWorks. 2019.
-                   <em>How to cite a reference</em>
-                   .
-                 </title>
-               </front>
              </reference>
              <reference anchor='I-D.aboba-context-802'>
                <front>
@@ -304,7 +333,6 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <format target='https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml' type='xml'/>
                <format target='http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt' type='TXT'/>
-               <refcontent>I-D.aboba-context-802</refcontent>
                <seriesInfo value='aboba-context-802' name='Internet-Draft'/>
              </reference>
            </references>
@@ -312,13 +340,22 @@ RSpec.describe IsoDoc::Ietf do
        </rfc>
 
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, false)
+    expect(File.exist?("test.rfc.xml")).to be true
+    xml = File.read("test.rfc.xml")
+      expect(xmlpp(xml)).to be_equivalent_to xmlpp(output)
   end
 
   it "processes IsoXML bibliographies with xincludes" do
+    FileUtils.rm_f "test.rfc.xml"
     input = <<~INPUT
     <iso-standard xmlns="http://riboseinc.com/isoxml">
-    <bibdata>
+        <bibdata>
+    <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
+    <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
+    <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+    <ext><ipr>trust200902</ipr></ext>
     </bibdata>
     <preface><foreword>
   <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
@@ -326,11 +363,10 @@ RSpec.describe IsoDoc::Ietf do
   <eref bibitemid="ISBN"/>
   <eref bibitemid="ISSN"/>
   <eref bibitemid="ISO16634"/>
-  <eref bibitemid="ref1"/>
-  <eref bibitemid="ref10"/>
-  <eref bibitemid="ref12"/>
+  <eref bibitemid="ref11"/>
   </p>
     </foreword></preface>
+    <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
     <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
 <bibitem id="ISO712" type="standard">
   <title format="text/plain">Cereals or cereal products</title>
@@ -396,39 +432,37 @@ RSpec.describe IsoDoc::Ietf do
 <contributor>
   <role type="author"/>
   <person>
+  <name>
   <surname>Citizen</surname>
-  <initial>A.</initial>
-  <initial>B.</initial>
+  <formatted-initials>A. B.</formatted-initials>
+  </name>
   </person>
 </contributor>
   <abstract>This is an abstract</abstract>
 </bibitem>
-<bibitem id="ref1">
-  <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>. <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em> (see <link target="http://www.icc.or.at"/>)</formattedref>
-  <docidentifier type="ICC">167</docidentifier>
-</bibitem>
-<note><p>This is an annotation of ISO 20483:2013-2014</p></note>
 
 </references><references id="_bibliography" obligation="informative" normative="false">
   <title>Bibliography</title>
-<bibitem id="ISBN" type="ISBN">
+<bibitem id="ISBN" type="book">
   <title format="text/plain">Chemicals for analytical laboratory use</title>
   <docidentifier type="ISBN">ISBN</docidentifier>
   <docidentifier type="metanorma">[1]</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
+      <name>International SBN</name>
       <abbreviation>ISBN</abbreviation>
     </organization>
   </contributor>
 </bibitem>
-<bibitem id="ISSN" type="ISSN">
+<bibitem id="ISSN" type="journal">
   <title format="text/plain">Instruments for analytical laboratory use</title>
   <docidentifier type="ISSN">ISSN</docidentifier>
   <docidentifier type="metanorma">[2]</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
+      <name>International SSN</name>
       <abbreviation>ISSN</abbreviation>
     </organization>
   </contributor>
@@ -446,18 +480,17 @@ RSpec.describe IsoDoc::Ietf do
     </organization>
   </contributor>
 </bibitem>
-<bibitem id="ref10">
-  <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>. <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em> (see <link target="http://www.icc.or.at"/>)</formattedref>
-  <docidentifier type="metanorma">[10]</docidentifier>
-</bibitem>
 <bibitem id="ref11">
   <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
   <docidentifier type="IETF">RFC 10</docidentifier>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+    <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
   <uri type="xml">https://xml2rfc.tools.ietf.org/10.xml</uri>
-</bibitem>
-<bibitem id="ref12">
-  <formattedref format="application/x-isodoc+xml">CitationWorks. 2019. <em>How to cite a reference</em>.</formattedref>
-  <docidentifier type="metanorma">[Citn]</docidentifier>
 </bibitem>
 
 
@@ -466,36 +499,57 @@ RSpec.describe IsoDoc::Ietf do
     </iso-standard>
     INPUT
     output = <<~OUTPUT
-           #{XML_HDR}
-           <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <relref target='ISO712'  section='' relative=''/>
-               <relref target='ISBN'  section='' relative=''/>
-               <relref target='ISSN'  section='' relative=''/>
-               <relref target='ISO16634'  section='' relative=''/>
-               <relref target='ref1'  section='' relative=''/>
-               <relref target='ref10'  section='' relative=''/>
-               <relref target='ref12'  section='' relative=''/>
+           <?xml version="1.0" encoding="UTF-8"?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+         <front>
+           <title>The Holy Hand Grenade of Antioch</title>
+           <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+           <author fullname="Arthur son of Uther Pendragon">
+             <address>
+               <postal/>
+               <email/>
+               <uri/>
+             </address>
+           </author>
+           <abstract>
+             <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+               <relref target="ISO712" section="" relative=""/>
+               <relref target="ISBN" section="" relative=""/>
+               <relref target="ISSN" section="" relative=""/>
+               <relref target="ISO16634" section="" relative=""/>
+               <relref target="ref11" section="" relative=""/>
              </t>
            </abstract>
          </front>
-         <middle/>
+         <middle>
+           <section anchor="A">
+             <name>A-title</name>
+             <t>A</t>
+           </section>
+         </middle>
          <back>
            <references anchor='_normative_references'>
              <name>Normative References</name>
              <reference anchor='ISO712'>
                <front>
-                 <title>Cereals or cereal products</title>
+                 <title>Cereals and cereal products</title>
                  <author>
                    <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
                  </author>
                </front>
-               <format target='http://www.example.com'/>
+               <format target='http://www.example.com' type="HTML"/>
                <refcontent>ISO&#xa0;712</refcontent>
              </reference>
              <reference anchor='ISO16634'>
                <front>
                  <title>
-                   Cereals, pulses, milled cereal products, xxxx, oilseeds and animal
+                   Cereals, pulses, milled cereal products, oilseeds and animal
                    feeding stuffs
                  </title>
                  <author>
@@ -507,18 +561,16 @@ RSpec.describe IsoDoc::Ietf do
                    <t>This is an abstract</t>
                  </abstract>
                </front>
-               <format target='http://www.example.com'/>
+               <format target='http://www.example.com' type="HTML"/>
                <format target='http://www.example.com/rdf' type='RDF'/>
+              <seriesInfo value='1234' name='DOI'/>
                <refcontent>ISO 16634:-- (all parts)</refcontent>
-<seriesInfo value='1234' name='DOI'/>
              </reference>
              <reference anchor='ISO20483'>
                <front>
                  <title>Cereals and pulses</title>
-                 <author fullname='&#xD6;laf N&#xFC;rk' asciiFullname='Olaf Nurk' surname='N&#xFC;rk' asciiSurname='Nurk'/>
-                 <author>
-                   <organization/>
-                 </author>
+                  <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
+                  <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
                  <date year='2013'/>
                  <abstract>
                    <t>This is an abstract</t>
@@ -526,25 +578,6 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <refcontent>ISO&#xa0;20483:2013-2014</refcontent>
              </reference>
-             <reference anchor='ref1'>
-               <front>
-                 <title>
-                   Standard No I.C.C 167.
-                   <em>
-                     Determination of the protein content in cereal and cereal products
-                     for food and animal feeding stuffs according to the Dumas
-                     combustion method
-                   </em>
-                    (see
-                   <eref target='http://www.icc.or.at'/>
-                   )
-                 </title>
-               </front>
-               <refcontent>ICC&#xa0;167</refcontent>
-             </reference>
-             <aside>
-               <t>NOTE: This is an annotation of ISO 20483:2013-2014</t>
-             </aside>
            </references>
            <references anchor='_bibliography'>
              <name>Bibliography</name>
@@ -552,7 +585,7 @@ RSpec.describe IsoDoc::Ietf do
                <front>
                  <title>Chemicals for analytical laboratory use</title>
                  <author>
-                   <organization abbrev='ISBN'/>
+                   <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
                  </author>
                </front>
              </reference>
@@ -560,16 +593,16 @@ RSpec.describe IsoDoc::Ietf do
                <front>
                  <title>Instruments for analytical laboratory use</title>
                  <author>
-                   <organization abbrev='ISSN'/>
+                   <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
                  </author>
                </front>
+             <annotation>
+               NOTE: This is an annotation of document ISSN.
+             </annotation>
+             <annotation>
+               NOTE: This is another annotation of document ISSN.
+             </annotation>
              </reference>
-             <aside>
-               <t>NOTE: This is an annotation of document ISSN.</t>
-             </aside>
-             <aside>
-               <t>NOTE: This is another annotation of document ISSN.</t>
-             </aside>
              <reference anchor='ISO3696'>
                <front>
                  <title>Water for analytical laboratory use</title>
@@ -579,44 +612,26 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <refcontent>ISO&#xa0;3696</refcontent>
              </reference>
-             <reference anchor='ref10'>
-               <front>
-                 <title>
-                   Standard No I.C.C 167.
-                   <em>
-                     Determination of the protein content in cereal and cereal products
-                     for food and animal feeding stuffs according to the Dumas
-                     combustion method
-                   </em>
-                    (see
-                   <eref target='http://www.icc.or.at'/>
-                   )
-                 </title>
-               </front>
-             </reference>
              <reference anchor='ref11'>
         <front>
           <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+          <author>
+            <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+          </author>
         </front>
         <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-        <refcontent>RFC&#xa0;10</refcontent>
         <seriesInfo value='10' name='RFC'/>
       </reference>
-             <reference anchor='ref12'>
-               <front>
-                 <title>
-                   CitationWorks. 2019.
-                   <em>How to cite a reference</em>
-                   .
-                 </title>
-               </front>
-             </reference>
            </references>
          </back>
          </rfc>
 
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({use_xinclude: "true"}).convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    IsoDoc::Ietf::RfcConvert.new({use_xinclude: "true"})
+      .convert("test", input, false)
+    expect(File.exist?("test.rfc.xml")).to be true
+    xml = File.read("test.rfc.xml")
+      expect(xmlpp(xml)).to be_equivalent_to xmlpp(output)
   end
 
     it "processes nested bibliographies" do
@@ -629,14 +644,14 @@ RSpec.describe IsoDoc::Ietf do
 <clause id="_references" inline-header="false" obligation="normative"><title>References</title><references id="_normative_references" normative="true" obligation="informative">
 <title>Normative references</title>
 <bibitem id="A">
-<formattedref format="application/x-isodoc+xml">X</formattedref>
+<title>X</title>
 <docidentifier>B</docidentifier>
 
 </bibitem>
 </references>
 <references id="_informative_references" normative="false" obligation="informative">
 <title>Bibliography</title><bibitem id="C">
-<formattedref format="application/x-isodoc+xml">Y</formattedref>
+<title>Y</title>
 <docidentifier>D</docidentifier>
 
 </bibitem>
@@ -645,7 +660,7 @@ RSpec.describe IsoDoc::Ietf do
 <clause id="_references_2" inline-header="false" obligation="normative"><title>References 2</title><p id="_849e5255-ca89-4667-b517-743ab74a032e">Z</p>
 <references id="_normative_references_2" normative="false" obligation="informative">
 <title>Normative References</title><bibitem id="E">
-<formattedref format="application/x-isodoc+xml">X</formattedref>
+<title>X</title>
 <docidentifier>F</docidentifier>
 
 </bibitem>
@@ -653,7 +668,7 @@ RSpec.describe IsoDoc::Ietf do
 </references>
 <references id="_informative_references_2" normative="false" obligation="informative">
 <title>Informative References</title><bibitem id="G">
-<formattedref format="application/x-isodoc+xml">Y</formattedref>
+<title>Y</title>
 <docidentifier>H</docidentifier>
 
 </bibitem>

@@ -190,9 +190,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true).sub(
-      /<html/, "<html xmlns:m='m'"
-    ))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
+      .sub(/<html/, "<html xmlns:m='m'")))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "overrides AsciiMath delimiters" do
@@ -394,6 +394,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <contributor>
           <role type="publisher"/>
           <organization>
+            <name>International Organization for Standardization</name>
             <abbreviation>ISO</abbreviation>
           </organization>
         </contributor>
@@ -415,7 +416,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <front>
         <title>Cereals and cereal products</title>
         <author>
-          <organization abbrev='ISO'/>
+          <organization ascii="International Organization for Standardization" abbrev="ISO">International Organization for Standardization</organization>
         </author>
       </front>
       <refcontent>ISO&#xa0;712</refcontent>
@@ -462,6 +463,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <contributor>
           <role type="publisher"/>
           <organization>
+            <name>International Organization for Standardization</name>
             <abbreviation>ISO</abbreviation>
           </organization>
         </contributor>
@@ -502,7 +504,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <front>
         <title>Cereals and cereal products</title>
         <author>
-          <organization abbrev='ISO'/>
+          <organization ascii="International Organization for Standardization" abbrev="ISO">International Organization for Standardization</organization>
         </author>
       </front>
       <refcontent>ISO&#xa0;712</refcontent>
@@ -528,7 +530,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </preface>
       </iso-standard>
     INPUT
-    expect(xmlpp(File.read("test.rfc.xml"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(File.read("test.rfc.xml")))
+      .to be_equivalent_to xmlpp(<<~OUTPUT)
          <?xml version="1.0"?>
       <?rfc strict="yes"?>
       <?rfc compact="yes"?>
@@ -687,7 +690,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <t>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</t>
              <reference anchor="ISO712">
                <front>
-                 <title>Cereals or cereal products</title>
+                 <title>Cereals and cereal products</title>
                  <author>
                    <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                  </author>

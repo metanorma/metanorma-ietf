@@ -68,7 +68,7 @@ module IsoDoc
         ref << @bibrenderer.render(bib1.to_xml, embedded: true)
       end
 
-      # -----
+=begin
 
       def nonstd_bibitem(list, bib, _ordinal, _bibliography)
         uris = bib.xpath(ns("./uri"))
@@ -193,6 +193,7 @@ module IsoDoc
           end
         end
       end
+=end
     end
   end
 end

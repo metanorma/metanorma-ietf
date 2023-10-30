@@ -5,7 +5,8 @@ module Relaton
         def simple_or_host_xml2hash(doc, host)
           ret = super
           ret.merge(home_standard: home_standard(doc, ret[:publisher_raw]),
-                    uris: uris(doc), keywords: keywords(doc), abstract: abstract(doc))
+                    uris: uris(doc), keywords: keywords(doc),
+                    abstract: abstract(doc))
         end
 
         def home_standard(_doc, pubs)
@@ -26,11 +27,58 @@ module Relaton
         end
 
         def keywords(doc)
-          doc.keyword.map { |u| u.content }
+          doc.keyword.map { |u| content(u) }
         end
 
         def abstract(doc)
           doc.abstract.join
+        end
+
+        def extractname(contributor)
+          org = contributor.entity if contributor.entity
+            .is_a?(RelatonBib::Organization)
+          person = contributor.entity if contributor.entity
+            .is_a?(RelatonBib::Person)
+          if org
+            return { nonpersonal: extract_orgname(org),
+                     nonpersonalabbrev: extract_orgabbrev(org) }
+          end
+          return extract_personname(person) if person
+
+          nil
+        end
+
+        def extract_orgabbrev(org)
+          content(org.abbreviation)
+        end
+
+        def extract_personname(person)
+          surname = person.name.surname
+          completename = person.name.completename
+          given, middle, initials = given_and_middle_name(person)
+          { surname: content(surname),
+            completename: content(completename),
+            given: given,
+            middle: middle,
+            initials: initials }.compact
+        end
+
+        # not just year-only
+        def date(doc, host)
+          ret = date1(doc.date)
+          host and ret ||= date1(host.date)
+          datepick(ret)
+        end
+
+        # return authors and editors together
+        def creatornames1(doc)
+          return [] if doc.nil?
+
+          add1 = pick_contributor(doc, "author") || []
+          add2 = pick_contributor(doc, "editor") || []
+          cr = add1 + add2
+          cr.empty? or return cr
+          super
         end
       end
     end
