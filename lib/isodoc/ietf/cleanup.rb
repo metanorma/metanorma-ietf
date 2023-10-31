@@ -9,15 +9,52 @@ module IsoDoc
         table_cleanup(docxml)
         footnote_cleanup(docxml)
         sourcecode_cleanup(docxml)
-        annotation_cleanup(docxml)
         li_cleanup(docxml)
         deflist_cleanup(docxml)
         bookmark_cleanup(docxml)
         cref_cleanup(docxml)
-        aside_cleanup(docxml)
         front_cleanup(docxml)
         u_cleanup(docxml)
+        biblio_cleanup(docxml) # feeds aside
+        aside_cleanup(docxml)
         docxml
+      end
+
+      def biblio_cleanup(xmldoc)
+        biblio_abstract_cleanup(xmldoc)
+        biblio_date_cleanup(xmldoc)
+        annotation_cleanup(xmldoc)
+      end
+
+      def biblio_date_cleanup(xmldoc)
+        xmldoc.xpath("//date[@cleanme]").each do |a|
+          a.delete("cleanme")
+          d = @c.decode(a.text).gsub(/–/, "-").sub(/-\d\d\d\d.*$/, "")
+          if attrs = date_attr(d)
+            attrs.each do |k, v|
+              a[k] = v
+            end
+            a.children.remove
+          else a.remove end
+        end
+      end
+
+      def biblio_abstract_cleanup(xmldoc)
+        xmldoc.xpath("//abstract[@cleanme]").each do |a|
+          a.delete("cleanme")
+          ret = reparse_abstract(a)
+          a.children = if a.at("./p") then ret
+                       else "<t>#{ret}</t>"
+                       end
+        end
+      end
+
+      def reparse_abstract(abstract)
+        a1 = Nokogiri::XML(abstract.dup.to_xml
+          .sub("<abstract>", "<abstract xmlns='http://www.example.com'>")).root
+        noko do |xml|
+          a1.children.each { |n| parse(n, xml) }
+        end.join
       end
 
       def li_cleanup(xmldoc)
@@ -151,16 +188,20 @@ module IsoDoc
 
       def annotation_cleanup(docxml)
         docxml.xpath("//reference").each do |r|
-          next unless r&.next_element&.name == "aside"
-
-          aside = r.next_element
-          aside.name = "annotation"
-          aside.traverse do |n|
-            n.name == "t" and n.replace(n.children)
+          while r.next_element&.name == "aside"
+            annotation_cleanup1(r)
           end
-          r << aside
         end
         docxml.xpath("//references/aside").each(&:remove)
+      end
+
+      def annotation_cleanup1(ref)
+        aside = ref.next_element
+        aside.name = "annotation"
+        aside.traverse do |n|
+          n.name == "t" and n.replace(n.children)
+        end
+        ref << aside
       end
 
       def deflist_cleanup(docxml)
