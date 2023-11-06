@@ -562,7 +562,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR.sub(/<language>/, '<version> </version><language>')}
+      #{BLANK_HDR.sub('<language>', '<version> </version><language>')}
       <sections>
       <p id='_'>
         ABC
@@ -598,7 +598,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR.sub(/<language>/, '<version> </version><language>')}
+      #{BLANK_HDR.sub('<language>', '<version> </version><language>')}
                <sections>
            <table id="_">
              <thead>

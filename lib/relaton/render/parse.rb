@@ -11,7 +11,7 @@ module Relaton
 
         def home_standard(_doc, pubs)
           pubs&.any? do |r|
-            ["Internet Engineering Task Force", "IETF"]
+            ["Internet Engineering Task Force", "IETF", "RFC Publisher"]
               .include?(r[:nonpersonal])
           end
         end
@@ -79,6 +79,15 @@ module Relaton
           cr = add1 + add2
           cr.empty? or return cr
           super
+        end
+
+        # add BCP number
+        def authoritative_identifier(doc)
+          ret = super
+          if bcp = doc.series.detect { |s| s.title.title.content == "BCP" }
+            ret.unshift("BCP #{bcp.number}")
+          end
+          ret.reject { |x| /^(rfc-anchor|Internet-Draft)/.match? (x) }
         end
       end
     end
