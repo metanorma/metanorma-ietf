@@ -22,6 +22,12 @@ module Relaton
              authorizer)
         end
 
+        def series_xml2hash1(series, doc)
+          ret = super
+          %w(BCP RFC I-D. Internet-Draft).include?(ret[:series_title]) and return {}
+          ret
+        end
+
         def uris(doc)
           doc.link.map { |u| { content: u.content.to_s.strip, type: u.type } }
         end
