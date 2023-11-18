@@ -23,6 +23,7 @@ module IsoDoc
       def biblio_cleanup(xmldoc)
         biblio_abstract_cleanup(xmldoc)
         biblio_date_cleanup(xmldoc)
+        biblio_refcontent_cleanup(xmldoc)
         annotation_cleanup(xmldoc)
       end
 
@@ -46,6 +47,15 @@ module IsoDoc
           a.children = if a.at("./p") then ret
                        else "<t>#{ret}</t>"
                        end
+        end
+      end
+
+      def biblio_refcontent_cleanup(xmldoc)
+        xmldoc.xpath("//refcontent").each do |a|
+          val = a.text.strip
+          if val.empty? then a.remove
+          else a.children = val
+          end
         end
       end
 
@@ -130,10 +140,10 @@ module IsoDoc
 
       def make_postamble(docxml)
         docxml.xpath("//figure").each do |f|
-          a = f&.at("./artwork | ./sourcecode") || next
-          name = f&.at("./name")&.remove
-          b = a&.xpath("./preceding-sibling::*")&.remove
-          c = a&.xpath("./following-sibling::*")&.remove
+          a = f.at("./artwork | ./sourcecode") || next
+          name = f.at("./name")&.remove
+          b = a.xpath("./preceding-sibling::*")&.remove
+          c = a.xpath("./following-sibling::*")&.remove
           a = a.remove
           name and f << name
           b.empty? or f << "<preamble>#{to_xml(b)}</preamble>"
@@ -211,7 +221,7 @@ module IsoDoc
 
       def dt_cleanup(docxml)
         docxml.xpath("//dt").each do |d|
-          d&.first_element_child&.name == "bookmark" and
+          d.first_element_child&.name == "bookmark" and
             d["anchor"] ||= d.first_element_child["anchor"]
           d.xpath(".//t").each do |t|
             d["anchor"] ||= t["anchor"]
