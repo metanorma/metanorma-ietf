@@ -9,6 +9,7 @@ module Metanorma
         personal_author(node, xml)
       end
 
+=begin
       def metadata_publisher(node, xml)
         publishers = node.attr("publisher") || "IETF"
         csv_split(publishers)&.each do |p|
@@ -30,6 +31,11 @@ module Metanorma
           end
         end
       end
+=end
+
+def default_publisher
+  "IETF"
+end
 
       def org_abbrev
         { "Internet Engineering Task Force" => "IETF" }
