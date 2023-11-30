@@ -65,7 +65,12 @@ module IsoDoc
         bib1 = bib.clone
         @isodoc.prep_for_rendering(bib1)
         bib1.namespace = nil
-        ref << @bibrenderer.render(bib1.to_xml, embedded: true)
+        ret = @bibrenderer.render(bib1.to_xml, embedded: true)
+        ref << if bib1.at(ns("./formattedref")) && !bib1.at(ns("./title"))
+                 "<front><title>#{ret}</title></front>"
+               else
+                 ret
+               end
       end
     end
   end
