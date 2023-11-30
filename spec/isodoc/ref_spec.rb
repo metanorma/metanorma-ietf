@@ -150,8 +150,10 @@ RSpec.describe IsoDoc::Ietf do
       </contributor>
         <abstract>This is an abstract</abstract>
       </bibitem>
-
-
+      <bibitem id="grail_film">
+        <formattedref format="application/x-isodoc+xml">G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. <em>Monty Python and the Holy Grail</em>.</formattedref>
+        <docidentifier>Grail</docidentifier>
+      </bibitem>
       </references><references id="_bibliography" obligation="informative" normative="false">
         <title>Bibliography</title>
       <bibitem id="ISBN" type="book">
@@ -313,7 +315,12 @@ RSpec.describe IsoDoc::Ietf do
                <date year="2013"/><abstract><t>This is an abstract</t></abstract></front>
               <refcontent>ISO 20484:2013-2014</refcontent>
             </reference>
-
+                  <reference anchor="grail_film">
+        <front>
+          <title>G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. Monty Python and the Holy Grail.</title>
+          <author surname="Unknown"/>
+        </front>
+      </reference>
           </references>
           <references anchor='_bibliography'>
             <name>Bibliography</name>
