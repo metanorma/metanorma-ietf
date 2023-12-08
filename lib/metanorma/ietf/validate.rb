@@ -25,9 +25,9 @@ module Metanorma
 
       def image_validate(doc)
         doc.xpath("//image").each do |i|
-          next if i["mimetype"] == "image/svg+xml"
-
-          @log.add("MIME", i, "image #{i['src'][0, 40]} is not SVG!")
+          i["mimetype"] == "image/svg+xml" and next
+          @log.add("MIME", i, "image #{i['src'][0, 40]} is not SVG!",
+                   severity: 1)
         end
       end
 
@@ -36,10 +36,10 @@ module Metanorma
 
         doc.xpath("//bibdata/ext/editorialgroup/workgroup").each do |wg|
           wg_norm = wg.text.sub(/ (Working|Research) Group$/, "")
-          next if @workgroups.include?(wg_norm)
-
+          @workgroups.include?(wg_norm) and next
           @log.add("Document Attributes", nil,
-                   "IETF: unrecognised working group #{wg.text}")
+                   "IETF: unrecognised working group #{wg.text}",
+                   severity: 1)
         end
       end
 

@@ -22,7 +22,7 @@ module Metanorma
             r.replace(c.remove)
           else
             @log.add("Crossrefences", r,
-                     "No matching review for cref:[#{r.text}]")
+                     "No matching review for cref:[#{r.text}]", severity: 1)
           end
         end
       end
