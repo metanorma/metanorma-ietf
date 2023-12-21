@@ -439,6 +439,10 @@ RSpec.describe Metanorma::Ietf do
              <name>DOC TOC Heading Levels</name>
              <value>2</value>
            </presentation-metadata>
+           <presentation-metadata>
+            <name>PDF TOC Heading Levels</name>
+            <value>2</value>
+          </presentation-metadata>
          </metanorma-extension>
                <sections/>
              </ietf-standard>
@@ -568,6 +572,10 @@ RSpec.describe Metanorma::Ietf do
              <name>DOC TOC Heading Levels</name>
              <value>2</value>
            </presentation-metadata>
+           <presentation-metadata>
+            <name>PDF TOC Heading Levels</name>
+            <value>2</value>
+          </presentation-metadata>
          </metanorma-extension>
                <preface>
                  <abstract id='_'>
