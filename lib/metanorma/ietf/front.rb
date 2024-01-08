@@ -9,33 +9,9 @@ module Metanorma
         personal_author(node, xml)
       end
 
-=begin
-      def metadata_publisher(node, xml)
-        publishers = node.attr("publisher") || "IETF"
-        csv_split(publishers)&.each do |p|
-          xml.contributor do |c|
-            c.role **{ type: "publisher" }
-            c.organization { |a| organization(a, p, true) }
-          end
-        end
+      def default_publisher
+        "IETF"
       end
-
-      def metadata_copyright(node, xml)
-        publishers = node.attr("copyright-holder") || node.attr("publisher") || "IETF"
-        csv_split(publishers)&.each do |p|
-          xml.copyright do |c|
-            c.from (node.attr("copyright-year") || Date.today.year)
-            c.owner do |owner|
-              owner.organization { |o| organization(o, p, true) }
-            end
-          end
-        end
-      end
-=end
-
-def default_publisher
-  "IETF"
-end
 
       def org_abbrev
         { "Internet Engineering Task Force" => "IETF" }
@@ -47,10 +23,10 @@ end
         end
         a = node.attr("intended-series") and
           xml.series **{ type: "intended" } do |s|
-          parts = a.split(/ /)
-          s.title parts[0]
-          s.number parts[1..-1].join(" ") if parts.size > 1
-        end
+            parts = a.split(/ /)
+            s.title parts[0]
+            s.number parts[1..-1].join(" ") if parts.size > 1
+          end
       end
 
       def title(node, xml)
@@ -69,7 +45,7 @@ end
       end
 
       def metadata_committee(node, xml)
-        return unless node.attr("workgroup")
+        node.attr("workgroup") or return
         xml.editorialgroup do |a|
           committee_component("workgroup", node, a)
         end
@@ -81,14 +57,14 @@ end
           xml.area a
         end
         xml.ipr (node.attr("ipr") || "trust200902")
-        x = node.attr("consensus") and xml.consensus x
-        x = node.attr("index-include") and xml.indexInclude x
+        x = node.attr("consensus") and xml.consensus (x != "false")
+        x = node.attr("index-include") and xml.indexInclude (x != "false")
         x = node.attr("ipr-extract") and xml.iprExtract x
-        x = node.attr("sort-refs") and xml.sortRefs x
-        x = node.attr("sym-refs") and xml.symRefs x
-        x = node.attr("toc-include") and xml.tocInclude x
+        x = node.attr("sort-refs") and xml.sortRefs (x != "false")
+        x = node.attr("sym-refs") and xml.symRefs (x != "false")
+        x = node.attr("toc-include") and xml.tocInclude (x != "false")
         x = node.attr("toc-depth") and xml.tocDepth x
-        x = node.attr("show-on-front-page") and xml.showOnFrontPage x
+        x = node.attr("show-on-front-page") and xml.showOnFrontPage (x != "false")
         xml.pi { |pi| set_pi(node, pi) }
       end
 
@@ -135,7 +111,7 @@ end
 
       def pi_code(rfc_pis, pi)
         rfc_pis.each_pair do |k, v|
-          next if v.nil?
+          v.nil? and next
           pi.send k.to_s, v
         end
       end

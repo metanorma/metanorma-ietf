@@ -112,9 +112,8 @@ module IsoDoc
 
       def figure_data_uri(docxml)
         docxml.xpath("//artwork").each do |a|
-          next unless %r{^data:image/svg\+xml;base64}.match?(a["src"])
-
-          f = Metanorma::Utils::save_dataimage(a["src"])
+          %r{^data:image/svg\+xml;base64}.match?(a["src"]) or next
+          f = Vectory::Utils::save_dataimage(a["src"])
           a.delete("src")
           a.children = File.read(f).sub(%r{<\?.+\?>}, "")
         end
