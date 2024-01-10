@@ -126,6 +126,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <link target="http://example.com" alt="tip">example</link>
       <link target="mailto:fred@example.com"/>
       <link target="mailto:fred@example.com">mailto:fred@example.com</link>
+      <link target="http://example.com" style="angle">example</link>
       </p>
       </foreword></preface>
       <sections>
@@ -139,6 +140,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <eref target='http://example.com'>example</eref>
                      <eref target='mailto:fred@example.com'/>
                      <eref target='mailto:fred@example.com'>mailto:fred@example.com</eref>
+                     <eref target="http://example.com" brackets="angle">example</eref>
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
