@@ -225,8 +225,6 @@ RSpec.describe IsoDoc::Ietf do
           <author fullname="Arthur son of Uther Pendragon">
             <address>
               <postal/>
-              <email/>
-              <uri/>
             </address>
           </author>
           <abstract>
@@ -553,8 +551,6 @@ RSpec.describe IsoDoc::Ietf do
            <author fullname="Arthur son of Uther Pendragon">
              <address>
                <postal/>
-               <email/>
-               <uri/>
              </address>
            </author>
            <abstract>

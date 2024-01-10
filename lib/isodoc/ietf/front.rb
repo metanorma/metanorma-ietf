@@ -32,8 +32,8 @@ module IsoDoc::Ietf
     def title(_isoxml, front)
       title = @meta.get[:doctitle] or return
       front.title title, **attr_code(abbrev: @meta.get[:docabbrev],
-                                     ascii: (@meta.get[:docascii] ||
-                                     output_if_translit(title)))
+                                     ascii: @meta.get[:docascii] ||
+                                     output_if_translit(title))
     end
 
     def seriesinfo(isoxml, front)
@@ -69,8 +69,8 @@ module IsoDoc::Ietf
     end
 
     def author(isoxml, front)
-      isoxml.xpath(("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = " \
-        "'author' or xmlns:role/@type = 'editor']")).each do |c|
+      isoxml.xpath("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = " \
+        "'author' or xmlns:role/@type = 'editor']").each do |c|
         role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
         (c.at("./organization") and org_author(c, role, front)) or
           person_author(c, role, front)
@@ -108,7 +108,7 @@ module IsoDoc::Ietf
         address(contrib.xpath(ns(".//address")),
                 contrib.at(ns(".//phone[not(@type = 'fax')]")),
                 contrib.at(ns(".//phone[@type = 'fax']")),
-                contrib.xpath(ns(".//email")), contrib.xpath(ns(".//uri")), a)
+                contrib.xpath(ns(".//email")), contrib.at(ns(".//uri")), a)
       end
     end
 
@@ -119,7 +119,7 @@ module IsoDoc::Ietf
         address(contrib.at(ns(".//address")),
                 contrib.at(ns(".//phone[not(@type = 'fax')]")),
                 contrib.at(ns(".//phone[@type = 'fax']")),
-                contrib.at(ns(".//email")), contrib.at(ns(".//uri")), a)
+                contrib.xpath(ns(".//email")), contrib.at(ns(".//uri")), a)
       end
     end
 
@@ -139,7 +139,7 @@ module IsoDoc::Ietf
         addr and postal(addr, a)
         phone and a.phone phone.text
         fax and a.facsimile fax.text
-        email and email(email, a)
+        email.each { |e|  email(e, a) }
         uri and a.uri uri.text
       end
     end

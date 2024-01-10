@@ -87,8 +87,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                        </organization>
                      </affiliation>
                      <phone>123c</phone>
-      <phone type='fax'>123d</phone>
+                      <phone type='fax'>123d</phone>
                      <email>barney@rockhead.example.com</email>
+                     <email>barney2@rockhead.example.com</email>
                    </person>
                  </contributor>
                  <contributor>
@@ -337,7 +338,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </postal>
       <phone>123</phone>
       <facsimile>123b</facsimile>
-      <email/>
       <uri>http://slate.example.com</uri>
       </address>
        </author>
@@ -354,7 +354,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <phone>123c</phone>
         <facsimile>123d</facsimile>
         <email>barney@rockhead.example.com</email>
-        <uri/>
+        <email>barney2@rockhead.example.com</email>
         </address>
       </author>
                  <date day='1' year='1000' month='January'/>
@@ -509,7 +509,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       </postal>
                       <phone>123</phone>
                       <facsimile>123b</facsimile>
-                      <email/>
                       <uri>http://slate.example.com</uri>
                     </address>
                   </author>
