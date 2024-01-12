@@ -247,6 +247,7 @@ RSpec.describe IsoDoc::Ietf do
           <references anchor='_normative_references'>
             <name>Normative References</name>
                <reference target="https://www.rfc-editor.org/info/rfc2119" anchor="RFC2119">
+               <stream>IETF</stream>
                <front>
                  <title>Key words for use in RFCs to Indicate Requirement Levels</title>
                  <author fullname="S. Bradner" asciiFullname="S. Bradner"/>
