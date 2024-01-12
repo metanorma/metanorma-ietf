@@ -5,7 +5,7 @@ RSpec.describe Metanorma::Ietf do
     output = Asciidoctor.convert(<<~"INPUT", *OPTIONS)
       #{ASCIIDOC_BLANK_HDR}
       [[id]]
-      [nobullet=true,spacing=compact]
+      [nobullet=true,spacing=compact,indent=5]
       * First
       * Second
       +
@@ -16,7 +16,7 @@ RSpec.describe Metanorma::Ietf do
       --
 
       [[id1]]
-      [loweralpha,group=6,spacing=normal,start=2]
+      [loweralpha,group=6,spacing=normal,start=2,indent=5]
       . First
       . Second
       [upperalpha,format=%d.]
@@ -37,7 +37,7 @@ RSpec.describe Metanorma::Ietf do
     expect(xmlpp(strip_guid(output))).to be_equivalent_to xmlpp(<<~"OUTPUT")
            #{BLANK_HDR}
            <sections>
-          <ul id='id' nobullet='true' spacing='compact'>
+          <ul id='id' nobullet='true' spacing='compact' indent='5'>
             <li>
               <p id='_'>First</p>
             </li>
@@ -47,7 +47,7 @@ RSpec.describe Metanorma::Ietf do
               <p id='_'>entry2</p>
             </li>
           </ul>
-          <ol id='id1' type='alphabet' group='6' spacing='normal' start='2'>
+          <ol id='id1' type='alphabet' group='6' spacing='normal' start='2' indent='5'>
             <li>
               <p id='_'>First</p>
             </li>

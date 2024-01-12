@@ -5,7 +5,7 @@ RSpec.describe IsoDoc do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <ul id="_61961034-0fb1-436b-b281-828857a59ddb" nobullet="true" spacing="compact">
+          <ul id="_61961034-0fb1-436b-b281-828857a59ddb" nobullet="true" spacing="compact" indent="5">
         <li>
           <p id="_cb370dd3-8463-4ec7-aa1a-96f644e2e9a2">updated normative references;</p>
         </li>
@@ -18,7 +18,7 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
           #{XML_HDR}
-          <ul anchor='_61961034-0fb1-436b-b281-828857a59ddb' empty='true' spacing='compact'>
+          <ul anchor='_61961034-0fb1-436b-b281-828857a59ddb' empty='true' spacing='compact' indent="5">
         <li>
           <t anchor='_cb370dd3-8463-4ec7-aa1a-96f644e2e9a2'>updated normative references;</t>
         </li>
@@ -36,7 +36,7 @@ RSpec.describe IsoDoc do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <ol id="_ae34a226-aab4-496d-987b-1aa7b6314026" type="alphabet" start="7" spacing="compact" group="X">
+          <ol id="_ae34a226-aab4-496d-987b-1aa7b6314026" type="alphabet" start="7" spacing="compact" group="X" indent="5">
         <li>
           <p id="_0091a277-fb0e-424a-aea8-f0001303fe78">all information necessary for the complete identification of the sample;</p>
         </li>
@@ -56,22 +56,22 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-                              <ol anchor='_ae34a226-aab4-496d-987b-1aa7b6314026' spacing='compact' type='a' group='X' start='7'>
+         <ol anchor='_ae34a226-aab4-496d-987b-1aa7b6314026' spacing='compact' type='a' group='X' start='7' indent="5">
+             <li>
+               <t anchor='_0091a277-fb0e-424a-aea8-f0001303fe78'>all information necessary for the complete identification of the sample;</t>
+             </li>
+             <ol>
+               <li>
+                 <t anchor='_8a7b6299-db05-4ff8-9de7-ff019b9017b2'>a reference to this document (i.e. ISO 17301-1);</t>
+               </li>
+               <ol>
                  <li>
-                   <t anchor='_0091a277-fb0e-424a-aea8-f0001303fe78'>all information necessary for the complete identification of the sample;</t>
+                   <t anchor='_ea248b7f-839f-460f-a173-a58a830b2abe'>the sampling method used;</t>
                  </li>
-                 <ol>
-                   <li>
-                     <t anchor='_8a7b6299-db05-4ff8-9de7-ff019b9017b2'>a reference to this document (i.e. ISO 17301-1);</t>
-                   </li>
-                   <ol>
-                     <li>
-                       <t anchor='_ea248b7f-839f-460f-a173-a58a830b2abe'>the sampling method used;</t>
-                     </li>
-                   </ol>
-                 </ol>
                </ol>
-            </abstract></front><middle/><back/></rfc>
+             </ol>
+           </ol>
+        </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)

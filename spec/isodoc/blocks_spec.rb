@@ -534,7 +534,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true">Vache Equipment<br/>
+          <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true" indent="5">Vache Equipment<br/>
       Fictitious<br/>
       World</p>
           <p align="justify" keep-with-previous="true">Justify</p>
@@ -543,7 +543,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-      <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>
+      <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8' indent="5">
         Vache Equipment
         <br/>
          Fictitious

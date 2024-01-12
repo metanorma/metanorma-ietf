@@ -4,6 +4,7 @@ module IsoDoc
       def para_attrs(node)
         { keepWithNext: node["keep-with-next"],
           keepWithPrevious: node["keep-with-previous"],
+          indent: node["indent"],
           anchor: node["id"] }
       end
 
@@ -21,6 +22,7 @@ module IsoDoc
       # NOTE ignoring "bare" attribute, which is tantamount to "empty"
       def ul_attrs(node)
         { anchor: node["id"], empty: node["nobullet"],
+          indent: node["indent"],
           spacing: node["spacing"] }
       end
 
@@ -44,10 +46,9 @@ module IsoDoc
 
       def ol_attrs(node)
         { anchor: node["id"],
-          spacing: node["spacing"],
+          spacing: node["spacing"], indent: node["indent"],
           type: ol_style(node["type"]),
-          group: node["group"],
-          start: node["start"] }
+          group: node["group"], start: node["start"] }
       end
 
       def ol_parse(node, out)
