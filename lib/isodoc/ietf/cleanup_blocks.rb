@@ -101,8 +101,8 @@ module IsoDoc
           s.children = to_xml(s.children).gsub(%r{<br/>\n}, "\n")
             .gsub(%r{\s+(<t[ >])}, "\\1").gsub(%r{</t>\s+}, "</t>")
           sourcecode_remove_markup(s)
-          s.children = "<![CDATA[#{HTMLEntities.new.decode(to_xml(s
-        .children).sub(/\A\n+/, ''))}]]>"
+          s.children = "<![CDATA[#{@c.decode(to_xml(s.children)
+            .sub(/\A\n+/, ''))}]]>"
         end
       end
 
