@@ -20,8 +20,7 @@ module IsoDoc
 
       # NOTE ignoring "bare" attribute, which is tantamount to "empty"
       def ul_attrs(node)
-        { anchor: node["id"],
-          empty: node["nobullet"],
+        { anchor: node["id"], empty: node["nobullet"],
           spacing: node["spacing"] }
       end
 
@@ -58,25 +57,20 @@ module IsoDoc
       end
 
       def dl_attrs(node)
-        attr_code(anchor: node["id"],
-                  newline: node["newline"],
-                  indent: node["indent"],
-                  spacing: node["spacing"])
+        attr_code(anchor: node["id"], newline: node["newline"],
+                  indent: node["indent"], spacing: node["spacing"])
       end
 
       def dt_parse(dterm, term)
-        if dterm.elements.empty?
-          term << dterm.text
-        else
-          dterm.children.each { |n| parse(n, term) }
+        if dterm.elements.empty? then term << dterm.text
+        else dterm.children.each { |n| parse(n, term) }
         end
       end
 
       def note_label(node)
         n = @xrefs.get[node["id"]]
-        return l10n("#{@i18n.note}: ") if n.nil? || n[:label].nil? ||
-          n[:label].empty?
-
+        n.nil? || n[:label].nil? || n[:label].empty? and
+          return l10n("#{@i18n.note}: ")
         l10n("#{@i18n.note} #{n[:label]}: ")
       end
 
@@ -103,8 +97,7 @@ module IsoDoc
         div.t **attr_code(anchor: node["id"], keepWithNext: "true") do |p|
           lbl = if n.nil? || n[:label].nil? || n[:label].empty?
                   @i18n.example
-                else
-                  l10n("#{@i18n.example} #{n[:label]}")
+                else l10n("#{@i18n.example} #{n[:label]}")
                 end
           p << lbl
           name and !lbl.nil? and p << ": "
@@ -155,8 +148,7 @@ module IsoDoc
       end
 
       def formula_where(dlist, out)
-        return unless dlist
-
+        dlist or return
         out.t { |p| p << @i18n.where }
         parse(dlist, out)
       end
@@ -174,15 +166,14 @@ module IsoDoc
         formula_parse1(node, out)
         formula_where(node.at(ns("./dl")), out)
         node.children.each do |n|
-          next if %w(stem dl).include? n.name
-
+          %w(stem dl).include? n.name and next
           parse(n, out)
         end
       end
 
       def quote_attribution(node)
-        author = node&.at(ns("./author"))&.text
-        source = node&.at(ns("./source/@uri"))&.text
+        author = node.at(ns("./author"))&.text
+        source = node.at(ns("./source/@uri"))&.text
         attr_code(quotedFrom: author, cite: source)
       end
 
@@ -197,8 +188,7 @@ module IsoDoc
       def admonition_name(node, type)
         name = node&.at(ns("./name")) and return name
         name = Nokogiri::XML::Node.new("name", node.document)
-        return unless type && @i18n.admonition[type]
-
+        type && @i18n.admonition[type] or return
         name << @i18n.admonition[type]&.upcase
         name
       end
@@ -230,8 +220,7 @@ module IsoDoc
       end
 
       def figure_name_parse(_node, div, name)
-        return if name.nil?
-
+        name.nil? and return
         div.name do |_n|
           name.children.each { |n| parse(n, div) }
         end
@@ -242,9 +231,8 @@ module IsoDoc
       end
 
       def figure_parse(node, out)
-        return pseudocode_parse(node, out) if node["class"] == "pseudocode" ||
-          node["type"] == "pseudocode"
-
+        node["class"] == "pseudocode" || node["type"] == "pseudocode" and
+            return pseudocode_parse(node, out)
         @in_figure = true
         out.figure **attr_code(anchor: node["id"]) do |div|
           figure_name_parse(node, div, node.at(ns("./name")))

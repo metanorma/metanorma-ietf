@@ -890,7 +890,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <em>Language: BASIC</em>
              </t>
              <t anchor='_'>
-               I recommend#{' '}
+               I recommend
                <em>this</em>
                .
              </t>
@@ -900,7 +900,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <t anchor='_'>The following code will be run for verification:</t>
              <sourcecode anchor='_'>
                CoreRoot(success): HttpResponse if (success) recommendation(label:
-               success-response) end#{' '}
+               success-response) end
              </sourcecode>
            </abstract>
          </front>

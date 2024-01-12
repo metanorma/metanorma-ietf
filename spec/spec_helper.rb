@@ -60,8 +60,9 @@ def htmlencode(xml)
 end
 
 def strip_guid(xml)
-  xml.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"},
-                                             ' target="_"')
+  xml.gsub(%r{ id="_[^"]+"}, ' id="_"')
+    .gsub(%r{ target="_[^"]+"}, ' target="_"')
+    .gsub(%r{ anchor="_[^"]+"}, ' anchor="_"')
 end
 
 def xmlpp(xml)
@@ -84,7 +85,7 @@ def dtd_absolute_path
   Metanorma::Ietf::RFC2629DTD_URL
 end
 
-ASCIIDOC_BLANK_HDR = <<~"HDR"
+ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -95,7 +96,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR"
 
 HDR
 
-VALIDATING_BLANK_HDR = <<~"HDR"
+VALIDATING_BLANK_HDR = <<~"HDR".freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -104,7 +105,7 @@ VALIDATING_BLANK_HDR = <<~"HDR"
 
 HDR
 
-BLANK_HDR = <<~"HDR"
+BLANK_HDR = <<~"HDR".freeze
   <?xml version='1.0' encoding='UTF-8'?>
          <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
          <bibdata type="standard">
@@ -163,7 +164,7 @@ BLANK_HDR = <<~"HDR"
           </metanorma-extension>
 HDR
 
-XML_HDR = <<~"HDR"
+XML_HDR = <<~"HDR".freeze
   <?xml version='1.0'?>
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
@@ -177,7 +178,7 @@ XML_HDR = <<~"HDR"
       <abstract>
 HDR
 
-RFC_HDR = <<~"HDR"
+RFC_HDR = <<~"HDR".freeze
   <?xml version='1.0'?>
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>

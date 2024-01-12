@@ -105,13 +105,30 @@ module Relaton
           a = doc.series.reject { |s| s.type == "stream" }
           a.empty? and return nil
           a.detect { |s| s.type == "main" } ||
-            a.detect { |s| s.type.nil? } ||
-            a.first
+            a.detect { |s| s.type.nil? } || a.first
         end
 
         def stream(doc)
           a = doc.series.detect { |s| s.type == "stream" } or return nil
           series_title(a, doc)
+        end
+
+        def extract(doc)
+          super.merge(included_xml2hash(doc))
+        end
+
+        def included_xml2hash(doc)
+          r = doc.relation.select { |x| x.type == "includes" }
+            .map { |x| parse_single_bibitem(x.bibitem) }
+          r.empty? and return {}
+          { included: r }
+        end
+
+        def parse_single_bibitem(doc)
+        data = extract(doc)
+        #enhance_data(data, r.template_raw)
+        #data_liquid = @fieldsklass.new(renderer: self)
+        #  .compound_fields_format(data)
         end
       end
     end

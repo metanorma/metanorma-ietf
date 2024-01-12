@@ -778,7 +778,183 @@ RSpec.describe IsoDoc::Ietf do
                </back>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input,
-                                                          true))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+  end
+
+  it "processes referencegroup" do
+    input = <<~INPUT
+            <ietf-standard xmlns="http://riboseinc.com/isoxml">
+                <bibdata>
+                <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
+                <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
+                <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+                <ext><ipr>trust200902</ipr></ext>
+                </bibdata>
+            <sections><clause id="_clause" inline-header="false" obligation="normative">
+            <title>Clause</title>
+            <p id="_c401175c-2d9b-4758-ba27-d4f50ddb062a">A</p>
+            </clause>
+            <clause id="_references" inline-header="false" obligation="normative"><title>References</title><references id="_normative_references" normative="true" obligation="informative">
+            <title>Normative references</title>
+      <bibitem type="standard" id="a">
+        <fetched>2024-01-12</fetched>
+        <title format="text/plain" language="en" script="Latn">Best Current Practice 9</title>
+        <uri type="src">https://www.rfc-editor.org/info/bcp9</uri>
+        <docidentifier type="IETF" primary="true">BCP 9</docidentifier>
+        <docnumber>BCP0009</docnumber>
+        <language>en</language>
+        <script>Latn</script>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC2026</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 2026</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC5657</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 5657</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC6410</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 6410</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC7100</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 7100</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC7127</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 7127</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC7475</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 7475</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC8789</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 8789</docidentifier>
+          </bibitem>
+        </relation>
+        <relation type="includes">
+          <bibitem>
+            <formattedref format="text/plain">RFC9282</formattedref>
+            <docidentifier type="IETF" primary="true">RFC 9282</docidentifier>
+          </bibitem>
+        </relation>
+      </bibitem>
+      </references>
+      </clause>
+      </sections>
+      </ietf-standard>
+    INPUT
+    output = <<~OUTPUT
+      <?xml version="1.0" encoding="UTF-8"?>
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+        <front>
+          <title>The Holy Hand Grenade of Antioch</title>
+          <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+          <author fullname="Arthur son of Uther Pendragon">
+            <address>
+              <postal/>
+            </address>
+          </author>
+        </front>
+        <middle>
+          <section anchor="_">
+            <name>Clause</name>
+            <t anchor="_">A</t>
+          </section>
+        </middle>
+        <back>
+          <references anchor="_">
+            <name>References</name>
+            <references anchor="_">
+              <name>Normative references</name>
+              <referencegroup target="https://www.rfc-editor.org/info/bcp9" anchor="a">
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 2026</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 5657</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 6410</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 7100</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 7127</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 7475</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 8789</refcontent>
+                </reference>
+                <reference anchor="_">
+                  <front>
+                    <title>[TITLE]</title>
+                    <author/>
+                  </front>
+                  <refcontent>RFC 9282</refcontent>
+                </reference>
+              </referencegroup>
+            </references>
+          </references>
+        </back>
+      </rfc>
+    OUTPUT
+    IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, false)
+    expect(File.exist?("test.rfc.xml")).to be true
+    xml = File.read("test.rfc.xml")
+    expect(xmlpp(strip_guid(xml))).to be_equivalent_to xmlpp(output)
   end
 end
