@@ -57,11 +57,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                        Requirement
                        <tt>/req/core/http</tt>
                      </xref>
-                     <relref target='ISO712' section='' relative=''>
+                     <xref target='ISO712' section='' relative=''>
                        Requirement
                        <tt>/req/core/http</tt>
-                     </relref>
-                     <relref target='ISO712' section='3.1' displayFormat="of" relative="xyz"/>
+                     </xref>
+                     <xref target='ISO712' section='3.1' sectionFormat="of" relative="xyz"/>
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
@@ -408,7 +408,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t>
-        <relref target='ISO712' section='' displayFormat='of' relative="#abc">A</relref>
+        <xref target='ISO712' section='' sectionFormat='of' relative="#abc">A</xref>
       </t>
       </abstract></front><middle/>
       <back>
@@ -477,26 +477,26 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t>
-                         <relref target='ISO712' section='' relative=''/>
-               <relref target='ISO712' section='' relative=''/>
-               <relref target='ISO712' section='Table 1' relative=''/>
-               <relref target='ISO712' section='Table 1&#x2013;1' relative=''/>
-               <relref target='ISO712' section='1, Table 1' relative=''/>
-               <relref target='ISO712' section='1' relative=''/>
-               <relref target='ISO712' section='1.5' relative=''/>
-               <relref target='ISO712' section='Table 1' relative=''>A</relref>
-               <relref target='ISO712' section='Whole of text' relative=''/>
-               <relref target='ISO712' section='Prelude 7' relative=''/>
-               <relref target='ISO712' section='' relative=''>A</relref>
-               <relref target='ISO712' section='1 and 3' relative=''/>
-               <relref target='ISO712' section='1 and Table 3' relative=''/>
-               <relref target='ISO712' section='' relative='1'>A</relref>
-               <relref target='ISO712' section='1 and Clause 9' relative='xyz'/>
-               <relref target='ISO712' section='1' relative='1'/>
-               <relref target='ISO712' section='1.5' relative='1'/>
-               <relref target='ISO712' section='Table 1' relative='1'>A</relref>
-               <relref target='ISO712' section='Whole of text' relative='1'/>
-               <relref target='ISO712' section='Prelude 7' relative='1'/>
+                         <xref target='ISO712' section='' relative=''/>
+               <xref target='ISO712' section='' relative=''/>
+               <xref target='ISO712' section='Table 1' relative=''/>
+               <xref target='ISO712' section='Table 1&#x2013;1' relative=''/>
+               <xref target='ISO712' section='1, Table 1' relative=''/>
+               <xref target='ISO712' section='1' relative=''/>
+               <xref target='ISO712' section='1.5' relative=''/>
+               <xref target='ISO712' section='Table 1' relative=''>A</xref>
+               <xref target='ISO712' section='Whole of text' relative=''/>
+               <xref target='ISO712' section='Prelude 7' relative=''/>
+               <xref target='ISO712' section='' relative=''>A</xref>
+               <xref target='ISO712' section='1 and 3' relative=''/>
+               <xref target='ISO712' section='1 and Table 3' relative=''/>
+               <xref target='ISO712' section='' relative='1'>A</xref>
+               <xref target='ISO712' section='1 and Clause 9' relative='xyz'/>
+               <xref target='ISO712' section='1' relative='1'/>
+               <xref target='ISO712' section='1.5' relative='1'/>
+               <xref target='ISO712' section='Table 1' relative='1'>A</xref>
+               <xref target='ISO712' section='Whole of text' relative='1'/>
+               <xref target='ISO712' section='Prelude 7' relative='1'/>
       </t>
       </abstract></front><middle/>
       <back>
@@ -666,15 +666,15 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <li>[term defined in <xref target="clause1"/>]</li>
                  <li><em>term</em> [term defined in <xref target="clause1"/>]</li>
                  <li><em>w[o]rd</em> [term defined in <xref target="clause1">Clause #1</xref>]</li>
-                 <li><em>term</em> [term defined in <relref target="ISO712" section="" relative=""/>]</li>
-                 <li><em>word</em> [term defined in <relref target="ISO712" section="" relative="">The Aforementioned Citation</relref>]</li>
-                 <li><em>word</em> [term defined in <relref target="ISO712" section="3.1, Figure a" relative=""/>]</li>
-                 <li><em>word</em> [term defined in <relref target="ISO712" section="3.1 and Figure b" relative=""/>]</li>
-                 <li><em>word</em> [term defined in <relref target="ISO712" section="3.1 and Figure b" relative="">
+                 <li><em>term</em> [term defined in <xref target="ISO712" section="" relative=""/>]</li>
+                 <li><em>word</em> [term defined in <xref target="ISO712" section="" relative="">The Aforementioned Citation</xref>]</li>
+                 <li><em>word</em> [term defined in <xref target="ISO712" section="3.1, Figure a" relative=""/>]</li>
+                 <li><em>word</em> [term defined in <xref target="ISO712" section="3.1 and Figure b" relative=""/>]</li>
+                 <li><em>word</em> [term defined in <xref target="ISO712" section="3.1 and Figure b" relative="">
 
 
                The Aforementioned Citation
-               </relref>]</li>
+               </xref>]</li>
                  <li><em>word</em> [term defined in Termbase IEV, term ID 135-13-13]</li>
                  <li><em>word</em> [term defined in The IEV database]</li>
                </ul>
@@ -911,18 +911,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <middle>
            <section anchor="A">
              <name>Section</name>
-             <t anchor="_"><relref target="ref1" section="3 to 5" relative=""/><relref target="ref1" section="3 to Clause 5, Table 2" relative=""/>
+             <t anchor="_"><xref target="ref1" section="3 to 5" relative=""/><xref target="ref1" section="3 to Clause 5, Table 2" relative=""/>
                  text
                </t>
-             <relref target="ref1" section="3 and 5" relative=""/>
-             <relref target="ref1" section="3, 5, and 7" relative=""/>
-             <relref target="ref1" section="3 and Annex 5" relative=""/>
-             <relref target="ref1" section="3 or 5" relative="">
+             <xref target="ref1" section="3 and 5" relative=""/>
+             <xref target="ref1" section="3, 5, and 7" relative=""/>
+             <xref target="ref1" section="3 and Annex 5" relative=""/>
+             <xref target="ref1" section="3 or 5" relative="">
 
 
                  text
-               </relref>
-             <relref target="ref1" section="3 to 5 and 8 to 10" relative=""/>
+               </xref>
+             <xref target="ref1" section="3 to 5 and 8 to 10" relative=""/>
            </section>
          </middle>
          <back/>

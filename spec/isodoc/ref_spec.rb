@@ -229,11 +229,11 @@ RSpec.describe IsoDoc::Ietf do
           </author>
           <abstract>
             <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-              <relref target="ISO712" section="" relative=""/>
-              <relref target="ISBN" section="" relative=""/>
-              <relref target="ISSN" section="" relative=""/>
-              <relref target="ISO16634" section="" relative=""/>
-              <relref target="ref11" section="" relative=""/>
+              <xref target="ISO712" section="" relative=""/>
+              <xref target="ISBN" section="" relative=""/>
+              <xref target="ISSN" section="" relative=""/>
+              <xref target="ISO16634" section="" relative=""/>
+              <xref target="ref11" section="" relative=""/>
             </t>
           </abstract>
         </front>
@@ -556,11 +556,11 @@ RSpec.describe IsoDoc::Ietf do
            </author>
            <abstract>
              <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-               <relref target="ISO712" section="" relative=""/>
-               <relref target="ISBN" section="" relative=""/>
-               <relref target="ISSN" section="" relative=""/>
-               <relref target="ISO16634" section="" relative=""/>
-               <relref target="ref11" section="" relative=""/>
+               <xref target="ISO712" section="" relative=""/>
+               <xref target="ISBN" section="" relative=""/>
+               <xref target="ISSN" section="" relative=""/>
+               <xref target="ISO16634" section="" relative=""/>
+               <xref target="ref11" section="" relative=""/>
              </t>
            </abstract>
          </front>

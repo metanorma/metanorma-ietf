@@ -19,10 +19,9 @@ module IsoDoc
         node.xpath(ns("./note")).each { |n| parse(n, out) }
       end
 
-      # NOTE ignoring "bare" attribute, which is tantamount to "empty"
       def ul_attrs(node)
         { anchor: node["id"], empty: node["nobullet"],
-          indent: node["indent"],
+          indent: node["indent"], bare: node["bare"], 
           spacing: node["spacing"] }
       end
 

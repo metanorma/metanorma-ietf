@@ -5,7 +5,7 @@ RSpec.describe IsoDoc do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <ul id="_61961034-0fb1-436b-b281-828857a59ddb" nobullet="true" spacing="compact" indent="5">
+          <ul id="_61961034-0fb1-436b-b281-828857a59ddb" nobullet="true" spacing="compact" indent="5" bare="true">
         <li>
           <p id="_cb370dd3-8463-4ec7-aa1a-96f644e2e9a2">updated normative references;</p>
         </li>
@@ -18,7 +18,7 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
           #{XML_HDR}
-          <ul anchor='_61961034-0fb1-436b-b281-828857a59ddb' empty='true' spacing='compact' indent="5">
+          <ul anchor='_61961034-0fb1-436b-b281-828857a59ddb' empty='true' spacing='compact' indent="5" bare="true">
         <li>
           <t anchor='_cb370dd3-8463-4ec7-aa1a-96f644e2e9a2'>updated normative references;</t>
         </li>

@@ -134,12 +134,12 @@ module IsoDoc
           %w{locality localityStack}.include? c.name
         end
         # section = "" unless relative.empty?
-        out.relref **attr_code(target: node["bibitemid"],
-                               section: eref_section(node),
-                               relative: eref_relative(node),
-                               displayFormat: node["displayFormat"]) do |l|
-                                 linkend.each { |n| parse(n, l) }
-                               end
+        out.xref **attr_code(target: node["bibitemid"],
+                             section: eref_section(node),
+                             relative: eref_relative(node),
+                             sectionFormat: node["displayFormat"]) do |l|
+          linkend.each { |n| parse(n, l) }
+        end
       end
 
       def eref_relative(node)

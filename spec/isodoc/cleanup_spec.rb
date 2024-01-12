@@ -635,13 +635,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <front>
            <abstract>
              <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <relref target='ISO712'/>
-               <relref target='ISBN'/>
-               <relref target='ISSN'/>
-               <relref target='ISO16634'/>
-               <relref target='ref1'/>
-               <relref target='ref10'/>
-               <relref target='ref12'/>
+               <xref target='ISO712'/>
+               <xref target='ISBN'/>
+               <xref target='ISSN'/>
+               <xref target='ISO16634'/>
+               <xref target='ref1'/>
+               <xref target='ref10'/>
+               <xref target='ref12'/>
              </t>
            </abstract>
          </front>
@@ -756,13 +756,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <front>
             <abstract>
               <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-                <relref target="ISO712"/>
-                <relref target="ISBN"/>
-                <relref target="ISSN"/>
-                <relref target="ISO16634"/>
-                <relref target="ref1"/>
-                <relref target="ref10"/>
-                <relref target="ref12"/>
+                <xref target="ISO712"/>
+                <xref target="ISBN"/>
+                <xref target="ISSN"/>
+                <xref target="ISO16634"/>
+                <xref target="ref1"/>
+                <xref target="ref10"/>
+                <xref target="ref12"/>
               </t>
             </abstract>
           </front>
@@ -921,37 +921,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
       .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
   end
-
-  #       it "cleans up xrefs and relrefs" do
-  #     expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).cleanup(Nokogiri::XML(<<~"INPUT")).to_s)).to be_equivalent_to xmlpp(<<~"OUTPUT")
-  # <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
-  #          <front>
-  #            <abstract>
-  #            <t id="id0">
-  #            <xref relative="" section=""/>
-  #            <relref relative="" section=""/>
-  #            </t>
-  #            </abstract>
-  #          </front>
-  #          <middle/>
-  #          <back/>
-  #        </rfc>
-  # INPUT
-  # <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
-  #   <front>
-  #     <abstract>
-  #     <t id='id0'>
-  #   <xref/>
-  #   <relref/>
-  # </t>
-  #     </abstract>
-  #   </front>
-  #   <middle/>
-  #   <back/>
-  # </rfc>
-  # OUTPUT
-  #
-  # end
 
   it "reports parsing errors on RFC XML output" do
     FileUtils.rm_f "test.rfc.xml"

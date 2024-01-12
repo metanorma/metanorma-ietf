@@ -12,8 +12,9 @@ module Metanorma
 
       def ul_attrs(node)
         attr_code(id: ::Metanorma::Utils::anchor_or_uuid(node),
-                  nobullet: node.attr("nobullet"),
+                  nobullet: node.attr("nobullet") || node.attr("empty"),
                   indent: node.attr("indent"),
+                  bare: node.attr("bare"),
                   spacing: node.attr("spacing"))
       end
 

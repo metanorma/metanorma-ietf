@@ -259,7 +259,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <figure anchor='figure-C'>
               <artwork type='ascii-art'><![CDATA[A <
       B]]></artwork>
-            <t>[SOURCE: <relref target="ISO2191" section="1" relative=""/> –
+            <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> –
         with adjustments]</t>
             </figure>
       </abstract></front><middle/><back/></rfc>
