@@ -24,7 +24,8 @@ module Relaton
 
         def series_xml2hash1(series, doc)
           ret = super
-          %w(BCP RFC I-D. Internet-Draft).include?(ret[:series_title]) and return {}
+          %w(BCP RFC I-D. Internet-Draft).include?(ret[:series_title]) and
+            return {}
           ret
         end
 
@@ -94,6 +95,40 @@ module Relaton
             ret.unshift("BCP #{bcp.number}")
           end
           ret.reject { |x| /^(rfc-anchor|Internet-Draft)/.match? (x) }
+        end
+
+        def simple_xml2hash(doc)
+          super.merge(stream: stream(doc))
+        end
+
+        def series(doc)
+          a = doc.series.reject { |s| s.type == "stream" }
+          a.empty? and return nil
+          a.detect { |s| s.type == "main" } ||
+            a.detect { |s| s.type.nil? } || a.first
+        end
+
+        def stream(doc)
+          a = doc.series.detect { |s| s.type == "stream" } or return nil
+          series_title(a, doc)
+        end
+
+        def extract(doc)
+          super.merge(included_xml2hash(doc))
+        end
+
+        def included_xml2hash(doc)
+          r = doc.relation.select { |x| x.type == "includes" }
+            .map { |x| parse_single_bibitem(x.bibitem) }
+          r.empty? and return {}
+          { included: r }
+        end
+
+        def parse_single_bibitem(doc)
+        data = extract(doc)
+        #enhance_data(data, r.template_raw)
+        #data_liquid = @fieldsklass.new(renderer: self)
+        #  .compound_fields_format(data)
         end
       end
     end

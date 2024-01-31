@@ -146,6 +146,9 @@
             <data type="boolean"/>
           </attribute>
         </optional>
+        <optional>
+          <attribute name="style"/>
+        </optional>
         <oneOrMore>
           <ref name="PureTextElement"/>
         </oneOrMore>

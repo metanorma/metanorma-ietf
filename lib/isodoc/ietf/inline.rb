@@ -76,7 +76,8 @@ module IsoDoc
       def hr_parse(node, out); end
 
       def link_parse(node, out)
-        out.eref **attr_code(target: node["target"]) do |l|
+        out.eref **attr_code(target: node["target"],
+                             brackets: node["style"]) do |l|
           node.children.each { |n| parse(n, l) }
         end
       end
@@ -133,12 +134,12 @@ module IsoDoc
           %w{locality localityStack}.include? c.name
         end
         # section = "" unless relative.empty?
-        out.relref **attr_code(target: node["bibitemid"],
-                               section: eref_section(node),
-                               relative: eref_relative(node),
-                               displayFormat: node["displayFormat"]) do |l|
-                                 linkend.each { |n| parse(n, l) }
-                               end
+        out.xref **attr_code(target: node["bibitemid"],
+                             section: eref_section(node),
+                             relative: eref_relative(node),
+                             sectionFormat: node["displayFormat"]) do |l|
+          linkend.each { |n| parse(n, l) }
+        end
       end
 
       def eref_relative(node)
