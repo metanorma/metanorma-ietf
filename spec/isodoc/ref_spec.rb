@@ -261,7 +261,6 @@ RSpec.describe IsoDoc::Ietf do
                </front>
                <format target="https://www.rfc-editor.org/info/rfc2119" type="src"/>
                <seriesInfo value=" 10.17487/RFC2119" name="DOI"/>
-               <seriesInfo value="14" name="BCP"/>
               <seriesInfo value="2119" name="RFC"/>
              </reference>
             <reference anchor='ISO712'>

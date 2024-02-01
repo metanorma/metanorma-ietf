@@ -88,12 +88,12 @@ module Relaton
           super
         end
 
-        # add BCP number
+        # do not add BCP number, it is not included in IETF practice
         def authoritative_identifier(doc)
           ret = super
-          if bcp = doc.series.detect { |s| s.title.title.content == "BCP" }
-            ret.unshift("BCP #{bcp.number}")
-          end
+          #if bcp = doc.series.detect { |s| s.title.title.content == "BCP" }
+            #ret.unshift("BCP #{bcp.number}")
+         #end
           ret.reject { |x| /^(rfc-anchor|Internet-Draft)/.match? (x) }
         end
 
