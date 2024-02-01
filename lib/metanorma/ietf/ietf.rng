@@ -30,6 +30,9 @@
           <data type="boolean"/>
         </attribute>
       </optional>
+      <optional>
+        <attribute name="indent"/>
+      </optional>
       <zeroOrMore>
         <ref name="TextElement"/>
       </zeroOrMore>
@@ -46,6 +49,9 @@
           <attribute name="align">
             <ref name="Alignments"/>
           </attribute>
+        </optional>
+        <optional>
+          <attribute name="indent"/>
         </optional>
         <zeroOrMore>
           <choice>
@@ -64,10 +70,20 @@
           <data type="ID"/>
         </attribute>
         <optional>
-          <attribute name="nobullet"/>
+          <attribute name="nobullet">
+            <data type="boolean"/>
+          </attribute>
         </optional>
         <optional>
           <attribute name="spacing"/>
+        </optional>
+        <optional>
+          <attribute name="indent"/>
+        </optional>
+        <optional>
+          <attribute name="bare">
+            <data type="boolean"/>
+          </attribute>
         </optional>
         <oneOrMore>
           <ref name="li"/>
@@ -100,6 +116,9 @@
         </optional>
         <optional>
           <attribute name="start"/>
+        </optional>
+        <optional>
+          <attribute name="indent"/>
         </optional>
         <oneOrMore>
           <ref name="li"/>
