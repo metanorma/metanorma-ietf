@@ -6,13 +6,13 @@ RSpec.describe Metanorma::Ietf do
     input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
-      [keepWithNext=true,keepWithPrevious=true]
+      [keepWithNext=true,keepWithPrevious=true,indent=5]
       Hello
     INPUT
     output = <<~OUTPUT
        #{BLANK_HDR}
       <sections>
-      <p keep-with-next='true' keep-with-previous='true' id='_'>Hello</p>
+      <p keep-with-next='true' keep-with-previous='true' indent='5' id='_'>Hello</p>
       </sections>
       </ietf-standard>
     OUTPUT

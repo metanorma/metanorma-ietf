@@ -6,12 +6,15 @@ module Metanorma
                   node.attr("keep-with-next"),
                   "keep-with-previous": node.attr("keepWithPrevious") ||
                  node.attr("keep-with-previous"),
+                  indent: node.attr("indent"),
                   id: ::Metanorma::Utils::anchor_or_uuid(node))
       end
 
       def ul_attrs(node)
         attr_code(id: ::Metanorma::Utils::anchor_or_uuid(node),
-                  nobullet: node.attr("nobullet"),
+                  nobullet: node.attr("nobullet") || node.attr("empty"),
+                  indent: node.attr("indent"),
+                  bare: node.attr("bare"),
                   spacing: node.attr("spacing"))
       end
 
@@ -20,6 +23,7 @@ module Metanorma
                   type: node.attr("format") || olist_style(node.style),
                   group: node.attr("group"),
                   spacing: node.attr("spacing"),
+                  indent: node.attr("indent"),
                   start: node.attr("start"))
       end
 

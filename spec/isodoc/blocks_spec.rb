@@ -259,7 +259,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <figure anchor='figure-C'>
               <artwork type='ascii-art'><![CDATA[A <
       B]]></artwork>
-            <t>[SOURCE: <relref target="ISO2191" section="1" relative=""/> –
+            <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> –
         with adjustments]</t>
             </figure>
       </abstract></front><middle/><back/></rfc>
@@ -534,7 +534,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true">Vache Equipment<br/>
+          <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true" indent="5">Vache Equipment<br/>
       Fictitious<br/>
       World</p>
           <p align="justify" keep-with-previous="true">Justify</p>
@@ -543,7 +543,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-      <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8'>
+      <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8' indent="5">
         Vache Equipment
         <br/>
          Fictitious
@@ -890,7 +890,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <em>Language: BASIC</em>
              </t>
              <t anchor='_'>
-               I recommend#{' '}
+               I recommend
                <em>this</em>
                .
              </t>
@@ -900,7 +900,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <t anchor='_'>The following code will be run for verification:</t>
              <sourcecode anchor='_'>
                CoreRoot(success): HttpResponse if (success) recommendation(label:
-               success-response) end#{' '}
+               success-response) end
              </sourcecode>
            </abstract>
          </front>
