@@ -566,7 +566,7 @@ RSpec.describe Metanorma::Ietf do
       <sections>
       <p id='_'>
         ABC
-        <review id='def' reviewer='(Unknown)' date='2000-01-01T00:00:00Z'>
+        <review id='def' reviewer='(Unknown)' date='2000-01-01T00:00:00Z' type="todo">
           <p id='_'>What?</p>
         </review>
          DEF
