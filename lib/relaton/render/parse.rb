@@ -2,6 +2,11 @@ module Relaton
   module Render
     module Ietf
       class Parse < ::Relaton::Render::Parse
+        def initialize(options)
+          super
+          @fieldsklass = Relaton::Render::Ietf::Fields
+        end
+
         def simple_or_host_xml2hash(doc, host)
           ret = super
           ret.merge(home_standard: home_standard(doc, ret[:publisher_raw]),
@@ -88,12 +93,12 @@ module Relaton
           super
         end
 
-        # do not add BCP number, it is not included in IETF practice
         def authoritative_identifier(doc)
           ret = super
-          #if bcp = doc.series.detect { |s| s.title.title.content == "BCP" }
-            #ret.unshift("BCP #{bcp.number}")
-         #end
+          bcp = doc.series.detect do |s|
+            %w(BCP STD).include?(s.title.title.content)
+          end
+          bcp and ret.unshift("BCP #{bcp.number}")
           ret.reject { |x| /^(rfc-anchor|Internet-Draft)/.match? (x) }
         end
 
@@ -118,17 +123,18 @@ module Relaton
         end
 
         def included_xml2hash(doc)
-          r = doc.relation.select { |x| x.type == "includes" }
-            .map { |x| parse_single_bibitem(x.bibitem) }
+          r = doc.relation.select { |x| x.type == "includes" }.map do |x|
+            parse_single_bibitem(x.bibitem)
+          end
           r.empty? and return {}
           { included: r }
         end
 
         def parse_single_bibitem(doc)
-        data = extract(doc)
-        #enhance_data(data, r.template_raw)
-        #data_liquid = @fieldsklass.new(renderer: self)
-        #  .compound_fields_format(data)
+          data = extract(doc)
+          # enhance_data(data, r.template_raw)
+          # data_liquid = @fieldsklass.new(renderer: self)
+          #  .compound_fields_format(data)
         end
       end
     end
