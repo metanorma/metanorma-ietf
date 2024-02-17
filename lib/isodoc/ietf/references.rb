@@ -54,7 +54,7 @@ module IsoDoc
       def ietf_bibitem(list, bib, _ordinal)
         uris = bib.xpath(ns("./uri"))
         target = nil
-        uris&.each { |u| target = u.text if u["type"] == "src" }
+        uris&.each { |u| target = u.text if %w(src HTML).include?(u["type"]) }
         list.reference **attr_code(target: target,
                                    anchor: bib["id"]) do |r|
                                      bibitem_render(r, bib)
