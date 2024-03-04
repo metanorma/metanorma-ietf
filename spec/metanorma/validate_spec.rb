@@ -2,14 +2,6 @@ require "spec_helper"
 require "fileutils"
 
 RSpec.describe Metanorma::Ietf do
-  before do
-    # Force to download Relaton index file
-    allow_any_instance_of(Relaton::Index::Type).to receive(:actual?)
-      .and_return(false)
-    allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file)
-      .and_return(nil)
-  end
-
   it "warns that image is not SVG" do
     FileUtils.rm_f "test.err.html"
     Asciidoctor.convert(<<~"INPUT", *OPTIONS)
