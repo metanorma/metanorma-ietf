@@ -1,0 +1,183 @@
+---
+http_interactions:
+- request:
+    method: head
+    uri: http://www.example.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '150734'
+      Cache-Control:
+      - max-age=604800
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Mon, 04 Mar 2024 11:35:32 GMT
+      Etag:
+      - '"3147526947+gzip"'
+      Expires:
+      - Mon, 11 Mar 2024 11:35:32 GMT
+      Last-Modified:
+      - Thu, 17 Oct 2019 07:18:26 GMT
+      Server:
+      - ECS (sac/2538)
+      X-Cache:
+      - HIT
+      Content-Length:
+      - '648'
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
+- request:
+    method: head
+    uri: http://www.example.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '296820'
+      Cache-Control:
+      - max-age=604800
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Mon, 04 Mar 2024 11:35:32 GMT
+      Etag:
+      - '"3147526947"'
+      Expires:
+      - Mon, 11 Mar 2024 11:35:32 GMT
+      Last-Modified:
+      - Thu, 17 Oct 2019 07:18:26 GMT
+      Server:
+      - ECS (sac/2520)
+      X-Cache:
+      - HIT
+      Content-Length:
+      - '648'
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
+- request:
+    method: head
+    uri: http://www.example.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '426014'
+      Cache-Control:
+      - max-age=604800
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Mon, 04 Mar 2024 11:35:33 GMT
+      Etag:
+      - '"3147526947"'
+      Expires:
+      - Mon, 11 Mar 2024 11:35:33 GMT
+      Last-Modified:
+      - Thu, 17 Oct 2019 07:18:26 GMT
+      Server:
+      - ECS (sac/2562)
+      X-Cache:
+      - HIT
+      Content-Length:
+      - '1256'
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
+- request:
+    method: head
+    uri: http://www.example.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '296827'
+      Cache-Control:
+      - max-age=604800
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Mon, 04 Mar 2024 11:35:33 GMT
+      Etag:
+      - '"3147526947"'
+      Expires:
+      - Mon, 11 Mar 2024 11:35:33 GMT
+      Last-Modified:
+      - Thu, 17 Oct 2019 07:18:26 GMT
+      Server:
+      - ECS (sac/2549)
+      X-Cache:
+      - HIT
+      Content-Length:
+      - '1256'
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Sat, 01 Jan 2000 05:00:00 GMT
+recorded_with: VCR 6.1.0

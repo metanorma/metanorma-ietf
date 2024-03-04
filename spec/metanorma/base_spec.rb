@@ -2,6 +2,14 @@ require "spec_helper"
 require "fileutils"
 
 RSpec.describe Metanorma::Ietf do
+  before do
+    # Force to download Relaton index file
+    allow_any_instance_of(Relaton::Index::Type).to receive(:actual?)
+      .and_return(false)
+    allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file)
+      .and_return(nil)
+  end
+
   it "has a version number" do
     expect(Metanorma::Ietf::VERSION).not_to be nil
   end
@@ -612,7 +620,9 @@ RSpec.describe Metanorma::Ietf do
         == References
         * [[[I-D.abarth-cake,IETF(I-D.draft-abarth-cake-01)]]], _Title_
       INPUT
-      doc = Asciidoctor.convert(input, *OPTIONS).gsub(/ schema-version="[^"]+"/, "")
+      doc = Asciidoctor.convert(input, *OPTIONS).gsub(
+        / schema-version="[^"]+"/, ""
+      )
       expect(doc).to include '<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>'
       expect(doc).to include '<bibitem id="I-D.abarth-cake" type="standard">'
       expect(doc).to include '<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>'
