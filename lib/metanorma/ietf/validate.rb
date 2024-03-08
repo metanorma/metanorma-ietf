@@ -26,7 +26,7 @@ module Metanorma
       def image_validate(doc)
         doc.xpath("//image").each do |i|
           i["mimetype"] == "image/svg+xml" and next
-          @log.add("MIME", i, "image #{i['src'][0, 40]} is not SVG!",
+          @log.add("Images", i, "image #{i['src'][0, 40]} is not SVG!",
                    severity: 1)
         end
       end

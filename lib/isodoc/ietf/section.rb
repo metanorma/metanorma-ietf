@@ -55,9 +55,9 @@ module IsoDoc
       def rfc_attributes(docxml)
         # t = Time.now.getutc
         obs = xpath_comma(docxml
-          .xpath(ns("//bibdata/relation[@type = 'obsoletes']/bibitem/docidentifier")))
+          .xpath(ns("//bibdata/relation[@type = 'obsoletes']/bibitem/docidentifier[not(@scope)]")))
         upd = xpath_comma(docxml
-          .xpath(ns("//bibdata/relation[@type = 'updates']/bibitem/docidentifier")))
+          .xpath(ns("//bibdata/relation[@type = 'updates']/bibitem/docidentifier[not(@scope)]")))
         {
           docName: @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
           number: @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,

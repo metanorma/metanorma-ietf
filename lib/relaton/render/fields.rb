@@ -16,7 +16,7 @@ module Relaton
         end
 
         # do not format months
-        def dateformat(date, _hash)
+        def dateformat(date, _hash, _type)
           date.nil? and return nil
           date_range(date)
         end
