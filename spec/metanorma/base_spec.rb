@@ -186,7 +186,7 @@ RSpec.describe Metanorma::Ietf do
                  <title language='en' format='text/plain' type='main'>Main Title - Title</title>
               <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
               <title language='en' format='text/plain' type='ascii'>Ascii Title</title>
-                 <docidentifier>1000</docidentifier>
+                 <docidentifier primary="true">1000</docidentifier>
                  <docnumber>1000</docnumber>
                  <date type='published'>
                    <on>1000-01-01</on>
@@ -493,7 +493,7 @@ RSpec.describe Metanorma::Ietf do
              <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
                <bibdata type='standard'>
                  <title language='en' type="main" format='text/plain'>Document title</title>
-                 <docidentifier>1000</docidentifier>
+                 <docidentifier primary="true">1000</docidentifier>
                  <docnumber>1000</docnumber>
                  <contributor>
                    <role type='publisher'/>

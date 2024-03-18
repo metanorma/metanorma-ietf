@@ -512,7 +512,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
               <sections>
-         <figure id="_"><name>Caption</name>
+         <figure id="_" width="3"><name>Caption</name>
          <image src="spec/assets/rice_image1.png" id="_" mimetype="image/png" height="4" width="3" title="TITLE" alt="IMAGE" filename="riceimg1.png" align="left"/>
        </figure>
        </sections>

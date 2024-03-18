@@ -374,6 +374,9 @@
           <attribute name="align"/>
         </optional>
         <optional>
+          <attribute name="width"/>
+        </optional>
+        <optional>
           <ref name="tname"/>
         </optional>
         <optional>
