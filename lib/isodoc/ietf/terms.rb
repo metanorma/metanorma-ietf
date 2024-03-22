@@ -68,7 +68,7 @@ module IsoDoc
 
       def termsource_add_modification_text(mod)
         mod or return
-        mod.text.strip.empty? or mod.previous = " &#x2013; "
+        mod.text.strip.empty? or mod.previous = " &#x2014; "
         mod.elements.size == 1 and
           mod.elements[0].replace(mod.elements[0].children)
         mod.replace(mod.children)
