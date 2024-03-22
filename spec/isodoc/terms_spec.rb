@@ -71,7 +71,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <ul>
                  <li>A</li>
                </ul>
-               <t>[SOURCE: <xref target="ISO7301" section="3.1" relative=""/>, modified –
+               <t>[SOURCE: <xref target="ISO7301" section="3.1" relative=""/>, modified &#x2014;
               The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</t>
              </section>
              <section anchor='paddy'>

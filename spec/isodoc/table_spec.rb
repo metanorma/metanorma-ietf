@@ -129,7 +129,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <dt>Drago</dt>
                      <dd>A type of rice</dd>
                    </dl>
-                   <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> – with adjustments]</t>
+                   <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> &#x2014; with adjustments]</t>
                    <aside>
                    <t>NOTE: This is a table about rice</t>
                    </aside>
