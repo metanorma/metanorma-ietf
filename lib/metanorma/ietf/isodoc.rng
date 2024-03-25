@@ -156,44 +156,7 @@
     </define>
     <define name="xref">
       <element name="xref">
-        <attribute name="target">
-          <data type="string">
-            <param name="pattern">\i\c*|\c+#\c+</param>
-          </data>
-        </attribute>
-        <optional>
-          <attribute name="to">
-            <data type="string">
-              <param name="pattern">\i\c*|\c+#\c+</param>
-            </data>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="type">
-            <ref name="ReferenceFormat"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="alt"/>
-        </optional>
-        <optional>
-          <attribute name="case">
-            <choice>
-              <value>capital</value>
-              <value>lowercase</value>
-            </choice>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="droploc">
-            <data type="boolean"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="style">
-            <ref name="XrefStyleType"/>
-          </attribute>
-        </optional>
+        <ref name="XrefAttributes"/>
         <ref name="XrefBody"/>
       </element>
     </define>
@@ -437,28 +400,6 @@
           <ref name="source"/>
         </optional>
       </element>
-    </define>
-    <define name="FigureAttributes">
-      <attribute name="id">
-        <data type="ID"/>
-      </attribute>
-      <optional>
-        <attribute name="unnumbered">
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="number"/>
-      </optional>
-      <optional>
-        <attribute name="subsequence"/>
-      </optional>
-      <optional>
-        <attribute name="class"/>
-      </optional>
-      <optional>
-        <attribute name="width"/>
-      </optional>
     </define>
     <define name="source">
       <element name="source">
@@ -2456,6 +2397,49 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="XrefAttributes">
+    <attribute name="target">
+      <data type="string">
+        <param name="pattern">\i\c*|\c+#\c+</param>
+      </data>
+    </attribute>
+    <optional>
+      <attribute name="to">
+        <data type="string">
+          <param name="pattern">\i\c*|\c+#\c+</param>
+        </data>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="type">
+        <ref name="ReferenceFormat"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="alt"/>
+    </optional>
+    <optional>
+      <attribute name="case">
+        <choice>
+          <value>capital</value>
+          <value>lowercase</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="droploc">
+        <data type="boolean"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="style">
+        <ref name="XrefStyleType"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="label"/>
+    </optional>
+  </define>
   <define name="XrefBody">
     <zeroOrMore>
       <ref name="XrefTarget"/>
@@ -2532,6 +2516,28 @@
     </optional>
     <optional>
       <attribute name="columns"/>
+    </optional>
+  </define>
+  <define name="FigureAttributes">
+    <attribute name="id">
+      <data type="ID"/>
+    </attribute>
+    <optional>
+      <attribute name="unnumbered">
+        <data type="boolean"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="number"/>
+    </optional>
+    <optional>
+      <attribute name="subsequence"/>
+    </optional>
+    <optional>
+      <attribute name="class"/>
+    </optional>
+    <optional>
+      <attribute name="width"/>
     </optional>
   </define>
   <start>
