@@ -21,7 +21,7 @@ module IsoDoc
 
       def ul_attrs(node)
         { anchor: node["id"], empty: node["nobullet"],
-          indent: node["indent"], bare: node["bare"], 
+          indent: node["indent"], bare: node["bare"],
           spacing: node["spacing"] }
       end
 
@@ -59,6 +59,16 @@ module IsoDoc
       def dl_attrs(node)
         attr_code(anchor: node["id"], newline: node["newline"],
                   indent: node["indent"], spacing: node["spacing"])
+      end
+
+      def dl_parse(node, out)
+        list_title_parse(node, out)
+        out.dl **dl_attrs(node) do |v|
+          node.elements.select { |n| dt_dd? n }.each_slice(2) do |dt, dd|
+            dl_parse1(v, dt, dd)
+          end
+        end
+        dl_parse_notes(node, out)
       end
 
       def dt_parse(dterm, term)
@@ -232,7 +242,7 @@ module IsoDoc
 
       def figure_parse(node, out)
         node["class"] == "pseudocode" || node["type"] == "pseudocode" and
-            return pseudocode_parse(node, out)
+          return pseudocode_parse(node, out)
         @in_figure = true
         out.figure **attr_code(anchor: node["id"]) do |div|
           figure_name_parse(node, div, node.at(ns("./name")))
