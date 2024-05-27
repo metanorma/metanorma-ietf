@@ -37,7 +37,7 @@ module Metanorma
         rfc_converter(node).convert("#{@filename}.xml")
       end
 
-      def init_misc
+      def init_misc(node)
         super
         @default_doctype = "internet-draft"
       end
