@@ -11,10 +11,7 @@
     <start>
       <ref name="ietf-standard"/>
     </start>
-    <define name="ParagraphType">
-      <attribute name="id">
-        <data type="ID"/>
-      </attribute>
+    <define name="ParagraphAttrs">
       <optional>
         <attribute name="align">
           <ref name="Alignments"/>
@@ -33,123 +30,84 @@
       <optional>
         <attribute name="indent"/>
       </optional>
-      <zeroOrMore>
-        <ref name="TextElement"/>
-      </zeroOrMore>
+    </define>
+    <define name="UlAttr">
+      <optional>
+        <attribute name="nobullet">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="spacing"/>
+      </optional>
+      <optional>
+        <attribute name="indent"/>
+      </optional>
+      <optional>
+        <attribute name="bare">
+          <data type="boolean"/>
+        </attribute>
+      </optional>
+    </define>
+    <define name="UlBody">
+      <oneOrMore>
+        <ref name="li"/>
+      </oneOrMore>
       <zeroOrMore>
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="paragraph-with-footnote">
-      <element name="p">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="align">
-            <ref name="Alignments"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="indent"/>
-        </optional>
-        <zeroOrMore>
-          <choice>
-            <ref name="TextElement"/>
-            <ref name="fn"/>
-          </choice>
-        </zeroOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </element>
+    <define name="OlAttr">
+      <attribute name="type">
+        <choice>
+          <value>roman</value>
+          <value>alphabet</value>
+          <value>arabic</value>
+          <value>roman_upper</value>
+          <value>alphabet_upper</value>
+          <value>text</value>
+        </choice>
+      </attribute>
+      <optional>
+        <attribute name="group"/>
+      </optional>
+      <optional>
+        <attribute name="spacing"/>
+      </optional>
+      <optional>
+        <attribute name="start"/>
+      </optional>
+      <optional>
+        <attribute name="indent"/>
+      </optional>
     </define>
-    <define name="ul">
-      <element name="ul">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="nobullet">
-            <data type="boolean"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="spacing"/>
-        </optional>
-        <optional>
-          <attribute name="indent"/>
-        </optional>
-        <optional>
-          <attribute name="bare">
-            <data type="boolean"/>
-          </attribute>
-        </optional>
-        <oneOrMore>
-          <ref name="li"/>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </element>
+    <define name="OlBody">
+      <oneOrMore>
+        <ref name="li"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="note"/>
+      </zeroOrMore>
     </define>
-    <define name="ol">
-      <element name="ol">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <attribute name="type">
-          <choice>
-            <value>roman</value>
-            <value>alphabet</value>
-            <value>arabic</value>
-            <value>roman_upper</value>
-            <value>alphabet_upper</value>
-            <value>text</value>
-          </choice>
-        </attribute>
-        <optional>
-          <attribute name="group"/>
-        </optional>
-        <optional>
-          <attribute name="spacing"/>
-        </optional>
-        <optional>
-          <attribute name="start"/>
-        </optional>
-        <optional>
-          <attribute name="indent"/>
-        </optional>
-        <oneOrMore>
-          <ref name="li"/>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </element>
+    <define name="DlAttr">
+      <optional>
+        <attribute name="newline"/>
+      </optional>
+      <optional>
+        <attribute name="indent"/>
+      </optional>
+      <optional>
+        <attribute name="spacing"/>
+      </optional>
     </define>
-    <define name="dl">
-      <element name="dl">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="newline"/>
-        </optional>
-        <optional>
-          <attribute name="indent"/>
-        </optional>
-        <optional>
-          <attribute name="spacing"/>
-        </optional>
-        <oneOrMore>
-          <ref name="dt"/>
-          <ref name="dd"/>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </element>
+    <define name="DlBody">
+      <oneOrMore>
+        <ref name="dt"/>
+        <ref name="dd"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="note"/>
+      </zeroOrMore>
     </define>
     <define name="review">
       <element name="review">
@@ -178,124 +136,39 @@
         </oneOrMore>
       </element>
     </define>
-    <define name="note">
-      <element name="note">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="removeInRFC"/>
-        </optional>
-        <optional>
-          <ref name="tname"/>
-        </optional>
-        <oneOrMore>
-          <ref name="paragraph"/>
-        </oneOrMore>
-      </element>
+    <define name="NoteAttr">
+      <optional>
+        <attribute name="removeInRFC"/>
+      </optional>
     </define>
-    <define name="pre">
-      <element name="pre">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="alt"/>
-        </optional>
-        <optional>
-          <attribute name="align"/>
-        </optional>
-        <optional>
-          <ref name="tname"/>
-        </optional>
-        <text/>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </element>
+    <define name="NoteBody">
+      <optional>
+        <ref name="tname"/>
+      </optional>
+      <oneOrMore>
+        <ref name="paragraph"/>
+      </oneOrMore>
     </define>
-    <define name="image">
-      <element name="image">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <attribute name="src">
-          <data type="anyURI"/>
-        </attribute>
-        <attribute name="mimetype"/>
-        <optional>
-          <attribute name="filename"/>
-        </optional>
-        <optional>
-          <attribute name="width">
-            <choice>
-              <data type="int"/>
-              <value>auto</value>
-            </choice>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="height">
-            <choice>
-              <data type="int"/>
-              <value>auto</value>
-            </choice>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="alt"/>
-        </optional>
-        <optional>
-          <attribute name="title"/>
-        </optional>
-        <optional>
-          <attribute name="longdesc">
-            <data type="anyURI"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="align"/>
-        </optional>
-      </element>
+    <define name="PreAttr">
+      <optional>
+        <attribute name="alt"/>
+      </optional>
+      <optional>
+        <attribute name="align"/>
+      </optional>
     </define>
-    <define name="sourcecode">
-      <element name="sourcecode">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="unnumbered">
-            <data type="boolean"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="number"/>
-        </optional>
-        <optional>
-          <attribute name="subsequence"/>
-        </optional>
-        <optional>
-          <attribute name="lang"/>
-        </optional>
-        <optional>
-          <attribute name="markers"/>
-        </optional>
-        <optional>
-          <ref name="tname"/>
-        </optional>
-        <oneOrMore>
-          <choice>
-            <text/>
-            <ref name="callout"/>
-          </choice>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="annotation"/>
-        </zeroOrMore>
-        <zeroOrMore>
-          <ref name="note"/>
-        </zeroOrMore>
-      </element>
+    <define name="ImageAttr" combine="interleave">
+      <optional>
+        <attribute name="align"/>
+      </optional>
+    </define>
+    <define name="SourceAttr" combine="interleave">
+      <optional>
+        <attribute name="number"/>
+      </optional>
+      <optional>
+        <attribute name="markers"/>
+      </optional>
     </define>
     <define name="xref">
       <element name="xref">
@@ -343,56 +216,16 @@
         <ref name="erefTypeURI"/>
       </element>
     </define>
-    <define name="table">
-      <element name="table">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <optional>
-          <attribute name="unnumbered">
-            <data type="boolean"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="number"/>
-        </optional>
-        <optional>
-          <attribute name="subsequence"/>
-        </optional>
-        <optional>
-          <attribute name="alt"/>
-        </optional>
-        <optional>
-          <attribute name="summary"/>
-        </optional>
-        <optional>
-          <attribute name="uri">
-            <data type="anyURI"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="align"/>
-        </optional>
-        <optional>
-          <attribute name="width"/>
-        </optional>
-        <optional>
-          <ref name="tname"/>
-        </optional>
-        <optional>
-          <ref name="thead"/>
-        </optional>
-        <ref name="tbody"/>
-        <optional>
-          <ref name="tfoot"/>
-        </optional>
-        <zeroOrMore>
-          <ref name="table-note"/>
-        </zeroOrMore>
-        <optional>
-          <ref name="dl"/>
-        </optional>
-      </element>
+    <define name="TableAttr" combine="interleave">
+      <optional>
+        <attribute name="number"/>
+      </optional>
+      <optional>
+        <attribute name="align"/>
+      </optional>
+      <optional>
+        <attribute name="width"/>
+      </optional>
     </define>
     <define name="Clause-Section">
       <optional>

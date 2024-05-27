@@ -37,10 +37,9 @@ module Metanorma
         rfc_converter(node).convert("#{@filename}.xml")
       end
 
-      def doctype(node)
-        ret = node.attr("doctype")&.gsub(/\s+/, "-")&.downcase || "internet-draft"
-        ret = "internet-draft" if ret == "article"
-        ret
+      def init_misc
+        super
+        @default_doctype = "internet-draft"
       end
 
       def inline_quoted(node)
