@@ -384,7 +384,7 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(xmlpp(xml)).to be_equivalent_to xmlpp(output)
+      expect(Xml::C14n.format(xml)).to be_equivalent_to Xml::C14n.format(output)
     end
   end
 
@@ -671,7 +671,7 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(xmlpp(xml)).to be_equivalent_to xmlpp(output)
+      expect(Xml::C14n.format(xml)).to be_equivalent_to Xml::C14n.format(output)
     end
   end
 
@@ -782,8 +782,8 @@ RSpec.describe IsoDoc::Ietf do
                </back>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes referencegroup" do
@@ -1020,7 +1020,7 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(xmlpp(strip_guid(xml))).to be_equivalent_to xmlpp(output)
+      expect(Xml::C14n.format(strip_guid(xml))).to be_equivalent_to Xml::C14n.format(output)
     end
   end
 end

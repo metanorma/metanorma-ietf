@@ -34,7 +34,7 @@ RSpec.describe Metanorma::Ietf do
       Note 3.
 
     INPUT
-    expect(xmlpp(strip_guid(output))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(strip_guid(output))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
            #{BLANK_HDR}
            <sections>
           <ul id='id' nobullet='true' spacing='compact' indent='5' bare='true'>

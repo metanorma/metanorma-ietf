@@ -52,8 +52,8 @@ RSpec.describe IsoDoc do
                <back/>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes IsoXML reviewer notes" do
@@ -107,7 +107,7 @@ RSpec.describe IsoDoc do
          <back/>
        </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 end

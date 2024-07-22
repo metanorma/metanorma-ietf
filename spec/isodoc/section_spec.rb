@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "processes document with no content" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface/>
           <sections/>
@@ -16,7 +16,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     end
 
   it "processes section names" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
       <abstract obligation="informative">
@@ -183,7 +183,7 @@ OUTPUT
   end
 
   it "processes simple terms & definitions" do
-        expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
                <iso-standard xmlns="http://riboseinc.com/isoxml">
        <sections>
        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
@@ -210,7 +210,7 @@ OUTPUT
 
 
         it "processes sections without titles" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
        <introduction id="M" inline-header="false" obligation="normative"><clause id="N" inline-header="false" obligation="normative">
@@ -247,7 +247,7 @@ OUTPUT
     end
 
         it "processes section attributes" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
       <ietf-standard xmlns="http://riboseinc.com/isoxml">
            <sections>
    <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>

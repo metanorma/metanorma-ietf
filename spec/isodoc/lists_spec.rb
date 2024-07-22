@@ -28,8 +28,8 @@ RSpec.describe IsoDoc do
       </ul>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes ordered lists" do
@@ -73,8 +73,8 @@ RSpec.describe IsoDoc do
            </ol>
         </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes Roman Upper ordered lists" do
@@ -110,8 +110,8 @@ RSpec.describe IsoDoc do
                </ol>
             </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes definition lists" do
@@ -151,7 +151,7 @@ RSpec.describe IsoDoc do
                </aside>
         </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 end

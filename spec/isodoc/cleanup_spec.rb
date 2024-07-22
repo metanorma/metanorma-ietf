@@ -53,8 +53,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </back>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up footnotes in a section" do
@@ -118,8 +118,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </back>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up table footnotes" do
@@ -270,8 +270,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up figures" do
@@ -556,8 +556,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </back>
              </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up inline figures" do
@@ -580,8 +580,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <back/>
         </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up sourcecode" do
@@ -625,8 +625,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              ]]></sourcecode></figure>
              </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up annotated bibliography" do
@@ -872,8 +872,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </back>
         </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up definition lists" do
@@ -918,8 +918,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "reports parsing errors on RFC XML output" do
@@ -968,8 +968,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract> </front> <middle/> <back/> </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up lists with single paragraphs" do
@@ -1006,8 +1006,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </ol>
       </abstract> </front> <middle/> <back/> </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up crefs" do
@@ -1077,8 +1077,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
 
 end

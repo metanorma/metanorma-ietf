@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "processes IsoXML terms" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
     <sections>
     <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>
@@ -111,7 +111,7 @@ OUTPUT
   end
 
   it "processes multiple term definitions" do
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
         <iso-standard xmlns="http://riboseinc.com/isoxml">
     <sections>
     <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>

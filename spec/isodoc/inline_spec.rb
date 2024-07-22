@@ -29,8 +29,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes embedded inline formatting" do
@@ -65,8 +65,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes index terms" do
@@ -91,8 +91,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                   <iref item='D' primary="true"/></t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes inline images" do
@@ -112,8 +112,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes links" do
@@ -144,8 +144,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes unrecognised markup" do
@@ -166,8 +166,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes AsciiMath and MathML" do
@@ -192,9 +192,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
       .sub(/<html/, "<html xmlns:m='m'")))
-      .to be_equivalent_to xmlpp(output)
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "overrides AsciiMath delimiters" do
@@ -214,8 +214,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <t> $$$$ A $$$$ $$Hello$$$ </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cross-references notes" do
@@ -377,8 +377,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            </back>
          </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes eref attributes" do
@@ -427,8 +427,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes eref content" do
@@ -515,8 +515,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes passthrough content" do
@@ -532,8 +532,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </preface>
       </iso-standard>
     INPUT
-    expect(xmlpp(File.read("test.rfc.xml")))
-      .to be_equivalent_to xmlpp(<<~OUTPUT)
+    expect(Xml::C14n.format(File.read("test.rfc.xml")))
+      .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
          <?xml version="1.0"?>
       <?rfc strict="yes"?>
       <?rfc compact="yes"?>
@@ -703,8 +703,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          </back>
        </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes multiple-target xrefs" do
@@ -764,8 +764,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-        .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+        .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "combines locality stacks with connectives" do
@@ -928,7 +928,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(xmlpp(IsoDoc::Ietf::RfcConvert.new({})
-        .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+        .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
   end
 end
