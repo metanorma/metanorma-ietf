@@ -21,8 +21,8 @@ RSpec.describe Metanorma::Ietf::Processor do
   end
 
   it "generates IsoDoc XML from a blank document" do
-    expect(Xml::C14n.format(processor.input_to_isodoc(ASCIIDOC_BLANK_HDR, nil)))
-      .to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+    expect(strip_guid(Xml::C14n.format(processor.input_to_isodoc(ASCIIDOC_BLANK_HDR, nil))))
+      .to be_equivalent_to strip_guid(Xml::C14n.format(<<~"OUTPUT"))
             #{BLANK_HDR}
         <sections/>
         </ietf-standard>

@@ -30,8 +30,8 @@ RSpec.describe Metanorma::Ietf do
         <sections/>
         </ietf-standard>
       OUTPUT
-      expect(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS)))
-        .to be_equivalent_to Xml::C14n.format(output)
+      expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
+        .to be_equivalent_to strip_guid(Xml::C14n.format(output))
     end
   end
 
@@ -48,8 +48,8 @@ RSpec.describe Metanorma::Ietf do
       <sections/>
       </ietf-standard>
     OUTPUT
-    expect(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS)))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to strip_guid(Xml::C14n.format(output))
     expect(File.exist?("test.rfc.xml")).to be true
   end
 
@@ -455,8 +455,8 @@ RSpec.describe Metanorma::Ietf do
                <sections/>
              </ietf-standard>
     OUTPUT
-    expect(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS)))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to strip_guid(Xml::C14n.format(output))
   end
 
   it "processes complex metadata" do
