@@ -61,7 +61,7 @@ module Metanorma
               xml << node.text
             end
           end
-        end.join
+        end
       end
 
       def inline_anchor_xref(node)
@@ -74,7 +74,7 @@ module Metanorma
           xml.xref **attr_code(attrs) do |x|
             x << c
           end
-        end.join
+        end
       end
 
       def table_attrs(node)
@@ -146,7 +146,7 @@ module Metanorma
             has_primary = true
           end
           inline_indexterm1(has_primary, terms, xml)
-        end.join
+        end
       end
 
       def inline_indexterm1(has_primary, terms, xml)

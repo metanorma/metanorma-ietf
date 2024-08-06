@@ -56,7 +56,7 @@ module Metanorma
             node.title.nil? or c.name { |name| name << node.title }
             wrap_in_para(node, c)
           end
-        end.join("\n")
+        end
       end
 
       def literal(node)
