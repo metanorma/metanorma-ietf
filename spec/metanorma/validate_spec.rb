@@ -10,7 +10,7 @@ RSpec.describe Metanorma::Ietf do
       image::spec/assets/rice_image1.png[]
     INPUT
     expect(File.read("test.err.html"))
-      .to include "image spec/​assets/rice_​image1.png is not SVG"
+      .to include("image spec/​assets/rice_​image1.png is not SVG")
   end
 
   it "does not warn that image is SVG" do
@@ -21,7 +21,7 @@ RSpec.describe Metanorma::Ietf do
       image::spec/assets/Example.svg[]
     INPUT
     if File.exist?("test.err.html")
-      expect(File.read("test.err.html")).not_to include "is not SVG"
+      expect(File.read("test.err.html")).not_to include("is not SVG")
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     expect(File.read("test.err.html"))
-      .to include "Editorial stream must have Informational status"
+      .to include("Editorial stream must have Informational status")
 
     FileUtils.rm_f "test.err.html"
     Asciidoctor.convert(<<~INPUT, *OPTIONS)
@@ -50,7 +50,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     expect(File.read("test.err.html"))
-      .not_to include "Editorial stream must have Informational status"
+      .not_to include("Editorial stream must have Informational status")
   end
 
   it "warns of invalid workgroup" do
@@ -65,7 +65,7 @@ RSpec.describe Metanorma::Ietf do
         :flush-caches: true
 
       INPUT
-      expect(File.read("test.err.html")).to include "unrecognised working group"
+      expect(File.read("test.err.html")).to include("unrecognised working group")
     end
   end
 
@@ -82,7 +82,7 @@ RSpec.describe Metanorma::Ietf do
 
       INPUT
       if File.exist?("test.err.html")
-        expect(File.read("test.err.html")).not_to include "unrecognised working group"
+        expect(File.read("test.err.html")).not_to include("unrecognised working group")
       end
     end
   end
@@ -114,9 +114,9 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     if File.exist?("test.err.html")
-      expect(File.read("test.err.html")).to include "No matching review for cref:​[xyz]"
-      expect(File.read("test.err.html")).to include "No matching review for cref:​[abc]"
-      expect(File.read("test.err.html")).not_to include "No matching review for cref:​[def]"
+      expect(File.read("test.err.html")).to include("No matching review for cref:​[xyz]")
+      expect(File.read("test.err.html")).to include("No matching review for cref:​[abc]")
+      expect(File.read("test.err.html")).not_to include("No matching review for cref:​[def]")
     end
   end
 
