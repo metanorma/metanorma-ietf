@@ -83,7 +83,7 @@ module Metanorma
         outflag = { txt: "--text", pdf: "--pdf", html: "--html" }[format]
 
         outname ||= inname.sub(/\.xml$/, outext)
-        system("xml2rfc #{outflag} #{rfcname} -o #{outname}")
+        system("xml2rfc", outflag, rfcname, "-o", outname)
       end
     end
   end
