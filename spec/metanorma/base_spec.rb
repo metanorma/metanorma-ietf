@@ -379,6 +379,7 @@ RSpec.describe Metanorma::Ietf do
                  <keyword>c</keyword>
                  <ext>
                  <doctype>rfc</doctype>
+                 <flavor>ietf</flavor>
       <editorialgroup>
         <workgroup number='3' type='C'>WG</workgroup>
         <workgroup number='31' type='C1'>WG1</workgroup>
@@ -561,6 +562,7 @@ RSpec.describe Metanorma::Ietf do
                  </series>
                  <ext>
         <doctype>internet-draft</doctype>
+                 <flavor>ietf</flavor>
         <ipr>trust200902</ipr>
         <pi>
         <tocinclude>yes</tocinclude>

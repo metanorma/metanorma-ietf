@@ -81,6 +81,7 @@ RSpec.describe Metanorma::Ietf::Processor do
              </series>
              <ext>
       <doctype>rfc</doctype>
+                 <flavor>ietf</flavor>
       <pi>
       <tocinclude>yes</tocinclude>
     </pi>

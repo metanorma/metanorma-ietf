@@ -125,6 +125,7 @@ BLANK_HDR = <<~"HDR".freeze
            </series>
            <ext>
     <doctype>internet-draft</doctype>
+    <flavor>ietf</flavor>
     <ipr>trust200902</ipr>
     <pi>
     <tocinclude>yes</tocinclude>
