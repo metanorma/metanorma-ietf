@@ -30,7 +30,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes embedded inline formatting" do
@@ -66,7 +67,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes index terms" do
@@ -92,7 +94,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes inline images" do
@@ -113,7 +116,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes links" do
@@ -145,7 +149,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes unrecognised markup" do
@@ -167,7 +172,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes AsciiMath and MathML" do
@@ -192,7 +198,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
+    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)
       .sub(/<html/, "<html xmlns:m='m'")))
       .to be_equivalent_to Xml::C14n.format(output)
   end
@@ -215,7 +222,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cross-references notes" do
@@ -378,7 +386,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes eref attributes" do
@@ -428,7 +437,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes eref content" do
@@ -516,7 +526,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes passthrough content" do
@@ -634,6 +645,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <renderterm>word</renderterm>
               <termref base='IEV' target='135-13-13'>The IEV database</termref>
             </concept></li>
+            <li><concept><strong>term <tt>participant's</tt> not resolved via ID <tt>participant__x2019_s</tt></strong></concept></li>
             </ul>
           </p>
           </foreword></preface>
@@ -658,53 +670,113 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
-         <front>
-           <seriesInfo value="" name="RFC" asciiName="RFC"/>
-           <abstract>
-             <t>
-               <ul>
-                 <li>[term defined in <xref target="clause1"/>]</li>
-                 <li><em>term</em> [term defined in <xref target="clause1"/>]</li>
-                 <li><em>w[o]rd</em> [term defined in <xref target="clause1">Clause #1</xref>]</li>
-                 <li><em>term</em> [term defined in <xref target="ISO712" section="" relative=""/>]</li>
-                 <li><em>word</em> [term defined in <xref target="ISO712" section="" relative="">The Aforementioned Citation</xref>]</li>
-                 <li><em>word</em> [term defined in <xref target="ISO712" section="3.1, Figure a" relative=""/>]</li>
-                 <li><em>word</em> [term defined in <xref target="ISO712" section="3.1 and Figure b" relative=""/>]</li>
-                 <li><em>word</em> [term defined in <xref target="ISO712" section="3.1 and Figure b" relative="">
-
-
+          <front>
+             <seriesInfo value="" name="RFC" asciiName="RFC"/>
+             <abstract>
+                <t>
+                   <ul>
+                      <li>
+                         [term defined in
+                         <xref target="clause1"/>
+                         ]
+                      </li>
+                      <li>
+                         <em>term</em>
+                         [term defined in
+                         <xref target="clause1"/>
+                         ]
+                      </li>
+                      <li>
+                         <em>w[o]rd</em>
+                         [term defined in
+                         <xref target="clause1">Clause #1</xref>
+                         ]
+                      </li>
+                      <li>
+                         <em>term</em>
+                         [term defined in
+                         <xref target="ISO712" section="" relative=""/>
+                         ]
+                      </li>
+                      <li>
+                         <em>word</em>
+                         [term defined in
+                         <xref target="ISO712" section="" relative="">The Aforementioned Citation</xref>
+                         ]
+                      </li>
+                      <li>
+                         <em>word</em>
+                         [term defined in
+                         <xref target="ISO712" section="3.1, Figure a" relative="">
+     
+     
+               </xref>
+                         ]
+                      </li>
+                      <li>
+                         <em>word</em>
+                         [term defined in
+                         <xref target="ISO712" section="3.1 and Figure b" relative="">
+     
+     
+               </xref>
+                         ]
+                      </li>
+                      <li>
+                         <em>word</em>
+                         [term defined in
+                         <xref target="ISO712" section="3.1 and Figure b" relative="">
+     
+     
                The Aforementioned Citation
-               </xref>]</li>
-                 <li><em>word</em> [term defined in Termbase IEV, term ID 135-13-13]</li>
-                 <li><em>word</em> [term defined in The IEV database]</li>
-               </ul>
-             </t>
-           </abstract>
-         </front>
-         <middle>
-           <section anchor="clause1">
-             <name>Clause 1</name>
-           </section>
-         </middle>
-         <back>
-           <references anchor="_normative_references">
-             <name>Normative References</name>
-             <t>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</t>
-             <reference anchor="ISO712">
-               <front>
-                 <title>Cereals and cereal products</title>
-                 <author>
-                   <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
-                 </author>
-               </front>
-               <refcontent>ISO 712</refcontent>
-             </reference>
-           </references>
-         </back>
+               </xref>
+                         ]
+                      </li>
+                      <li>
+                         <em>word</em>
+                         [term defined in Termbase IEV, term ID 135-13-13]
+                      </li>
+                      <li>
+                         <em>word</em>
+                         [term defined in The IEV database]
+                      </li>
+                      <li>
+                         <strong>
+                            term
+                            <tt>participant's</tt>
+                            not resolved via ID
+                            <tt>participant__x2019_s</tt>
+                         </strong>
+                      </li>
+                   </ul>
+                </t>
+             </abstract>
+          </front>
+          <middle>
+             <section anchor="clause1">
+                <name>Clause 1</name>
+             </section>
+          </middle>
+          <back>
+             <references anchor="_normative_references">
+                <name>Normative References</name>
+                <t>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</t>
+                <reference anchor="ISO712">
+                   <front>
+                      <title>Cereals and cereal products</title>
+                      <author>
+                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                      </author>
+                   </front>
+                   <refcontent>ISO 712</refcontent>
+                </reference>
+             </references>
+          </back>
        </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes multiple-target xrefs" do
@@ -765,7 +837,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-        .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "combines locality stacks with connectives" do
@@ -929,6 +1002,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-        .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+      .convert("test", input, true)))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 end

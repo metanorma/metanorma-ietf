@@ -47,15 +47,25 @@ module IsoDoc
       def termdocsource_parse(_node, _out); end
 
       def concept_parse(node, out)
-        if d = node.at(ns("./renderterm"))
-          out.em do |em|
-            d.children.each { |n| parse(n, em) }
-          end
-          out << " "
+        ref = node.at(ns("./xref | ./eref | ./termref"))
+        render = node.at(ns("./renderterm"))
+        !ref && !render and return node.children.each { |n| parse(n, out) }
+        !render or concept_render(render, ref, out)
+        ref or return
+        concept_ref(ref, out)
+      end
+
+      def concept_render(render, ref, out)
+        out.em do |em|
+          render.children.each { |n| parse(n, em) }
         end
+        ref and out << " "
+      end
+
+      def concept_ref(ref, out)
+        ref or return
         out << "[term defined in "
-        r = node.at(ns("./xref | ./eref | ./termref"))
-        parse(r, out)
+        parse(ref, out)
         out << "]"
       end
 
