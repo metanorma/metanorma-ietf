@@ -1,6 +1,10 @@
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
+      def set_termdomain(termdomain)
+        @termdomain = termdomain
+      end
+
       def definition_parse(node, out)
         node.children.each { |n| parse(n, out) }
       end
@@ -27,6 +31,10 @@ module IsoDoc
       end
 
       def term_parse(node, out)
+        if domain = node.at(ns("./domain"))
+          set_termdomain(domain.text)
+          domain["hidden"] = "true"
+        end
         name = node.at(ns(".//name"))
         out.name do |p|
           name.children.each { |n| parse(n, p) }
@@ -38,7 +46,12 @@ module IsoDoc
       end
 
       def termdef_parse(node, out)
-        set_termdomain("")
+        if domain = node.at(ns("./domain"))
+          set_termdomain(domain.text)
+          domain["hidden"] = "true"
+        else
+          set_termdomain("")
+        end
         node.xpath(ns("./definition")).size > 1 and
           @isodoc.multidef(node)
         clause_parse(node, out)

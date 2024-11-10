@@ -23,6 +23,10 @@ module IsoDoc
                                                i18nhash: @i18n.get)
       end
 
+      def implicit_reference(bib)
+        bib["hidden"] == "true"
+      end
+
       def bibliography1(node, out)
         out.references **attr_code(anchor: node["id"]) do |div|
           title = node.at(ns("./title")) and div.name do |name|
