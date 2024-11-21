@@ -56,25 +56,26 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-         <ol anchor='_ae34a226-aab4-496d-987b-1aa7b6314026' spacing='compact' type='a' group='X' start='7' indent="5">
-             <li>
-               <t anchor='_0091a277-fb0e-424a-aea8-f0001303fe78'>all information necessary for the complete identification of the sample;</t>
+         <ol anchor='_' spacing='compact' type='a' group='X' start='7' indent="5">
+             <li id="_">
+               <t anchor='_'>all information necessary for the complete identification of the sample;</t>
              </li>
              <ol>
                <li>
-                 <t anchor='_8a7b6299-db05-4ff8-9de7-ff019b9017b2'>a reference to this document (i.e. ISO 17301-1);</t>
+                 <t anchor='_'>a reference to this document (i.e. ISO 17301-1);</t>
                </li>
                <ol>
                  <li>
-                   <t anchor='_ea248b7f-839f-460f-a173-a58a830b2abe'>the sampling method used;</t>
+                   <t anchor='_'>the sampling method used;</t>
                  </li>
                </ol>
              </ol>
            </ol>
         </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes Roman Upper ordered lists" do
@@ -97,21 +98,22 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-                              <ol anchor='_ae34a226-aab4-496d-987b-1aa7b6314026' type='I'>
-                 <li id='_ae34a226-aab4-496d-987b-1aa7b6314027'>
-                   <t anchor='_0091a277-fb0e-424a-aea8-f0001303fe78'>all information necessary for the complete identification of the sample;</t>
+         <ol anchor='_' type='I'>
+                 <li id='_'>
+                   <t anchor='_'>all information necessary for the complete identification of the sample;</t>
                  </li>
-                 <li>
-                   <t anchor='_8a7b6299-db05-4ff8-9de7-ff019b9017b2'>a reference to this document (i.e. ISO 17301-1);</t>
+                 <li id="_">
+                   <t anchor='_'>a reference to this document (i.e. ISO 17301-1);</t>
                  </li>
-                 <li>
-                   <t anchor='_ea248b7f-839f-460f-a173-a58a830b2abe'>the sampling method used;</t>
+                 <li id="_">
+                   <t anchor='_'>the sampling method used;</t>
                  </li>
                </ol>
             </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes definition lists" do

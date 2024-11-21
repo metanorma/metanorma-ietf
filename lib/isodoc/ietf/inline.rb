@@ -138,7 +138,8 @@ module IsoDoc
                              section: eref_section(node),
                              relative: eref_relative(node),
                              sectionFormat: node["displayFormat"]) do |l|
-          linkend.each { |n| parse(n, l) }
+          linkend.map(&:text).join.strip.empty? or
+            linkend.each { |n| parse(n, l) }
         end
       end
 
@@ -148,10 +149,11 @@ module IsoDoc
       end
 
       def eref_section(node)
-        @isodoc.eref_localities(
+        ret = @isodoc.eref_localities(
           node.xpath(ns("./locality | ./localityStack")), nil, node
-        )&.sub(/^,/, "")&.sub(/^\s*(Sections?|Clauses?)/, "")&.strip
-          &.sub(/,$/, "") || ""
+        ) or return ""
+        ret.gsub(%r{</?span[^>]*>}, "").sub(/^,/, "")
+          .sub(/^\s*(Sections?|Clauses?)/, "").strip.sub(/,$/, "")
       end
 
       def origin_parse(node, out)
@@ -170,6 +172,10 @@ module IsoDoc
 
       def bookmark_parse(node, out)
         out.bookmark nil, **attr_code(anchor: node["id"])
+      end
+
+      def span_parse(node, out)
+        children_parse(node, out)
       end
     end
   end

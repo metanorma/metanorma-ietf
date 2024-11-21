@@ -517,11 +517,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               </dd>
             </dl>
             <aside anchor='_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0'>
-            <t>
-              NOTE: [durationUnits] is essentially a duration statement without the
+            <t>NOTE: [durationUnits] is essentially a duration statement without the
               "P" prefix. "P" is unnecessary because between "G" and "U" duration is
-              always expressed.
-            </t>
+              always expressed.</t>
             </aside>
             <t anchor='_be9158af-7e93-4ee2-90c5-26d31c181935'>$$ r = 1 % $$ (1)</t>
       </abstract></front><middle/><back/></rfc>
@@ -797,18 +795,19 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <em>Inherits: /ss/584/2015/level/1</em>
              </t>
              <t anchor='_'>
-               I recommend#{' '}
+               I recommend
                <em>this</em>
                .
              </t>
              <t anchor='_'>As for the measurement targets,</t>
              <t anchor='_'>The measurement target shall be measured as:</t>
-             <t anchor='B'>$$ r/1 = 0 $$ (1)</t>
-             <t anchor='_'>The following code will be run for verification:</t>
-             <sourcecode anchor='_'>
-               CoreRoot(success): HttpResponse if (success) recommendation(label:
-               success-response) end#{' '}
-             </sourcecode>
+             <t anchor="B">$$ r/1 = 0 $$    (1)</t>
+                <t anchor="_">The following code will be run for verification:</t>
+                <sourcecode anchor="_">CoreRoot(success): HttpResponse
+             if (success)
+             recommendation(label: success-response)
+             end
+           </sourcecode>
            </abstract>
          </front>
          <middle/>
