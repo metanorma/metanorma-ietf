@@ -119,10 +119,10 @@ RSpec.describe IsoDoc do
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
           <dl id="_732d3f57-4f88-40bf-9ae9-633891edc395" newline="true" spacing="compact" indent="5">
-        <dt>
+        <dt id="A">
           W
         </dt>
-        <dd>
+        <dd id="B">
           <p id="_05d81174-3a41-44af-94d8-c78b8d2e175d">mass fraction of gelatinized kernels, expressed in per cent</p>
         </dd>
         <dt><stem type="AsciiMath">w</stem></dt>
@@ -135,10 +135,10 @@ RSpec.describe IsoDoc do
     output = <<~OUTPUT
       #{XML_HDR}
                  <dl anchor='_732d3f57-4f88-40bf-9ae9-633891edc395' newline='true' spacing='compact' indent='5'>
-                 <dt>
+                 <dt anchor="A">
                    W
                  </dt>
-                 <dd>
+                 <dd anchor="B">
                    <t anchor='_05d81174-3a41-44af-94d8-c78b8d2e175d'>mass fraction of gelatinized kernels, expressed in per cent</t>
                  </dd>
                  <dt>$$ w $$</dt>

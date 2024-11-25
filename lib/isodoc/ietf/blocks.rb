@@ -77,6 +77,15 @@ module IsoDoc
         end
       end
 
+      def dl_parse1(dlist, dterm, ddef)
+        dlist.dt **attr_code(anchor: dterm["id"]) do |term|
+          dt_parse(dterm, term)
+        end
+        dlist.dd **attr_code(anchor: ddef["id"]) do |listitem|
+          ddef.children.each { |n| parse(n, listitem) }
+        end
+      end
+
       def note_label(node)
         n = @xrefs.get[node["id"]]
         n.nil? || n[:label].nil? || n[:label].empty? and
