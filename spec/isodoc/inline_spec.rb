@@ -1,6 +1,34 @@
 require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
+  it "respect &lt; &gt;" do
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      #{BLANK_HDR}
+      <preface><foreword>
+      <p>&lt;pizza&gt;</p>
+      </foreword></preface>
+      <sections>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, false)
+    expect(Xml::C14n.format(File.read("test.rfc.xml")))
+      .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3">
+          <front>
+             <title>Document title</title>
+             <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"/>
+             <abstract>
+                <t>&lt;pizza&gt;</t>
+             </abstract>
+          </front>
+          <middle/>
+          <back/>
+       </rfc>
+    OUTPUT
+  end
+
   it "processes inline formatting" do
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
@@ -708,8 +736,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                          <em>word</em>
                          [term defined in
                          <xref target="ISO712" section="3.1, Figure a" relative="">
-     
-     
+
+
                </xref>
                          ]
                       </li>
@@ -717,8 +745,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                          <em>word</em>
                          [term defined in
                          <xref target="ISO712" section="3.1 and Figure b" relative="">
-     
-     
+
+
                </xref>
                          ]
                       </li>
@@ -726,8 +754,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                          <em>word</em>
                          [term defined in
                          <xref target="ISO712" section="3.1 and Figure b" relative="">
-     
-     
+
+
                The Aforementioned Citation
                </xref>
                          ]

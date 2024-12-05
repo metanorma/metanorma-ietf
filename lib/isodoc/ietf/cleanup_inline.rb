@@ -3,11 +3,11 @@ module IsoDoc
     class RfcConvert < ::IsoDoc::Convert
       def u_cleanup(xmldoc)
         xmldoc.traverse do |n|
-          next unless n.text?
-          next unless %w(t blockquote li dd preamble td th annotation)
-            .include? n.parent.name
-
-          n.replace(n.text.gsub(/[\u0080-\uffff]/, "<u>\\0</u>"))
+          n.text? or next
+          %w(t blockquote li dd preamble td th annotation)
+            .include? n.parent.name or next
+          n.replace(@c.encode(n.text, :basic).gsub(/[\u0080-\uffff]/,
+                                                   "<u>\\0</u>"))
         end
       end
 

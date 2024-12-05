@@ -946,8 +946,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
                <front>
                  <abstract>
-                 <author>Hello Χello</author>
-                 <t>Hello Χello</t>
+                 <author>Hello &lt;"Χello</author>
+                 <t>Hello &lt;"Χello</t>
                  </abstract>
                </front>
                <middle/>
@@ -959,17 +959,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <front>
       <abstract>
       <author>
-        Hello &#x3A7;ello
+        Hello &lt;"&#x3A7;ello
       </author>
       <t>
         Hello
-        <u>&#x3A7;</u>
+        &lt;"<u>&#x3A7;</u>
         ello
       </t>
       </abstract> </front> <middle/> <back/> </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up lists with single paragraphs" do
