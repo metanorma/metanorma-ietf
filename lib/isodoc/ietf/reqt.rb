@@ -12,9 +12,9 @@ module IsoDoc
       end
 
       def recommendation_parse1(node, out)
-        recommendation_name(node.at(ns("./name")), out)
+        recommendation_name(node.at(ns("./fmt-name")), out)
         node.children.each do |n|
-          parse(n, out) unless n.name == "name"
+          parse(n, out) unless n.name == "fmt-name"
         end
       end
 

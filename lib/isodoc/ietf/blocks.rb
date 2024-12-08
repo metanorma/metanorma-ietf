@@ -175,9 +175,11 @@ module IsoDoc
       def formula_parse1(node, out)
         out.t **attr_code(anchor: node["id"]) do |p|
           parse(node.at(ns("./stem")), p)
-          lbl = @xrefs.anchor(node["id"], :label, false)
-          lbl.nil? or
-            p << "    (#{lbl})"
+          if lbl = @xrefs.anchor(node["id"], :label, false)
+            lbl.gsub!(%r{</?span[^>]*>}, "")
+            /^\(.+?\)$/.match?(lbl) or lbl = "(#{lbl})"
+            p << "    #{lbl}"
+          end
         end
       end
 

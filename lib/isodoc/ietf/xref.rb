@@ -7,12 +7,11 @@ module IsoDoc
         docxml.xpath(ns("//term[descendant::termnote]")).each do |t|
           c = IsoDoc::XrefGen::Counter.new
           notes = t.xpath(ns("./termnote"))
-          notes.each do |n|
-            next if n["id"].nil? || n["id"].empty?
-
+          notes.noblank.each do |n|
             idx = notes.size == 1 ? "" : " #{c.increment(n).print}"
             @anchors[n["id"]] =
-              anchor_struct(idx, n, @labels["note_xref"], "note", false)
+              anchor_struct(idx, n, @labels["note_xref"], "note",
+                            { container: true })
           end
         end
       end
