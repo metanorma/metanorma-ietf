@@ -212,173 +212,188 @@ RSpec.describe IsoDoc::Ietf do
             </iso-standard>
       INPUT
       output = <<~OUTPUT
-            <?xml version="1.0" encoding="UTF-8"?>
-        <?rfc strict="yes"?>
-        <?rfc compact="yes"?>
-        <?rfc subcompact="no"?>
-        <?rfc tocdepth="4"?>
-        <?rfc symrefs="yes"?>
-        <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+       <?xml version="1.0" encoding="UTF-8"?>
+     
+     
+       <?rfc strict="yes"?>
+     
+     
+       <?rfc compact="yes"?>
+     
+     
+       <?rfc subcompact="no"?>
+     
+     
+       <?rfc tocdepth="4"?>
+     
+     
+       <?rfc symrefs="yes"?>
+     
+     
+       <?rfc sortrefs="yes"?>
+     
+     
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
           <front>
-            <title>The Holy Hand Grenade of Antioch</title>
-            <seriesInfo value="10" name="RFC" asciiName="RFC"/>
-            <author fullname="Arthur son of Uther Pendragon">
-              <address>
-                <postal/>
-              </address>
-            </author>
-            <abstract>
-              <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-                <xref target="ISO712" section="" relative=""/>
-                <xref target="ISBN" section="" relative=""/>
-                <xref target="ISSN" section="" relative=""/>
-                <xref target="ISO16634" section="" relative=""/>
-                <xref target="ref11" section="" relative=""/>
-              </t>
-            </abstract>
+             <title>The Holy Hand Grenade of Antioch</title>
+             <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+             <author fullname="Arthur son of Uther Pendragon">
+                <address>
+                   <postal/>
+                </address>
+             </author>
+             <abstract>
+                <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+                   <xref target="ISO712" section="" relative=""/>
+                   <xref target="ISBN" section="" relative=""/>
+                   <xref target="ISSN" section="" relative=""/>
+                   <xref target="ISO16634" section="" relative=""/>
+                   <xref target="ref11" section="" relative=""/>
+                </t>
+             </abstract>
           </front>
           <middle>
-            <section anchor="A">
-              <name>A-title</name>
-              <t>A</t>
-            </section>
+             <section anchor="A">
+                <name>A-title</name>
+                <t>A</t>
+             </section>
           </middle>
           <back>
-            <references anchor='_normative_references'>
-              <name>Normative References</name>
-                 <reference target="https://www.rfc-editor.org/info/rfc2119" anchor="RFC2119">
-                 <stream>IETF</stream>
-                 <front>
-                   <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-                   <author fullname="S. Bradner" asciiFullname="S. Bradner"/>
-                   <date month="March" year="1997"/>
-                   <keyword>Standards</keyword>
-                   <keyword>Track</keyword>
-                   <keyword>Documents</keyword>
-                   <abstract>
-                     <t anchor="_349eae68-a8a3-0c01-e665-a6dc84c36d2e">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
-                   </abstract>
-                 </front>
-                 <format target="https://www.rfc-editor.org/info/rfc2119" type="src"/>
-                 <seriesInfo value=" 10.17487/RFC2119" name="DOI"/>
-                 <seriesInfo value="14" name="BCP"/>
-                <seriesInfo value="2119" name="RFC"/>
-               </reference>
-              <reference anchor='ISO712'>
-                <front>
-                  <title>Cereals and cereal products</title>
-                  <author>
-                    <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
-                  </author>
-                </front>
-                <format target='http://www.example.com' type="HTML"/>
-                <refcontent>ISO&#xa0;712</refcontent>
-              </reference>
-              <reference anchor='ISO16634'>
-                <front>
-                  <title>
-                    Cereals, pulses, milled cereal products, oilseeds and animal
-                    feeding stuffs
-                  </title>
-                  <author>
-                    <organization ascii='International Supporters of Odium' abbrev='ISO1'>International Supporters of Odium</organization>
-                  </author>
-                  <keyword>keyword1</keyword>
-                  <keyword>keyword2</keyword>
-                  <abstract>
-                    <t>This is an abstract</t>
-                  </abstract>
-                </front>
-                <format target='http://www.example.com' type='HTML'/>
-                <format target='http://www.example.com/rdf' type='RDF'/>
-               <seriesInfo value='1234' name='DOI'/>
-                <refcontent>ISO 16634:-- (all parts)</refcontent>
-              </reference>
-              <reference anchor='ISO20483'>
-                <front>
-                  <title>Cereals and pulses</title>
-                  <author surname='N&#xFC;rk' asciiSurname='Nurk' initials="Ö." asciiInitials="O."/>
-                  <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
-                  <date year='2013'/>
-                  <abstract>
-                    <t>This is an abstract</t>
-                  </abstract>
-                </front>
-                <refcontent>ISO&#xa0;20483:2013-2014</refcontent>
-              </reference>
-              <reference anchor="ISO20484">
-                <front><title>Cereals and pulses II</title>
-                 <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                 <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
-                 <author surname="Third" asciiSurname="Third" initials="Th." asciiInitials="Th."/>
-                 <date year="2013"/><abstract><t>This is an abstract</t></abstract></front>
-                <refcontent>ISO 20484:2013-2014</refcontent>
-              </reference>
-                    <reference anchor="grail_film">
-          <front>
-            <title>G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. Monty Python and the Holy Grail.</title>
-            <author surname="Unknown"/>
-          </front>
-        </reference>
-            </references>
-            <references anchor='_bibliography'>
-              <name>Bibliography</name>
-              <reference anchor='ISBN'>
-                <front>
-                  <title>Chemicals for analytical laboratory use</title>
-                  <author>
-                    <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
-                  </author>
-                </front>
-              </reference>
-              <reference anchor='ISSN'>
-                <front>
-                  <title>Instruments for analytical laboratory use</title>
-                  <author>
-                    <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
-                  </author>
-                </front>
-              <annotation>
-                NOTE: This is an annotation of document ISSN.
-              </annotation>
-              <annotation>
-                NOTE: This is another annotation of document ISSN.
-              </annotation>
-              </reference>
-              <reference anchor='ISO3696'>
-                <front>
-                  <title>Water for analytical laboratory use</title>
-                  <author>
-                    <organization ascii='International Standards Organization' abbrev='ISO'>International Standards Organization</organization>
-                  </author>
-                </front>
-                <refcontent>ISO&#xa0;3696</refcontent>
-              </reference>
-              <reference anchor='ref11'>
-                <front>
-                  <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
-                  <author>
-                 <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
-               </author>
-                </front>
-                <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-                <seriesInfo value='10' name='RFC'/>
-              </reference>
-              <reference anchor='I-D.aboba-context-802'>
-                <front>
-                  <title>A Model for Context Transfer in IEEE 802</title>
-                  <author fullname='Bernard Aboba' asciiFullname='Bernard Aboba'/>
-                  <date month='October' year='2003'/>
-                </front>
-                <format target='https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml' type='xml'/>
-                <format target='http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt' type='TXT'/>
-                <seriesInfo value='aboba-context-802' name='Internet-Draft'/>
-              </reference>
-            </references>
+             <references anchor="_normative_references">
+                <name>Normative References</name>
+                <reference target="https://www.rfc-editor.org/info/rfc2119" anchor="RFC2119">
+                   <stream>IETF</stream>
+                   <front>
+                      <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+                      <author fullname="S. Bradner" asciiFullname="S. Bradner"/>
+                      <date month="March" year="1997"/>
+                      <keyword>Standards</keyword>
+                      <keyword>Track</keyword>
+                      <keyword>Documents</keyword>
+                      <abstract>
+                         <t anchor="_349eae68-a8a3-0c01-e665-a6dc84c36d2e">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+                      </abstract>
+                   </front>
+                   <format target="https://www.rfc-editor.org/info/rfc2119" type="src"/>
+                   <seriesInfo value="10.17487/RFC2119" name="DOI"/>
+                   <seriesInfo value="14" name="BCP"/>
+                   <seriesInfo value="2119" name="RFC"/>
+                </reference>
+                <reference anchor="ISO712">
+                   <front>
+                      <title>Cereals and cereal products</title>
+                      <author>
+                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                      </author>
+                   </front>
+                   <format target="http://www.example.com" type="HTML"/>
+                   <refcontent>ISO 712</refcontent>
+                </reference>
+                <reference anchor="ISO16634">
+                   <front>
+                      <title>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
+                      <author>
+                         <organization ascii="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                      </author>
+                      <keyword>keyword1</keyword>
+                      <keyword>keyword2</keyword>
+                      <abstract>
+                         <t>This is an abstract</t>
+                      </abstract>
+                   </front>
+                   <format target="http://www.example.com" type="HTML"/>
+                   <format target="http://www.example.com/rdf" type="RDF"/>
+                   <seriesInfo value="1234" name="DOI"/>
+                   <refcontent>ISO 16634:-- (all parts)</refcontent>
+                </reference>
+                <reference anchor="ISO20483">
+                   <front>
+                      <title>Cereals and pulses</title>
+                      <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
+                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <date year="2013"/>
+                      <abstract>
+                         <t>This is an abstract</t>
+                      </abstract>
+                   </front>
+                   <refcontent>ISO 20483:2013-2014</refcontent>
+                </reference>
+                <reference anchor="ISO20484">
+                   <front>
+                      <title>Cereals and pulses II</title>
+                      <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
+                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <author surname="Third" asciiSurname="Third" initials="Th." asciiInitials="Th."/>
+                      <date year="2013"/>
+                      <abstract>
+                         <t>This is an abstract</t>
+                      </abstract>
+                   </front>
+                   <refcontent>ISO 20484:2013-2014</refcontent>
+                </reference>
+                <reference anchor="grail_film">
+                   <front>
+                      <title>G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. Monty Python and the Holy Grail.</title>
+                      <author surname="Unknown"/>
+                   </front>
+                </reference>
+             </references>
+             <references anchor="_bibliography">
+                <name>Bibliography</name>
+                <reference anchor="ISBN">
+                   <front>
+                      <title>Chemicals for analytical laboratory use</title>
+                      <author>
+                         <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
+                      </author>
+                   </front>
+                </reference>
+                <reference anchor="ISSN">
+                   <front>
+                      <title>Instruments for analytical laboratory use</title>
+                      <author>
+                         <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
+                      </author>
+                   </front>
+                   <annotation>
+               NOTE: This is an annotation of document ISSN.
+             </annotation>
+                   <annotation>
+               NOTE: This is another annotation of document ISSN.
+             </annotation>
+                </reference>
+                <reference anchor="ISO3696">
+                   <front>
+                      <title>Water for analytical laboratory use</title>
+                      <author>
+                         <organization ascii="International Standards Organization" abbrev="ISO">International Standards Organization</organization>
+                      </author>
+                   </front>
+                   <refcontent>ISO 3696</refcontent>
+                </reference>
+                <reference anchor="ref11">
+                   <front>
+                      <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+                      <author>
+                         <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+                      </author>
+                   </front>
+                   <format target="https://xml2rfc.tools.ietf.org/10.xml" type="xml"/>
+                   <seriesInfo value="10" name="RFC"/>
+                </reference>
+                <reference anchor="I-D.aboba-context-802">
+                   <front>
+                      <title>A Model for Context Transfer in IEEE 802</title>
+                      <author fullname="Bernard Aboba" asciiFullname="Bernard Aboba"/>
+                      <date month="October" year="2003"/>
+                   </front>
+                   <format target="https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml" type="xml"/>
+                   <format target="http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt" type="TXT"/>
+                   <seriesInfo value="aboba-context-802" name="Internet-Draft"/>
+                </reference>
+             </references>
           </back>
-        </rfc>
-
+       </rfc>
       OUTPUT
       IsoDoc::Ietf::RfcConvert.new({})
         .convert("test", input, false)
@@ -541,131 +556,141 @@ RSpec.describe IsoDoc::Ietf do
             </iso-standard>
       INPUT
       output = <<~OUTPUT
-             <?xml version="1.0" encoding="UTF-8"?>
-         <?rfc strict="yes"?>
-         <?rfc compact="yes"?>
-         <?rfc subcompact="no"?>
-         <?rfc tocdepth="4"?>
-         <?rfc symrefs="yes"?>
-         <?rfc sortrefs="yes"?>
-         <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
-           <front>
+       <?xml version="1.0" encoding="UTF-8"?>
+     
+     
+       <?rfc strict="yes"?>
+     
+     
+       <?rfc compact="yes"?>
+     
+     
+       <?rfc subcompact="no"?>
+     
+     
+       <?rfc tocdepth="4"?>
+     
+     
+       <?rfc symrefs="yes"?>
+     
+     
+       <?rfc sortrefs="yes"?>
+     
+     
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+          <front>
              <title>The Holy Hand Grenade of Antioch</title>
              <seriesInfo value="10" name="RFC" asciiName="RFC"/>
              <author fullname="Arthur son of Uther Pendragon">
-               <address>
-                 <postal/>
-               </address>
+                <address>
+                   <postal/>
+                </address>
              </author>
              <abstract>
-               <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-                 <xref target="ISO712" section="" relative=""/>
-                 <xref target="ISBN" section="" relative=""/>
-                 <xref target="ISSN" section="" relative=""/>
-                 <xref target="ISO16634" section="" relative=""/>
-                 <xref target="ref11" section="" relative=""/>
-               </t>
+                <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+                   <xref target="ISO712" section="" relative=""/>
+                   <xref target="ISBN" section="" relative=""/>
+                   <xref target="ISSN" section="" relative=""/>
+                   <xref target="ISO16634" section="" relative=""/>
+                   <xref target="ref11" section="" relative=""/>
+                </t>
              </abstract>
-           </front>
-           <middle>
-             <section anchor="A">
-               <name>A-title</name>
-               <t>A</t>
-             </section>
-           </middle>
-           <back>
-             <references anchor='_normative_references'>
-               <name>Normative References</name>
-               <reference anchor='ISO712'>
-                 <front>
-                   <title>Cereals and cereal products</title>
-                   <author>
-                     <organization ascii='International Organization for Standardization'>International Organization for Standardization</organization>
-                   </author>
-                 </front>
-                 <format target='http://www.example.com' type="HTML"/>
-                 <refcontent>ISO&#xa0;712</refcontent>
-               </reference>
-               <reference anchor='ISO16634'>
-                 <front>
-                   <title>
-                     Cereals, pulses, milled cereal products, oilseeds and animal
-                     feeding stuffs
-                   </title>
-                   <author>
-                     <organization ascii='International Supporters of Odium' abbrev='ISO1'>International Supporters of Odium</organization>
-                   </author>
-                   <keyword>keyword1</keyword>
-                   <keyword>keyword2</keyword>
-                   <abstract>
-                     <t>This is an abstract</t>
-                   </abstract>
-                 </front>
-                 <format target='http://www.example.com' type="HTML"/>
-                 <format target='http://www.example.com/rdf' type='RDF'/>
-                <seriesInfo value='1234' name='DOI'/>
-                 <refcontent>ISO 16634:-- (all parts)</refcontent>
-               </reference>
-               <reference anchor='ISO20483'>
-                 <front>
-                   <title>Cereals and pulses</title>
-                    <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                    <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
-                   <date year='2013'/>
-                   <abstract>
-                     <t>This is an abstract</t>
-                   </abstract>
-                 </front>
-                 <refcontent>ISO&#xa0;20483:2013-2014</refcontent>
-               </reference>
-             </references>
-             <references anchor='_bibliography'>
-               <name>Bibliography</name>
-               <reference anchor='ISBN'>
-                 <front>
-                   <title>Chemicals for analytical laboratory use</title>
-                   <author>
-                     <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
-                   </author>
-                 </front>
-               </reference>
-               <reference anchor='ISSN'>
-                 <front>
-                   <title>Instruments for analytical laboratory use</title>
-                   <author>
-                     <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
-                   </author>
-                 </front>
-               <annotation>
-                 NOTE: This is an annotation of document ISSN.
-               </annotation>
-               <annotation>
-                 NOTE: This is another annotation of document ISSN.
-               </annotation>
-               </reference>
-               <reference anchor='ISO3696'>
-                 <front>
-                   <title>Water for analytical laboratory use</title>
-                   <author>
-                     <organization ascii='International Standards Organization' abbrev='ISO'>International Standards Organization</organization>
-                   </author>
-                 </front>
-                 <refcontent>ISO&#xa0;3696</refcontent>
-               </reference>
-               <reference anchor='ref11'>
-          <front>
-            <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
-            <author>
-              <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
-            </author>
           </front>
-          <format target='https://xml2rfc.tools.ietf.org/10.xml' type='xml'/>
-          <seriesInfo value='10' name='RFC'/>
-        </reference>
+          <middle>
+             <section anchor="A">
+                <name>A-title</name>
+                <t>A</t>
+             </section>
+          </middle>
+          <back>
+             <references anchor="_normative_references">
+                <name>Normative References</name>
+                <reference anchor="ISO712">
+                   <front>
+                      <title>Cereals and cereal products</title>
+                      <author>
+                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                      </author>
+                   </front>
+                   <format target="http://www.example.com" type="HTML"/>
+                   <refcontent>ISO 712</refcontent>
+                </reference>
+                <reference anchor="ISO16634">
+                   <front>
+                      <title>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
+                      <author>
+                         <organization ascii="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                      </author>
+                      <keyword>keyword1</keyword>
+                      <keyword>keyword2</keyword>
+                      <abstract>
+                         <t>This is an abstract</t>
+                      </abstract>
+                   </front>
+                   <format target="http://www.example.com" type="HTML"/>
+                   <format target="http://www.example.com/rdf" type="RDF"/>
+                   <seriesInfo value="1234" name="DOI"/>
+                   <refcontent>ISO 16634:-- (all parts)</refcontent>
+                </reference>
+                <reference anchor="ISO20483">
+                   <front>
+                      <title>Cereals and pulses</title>
+                      <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
+                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <date year="2013"/>
+                      <abstract>
+                         <t>This is an abstract</t>
+                      </abstract>
+                   </front>
+                   <refcontent>ISO 20483:2013-2014</refcontent>
+                </reference>
              </references>
-           </back>
-           </rfc>
-
+             <references anchor="_bibliography">
+                <name>Bibliography</name>
+                <reference anchor="ISBN">
+                   <front>
+                      <title>Chemicals for analytical laboratory use</title>
+                      <author>
+                         <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
+                      </author>
+                   </front>
+                </reference>
+                <reference anchor="ISSN">
+                   <front>
+                      <title>Instruments for analytical laboratory use</title>
+                      <author>
+                         <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
+                      </author>
+                   </front>
+                   <annotation>
+               NOTE: This is an annotation of document ISSN.
+             </annotation>
+                   <annotation>
+               NOTE: This is another annotation of document ISSN.
+             </annotation>
+                </reference>
+                <reference anchor="ISO3696">
+                   <front>
+                      <title>Water for analytical laboratory use</title>
+                      <author>
+                         <organization ascii="International Standards Organization" abbrev="ISO">International Standards Organization</organization>
+                      </author>
+                   </front>
+                   <refcontent>ISO 3696</refcontent>
+                </reference>
+                <reference anchor="ref11">
+                   <front>
+                      <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+                      <author>
+                         <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+                      </author>
+                   </front>
+                   <format target="https://xml2rfc.tools.ietf.org/10.xml" type="xml"/>
+                   <seriesInfo value="10" name="RFC"/>
+                </reference>
+             </references>
+          </back>
+       </rfc>
       OUTPUT
       IsoDoc::Ietf::RfcConvert.new({ use_xinclude: "true" })
         .convert("test", input, false)

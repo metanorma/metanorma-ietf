@@ -1,5 +1,6 @@
 require "spec_helper"
 require "fileutils"
+require "relaton_ietf"
 
 RSpec.describe Metanorma::Ietf do
   before do
@@ -625,7 +626,7 @@ RSpec.describe Metanorma::Ietf do
       doc = Asciidoctor.convert(input, *OPTIONS).gsub(
         / schema-version="[^"]+"/, ""
       )
-      expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
+      expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
       expect(doc).to include('<bibitem id="I-D.abarth-cake" type="standard">')
       expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
     end
