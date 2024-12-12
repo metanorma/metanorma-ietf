@@ -58,7 +58,10 @@ module IsoDoc
 
       def stem_parse(node, out)
         stem = case node["type"]
-               when "MathML" then Plurimath::Math
+               when "MathML"
+                 a = node.at(ns("./asciimath"))&.remove
+                 a&.children&.text ||
+                 Plurimath::Math
                  .parse(node.children.to_xml, "mathml").to_asciimath
                else HTMLEntities.new.encode(node.text)
                end

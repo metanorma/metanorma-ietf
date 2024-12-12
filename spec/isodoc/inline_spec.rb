@@ -211,6 +211,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <p>
       <stem type="AsciiMath">&lt;A&gt;</stem>
       <stem type="MathML"><m:math><m:mrow><m:mi>X</m:mi></m:mrow></m:math></stem>
+      <stem type="MathML"><m:math><m:mrow><m:mi>X</m:mi></m:mrow></m:math><asciimath>XYZ</asciimath></stem>
       <stem type="None">Latex?</stem>
       </p>
       </foreword></preface>
@@ -222,6 +223,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <t>
       $$ &lt;A&gt; $$
       $$ X $$
+      $$ XYZ $$
       $$ Latex? $$
       </t>
       </abstract></front><middle/><back/></rfc>
