@@ -86,6 +86,19 @@ module IsoDoc
         end
       end
 
+      def li_parse(node, out)
+        out.li **attr_code(anchor: node["id"]) do |li|
+          if node["uncheckedcheckbox"] == "true"
+            li << '<span class="zzMoveToFollowing">' \
+                  '<input type="checkbox" checked="checked"/></span>'
+          elsif node["checkedcheckbox"] == "true"
+            li << '<span class="zzMoveToFollowing">' \
+                  '<input type="checkbox"/></span>'
+          end
+          node.children.each { |n| parse(n, li) }
+        end
+      end
+
       def note_label(node)
         n = @xrefs.get[node["id"]]
         n.nil? || n[:label].nil? || n[:label].empty? and
