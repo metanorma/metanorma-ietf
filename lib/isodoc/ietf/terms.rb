@@ -5,6 +5,10 @@ module IsoDoc
         @termdomain = termdomain
       end
 
+      def semx_definition_parse(node, out)
+        definition_parse(node, out)
+      end
+
       def definition_parse(node, out)
         node.children.each { |n| parse(n, out) }
       end
@@ -15,6 +19,10 @@ module IsoDoc
         para.children.each { |n| parse(n, out) }
       end
 
+      def semx_deprecated_term_parse(node, out)
+        deprecated_term_parse(node, out)
+      end
+
       def deprecated_term_parse(node, out)
         name = node.at(ns(".//name"))
         out.t do |p|
@@ -22,12 +30,20 @@ module IsoDoc
           name.children.each { |c| parse(c, p) }
         end
       end
+      
+      def semx_admitted_term_parse(node, out)
+        admitted_term_parse(node, out)
+      end
 
       def admitted_term_parse(node, out)
         name = node.at(ns(".//name"))
         out.t do |p|
           name.children.each { |c| parse(c, p) }
         end
+      end
+
+      def semx_term_parse(node, out)
+        term_parse(node, out)
       end
 
       def term_parse(node, out)
@@ -53,8 +69,18 @@ module IsoDoc
           set_termdomain("")
         end
         node.xpath(ns("./definition")).size > 1 and
-          @isodoc.multidef(node)
+          multidef(node)
         clause_parse(node, out)
+      end
+
+      def multidef(elem)
+        d = elem.at(ns("./definition"))
+      d = d.replace("<ol><li>#{to_xml(d.children)}</li></ol>").first
+      elem.xpath(ns("./definition")).each do |f|
+        f = f.replace("<li>#{to_xml(f.children)}</li>").first
+        d << f
+      end
+      d.wrap("<definition></definition>")
       end
 
       def termdocsource_parse(_node, _out); end
@@ -104,6 +130,10 @@ module IsoDoc
         while elem&.next_element&.name == "termsource"
           elem << "; #{to_xml(elem.next_element.remove.children)}"
         end
+      end
+
+      def semx_termref_parse(node, out)
+        termref_parse(node, out)
       end
 
       def termref_parse(elem, out)
