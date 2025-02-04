@@ -14,7 +14,7 @@ RSpec.describe Metanorma::Ietf do
       <sections>
       <p keep-with-next='true' keep-with-previous='true' indent='5' id='_'>Hello</p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -36,7 +36,7 @@ RSpec.describe Metanorma::Ietf do
       <sections><p id="_">x</p>
       <p id="_">y</p>
       <p id="_">z</p></sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -60,7 +60,7 @@ RSpec.describe Metanorma::Ietf do
              #{BLANK_HDR}
       <sections><p id="foreword">Foreword</p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -88,7 +88,7 @@ RSpec.describe Metanorma::Ietf do
       ****
     INPUT
     output = <<~OUTPUT
-            <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
+            <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}">
              <bibdata type="standard">
                <title language="en" type="main" format="text/plain">Document title</title>
       <contributor>
@@ -130,7 +130,7 @@ RSpec.describe Metanorma::Ietf do
              <name>Title</name>
       <p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
              <p id="_">For further information on the Foreword, see <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong></p></review></sections>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
     xml.at("//xmlns:metanorma-extension").remove
@@ -160,7 +160,7 @@ RSpec.describe Metanorma::Ietf do
       </term>
       </terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -189,7 +189,7 @@ RSpec.describe Metanorma::Ietf do
       </clause>
       </terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -220,7 +220,7 @@ RSpec.describe Metanorma::Ietf do
       </note>
       </definitions></terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -251,7 +251,7 @@ RSpec.describe Metanorma::Ietf do
       </note>
       </clause></sections>
 
-      </ietf-standard>
+      </metanorma>
 
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -274,7 +274,7 @@ RSpec.describe Metanorma::Ietf do
         <pre id='_' align='left' alt='hello'>&lt;LITERAL&gt;</pre>
         </figure>
        </sections>
-       </ietf-standard>
+       </metanorma>
 
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -293,7 +293,7 @@ RSpec.describe Metanorma::Ietf do
          <p id="_">Only use paddy or parboiled rice for the determination of husked rice yield.</p>
        </admonition>
        </sections>
-       </ietf-standard>
+       </metanorma>
 
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -329,7 +329,7 @@ RSpec.describe Metanorma::Ietf do
          </li>
        </ol></admonition>
        </sections>
-       </ietf-standard>
+       </metanorma>
 
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -358,7 +358,7 @@ RSpec.describe Metanorma::Ietf do
       </termexample></term>
       </terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -388,7 +388,7 @@ RSpec.describe Metanorma::Ietf do
       </clause>
       </terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -420,7 +420,7 @@ RSpec.describe Metanorma::Ietf do
       </example>
       </definitions></terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -451,7 +451,7 @@ RSpec.describe Metanorma::Ietf do
        <p id="_">Amen</p></example>
          <example id="_" unnumbered="true"><p id="_">This is another example</p></example>
        </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -473,7 +473,7 @@ RSpec.describe Metanorma::Ietf do
        <clause id="_" inline-header="false" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -496,7 +496,7 @@ RSpec.describe Metanorma::Ietf do
        <clause id="_" inline-header="false" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -517,7 +517,7 @@ RSpec.describe Metanorma::Ietf do
          <image src="spec/assets/rice_image1.png" id="_" mimetype="image/png" height="4" width="3" title="TITLE" alt="IMAGE" filename="riceimg1.png" align="left"/>
        </figure>
        </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -553,7 +553,7 @@ RSpec.describe Metanorma::Ietf do
         <p id='_'>Block quotation 2</p>
       </quote>
              </sections>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -584,7 +584,7 @@ RSpec.describe Metanorma::Ietf do
        end</sourcecode>
        <sourcecode lang='ruby' id='_' src='http://www.example.com'/>
        </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -614,7 +614,7 @@ RSpec.describe Metanorma::Ietf do
          <p id="_">This is another callout</p>
        </annotation></sourcecode>
        </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -654,7 +654,7 @@ RSpec.describe Metanorma::Ietf do
        </term>
        </terms>
        </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -697,7 +697,7 @@ RSpec.describe Metanorma::Ietf do
        </term>
        </terms>
        </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -732,7 +732,7 @@ RSpec.describe Metanorma::Ietf do
              </tbody>
            </table>
          </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)

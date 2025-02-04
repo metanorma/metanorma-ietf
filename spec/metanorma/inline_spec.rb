@@ -35,7 +35,7 @@ RSpec.describe Metanorma::Ietf do
       <bcp14>KEYWORD</bcp14>
       </p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -57,7 +57,7 @@ RSpec.describe Metanorma::Ietf do
       line break</p>
       <hr/>
       <pagebreak/></sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -79,7 +79,7 @@ RSpec.describe Metanorma::Ietf do
       <link target="http://example.com">Link</link>
       <link target="http://example.com" alt="tip">Link</link></p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -95,7 +95,7 @@ RSpec.describe Metanorma::Ietf do
       <sections>
         <p id="_">Text <bookmark id="bookmark"/> Text</p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -161,7 +161,7 @@ RSpec.describe Metanorma::Ietf do
             </bibitem>
           </references>
         </bibliography>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -200,7 +200,7 @@ RSpec.describe Metanorma::Ietf do
       </bibitem>
       </references>
       </bibliography>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -226,7 +226,7 @@ RSpec.describe Metanorma::Ietf do
         <p id="_">Footnote text 2</p>
       </fn></title>
       </clause></sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -246,7 +246,7 @@ RSpec.describe Metanorma::Ietf do
             <secondary><stem type="MathML" block="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mi>α</mi></mstyle></math><asciimath>alpha</asciimath></stem></secondary>
             <tertiary>Ⲁ</tertiary></index>.</p>
         </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
