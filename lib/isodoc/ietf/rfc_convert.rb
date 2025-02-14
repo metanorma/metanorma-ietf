@@ -66,7 +66,8 @@ module IsoDoc
         case node.name
         when "bcp14" then bcp14_parse(node, out)
         when "concept" then concept_parse(node, out)
-        when "verbal-definition", "non-verbal-representation"
+        when "display-text" then display_text_parse(node, out)
+        when "verbal-definition", "non-verbal-representation", "fmt-provision"
           node.elements.each { |n| parse(n, out) }
         else
           text = node.to_xml.gsub(/</, "&lt;").gsub(/>/, "&gt;")

@@ -67,7 +67,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
-      <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" format="title" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
+      <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" format="title" relative="#abc"><display-text>Requirement <tt>/req/core/http</tt></display-text></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><display-text>Requirement <tt>/req/core/http</tt></display-text></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
       </p>
       </foreword></preface>
       <sections>

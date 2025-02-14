@@ -88,7 +88,7 @@ RSpec.describe Metanorma::Ietf do
       ****
     INPUT
     output = <<~OUTPUT
-            <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}">
+            <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
              <bibdata type="standard">
                <title language="en" type="main" format="text/plain">Document title</title>
       <contributor>
