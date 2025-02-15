@@ -18,18 +18,18 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
           #{XML_HDR}
-          <ul anchor='_61961034-0fb1-436b-b281-828857a59ddb' empty='true' spacing='compact' indent="5" bare="true">
+          <ul anchor='_' empty='true' spacing='compact' indent="5" bare="true">
         <li>
-          <t anchor='_cb370dd3-8463-4ec7-aa1a-96f644e2e9a2'>updated normative references;</t>
+          <t anchor='_'>updated normative references;</t>
         </li>
         <li>
-          <t anchor='_60eb765c-1f6c-418a-8016-29efa06bf4f9'>deletion of 4.3.</t>
+          <t anchor='_'>deletion of 4.3.</t>
         </li>
       </ul>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes ordered lists" do
@@ -111,7 +111,7 @@ RSpec.describe IsoDoc do
                </ol>
             </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(strip_guid(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
@@ -136,12 +136,12 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-                 <dl anchor='_732d3f57-4f88-40bf-9ae9-633891edc395' newline='true' spacing='compact' indent='5'>
+                 <dl anchor='_' newline='true' spacing='compact' indent='5'>
                  <dt anchor="A">
                    W
                  </dt>
                  <dd anchor="B">
-                   <t anchor='_05d81174-3a41-44af-94d8-c78b8d2e175d'>mass fraction of gelatinized kernels, expressed in per cent</t>
+                   <t anchor='_'>mass fraction of gelatinized kernels, expressed in per cent</t>
                  </dd>
                  <dt>$$ w $$</dt>
                  <dd>
@@ -153,7 +153,7 @@ RSpec.describe IsoDoc do
                </aside>
         </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 end

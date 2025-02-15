@@ -14,14 +14,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
                <middle>
-                 <section>
+                 <section anchor="_">
                  </section>
                </middle>
                <back/>
              </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes labelled notes" do
@@ -37,7 +37,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
                <middle>
-                 <section>
+                 <section anchor="_">
                    <aside anchor='note1'>
                    <t>
                      NOTE: These results are based on a study carried out on three different
@@ -49,8 +49,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes multi-para notes" do
@@ -67,18 +67,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
                <middle>
-                 <section>
+                 <section anchor="_">
                   <aside anchor='A'>
                    <t>NOTE: These results are based on a study carried out on three different types of kernel.</t>
-                   <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a'>They are based on a study carried out on three different types of kernel.</t>
+                   <t anchor='_'>They are based on a study carried out on three different types of kernel.</t>
                    </aside>
                  </section>
                </middle>
                <back/>
              </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes non-para notes" do
@@ -99,7 +99,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
            <middle>
-             <section>
+             <section anchor="_">
              <aside anchor="A">
                <t>NOTE: </t>
                <dl>
@@ -117,8 +117,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            <back/>
          </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes note sequences" do
@@ -137,7 +137,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
            <middle>
-             <section>
+             <section anchor="_">
              <aside anchor='A'>
              <t>
                  NOTE 1: These results are based on a study carried out on three
@@ -155,8 +155,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            <back/>
          </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes paragraphs containing notes" do
@@ -171,7 +171,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{RFC_HDR}
         <middle>
-          <section>
+          <section anchor="_">
             <t anchor='A'>ABC </t>
             <aside anchor='B'>
               <t>NOTE 1: XYZ</t>
@@ -184,8 +184,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes figures" do
@@ -238,12 +238,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  divider
               </name>
               <t anchor='AAA'>Random text</t>
-              <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
-              <artwork src='rice_images/rice_image1.png' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f1' type='svg'/>
-              <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f2' type='svg'/>
+              <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_' type='svg' alt='alttext'/>
+              <artwork src='rice_images/rice_image1.png' anchor='_' type='svg'/>
+              <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_' type='svg'/>
                [a]
               <fn>
-                <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+                <t anchor='_'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
               </fn>
               <dl>
                 <dt>A</dt>
@@ -264,8 +264,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             </figure>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes figures with raw svg" do
@@ -299,8 +299,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes examples" do
@@ -320,8 +320,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <t>Hello</t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes sequences of examples" do
@@ -351,8 +351,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <t>Hello</t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes sourcecode" do
@@ -377,8 +377,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sourcecode anchor="samplecode2" type="ruby" src="http://www.example.com"/>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes sourcecode with escapes preserved" do
@@ -397,8 +397,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <sourcecode anchor='samplecode'> &lt;xml&gt; </sourcecode>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes sourcecode with annotations" do
@@ -435,8 +435,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </dl>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes admonitions" do
@@ -451,14 +451,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
        #{XML_HDR}
-              <aside anchor='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
+              <aside anchor='_'>
               <t keepWithNext='true'>CAUTION</t>
-              <t anchor='_e94663cc-2473-4ccc-9a72-983a74d989f2'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
+              <t anchor='_'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
             </aside>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes admonitions with titles" do
@@ -474,14 +474,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
        #{XML_HDR}
-              <aside anchor='_70234f78-64e5-4dfc-8b6f-f3f037348b6a'>
+              <aside anchor='_'>
               <t keepWithNext='true'>Title</t>
-              <t anchor='_e94663cc-2473-4ccc-9a72-983a74d989f2'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
+              <t anchor='_'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
             </aside>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes formulae" do
@@ -508,31 +508,31 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
        #{XML_HDR}
-       <t anchor='_be9158af-7e93-4ee2-90c5-26d31c181934'>$$ r = 1 % $$</t>
+       <t anchor='_'>$$ r = 1 % $$</t>
             <t>where</t>
-            <dl anchor='_e4fe94fe-1cde-49d9-b1ad-743293b7e21d'>
+            <dl anchor='_'>
               <dt>$$ r $$</dt>
               <dd>
-                <t anchor='_1b99995d-ff03-40f5-8f2e-ab9665a69b77'>is the repeatability limit.</t>
+                <t anchor='_'>is the repeatability limit.</t>
               </dd>
             </dl>
-            <aside anchor='_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0'>
+            <aside anchor='_'>
             <t>NOTE: [durationUnits] is essentially a duration statement without the
               "P" prefix. "P" is unnecessary because between "G" and "U" duration is
               always expressed.</t>
             </aside>
-            <t anchor='_be9158af-7e93-4ee2-90c5-26d31c181935'>$$ r = 1 % $$ (1)</t>
+            <t anchor='_'>$$ r = 1 % $$ (1)</t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes paragraph attributes" do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <p align="left" id="_08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true" indent="5">Vache Equipment<br/>
+          <p align="left" id="08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true" indent="5">Vache Equipment<br/>
       Fictitious<br/>
       World</p>
           <p align="justify" keep-with-previous="true">Justify</p>
@@ -541,7 +541,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}
-      <t keepWithNext='true' anchor='_08bfe952-d57f-4150-9c95-5d52098cc2a8' indent="5">
+      <t keepWithNext='true' anchor='08bfe952-d57f-4150-9c95-5d52098cc2a8' indent="5">
         Vache Equipment
         <br/>
          Fictitious
@@ -551,8 +551,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <t keepWithPrevious='true'>Justify</t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes blockquotes" do
@@ -575,7 +575,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{XML_HDR}
       <blockquote quotedFrom='ISO'>
-                 <t anchor='_d4fd0a61-f300-4285-abe6-602707590e53'>
+                 <t anchor='_'>
                    This International Standard gives the minimum specifications for rice
                    (
                    <em>Oryza sativa</em>
@@ -586,7 +586,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  </t>
                </blockquote>
                <blockquote quotedFrom='ISO' cite='http://www.example.com'>
-                 <t anchor='_d4fd0a61-f300-4285-abe6-602707590e53'>
+                 <t anchor='_'>
                    This International Standard gives the minimum specifications for rice
                    (
                    <em>Oryza sativa</em>
@@ -598,8 +598,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </blockquote>
          </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes term domains" do
@@ -607,7 +607,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <sections>
           <terms>
-          <term id="_extraneous_matter"><preferred><expression><name>extraneous matter</name></expression></preferred>
+          <term id="extraneous_matter"><preferred><expression><name>extraneous matter</name></expression></preferred>
       <admitted><expression><name>EM</name></expression></admitted>
       <domain>rice</domain>
       <definition><verbal-definition><p id="_318b3939-be09-46c4-a284-93f9826b981e">organic and inorganic components other than whole or broken kernels</p></verbal-definition></definition>
@@ -619,11 +619,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
         #{RFC_HDR}
         <middle>
-          <section>
-            <section anchor='_extraneous_matter'>
+          <section anchor="_">
+            <section anchor='extraneous_matter'>
               <name>extraneous matter</name>
               <t>EM</t>
-              <t anchor='_318b3939-be09-46c4-a284-93f9826b981e'>
+              <t anchor='_'>
                 &lt;rice&gt; organic and inorganic components other than whole or
                 broken kernels
               </t>
@@ -633,8 +633,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes permissions" do
@@ -727,8 +727,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes requirements" do
@@ -814,8 +814,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes recommendation" do
@@ -907,8 +907,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes pseudocode" do
@@ -929,7 +929,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      </sourcecode>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 end

@@ -92,7 +92,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                          <td align='center'>
         Drago [a]
         <fn>
-          <t anchor='_0fe65e9a-5531-408e-8295-eeff35f41a55'>[a] Parboiled rice.</t>
+          <t anchor='_'>[a] Parboiled rice.</t>
         </fn>
       </td>
       <td align='center'>Balilla [a]</td>
@@ -146,8 +146,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 end

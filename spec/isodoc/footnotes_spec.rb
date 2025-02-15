@@ -26,7 +26,7 @@ RSpec.describe IsoDoc do
                      A.
                      <fnref>2</fnref>
                      <fn>
-                       <t anchor='_1e228e29-baef-4f38-b048-b05a051747e4'>
+                       <t anchor='_'>
                          <ref>2</ref>
                          Formerly denoted as 15 % (m/m).
                        </t>
@@ -40,7 +40,7 @@ RSpec.describe IsoDoc do
                      C.
                      <fnref>1</fnref>
                      <fn>
-                       <t anchor='_1e228e29-baef-4f38-b048-b05a051747e4'>
+                       <t anchor='_'>
                          <ref>1</ref>
                          Hello! denoted as 15 % (m/m).
                        </t>
@@ -52,8 +52,9 @@ RSpec.describe IsoDoc do
                <back/>
              </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes IsoXML reviewer notes" do
@@ -77,37 +78,34 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
           #{XML_HDR}
-             <t anchor='A'>A.</t>
-             <t anchor='B'>B.</t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
-               Title
-               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c07'>
-                 A Foreword shall appear in each document. The generic text is shown
-                 here. It does not contain requirements, recommendations or
-                 permissions.
-               </t>
-               <t anchor='_f1a8b9da-ca75-458b-96fa-d4af7328975e'>
-                 For further information on the Foreword, see
-                 <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-               </t>
-             </cref>
-             <t anchor='C'>C.</t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
-               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
-             </cref>
-           </abstract>
-         </front>
-         <middle>
-           <section>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
-               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
-             </cref>
-           </section>
-         </middle>
-         <back/>
-       </rfc>
+                 <t anchor="A">A.</t>
+                 <t anchor="B">B.</t>
+                 <cref anchor="_" display="false" source="ISO">
+                    Title
+                    <t anchor="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</t>
+                    <t anchor="_">
+                       For further information on the Foreword, see
+                       <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+                    </t>
+                 </cref>
+                 <t anchor="C">C.</t>
+                 <cref anchor="_" source="ISO">
+                    <t anchor="_">Second note.</t>
+                 </cref>
+              </abstract>
+           </front>
+           <middle>
+              <section anchor="_">
+                 <cref anchor="_" source="ISO">
+                    <t anchor="_">Second note.</t>
+                 </cref>
+              </section>
+           </middle>
+           <back/>
+        </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 end
