@@ -16,7 +16,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     end
 
   it "processes section names" do
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+    input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
       <abstract obligation="informative">
@@ -92,6 +92,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </bibliography>
        </iso-standard>
     INPUT
+    output = <<~OUTPUT
      <?xml version='1.0'?>
         <?rfc strict="yes"?>
         <?rfc compact="yes"?>
@@ -102,7 +103,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
           <front>
             <seriesInfo value='' name='RFC' asciiName='RFC'/>
-            <abstract> </abstract>
+            <abstract anchor="_"> </abstract>
           </front>
           <middle>
             <section anchor='B'>
@@ -111,7 +112,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <name>Introduction Subsection</name>
               </section>
             </section>
-            <section>
+            <section anchor="_">
   <name>Acknowledgements</name>
   <t anchor='A1'>This is a preamble</t>
 </section>
@@ -180,6 +181,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </back>
         </rfc>
 OUTPUT
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes simple terms & definitions" do

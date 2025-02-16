@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar ns='https://www.metanorma.org/ns/ietf' xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<grammar ns='https://www.metanorma.org/ns/standoc' xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <!--
     VERSION v1.2.1
     Currently we inherit from a namespaced grammar, isostandard. Until we inherit from isodoc,
@@ -8,9 +8,6 @@
   -->
   <include href="relaton-ietf.rng"/>
   <include href="isodoc.rng">
-    <start>
-      <ref name="ietf-standard"/>
-    </start>
     <define name="ParagraphAttrs">
       <optional>
         <attribute name="align">
@@ -382,7 +379,34 @@
         </optional>
       </element>
     </define>
+    <define name="standard-document">
+      <element name="metanorma">
+        <ref name="Root-Attributes"/>
+        <ref name="bibdata"/>
+        <zeroOrMore>
+          <ref name="termdocsource"/>
+        </zeroOrMore>
+        <optional>
+          <ref name="misccontainer"/>
+        </optional>
+        <optional>
+          <ref name="boilerplate"/>
+        </optional>
+        <ref name="preface"/>
+        <oneOrMore>
+          <ref name="sections"/>
+        </oneOrMore>
+        <zeroOrMore>
+          <ref name="annex"/>
+        </zeroOrMore>
+        <ref name="bibliography"/>
+        <zeroOrMore>
+          <ref name="indexsect"/>
+        </zeroOrMore>
+      </element>
+    </define>
   </include>
+  <!-- end overrides -->
   <define name="TextElement" combine="choice">
     <choice>
       <ref name="bcp14"/>
@@ -437,31 +461,5 @@
       <ref name="date"/>
     </optional>
     <text/>
-  </define>
-  <define name="ietf-standard">
-    <element name="ietf-standard">
-      <ref name="Root-Attributes"/>
-      <ref name="bibdata"/>
-      <zeroOrMore>
-        <ref name="termdocsource"/>
-      </zeroOrMore>
-      <optional>
-        <ref name="misccontainer"/>
-      </optional>
-      <optional>
-        <ref name="boilerplate"/>
-      </optional>
-      <ref name="preface"/>
-      <oneOrMore>
-        <ref name="sections"/>
-      </oneOrMore>
-      <zeroOrMore>
-        <ref name="annex"/>
-      </zeroOrMore>
-      <ref name="bibliography"/>
-      <zeroOrMore>
-        <ref name="indexsect"/>
-      </zeroOrMore>
-    </element>
   </define>
 </grammar>

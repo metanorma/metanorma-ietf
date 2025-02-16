@@ -25,12 +25,12 @@ RSpec.describe Metanorma::Ietf::Processor do
       .to be_equivalent_to strip_guid(Xml::C14n.format(<<~"OUTPUT"))
             #{BLANK_HDR}
         <sections/>
-        </ietf-standard>
+        </metanorma>
       OUTPUT
   end
 
   input = <<~INPUT
-                 <ietf-standard xmlns="https://open.ribose.com/standards/ietf">
+                 <metanorma xmlns="https://open.ribose.com/standards/ietf">
            <bibdata type="standard">
             <title language="en" type="main" format="text/plain">Document title</title>
             <docidentifier>1149</docidentifier>

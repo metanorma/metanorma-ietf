@@ -37,6 +37,10 @@ module IsoDoc
         end
       end
 
+      def display_text_parse(node, out)
+        node.children.each { |n| parse(n, out) }
+      end
+
       def strike_parse(node, out)
         node.children.each { |n| parse(n, out) }
       end
@@ -56,7 +60,7 @@ module IsoDoc
         out << text
       end
 
-      def stem_parse(node, out)
+      def semx_stem_parse(node, out)
         stem = case node["type"]
                when "MathML"
                  a = node.at(ns("./asciimath"))&.remove
@@ -78,7 +82,7 @@ module IsoDoc
 
       def hr_parse(node, out); end
 
-      def link_parse(node, out)
+      def semx_link_parse(node, out)
         out.eref **attr_code(target: node["target"],
                              brackets: node["style"]) do |l|
           node.children.each { |n| parse(n, l) }
@@ -115,7 +119,7 @@ module IsoDoc
         end
       end
 
-      def xref_parse(node, out)
+      def semx_xref_parse(node, out)
         out.xref **attr_code(target: node["target"], format: node["format"],
                              relative: node["relative"]) do |l|
                                l << get_linkend(node)
@@ -127,12 +131,13 @@ module IsoDoc
           %w{locality localityStack location}.include? c.name
         end
         contents = no_loc_contents.select { |c| !c.text? || /\S/.match(c) }
+          .map { |x| x.name == "display-text" ? x.children : x }.flatten
         !contents.empty? and
           return to_xml(Nokogiri::XML::NodeSet.new(node.document, contents))
         ""
       end
 
-      def eref_parse(node, out)
+      def semx_eref_parse(node, out)
         linkend = node.children.reject do |c|
           %w{locality localityStack}.include? c.name
         end
@@ -159,11 +164,11 @@ module IsoDoc
           .sub(/^\s*(Sections?|Clauses?)/, "").strip.sub(/,$/, "")
       end
 
-      def origin_parse(node, out)
+      def semx_origin_parse(node, out)
         if t = node.at(ns("./termref"))
           termrefelem_parse(t, out)
         else
-          eref_parse(node, out)
+          semx_eref_parse(node, out)
         end
       end
 

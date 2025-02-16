@@ -15,7 +15,7 @@ RSpec.describe Metanorma::Ietf do
 
       </clause>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -32,7 +32,7 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR}
              <sections>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -59,7 +59,7 @@ RSpec.describe Metanorma::Ietf do
       </term>
       </terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -132,7 +132,7 @@ RSpec.describe Metanorma::Ietf do
              </term>
            </terms>
          </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -166,7 +166,7 @@ RSpec.describe Metanorma::Ietf do
                <definition><verbal-definition><p id="_">This paragraph is extraneous</p></verbal-definition></definition>
              </term></terms>
              </sections>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -188,8 +188,8 @@ RSpec.describe Metanorma::Ietf do
               <preface><foreword id="_" obligation="informative">
               <title>Foreword</title>
               <p id="_">
-              <eref type='inline' displayFormat='of' relative='123' bibitemid='iso216' citeas='ISO&#xa0;216:2001'>text</eref>
-      <xref target='biblio' format='counter'>text1</xref>
+              <eref type='inline' displayFormat='of' relative='123' bibitemid='iso216' citeas='ISO&#xa0;216:2001'><display-text>text</display-text></eref>
+      <xref target='biblio' format='counter'><display-text>text1</display-text></xref>
             </p>
             </foreword></preface><sections>
             </sections><bibliography><references id="biblio" obligation="informative" normative="true">
@@ -210,7 +210,7 @@ RSpec.describe Metanorma::Ietf do
              </bibitem>
             </references>
             </bibliography>
-            </ietf-standard>
+            </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -233,7 +233,7 @@ RSpec.describe Metanorma::Ietf do
         <eref type="inline" bibitemid="iso216" citeas="ISO&#xa0;216">
         <localityStack>
         <locality type="whole"/><locality type="clause"><referenceFrom>3</referenceFrom></locality><locality type="example"><referenceFrom>9</referenceFrom><referenceTo>11</referenceTo></locality><locality type="locality:prelude"><referenceFrom>33</referenceFrom></locality><locality type="locality:entirety"/>
-        </localityStack>the reference</eref>
+        </localityStack><display-text>the reference</display-text></eref>
         </p>
       </foreword></preface><sections>
       </sections><bibliography><references id="_" obligation="informative" normative="true">
@@ -251,7 +251,7 @@ RSpec.describe Metanorma::Ietf do
        </bibitem>
       </references>
       </bibliography>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -289,7 +289,7 @@ RSpec.describe Metanorma::Ietf do
         </contributor>
       </bibitem>
       </references></bibliography>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -329,7 +329,7 @@ RSpec.describe Metanorma::Ietf do
       </term>
       </terms>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -362,7 +362,7 @@ RSpec.describe Metanorma::Ietf do
        </bibitem>
       </references>
       </bibliography>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -409,7 +409,7 @@ RSpec.describe Metanorma::Ietf do
         <docidentifier type="metanorma">[2]</docidentifier>
       </bibitem>
       </references></bibliography>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -487,7 +487,7 @@ RSpec.describe Metanorma::Ietf do
            <docidentifier type="metanorma">[4]</docidentifier>
          </bibitem>
          </references></clause></bibliography>
-         </ietf-standard>
+         </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -513,7 +513,7 @@ RSpec.describe Metanorma::Ietf do
              do this.
           </p>
         </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -540,7 +540,7 @@ RSpec.describe Metanorma::Ietf do
              do this.
           </p>
         </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -572,7 +572,7 @@ RSpec.describe Metanorma::Ietf do
          DEF
       </p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -618,7 +618,7 @@ RSpec.describe Metanorma::Ietf do
              </note>
            </table>
          </sections>
-       </ietf-standard>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)

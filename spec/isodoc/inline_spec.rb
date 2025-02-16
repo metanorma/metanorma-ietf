@@ -13,13 +13,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, false)
-    expect(Xml::C14n.format(File.read("test.rfc.xml")))
+    expect(Xml::C14n.format(strip_guid(File.read("test.rfc.xml"))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
        <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3">
           <front>
              <title>Document title</title>
              <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"/>
-             <abstract>
+             <abstract anchor="_">
                 <t>&lt;pizza&gt;</t>
              </abstract>
           </front>
@@ -57,8 +57,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -67,7 +67,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
-      <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="_http_1_1" format="title" relative="#abc">Requirement <tt>/req/core/http</tt></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712">Requirement <tt>/req/core/http</tt></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
+      <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="http_1_1" format="title" relative="#abc"><display-text>Requirement <tt>/req/core/http</tt></display-text></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><display-text>Requirement <tt>/req/core/http</tt></display-text></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
       </p>
       </foreword></preface>
       <sections>
@@ -82,7 +82,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <tt>
                        <eref target='B'/>
                      </tt>
-                     <xref target='_http_1_1' format='title' relative='#abc'>
+                     <xref target='http_1_1' format='title' relative='#abc'>
                        Requirement
                        <tt>/req/core/http</tt>
                      </xref>
@@ -94,8 +94,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -121,8 +121,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                   <iref item='D' primary="true"/></t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -131,7 +131,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <iso-standard xmlns="http://riboseinc.com/isoxml">
         <preface><foreword>
         <p>
-      <image src="rice_images/rice_image1.png" height="20" width="30" id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" alt="alttext" title="titletxt"/>
+      <image src="rice_images/rice_image1.png" height="20" width="30" id="A" mimetype="image/png" alt="alttext" title="titletxt"/>
       </p>
       </foreword></preface>
       </iso-standard>
@@ -139,12 +139,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t>
-                     <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
+                     <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='A' type='svg' alt='alttext'/>
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -176,8 +176,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -199,8 +199,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -228,8 +228,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))
       .sub(/<html/, "<html xmlns:m='m'")))
       .to be_equivalent_to Xml::C14n.format(output)
   end
@@ -251,8 +251,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <t> $$$$ A $$$$ $$Hello$$$ </t>
       </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -415,8 +415,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            </back>
          </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -451,7 +451,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/>
       <back>
-        <references anchor='_normative_references'>
+        <references anchor='_'>
           <name>Normative References</name>
           <reference anchor='ISO712'>
             <front>
@@ -466,8 +466,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -540,7 +540,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/>
       <back>
-        <references anchor='_normative_references'>
+        <references anchor='_'>
           <name>Normative References</name>
           <reference anchor='ISO712'>
             <front>
@@ -555,8 +555,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </back>
       </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
@@ -573,7 +573,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </preface>
       </iso-standard>
     INPUT
-    expect(Xml::C14n.format(File.read("test.rfc.xml")))
+    expect(Xml::C14n.format(strip_guid(File.read("test.rfc.xml"))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
          <?xml version="1.0"?>
       <?rfc strict="yes"?>
@@ -586,7 +586,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <front>
           <title>Document title</title>
           <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
-          <abstract>
+          <abstract anchor="_">
       <t>
       <abc>X &#x3e; Y
       A
@@ -702,7 +702,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
           <front>
              <seriesInfo value="" name="RFC" asciiName="RFC"/>
-             <abstract>
+             <abstract anchor="_">
                 <t>
                    <ul>
                       <li>
@@ -788,7 +788,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </section>
           </middle>
           <back>
-             <references anchor="_normative_references">
+             <references anchor="_">
                 <name>Normative References</name>
                 <t>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</t>
                 <reference anchor="ISO712">
@@ -804,8 +804,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </back>
        </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
 

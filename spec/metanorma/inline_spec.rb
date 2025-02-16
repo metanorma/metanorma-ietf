@@ -35,7 +35,7 @@ RSpec.describe Metanorma::Ietf do
       <bcp14>KEYWORD</bcp14>
       </p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -57,7 +57,7 @@ RSpec.describe Metanorma::Ietf do
       line break</p>
       <hr/>
       <pagebreak/></sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -79,7 +79,7 @@ RSpec.describe Metanorma::Ietf do
       <link target="http://example.com">Link</link>
       <link target="http://example.com" alt="tip">Link</link></p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -95,7 +95,7 @@ RSpec.describe Metanorma::Ietf do
       <sections>
         <p id="_">Text <bookmark id="bookmark"/> Text</p>
       </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -125,43 +125,57 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-               <sections>
-          <clause id='reference' inline-header='false' obligation='normative'>
-            <title>Section</title>
-            <p id='_'>
-              Inline Reference to
-              <xref target='reference'/>
-              Footnoted Reference to
-              <xref target='reference'>fn</xref>
-              Inline Reference with Text to
-              <xref target='reference'>text</xref>
-              Inline Reference with Format to
-              <xref target='reference' format='counter'>xyz</xref>
-              Footnoted Reference with Text to
-              <xref target='reference'>text</xref>
-              Anchored Crossreference to other document
-              <eref type='inline' relative='b' bibitemid='doc' citeas='x'/>
-              Inline Reference with Anchor to
-              <eref type='inline' relative='fragment' bibitemid='doc' citeas='x'>text</eref>
-              Inline Reference with Anchor and format and text to
-              <eref type='inline' displayFormat='of' relative='fragment' bibitemid='doc' citeas='x'>text</eref>
-              Inline Reference with Anchor and format and no text to
-              <eref type='inline' displayFormat='parens' relative='fragment' bibitemid='doc' citeas='x'/>
-              Inline Reference with Anchor and no format and no text to
-              <eref type='inline' relative='fragment' bibitemid='doc' citeas='x'>parens</eref>
-            </p>
-          </clause>
-        </sections>
-        <bibliography>
-          <references id='reference' obligation='informative' normative="true">
-            <title>Normative References</title>
-            <bibitem id='doc'>
-              <formattedref format='application/x-isodoc+xml'>Reference</formattedref>
-              <docidentifier>x</docidentifier>
-            </bibitem>
-          </references>
-        </bibliography>
-      </ietf-standard>
+          <sections>
+              <clause id="reference" inline-header="false" obligation="normative">
+                 <title>Section</title>
+                 <p id="_">
+                    Inline Reference to
+                    <xref target="reference"/>
+                    Footnoted Reference to
+                    <xref target="reference">
+                       <display-text>fn</display-text>
+                    </xref>
+                    Inline Reference with Text to
+                    <xref target="reference">
+                       <display-text>text</display-text>
+                    </xref>
+                    Inline Reference with Format to
+                    <xref target="reference" format="counter">
+                       <display-text>xyz</display-text>
+                    </xref>
+                    Footnoted Reference with Text to
+                    <xref target="reference">
+                       <display-text>text</display-text>
+                    </xref>
+                    Anchored Crossreference to other document
+                    <eref type="inline" relative="b" bibitemid="doc" citeas="x"/>
+                    Inline Reference with Anchor to
+                    <eref type="inline" relative="fragment" bibitemid="doc" citeas="x">
+                       <display-text>text</display-text>
+                    </eref>
+                    Inline Reference with Anchor and format and text to
+                    <eref type="inline" displayFormat="of" relative="fragment" bibitemid="doc" citeas="x">
+                       <display-text>text</display-text>
+                    </eref>
+                    Inline Reference with Anchor and format and no text to
+                    <eref type="inline" displayFormat="parens" relative="fragment" bibitemid="doc" citeas="x"/>
+                    Inline Reference with Anchor and no format and no text to
+                    <eref type="inline" relative="fragment" bibitemid="doc" citeas="x">
+                       <display-text>parens</display-text>
+                    </eref>
+                 </p>
+              </clause>
+           </sections>
+           <bibliography>
+              <references id="reference" normative="true" obligation="informative">
+                 <title>Normative References</title>
+                 <bibitem id="doc">
+                    <formattedref format="application/x-isodoc+xml">Reference</formattedref>
+                    <docidentifier>x</docidentifier>
+                 </bibitem>
+              </references>
+           </bibliography>
+        </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -200,7 +214,7 @@ RSpec.describe Metanorma::Ietf do
       </bibitem>
       </references>
       </bibliography>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -226,7 +240,7 @@ RSpec.describe Metanorma::Ietf do
         <p id="_">Footnote text 2</p>
       </fn></title>
       </clause></sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -246,7 +260,7 @@ RSpec.describe Metanorma::Ietf do
             <secondary><stem type="MathML" block="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mi>α</mi></mstyle></math><asciimath>alpha</asciimath></stem></secondary>
             <tertiary>Ⲁ</tertiary></index>.</p>
         </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)

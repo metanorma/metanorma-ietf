@@ -94,7 +94,7 @@ HDR
 
 BLANK_HDR = <<~"HDR".freeze
   <?xml version='1.0' encoding='UTF-8'?>
-         <ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="#{Metanorma::Ietf::VERSION}">
+         <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
          <bibdata type="standard">
           <title language="en" type="main" format="text/plain">Document title</title>
            <contributor>
@@ -163,7 +163,7 @@ XML_HDR = <<~"HDR".freeze
   <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
     <front>
     <seriesInfo value='' name='RFC' asciiName='RFC'/>
-      <abstract>
+      <abstract anchor="_">
 HDR
 
 RFC_HDR = <<~"HDR".freeze

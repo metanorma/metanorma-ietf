@@ -242,8 +242,8 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract>
-                <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+             <abstract anchor="_">
+                <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
                    <xref target="ISSN" section="" relative=""/>
@@ -259,7 +259,7 @@ RSpec.describe IsoDoc::Ietf do
              </section>
           </middle>
           <back>
-             <references anchor="_normative_references">
+             <references anchor="_">
                 <name>Normative References</name>
                 <reference target="https://www.rfc-editor.org/info/rfc2119" anchor="RFC2119">
                    <stream>IETF</stream>
@@ -271,7 +271,7 @@ RSpec.describe IsoDoc::Ietf do
                       <keyword>Track</keyword>
                       <keyword>Documents</keyword>
                       <abstract>
-                         <t anchor="_349eae68-a8a3-0c01-e665-a6dc84c36d2e">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+                         <t anchor="_">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
                       </abstract>
                    </front>
                    <format target="https://www.rfc-editor.org/info/rfc2119" type="src"/>
@@ -338,7 +338,7 @@ RSpec.describe IsoDoc::Ietf do
                    </front>
                 </reference>
              </references>
-             <references anchor="_bibliography">
+             <references anchor="_">
                 <name>Bibliography</name>
                 <reference anchor="ISBN">
                    <front>
@@ -399,7 +399,8 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(Xml::C14n.format(xml)).to be_equivalent_to Xml::C14n.format(output)
+      expect(Xml::C14n.format(strip_guid(xml)))
+        .to be_equivalent_to Xml::C14n.format(output)
     end
   end
 
@@ -586,8 +587,8 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract>
-                <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+             <abstract anchor="_">
+                <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
                    <xref target="ISSN" section="" relative=""/>
@@ -603,7 +604,7 @@ RSpec.describe IsoDoc::Ietf do
              </section>
           </middle>
           <back>
-             <references anchor="_normative_references">
+             <references anchor="_">
                 <name>Normative References</name>
                 <reference anchor="ISO712">
                    <front>
@@ -645,7 +646,7 @@ RSpec.describe IsoDoc::Ietf do
                    <refcontent>ISO 20483:2013-2014</refcontent>
                 </reference>
              </references>
-             <references anchor="_bibliography">
+             <references anchor="_">
                 <name>Bibliography</name>
                 <reference anchor="ISBN">
                    <front>
@@ -696,7 +697,7 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(Xml::C14n.format(xml)).to be_equivalent_to Xml::C14n.format(output)
+      expect(Xml::C14n.format(strip_guid(xml))).to be_equivalent_to Xml::C14n.format(output)
     end
   end
 

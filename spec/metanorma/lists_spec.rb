@@ -80,7 +80,7 @@ RSpec.describe Metanorma::Ietf do
             </dd>
           </dl>
         </sections>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
   end
 end

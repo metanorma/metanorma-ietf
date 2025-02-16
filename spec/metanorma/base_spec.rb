@@ -29,7 +29,7 @@ RSpec.describe Metanorma::Ietf do
       output = <<~OUTPUT
         #{BLANK_HDR}
         <sections/>
-        </ietf-standard>
+        </metanorma>
       OUTPUT
       expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
         .to be_equivalent_to strip_guid(Xml::C14n.format(output))
@@ -47,7 +47,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
           #{BLANK_HDR}
       <sections/>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to strip_guid(Xml::C14n.format(output))
@@ -182,7 +182,7 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
           <?xml version='1.0' encoding='UTF-8'?>
-             <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
+             <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
                  <title language='en' format='text/plain' type='main'>Main Title - Title</title>
               <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
@@ -455,7 +455,7 @@ RSpec.describe Metanorma::Ietf do
           </presentation-metadata>
          </metanorma-extension>
                <sections/>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to strip_guid(Xml::C14n.format(output))
@@ -492,7 +492,7 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
            <?xml version='1.0' encoding='UTF-8'?>
-             <ietf-standard xmlns='https://www.metanorma.org/ns/ietf' type="semantic" version="#{Metanorma::Ietf::VERSION}">
+             <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
                  <title language='en' type="main" format='text/plain'>Document title</title>
                  <docidentifier primary="true">1000</docidentifier>
@@ -604,7 +604,7 @@ RSpec.describe Metanorma::Ietf do
                    <title>Clause 1</title>
                  </clause>
                </sections>
-             </ietf-standard>
+             </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -657,7 +657,7 @@ RSpec.describe Metanorma::Ietf do
         <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
           <title>Appendix</title>
         </annex>
-      </ietf-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
