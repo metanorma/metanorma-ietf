@@ -115,6 +115,7 @@ module Relaton
 
         def stream(doc)
           a = doc.series.detect { |s| s.type == "stream" } or return nil
+          a.title&.title&.content == "Legacy" and return nil
           series_title(a, doc)
         end
 
