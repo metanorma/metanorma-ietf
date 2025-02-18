@@ -39,6 +39,56 @@ RSpec.describe IsoDoc::Ietf do
                 <number>2119</number>  </series>  <series type="stream">
             <title format="text/plain">IETF</title>
               </series>  <keyword>Standards</keyword>  <keyword>Track</keyword>  <keyword>Documents</keyword></bibitem>
+              <title type="main" format="text/plain">The "data" URL scheme</title>
+              <bibitem id="RFC2397"  type="standard" schema-version="v1.2.4">
+              <title type="main" format="text/plain">The "data" URL scheme</title
+  <uri type="src">https://www.rfc-editor.org/info/rfc2397</uri>
+  <docidentifier type="IETF" primary="true">RFC 2397</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC2397</docidentifier>
+  <docnumber>RFC2397</docnumber>
+  <date type="published">
+    <on>1998-08</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en" script="Latn">L. Masinter</completename>
+      </name>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>RFC Publisher</name>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      <name>RFC Series</name>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract format="text/html" language="en" script="Latn">
+    <p>A new URL scheme, "data", is defined. It allows inclusion of small data items as "immediate" data, as if it had been included externally. [STANDARDS-TRACK]</p>
+  </abstract>
+  <series>
+    <title format="text/plain">RFC</title>
+    <number>2397</number>
+  </series>
+  <series type="stream">
+    <title format="text/plain">Legacy</title>
+  </series>
+  <keyword>DATA-URL</keyword>
+  <keyword>uniform resource locator</keyword>
+  <keyword>identifiers</keyword>
+  <keyword>media type</keyword>
+  <ext schema-version="v1.0.1">
+    <stream>Legacy</stream>
+  </ext>
+</bibitem>
         <bibitem id="ISO712" type="standard">
           <title format="text/plain">Cereals or cereal products</title>
           <title type="main" format="text/plain">Cereals and cereal products</title>
@@ -279,6 +329,23 @@ RSpec.describe IsoDoc::Ietf do
                    <seriesInfo value="14" name="BCP"/>
                    <seriesInfo value="2119" name="RFC"/>
                 </reference>
+                <reference target="https://www.rfc-editor.org/info/rfc2397" anchor="RFC2397">
+            <front>
+               <title>The "data" URL scheme</title>
+               <author fullname="L. Masinter" asciiFullname="L. Masinter"/>
+               <date month="August" year="1998"/>
+               <keyword>DATA-URL</keyword>
+               <keyword>uniform resource locator</keyword>
+               <keyword>identifiers</keyword>
+               <keyword>media type</keyword>
+               <abstract>
+                  <t>A new URL scheme, "data", is defined. It allows inclusion of small data items as "immediate" data, as if it had been included externally. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <format target="https://www.rfc-editor.org/info/rfc2397" type="src"/>
+            <seriesInfo value="10.17487/RFC2397" name="DOI"/>
+            <seriesInfo value="2397" name="RFC"/>
+         </reference>
                 <reference anchor="ISO712">
                    <front>
                       <title>Cereals and cereal products</title>
@@ -1046,7 +1113,8 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(Xml::C14n.format(strip_guid(xml))).to be_equivalent_to Xml::C14n.format(output)
+      expect(Xml::C14n.format(strip_guid(xml)))
+        .to be_equivalent_to Xml::C14n.format(output)
     end
   end
 end
