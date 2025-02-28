@@ -35,7 +35,7 @@ module Metanorma
           xml.title **attr_code(at.merge(type: "main")) do |t|
             t << (::Metanorma::Utils::asciidoc_sub(node.attr("title")) ||
               ::Metanorma::Utils::asciidoc_sub(node.attr("title-en")) ||
-              node.title)
+              ::Metanorma::Utils::asciidoc_sub(node.attr("doctitle")))
           end
           a = node.attr("abbrev") and
             xml.title a, **attr_code(at.merge(type: "abbrev"))

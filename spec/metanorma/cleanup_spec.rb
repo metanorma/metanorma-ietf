@@ -623,4 +623,81 @@ RSpec.describe Metanorma::Ietf do
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
+
+   it "moves title footnotes to bibdata" do
+    input = <<~INPUT
+      = Document title footnote:[ABC] footnote:[DEF]
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :no-isobib:
+
+    INPUT
+    output = <<~OUTPUT
+      <metanorma xmlns='https://www.metanorma.org/ns/standoc'  type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor='ietf'>
+               <bibdata type="standard">
+             <title language="en" format="text/plain" type="main">Document title</title>
+             <contributor>
+                <role type="publisher"/>
+                <organization>
+                   <name>Internet Engineering Task Force</name>
+                   <abbreviation>IETF</abbreviation>
+                </organization>
+             </contributor>
+             <note type="title-footnote">
+                <p>ABC</p>
+             </note>
+             <note type="title-footnote">
+                <p>DEF</p>
+             </note>
+             <language>en</language>
+             <script>Latn</script>
+             <status>
+                <stage>published</stage>
+             </status>
+             <copyright>
+                <from>2000</from>
+                <owner>
+                   <organization>
+                      <name>Internet Engineering Task Force</name>
+                      <abbreviation>IETF</abbreviation>
+                   </organization>
+                </owner>
+             </copyright>
+             <series type="stream">
+                <title>IETF</title>
+             </series>
+             <ext>
+                <doctype>internet-draft</doctype>
+                <flavor>ietf</flavor>
+                <ipr>trust200902</ipr>
+                <pi>
+                   <tocinclude>yes</tocinclude>
+                </pi>
+             </ext>
+          </bibdata>
+          <sections> </sections>
+       </metanorma>
+    OUTPUT
+    xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
+    xml.at("//xmlns:metanorma-extension")&.remove
+    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Xml::C14n.format(output)
+
+    input = <<~INPUT
+      = XXXX
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :no-isobib:
+      :title-en: Document title footnote:[ABC] footnote:[DEF]
+
+    INPUT
+    xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
+    xml.at("//xmlns:metanorma-extension")&.remove
+    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Xml::C14n.format(output)
+  end
 end
