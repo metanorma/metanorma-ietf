@@ -578,10 +578,10 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
-         <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name>Caption</name>puts "Hello, world."
+         <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name>Caption</name><body>puts "Hello, world."
        %w{a b c}.each do |x|
          puts x
-       end</sourcecode>
+       end</body></sourcecode>
        <sourcecode lang='ruby' id='_' src='http://www.example.com'/>
        </sections>
        </metanorma>
@@ -605,7 +605,8 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-              <sections><sourcecode id="_" lang="ruby">puts "Hello, world." <callout target="_">1</callout>
+              <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." </body><callout target="_">1</callout>
+
        %w{a b c}.each do |x|
          puts x <callout target="_">2</callout>
        end<annotation id="_">

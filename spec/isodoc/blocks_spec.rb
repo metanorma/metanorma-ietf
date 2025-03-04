@@ -360,10 +360,10 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
           <sourcecode lang="ruby" id="samplecode" markers="true">
-          <name>Ruby <em>code</em></name>
+          <name>Ruby <em>code</em></name><body>
         puts x &lt; y;
         puts y
-      </sourcecode>
+      </body></sourcecode>
           <sourcecode lang="ruby" id="samplecode2" src="http://www.example.com"/>
           </foreword></preface>
           </iso-standard>
@@ -386,9 +386,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
           <sourcecode id="samplecode">
-          <name>XML code</name>
+          <name>XML code</name><body>
         &lt;xml&gt;
-      </sourcecode>
+      </body></sourcecode>
           </foreword></preface>
           </iso-standard>
     INPUT
@@ -405,7 +405,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
-      <sourcecode id="_">puts "Hello, world." <callout target="A">1</callout>
+      <sourcecode id="_"><body>puts "Hello, world." </body><callout target="A">1</callout>
          %w{a b c}.each do |x|
            puts x <callout target="B">2</callout>
          end<annotation id="A">
@@ -675,14 +675,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </measurement-target>
         <verification exclude="false">
           <p id="_">The following code will be run for verification:</p>
-          <sourcecode id="_">CoreRoot(success): HttpResponse
+          <sourcecode id="_"><body>CoreRoot(success): HttpResponse
             if (success)
             recommendation(label: success-response)
             end
-          </sourcecode>
+          </body></sourcecode>
         </verification>
         <import exclude="true">
-          <sourcecode id="_">success-response()</sourcecode>
+          <sourcecode id="_"><body>success-response()</body></sourcecode>
         </import>
       </permission>
           </foreword></preface>
@@ -769,14 +769,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </measurement-target>
         <verification exclude="false">
           <p id="_">The following code will be run for verification:</p>
-          <sourcecode id="_">CoreRoot(success): HttpResponse
+          <sourcecode id="_"><body>CoreRoot(success): HttpResponse
             if (success)
             recommendation(label: success-response)
             end
-          </sourcecode>
+          </body></sourcecode>
         </verification>
         <import exclude="true">
-          <sourcecode id="_">success-response()</sourcecode>
+          <sourcecode id="_"><body>success-response()</body></sourcecode>
         </import>
       </requirement>
           </foreword></preface>
@@ -857,14 +857,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </measurement-target>
         <verification exclude="false">
           <p id="_">The following code will be run for verification:</p>
-          <sourcecode id="_">CoreRoot(success): HttpResponse
+          <sourcecode id="_"><body>CoreRoot(success): HttpResponse
             if (success)
             recommendation(label: success-response)
             end
-          </sourcecode>
+          </body></sourcecode>
         </verification>
         <import exclude="true">
-          <sourcecode id="_">success-response()</sourcecode>
+          <sourcecode id="_"><body>success-response()</body></sourcecode>
         </import>
       </recommendation>
           </foreword></preface>
