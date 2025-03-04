@@ -1,5 +1,6 @@
 require_relative "./terms"
 require_relative "./blocks"
+require_relative "./lists"
 require_relative "./metadata"
 require_relative "./front"
 require_relative "./table"
@@ -68,7 +69,7 @@ module IsoDoc
         when "concept" then concept_parse(node, out)
         when "display-text" then display_text_parse(node, out)
         when "verbal-definition", "non-verbal-representation",
-          "fmt-provision", "body"
+          "fmt-provision"
           node.elements.each { |n| parse(n, out) }
         else
           text = node.to_xml.gsub(/</, "&lt;").gsub(/>/, "&gt;")

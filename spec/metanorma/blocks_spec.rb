@@ -582,7 +582,7 @@ RSpec.describe Metanorma::Ietf do
        %w{a b c}.each do |x|
          puts x
        end</body></sourcecode>
-       <sourcecode lang='ruby' id='_' src='http://www.example.com'/>
+       <sourcecode lang='ruby' id='_' src='http://www.example.com'><body/></sourcecode>
        </sections>
        </metanorma>
     OUTPUT
@@ -605,11 +605,11 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-              <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." </body><callout target="_">1</callout>
+              <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." <callout target="_">1</callout>
 
        %w{a b c}.each do |x|
          puts x <callout target="_">2</callout>
-       end<annotation id="_">
+       end</body><annotation id="_">
          <p id="_">This is one callout</p>
        </annotation><annotation id="_">
          <p id="_">This is another callout</p>
