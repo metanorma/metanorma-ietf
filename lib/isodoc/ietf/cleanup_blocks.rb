@@ -113,9 +113,29 @@ module IsoDoc
           case n.name
           when "br" then n.replace("\n")
           when "t" then n.replace("\n\n#{n.children}")
+          when "eref" then n.replace(n.children.empty? ? n["target"] : n.children)
+          when "xref"
+            if n.children.empty?
+              sourcecode_xref(n)
+            else
+              n.replace(n.children)
+            end
+          #when "relref" then n.replace(n.children.empty? ? n["target"] : n.children)
           else n.replace(n.children)
           end
         end
+      end
+
+      def sourcecode_xref(node)
+        id = node.document.at("//*[@id = '#{node["target"]}']")
+              ret = case node.name
+                    when "bibitem"
+                     d = id.at("./docidentifier[@primary = 'true']")
+                     d ||= id.at("./docidentifier")
+                     d.text
+                    end
+              s = node["section"] and ret += ", Section #{s}"
+              ret
       end
 
       def annotation_cleanup(docxml)
