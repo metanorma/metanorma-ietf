@@ -412,9 +412,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
-    it "processes sourcecode with markup" do
+  it "processes sourcecode with markup" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
          <preface>
              <foreword id="_" obligation="informative">
                 <title>Foreword</title>
@@ -466,8 +466,32 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
        #{XML_HDR}
-              <sourcecode anchor='samplecode'> &lt;xml&gt; </sourcecode>
-      </abstract></front><middle/><back/></rfc>
+                <sourcecode anchor="_" type="ruby" name="sourcecode1.rb" markers="true">
+                   puts "Hello, world." %w{a b c}.each do |x| puts x end
+                   <xref target="RFC4918" section="14.24" relative=""/>
+                   <xref target="RFC4918" section="14.24" relative="">
+
+                         Hello
+                      </xref>
+                   <eref target="http://www.example.com"/>
+                   <eref target="http://www.example.com">example</eref>
+                   <xref target="A">Goodbye</xref>
+                   <xref target="A">Goodbye</xref>
+                </sourcecode>
+             </abstract>
+          </front>
+          <middle/>
+          <back>
+             <references anchor="A">
+                <name>Bibliography</name>
+                <reference anchor="RFC4918">
+                   <front>
+                      <title>[NO INFORMATION AVAILABLE]</title>
+                   </front>
+                </reference>
+             </references>
+          </back>
+       </rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))

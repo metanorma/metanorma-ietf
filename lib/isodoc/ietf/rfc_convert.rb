@@ -37,6 +37,8 @@ module IsoDoc
         info docxml, nil
         @xrefs.parse docxml
         @isodoc.xrefs = @xrefs
+        @isodoc.bibrender = @isodoc.bibrenderer
+        @isodoc.reference_names(docxml)
         @isodoc.permission(docxml)
         @isodoc.requirement(docxml)
         @isodoc.recommendation(docxml)
