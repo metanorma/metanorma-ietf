@@ -54,7 +54,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up footnotes in a section" do
@@ -626,7 +627,93 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </abstract></front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
+  end
+
+  it "processes sourcecode with markup" do
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+         <bibdata>
+            <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
+            <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
+            <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+            <ext><ipr>trust200902</ipr></ext>
+            </bibdata>
+         <preface>
+             <foreword id="F" obligation="informative">
+                <title>Foreword</title>
+                <sourcecode id="S" lang="ruby" filename="sourcecode1.rb" markers="true">
+                   <name>Caption</name>
+                   <body>
+                      puts "Hello, world." %w{a b c}.each do |x| puts x end
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"/>
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><display-text>Hello</display-text></eref>
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><localityStack><locality type="section"><referenceFrom>14.24</referenceFrom></locality></localityStack></eref>
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><localityStack><locality type="section"><referenceFrom>14.24</referenceFrom></locality></localityStack><display-text>Hello</display-text></eref>
+                      <link target="http://www.example.com"/>
+                      <link target="http://www.example.com">example</link>
+                      <xref target="A"/>
+                      <xref target="A"><display-text>Goodbye</display-text></xref>
+                   </body>
+                </sourcecode>
+             </foreword>
+          </preface>
+          <sections>
+
+       </sections>
+          <bibliography>
+             <references id="A" normative="false" obligation="informative">
+                <title>Bibliography</title>
+                <bibitem id="RFC4918">
+                   <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
+                   <docidentifier>RFC 4918</docidentifier>
+                   <docnumber>4918</docnumber>
+                </bibitem>
+             </references>
+          </bibliography>
+       </metanorma>
+    INPUT
+    output = <<~OUTPUT
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+          <front>
+             <title>The Holy Hand Grenade of Antioch</title>
+             <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+             <author fullname="Arthur son of Uther Pendragon">
+                <address>
+                   <postal/>
+                </address>
+             </author>
+             <abstract anchor="F">
+                <sourcecode anchor="S" type="ruby" name="sourcecode1.rb" markers="true">                puts "Hello, world." %w{a b c}.each do |x| puts x end
+                       RFC 4918, Section
+                       Hello
+                       RFC 4918, Section 14.24
+                       Hello
+                       http://www.example.com
+                       example
+                       Bibliography
+                       Goodbye
+                    </sourcecode>
+             </abstract>
+          </front>
+          <middle/>
+          <back>
+             <references anchor="A">
+                <name>Bibliography</name>
+                <reference anchor="RFC4918">
+                   <front>
+                      <title>[NO INFORMATION AVAILABLE]</title>
+                      <author surname="Unknown"/>
+                   </front>
+                </reference>
+             </references>
+          </back>
+       </rfc>
+    OUTPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    expect(Xml::C14n.format(File.read("test.rfc.xml")))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up annotated bibliography" do
@@ -1013,73 +1100,72 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 
   it "cleans up crefs" do
     input = <<~INPUT
-           <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-         <front>
-           <seriesInfo value='' name='RFC' asciiName='RFC'/>
-           <abstract>
-             <t anchor='A'>A.</t>
-             <t anchor='B'>B.</t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
-               Title 
-               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c07'>
-                 A Foreword shall appear in each document. The generic text is shown
-                 here. It does not contain requirements, recommendations or
-                 permissions.
-               </t>
-               <t anchor='_f1a8b9da-ca75-458b-96fa-d4af7328975e'>
-                 For further information on the Foreword, see 
-                 <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-               </t>
-             </cref>
-             <t anchor='C'>C.</t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
-               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
-             </cref>
-           </abstract>
-         </front>
-         <middle>
-           <section>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
-               <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
-             </cref>
-           </section>
-         </middle>
-         <back/>
-       </rfc>
+          <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+        <front>
+          <seriesInfo value='' name='RFC' asciiName='RFC'/>
+          <abstract>
+            <t anchor='A'>A.</t>
+            <t anchor='B'>B.</t>
+            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
+              Title#{' '}
+              <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c07'>
+                A Foreword shall appear in each document. The generic text is shown
+                here. It does not contain requirements, recommendations or
+                permissions.
+              </t>
+              <t anchor='_f1a8b9da-ca75-458b-96fa-d4af7328975e'>
+                For further information on the Foreword, see#{' '}
+                <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+              </t>
+            </cref>
+            <t anchor='C'>C.</t>
+            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
+              <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
+            </cref>
+          </abstract>
+        </front>
+        <middle>
+          <section>
+            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
+              <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
+            </cref>
+          </section>
+        </middle>
+        <back/>
+      </rfc>
     INPUT
     output = <<~OUTPUT
-       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-         <front>
-           <seriesInfo value='' name='RFC' asciiName='RFC'/>
-           <abstract>
-             <t anchor='A'>A.</t>
-             <t anchor='B'>B.</t>
-             <t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
-                Title A Foreword shall appear in each document. The generic text is
-               shown here. It does not contain requirements, recommendations or
-               permissions. For further information on the Foreword, see 
-               <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-             </cref>
-             </t>
-             <t anchor='C'>C.</t>
-             <t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
-             </t>
-           </abstract>
-         </front>
-         <middle>
-           <section>
-           <t>
-             <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
-             </t>
-           </section>
-         </middle>
-         <back/>
-       </rfc>
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+        <front>
+          <seriesInfo value='' name='RFC' asciiName='RFC'/>
+          <abstract>
+            <t anchor='A'>A.</t>
+            <t anchor='B'>B.</t>
+            <t>
+            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
+               Title A Foreword shall appear in each document. The generic text is
+              shown here. It does not contain requirements, recommendations or
+              permissions. For further information on the Foreword, see#{' '}
+              <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+            </cref>
+            </t>
+            <t anchor='C'>C.</t>
+            <t>
+            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
+            </t>
+          </abstract>
+        </front>
+        <middle>
+          <section>
+          <t>
+            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
+            </t>
+          </section>
+        </middle>
+        <back/>
+      </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
       .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
   end
-
 end

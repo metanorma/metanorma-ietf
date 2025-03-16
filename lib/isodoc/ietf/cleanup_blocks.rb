@@ -110,12 +110,27 @@ module IsoDoc
         node.traverse do |n|
           n.text? and next
           %w(name callout annotation note sourcecode).include? n.name and next
-          case n.name
-          when "br" then n.replace("\n")
-          when "t" then n.replace("\n\n#{n.children}")
-          else n.replace(n.children)
-          end
+          sourcecode_remove_markup_elem(n)
         end
+      end
+
+      def sourcecode_remove_markup_elem(node)
+        case node.name
+        when "br" then node.replace("\n")
+        when "t" then node.replace("\n\n#{node.children}")
+        when "eref"
+          node.replace(node.children.empty? ? node["target"] : node.children)
+        when "xref"
+          node.children.empty? ? sourcecode_xref(node) : node.replace(node.children)
+          # when "relref" then n.replace(n.children.empty? ? n["target"] : n.children)
+        else node.replace(node.children)
+        end
+      end
+
+      def sourcecode_xref(node)
+        ret = @xrefs.anchor(node["target"], :xref, false)&.gsub(%r{<[^>]+>}, "")
+        s = node["section"] and ret += ", Section #{s}"
+        node.replace(ret)
       end
 
       def annotation_cleanup(docxml)

@@ -569,21 +569,76 @@ RSpec.describe Metanorma::Ietf do
       %w{a b c}.each do |x|
         puts x
       end
+      {{{<<RFC4918,section=14.24>>}}}
+      {{{<<RFC4918,section=14.24,Hello>>}}}
+      {{{http://www.example.com[]}}}
+      {{{http://www.example.com[example]}}}
+      {{{<<A,Goodbye>>}}}
+      {{{<<A,Goodbye>>}}}
       --
 
       [source,ruby,src="http://www.example.com"]
       --
       --
+
+      [[A]]
+      [bibliography]
+      == Bibliography
+
+      * [[[RFC4918,RFC 4918]]]
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-       <sections>
-         <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name>Caption</name><body>puts "Hello, world."
-       %w{a b c}.each do |x|
-         puts x
-       end</body></sourcecode>
-       <sourcecode lang='ruby' id='_' src='http://www.example.com'><body/></sourcecode>
+        <preface>
+             <foreword id="_" obligation="informative">
+                <title>Foreword</title>
+                <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true">
+                   <name>Caption</name>
+                   <body>
+                      puts "Hello, world." %w{a b c}.each do |x| puts x end
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
+                         <localityStack>
+                            <locality type="section">
+                               <referenceFrom>14.24</referenceFrom>
+                            </locality>
+                         </localityStack>
+                      </eref>
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
+                         <localityStack>
+                            <locality type="section">
+                               <referenceFrom>14.24</referenceFrom>
+                            </locality>
+                         </localityStack>
+                         <display-text>Hello</display-text>
+                      </eref>
+                      <link target="http://www.example.com"/>
+                      <link target="http://www.example.com">example</link>
+                      <xref target="A">
+                         <display-text>Goodbye</display-text>
+                      </xref>
+                      <xref target="A">
+                         <display-text>Goodbye</display-text>
+                      </xref>
+                   </body>
+                </sourcecode>
+                <sourcecode id="_" lang="ruby" src="http://www.example.com">
+                   <body/>
+                </sourcecode>
+             </foreword>
+          </preface>
+          <sections>
+
        </sections>
+          <bibliography>
+             <references id="A" normative="false" obligation="informative">
+                <title>Bibliography</title>
+                <bibitem id="RFC4918">
+                   <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
+                   <docidentifier>RFC 4918</docidentifier>
+                   <docnumber>4918</docnumber>
+                </bibitem>
+             </references>
+          </bibliography>
        </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
