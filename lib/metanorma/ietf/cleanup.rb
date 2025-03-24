@@ -6,7 +6,15 @@ module Metanorma
         abstract_cleanup(xmldoc)
         super
         cref_cleanup(xmldoc)
+        dt_cleanup(xmldoc)
         xmldoc
+      end
+
+      def dt_cleanup(xmldoc)
+        xmldoc.xpath("//dt").each do |dt|
+          /:$/.match?(dt.text.strip) and next
+          dt << ":"
+        end
       end
 
       def abstract_cleanup(xmldoc)
@@ -43,8 +51,7 @@ module Metanorma
 
       def smartquotes_cleanup(xmldoc)
         xmldoc.traverse do |n|
-          next unless n.text?
-
+          n.text? or next
           n.replace(HTMLEntities.new.encode(
                       n.text.gsub(/\u2019|\u2018|\u201a|\u201b/, "'")
                       .gsub(/\u201c|\u201d|\u201e|\u201f/, '"')
