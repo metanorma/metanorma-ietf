@@ -26,7 +26,7 @@ RSpec.describe Metanorma::Ietf do
       . Sixth
 
       [newline=false,spacing=compact,indent=5]
-      Notes1::
+      Notes1**:**::
       Notes::  Note 1.
       +
       Note 2.
@@ -34,7 +34,7 @@ RSpec.describe Metanorma::Ietf do
       Note 3.
 
     INPUT
-    expect(Xml::C14n.format(strip_guid(output))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+    xml = <<~OUTPUT
            #{BLANK_HDR}
            <sections>
           <ul id='id' nobullet='true' spacing='compact' indent='5' bare='true'>
@@ -70,9 +70,9 @@ RSpec.describe Metanorma::Ietf do
             </li>
           </ol>
           <dl id='_' newline='false' spacing='compact' indent='5'>
-            <dt>Notes1</dt>
+            <dt>Notes1<strong>:</strong></dt>
             <dd/>
-            <dt>Notes</dt>
+            <dt>Notes:</dt>
             <dd>
               <p id='_'>Note 1.</p>
               <p id='_'>Note 2.</p>
@@ -82,5 +82,7 @@ RSpec.describe Metanorma::Ietf do
         </sections>
       </metanorma>
     OUTPUT
+    expect(Xml::C14n.format(strip_guid(output)))
+      .to be_equivalent_to Xml::C14n.format(xml)
   end
 end
