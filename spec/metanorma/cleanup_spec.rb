@@ -563,16 +563,20 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR.sub('<language>', '<version> </version><language>')}
-      <sections>
-      <p id='_'>
-        ABC
-        <review id='def' reviewer='(Unknown)' date='2000-01-01T00:00:00Z' type="todo">
-          <p id='_'>What?</p>
-        </review>
-         DEF
-      </p>
-      </sections>
-      </metanorma>
+          <sections>
+             <p id="_">
+                ABC
+                <bookmark id="_"/>
+                DEF
+             </p>
+             <bookmark id="_"/>
+          </sections>
+          <review-container>
+             <review id="def" reviewer="(Unknown)" date="2000-01-01T00:00:00Z" type="todo" from="_" to="_">
+                <p id="_">What?</p>
+             </review>
+          </review-container>
+       </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)

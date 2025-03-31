@@ -133,6 +133,7 @@ module IsoDoc
         out.back do |back|
           bibliography isoxml, back
           annex isoxml, back
+          comments isoxml, back
         end
       end
 
@@ -145,8 +146,7 @@ module IsoDoc
       end
 
       def clause_parse(node, out)
-        return if node.at(ns(".//references"))
-
+        node.at(ns(".//references")) and return
         out.section **attr_code(
           anchor: node["id"], numbered: node["numbered"],
           removeInRFC: node["removeInRFC"], toc: node["toc"]
@@ -162,9 +162,6 @@ module IsoDoc
         isoxml.xpath("//xmlns:preface/child::*" \
                      "[not(name() = 'abstract' or name() = 'foreword')] " \
                      "| //xmlns:sections/child::*").each do |c|
-          # cdup = c.dup
-          # cdup.xpath(ns(".//references")).each { |r| r.remove }
-          # cdup.at("./*[local-name() != 'title'][normalize-space(text()) != '']") or next
           clause_parse(c, out)
         end
       end
@@ -172,6 +169,12 @@ module IsoDoc
       def annex(isoxml, out)
         isoxml.xpath(ns("//annex")).each do |c|
           clause_parse(c, out)
+        end
+      end
+
+      def comments(isoxml, out)
+        isoxml.xpath(ns("//review")).each do |c|
+          review_note_parse(c, out)
         end
       end
     end

@@ -62,12 +62,28 @@ module IsoDoc
       end
 
       def cref_cleanup(docxml)
+        cref_move(docxml)
+        cref_unwrap(docxml)
+      end
+
+      # do not remove bookmarks until this is done,
+      # bookmarks can be cref destination
+      def cref_move(docxml)
+        docxml.xpath("//cref[@from]").each do |c|
+          dest = docxml.at("//*[@anchor = '#{c['from']}']")
+          t = dest.at(".//text()[not(ancestor::cref)]") and dest = t
+          c.delete("from")
+          c.delete("to")
+          dest.previous = c
+        end
+      end
+
+      def cref_unwrap(docxml)
         docxml.xpath("//cref").each do |c|
           c.xpath("./t").each do |t|
             t.replace(t.children)
           end
-          next unless %w(section abstract).include? c.parent.name
-
+          %w(section abstract).include? c.parent.name or next
           c.wrap("<t></t>")
         end
       end

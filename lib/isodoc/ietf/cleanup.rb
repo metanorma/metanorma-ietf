@@ -12,8 +12,8 @@ module IsoDoc
         sourcecode_cleanup(docxml)
         li_cleanup(docxml)
         deflist_cleanup(docxml)
+        cref_cleanup(docxml) # feeds bookmark
         bookmark_cleanup(docxml)
-        cref_cleanup(docxml)
         front_cleanup(docxml)
         u_cleanup(docxml)
         biblio_cleanup(docxml) # feeds aside

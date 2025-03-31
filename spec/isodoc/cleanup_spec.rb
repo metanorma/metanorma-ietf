@@ -120,7 +120,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up table footnotes" do
@@ -272,7 +273,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up figures" do
@@ -558,7 +560,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up inline figures" do
@@ -582,7 +585,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up sourcecode" do
@@ -960,7 +964,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up definition lists" do
@@ -1006,7 +1011,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "reports parsing errors on RFC XML output" do
@@ -1023,8 +1029,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </iso-standard>
     INPUT
     expect do
-      IsoDoc::Ietf::RfcConvert.new({}).convert("test", input,
-                                               false)
+      IsoDoc::Ietf::RfcConvert.new({})
+        .convert("test", input, false)
     end.to output(/RFC XML: Line/).to_stderr
   end
 
@@ -1095,77 +1101,75 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </abstract> </front> <middle/> <back/> </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cleans up crefs" do
     input = <<~INPUT
           <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-        <front>
-          <seriesInfo value='' name='RFC' asciiName='RFC'/>
-          <abstract>
-            <t anchor='A'>A.</t>
-            <t anchor='B'>B.</t>
-            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
-              Title#{' '}
-              <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c07'>
-                A Foreword shall appear in each document. The generic text is shown
-                here. It does not contain requirements, recommendations or
-                permissions.
-              </t>
-              <t anchor='_f1a8b9da-ca75-458b-96fa-d4af7328975e'>
-                For further information on the Foreword, see#{' '}
-                <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-              </t>
-            </cref>
-            <t anchor='C'>C.</t>
-            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
-              <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
-            </cref>
-          </abstract>
-        </front>
-        <middle>
-          <section>
-            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'>
-              <t anchor='_c54b9549-369f-4f85-b5b2-9db3fd3d4c08'>Second note.</t>
-            </cref>
-          </section>
-        </middle>
-        <back/>
-      </rfc>
+          <front>
+             <seriesInfo value="" name="RFC" asciiName="RFC"/>
+             <abstract anchor="_">
+                <t anchor="A">A.</t>
+                <t anchor="B">B.</t>
+                <bookmark anchor="C"/>
+                <t>C.</t>
+             </abstract>
+          </front>
+          <middle/>
+          <back>
+             <cref anchor="_" display="false" source="ISO" from="A">
+                Title
+                <t anchor="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</t>
+                <t anchor="_">
+                   For further information on the Foreword, see
+                   <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+                </t>
+             </cref>
+             <cref anchor="_" source="ISO" from="A">
+                <t anchor="_">Second note.</t>
+             </cref>
+             <cref anchor="_" source="ISO" from="C">
+                <t anchor="_">Third note.</t>
+             </cref>
+          </back>
+       </rfc>
     INPUT
     output = <<~OUTPUT
-      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-        <front>
-          <seriesInfo value='' name='RFC' asciiName='RFC'/>
-          <abstract>
-            <t anchor='A'>A.</t>
-            <t anchor='B'>B.</t>
-            <t>
-            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c711' display='false' source='ISO'>
-               Title A Foreword shall appear in each document. The generic text is
-              shown here. It does not contain requirements, recommendations or
-              permissions. For further information on the Foreword, see#{' '}
-              <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-            </cref>
-            </t>
-            <t anchor='C'>C.</t>
-            <t>
-            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
-            </t>
-          </abstract>
-        </front>
-        <middle>
-          <section>
-          <t>
-            <cref anchor='_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712' source='ISO'> Second note. </cref>
-            </t>
-          </section>
-        </middle>
-        <back/>
-      </rfc>
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
+          <front>
+             <seriesInfo value="" name="RFC" asciiName="RFC"/>
+             <abstract anchor="_">
+                <t anchor="A">
+                   <cref anchor="_" display="false" source="ISO">
+                      Title A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions. For further information on the Foreword, see
+                      <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+                   </cref>
+                   <cref anchor="_" source="ISO">
+                Second note.
+             </cref>
+                   A.
+                </t>
+                <t anchor="B">B.</t>
+                <t>
+                   <cref anchor="_" source="ISO">
+                Third note.
+             </cref>
+                </t>
+                <t>C.</t>
+             </abstract>
+          </front>
+          <middle/>
+          <back>
+             
+             
+             
+          </back>
+       </rfc>
     OUTPUT
     expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s)).to be_equivalent_to Xml::C14n.format(output)
+      .cleanup(Nokogiri::XML(input)).to_s))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 end
