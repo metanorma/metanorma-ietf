@@ -2,7 +2,7 @@
 <grammar ns='https://www.metanorma.org/ns/standoc' xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <include href="relaton-ietf.rng"/>
   <include href="isodoc.rng">
-    <define name="ParagraphAttrs">
+    <define name="ParagraphAttributes">
       <optional>
         <attribute name="align">
           <ref name="Alignments"/>
@@ -22,7 +22,7 @@
         <attribute name="indent"/>
       </optional>
     </define>
-    <define name="UlAttr">
+    <define name="UlAttributes">
       <optional>
         <attribute name="nobullet">
           <data type="boolean"/>
@@ -48,7 +48,7 @@
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="OlAttr">
+    <define name="OlAttributes">
       <attribute name="type">
         <choice>
           <value>roman</value>
@@ -80,7 +80,7 @@
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="DlAttr">
+    <define name="DlAttributes">
       <optional>
         <attribute name="newline"/>
       </optional>
@@ -127,7 +127,7 @@
         </oneOrMore>
       </element>
     </define>
-    <define name="NoteAttr">
+    <define name="NoteAttributes">
       <optional>
         <attribute name="removeInRFC"/>
       </optional>
@@ -140,7 +140,7 @@
         <ref name="paragraph"/>
       </oneOrMore>
     </define>
-    <define name="PreAttr">
+    <define name="PreAttributes">
       <optional>
         <attribute name="alt"/>
       </optional>
@@ -148,12 +148,12 @@
         <attribute name="align"/>
       </optional>
     </define>
-    <define name="ImageAttr" combine="interleave">
+    <define name="ImageAttributes" combine="interleave">
       <optional>
         <attribute name="align"/>
       </optional>
     </define>
-    <define name="SourceAttr" combine="interleave">
+    <define name="SourceAttributes" combine="interleave">
       <optional>
         <attribute name="number"/>
       </optional>
@@ -207,7 +207,7 @@
         <ref name="erefTypeURI"/>
       </element>
     </define>
-    <define name="TableAttr" combine="interleave">
+    <define name="TableAttributes" combine="interleave">
       <optional>
         <attribute name="number"/>
       </optional>

@@ -32,8 +32,7 @@ module Metanorma
       end
 
       def workgroup_validate(doc)
-        return if @workgroups.empty?
-
+        @workgroups.empty? and return
         doc.xpath("//bibdata/ext/editorialgroup/workgroup").each do |wg|
           wg_norm = wg.text.sub(/ (Working|Research) Group$/, "")
           @workgroups.include?(wg_norm) and next

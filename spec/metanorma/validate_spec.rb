@@ -21,7 +21,8 @@ RSpec.describe Metanorma::Ietf do
       image::spec/assets/Example.svg[]
     INPUT
     if File.exist?("test.err.html")
-      expect(File.read("test.err.html")).not_to include("is not SVG")
+      expect(File.read("test.err.html"))
+        .not_to include("is not SVG")
     end
   end
 
@@ -65,7 +66,8 @@ RSpec.describe Metanorma::Ietf do
         :flush-caches: true
 
       INPUT
-      expect(File.read("test.err.html")).to include("unrecognised working group")
+      expect(File.read("test.err.html"))
+        .to include("unrecognised working group")
     end
   end
 
@@ -82,7 +84,8 @@ RSpec.describe Metanorma::Ietf do
 
       INPUT
       if File.exist?("test.err.html")
-        expect(File.read("test.err.html")).not_to include("unrecognised working group")
+        expect(File.read("test.err.html"))
+          .not_to include("unrecognised working group")
       end
     end
   end
@@ -114,10 +117,30 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     if File.exist?("test.err.html")
-      expect(File.read("test.err.html")).to include("No matching review for cref:​[xyz]")
-      expect(File.read("test.err.html")).to include("No matching review for cref:​[abc]")
-      expect(File.read("test.err.html")).not_to include("No matching review for cref:​[def]")
+      expect(File.read("test.err.html"))
+        .to include("No matching review for cref:​[xyz]")
+      expect(File.read("test.err.html"))
+        .to include("No matching review for cref:​[abc]")
+      expect(File.read("test.err.html"))
+        .not_to include("No matching review for cref:​[def]")
     end
+  end
+
+  it "validates document against Metanorma XML schema" do
+    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      = A
+      X
+      :docfile: test.adoc
+      :docnumber: 21
+      :no-pdf:
+
+      == Clause
+
+      [keep-with-next=mid-air]
+      Para
+    INPUT
+    expect(File.read("test.err.html"))
+      .to include('value of attribute "keep-with-next" is invalid; must be a boolean')
   end
 
   context "when xref_error.adoc compilation" do

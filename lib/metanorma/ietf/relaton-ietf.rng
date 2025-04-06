@@ -34,6 +34,9 @@
         <ref name="ipr"/>
       </optional>
       <optional>
+        <ref name="processing-instructions"/>
+      </optional>
+      <optional>
         <ref name="consensus"/>
       </optional>
       <optional>
@@ -56,9 +59,6 @@
       </optional>
       <optional>
         <ref name="show-on-front-page"/>
-      </optional>
-      <optional>
-        <ref name="processing-instructions"/>
       </optional>
     </define>
     <define name="editorialgroup">
