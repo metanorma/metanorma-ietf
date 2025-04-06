@@ -16,8 +16,8 @@ module Metanorma
       end
 
       def submission_validate(doc)
-        stream = doc.at(("//bibdata/series[@type = 'stream']/title"))&.text
-        status = doc.at(("//bibdata/status/stage"))&.text
+        stream = doc.at("//bibdata/series[@type = 'stream']/title")&.text
+        status = doc.at("//bibdata/status/stage")&.text
         stream == "editorial" && status != "informational" and
           @log.add("Document Attributes", nil,
                    "Editorial stream must have Informational status")
@@ -43,10 +43,8 @@ module Metanorma
         end
       end
 
-      def validate(doc)
-        content_validate(doc)
-        schema_validate(formattedstr_strip(doc.dup),
-                        File.join(File.dirname(__FILE__), "ietf.rng"))
+      def schema_file
+        "ietf.rng"
       end
 
       def cache_workgroup(_node)
