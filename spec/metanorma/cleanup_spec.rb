@@ -565,11 +565,11 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR.sub('<language>', '<version> </version><language>')}
           <sections>
              <p id="_">
+                <bookmark id="_"/>
                 ABC
                 <bookmark id="_"/>
                 DEF
              </p>
-             <bookmark id="_"/>
           </sections>
           <review-container>
              <review id="def" reviewer="(Unknown)" date="2000-01-01T00:00:00Z" type="todo" from="_" to="_">
