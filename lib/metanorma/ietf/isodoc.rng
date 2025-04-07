@@ -2332,25 +2332,31 @@ links within an SVG file, so that the SVG file can hyperlink to anchors within t
     </element>
   </define>
   <define name="ul_li">
-    <a:documentation>Unorderd list item for standards documents</a:documentation>
+    <a:documentation>Unordered list item for standards documents</a:documentation>
     <element name="li">
       <ref name="OptionalId"/>
-      <optional>
-        <attribute name="uncheckedcheckbox">
-          <a:documentation>Include a checkbox for the list item</a:documentation>
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="checkedcheckbox">
-          <a:documentation>Check the checkbox for the list item</a:documentation>
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <oneOrMore>
-        <ref name="BasicBlock"/>
-      </oneOrMore>
+      <ref name="UlLiAttributes"/>
+      <ref name="UlLiBody"/>
     </element>
+  </define>
+  <define name="UlLiBody">
+    <oneOrMore>
+      <ref name="BasicBlock"/>
+    </oneOrMore>
+  </define>
+  <define name="UlLiAttributes">
+    <optional>
+      <attribute name="uncheckedcheckbox">
+        <a:documentation>Include a checkbox for the list item</a:documentation>
+        <data type="boolean"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="checkedcheckbox">
+        <a:documentation>Check the checkbox for the list item</a:documentation>
+        <data type="boolean"/>
+      </attribute>
+    </optional>
   </define>
   <define name="floating-title">
     <a:documentation>A floating title, outside of the clause hierarchy of the document</a:documentation>
