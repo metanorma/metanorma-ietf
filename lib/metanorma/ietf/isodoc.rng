@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  instantiations of this grammar may replace leaf strings
-  with more elaborated types; e.g. title (text) replaced with
-  title-main, title-intro, title-part; type replaced with
-  enum.
-  
-  some renaming at leaf nodes is permissible
-  
-  obligations can change both from optional to mandatory,
-  and from mandatory to optional; optional elements may
-  be omitted; freely positioned alternatives may be replaced
-  with strict ordering
-  
-  DO NOT introduce a namespace here. We do not want a distinct namespace
-  for these elements, and a distinct namespace for any grammar inheriting
-  these elements; we just want one namespace for any child grammars
-  of this.
--->
-<!-- VERSION v2.0.2 -->
 <grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<!-- VERSION v2.0.3 -->
+
+  <!--
+    ALERT: cannot have root comments, because of https://github.com/metanorma/metanorma/issues/437
+    
+    instantiations of this grammar may replace leaf strings
+    with more elaborated types; e.g. title (text) replaced with
+    title-main, title-intro, title-part; type replaced with
+    enum.
+    
+    some renaming at leaf nodes is permissible
+    
+    obligations can change both from optional to mandatory,
+    and from mandatory to optional; optional elements may
+    be omitted; freely positioned alternatives may be replaced
+    with strict ordering
+    
+    DO NOT introduce a namespace here. We do not want a distinct namespace
+    for these elements, and a distinct namespace for any grammar inheriting
+    these elements; we just want one namespace for any child grammars
+    of this.
+  -->
   <include href="reqt.rng"/>
   <include href="basicdoc.rng">
     <define name="amend">
@@ -32,15 +35,6 @@
           </ref>
         </zeroOrMore>
       </element>
-    </define>
-    <define name="fn" combine="interleave">
-      <optional>
-        <attribute name="hiddenref">
-          <a:documentation>If true, number the footnote as normal, but suppress display of the footnote reference in the document body.
-This is done if the footnote reference is already presented in some other form, e.g. within a figure image.</a:documentation>
-          <data type="boolean"/>
-        </attribute>
-      </optional>
     </define>
     <define name="index-primary">
       <element name="primary">
@@ -423,20 +417,12 @@ normative or informative references, some split references into sections organiz
         </oneOrMore>
       </choice>
     </define>
-    <define name="TdAttributes" combine="interleave">
-      <attribute name="style">
-        <a:documentation>CSS style: only background-color supported</a:documentation>
-      </attribute>
-    </define>
-    <define name="ThAttributes" combine="interleave">
-      <attribute name="style">
-        <a:documentation>CSS style: only background-color supported</a:documentation>
-      </attribute>
-    </define>
     <define name="TrAttributes">
-      <attribute name="style">
-        <a:documentation>CSS style: only background-color supported</a:documentation>
-      </attribute>
+      <optional>
+        <attribute name="style">
+          <a:documentation>CSS style: only background-color supported</a:documentation>
+        </attribute>
+      </optional>
     </define>
     <define name="table-note">
       <element name="note">
@@ -500,6 +486,22 @@ gives an explicit page orientation</a:documentation>
     </define>
   </include>
   <!-- end overrides -->
+  <define name="FnAttributes" combine="interleave">
+    <optional>
+      <attribute name="hiddenref">
+        <a:documentation>If true, number the footnote as normal, but suppress display of the footnote reference in the document body.
+This is done if the footnote reference is already presented in some other form, e.g. within a figure image.</a:documentation>
+        <data type="boolean"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="TdAttributes" combine="interleave">
+    <optional>
+      <attribute name="style">
+        <a:documentation>CSS style: only background-color supported</a:documentation>
+      </attribute>
+    </optional>
+  </define>
   <define name="NumberingAttributes" combine="interleave">
     <optional>
       <attribute name="number">
@@ -675,6 +677,13 @@ titlecase, or lowercase</a:documentation>
     <optional>
       <attribute name="label">
         <a:documentation>Substitute the expected label of the item being cross-referenced with a custom label (e.g. "subclause" instead of "clause")</a:documentation>
+      </attribute>
+    </optional>
+  </define>
+  <define name="Basic-Section-Attributes" combine="interleave">
+    <optional>
+      <attribute name="obligation">
+        <ref name="ObligationType"/>
       </attribute>
     </optional>
   </define>
@@ -1192,13 +1201,6 @@ numbers</a:documentation>
       </attribute>
     </optional>
   </define>
-  <define name="Basic-Section-Attributes" combine="interleave">
-    <optional>
-      <attribute name="obligation">
-        <ref name="ObligationType"/>
-      </attribute>
-    </optional>
-  </define>
   <define name="reference-clause">
     <a:documentation>References clause with recursive nesting</a:documentation>
     <element name="clause">
@@ -1239,7 +1241,7 @@ numbers</a:documentation>
       </choice>
     </attribute>
     <attribute name="flavor">
-      <a:documentation>Metanorma flavor, indicating SDO whose requiremnts the realisation aligns to</a:documentation>
+      <a:documentation>Metanorma flavor, indicating SDO whose requirements the realisation aligns to</a:documentation>
     </attribute>
   </define>
   <define name="standard-document">
@@ -1249,6 +1251,11 @@ numbers</a:documentation>
       <ref name="bibdata">
         <a:documentation>Bibliographic description of the document itself, expressed in the Relaton model</a:documentation>
       </ref>
+      <zeroOrMore>
+        <ref name="termdocsource">
+          <a:documentation>Source for term definitions in the document</a:documentation>
+        </ref>
+      </zeroOrMore>
       <optional>
         <ref name="misccontainer">
           <a:documentation>Extension point for extraneous elements that need to be added to standards document as data</a:documentation>
@@ -1259,40 +1266,43 @@ numbers</a:documentation>
           <a:documentation>Front matter that is repeated at the start of documents issued from an SDO, with content not specific to the document</a:documentation>
         </ref>
       </optional>
-      <optional>
-        <ref name="preface">
-          <a:documentation>Prefatory sections</a:documentation>
-        </ref>
-      </optional>
-      <ref name="sections">
-        <a:documentation>Main body of document</a:documentation>
-      </ref>
-      <zeroOrMore>
-        <ref name="annex">
-          <a:documentation>Annex sections</a:documentation>
-        </ref>
-      </zeroOrMore>
-      <optional>
-        <ref name="bibliography">
-          <a:documentation>Bibliographic sections</a:documentation>
-        </ref>
-      </optional>
-      <zeroOrMore>
-        <ref name="indexsect">
-          <a:documentation>Index of the document</a:documentation>
-        </ref>
-      </zeroOrMore>
-      <optional>
-        <ref name="colophon">
-          <a:documentation>Colophon or postface material</a:documentation>
-        </ref>
-      </optional>
+      <ref name="DocumentBody"/>
       <optional>
         <ref name="review-container">
           <a:documentation>Annotations to the document</a:documentation>
         </ref>
       </optional>
     </element>
+  </define>
+  <define name="DocumentBody">
+    <optional>
+      <ref name="preface">
+        <a:documentation>Prefatory sections</a:documentation>
+      </ref>
+    </optional>
+    <ref name="sections">
+      <a:documentation>Main body of document</a:documentation>
+    </ref>
+    <zeroOrMore>
+      <ref name="annex">
+        <a:documentation>Annex sections</a:documentation>
+      </ref>
+    </zeroOrMore>
+    <optional>
+      <ref name="bibliography">
+        <a:documentation>Bibliographic sections</a:documentation>
+      </ref>
+    </optional>
+    <zeroOrMore>
+      <ref name="indexsect">
+        <a:documentation>Index of the document</a:documentation>
+      </ref>
+    </zeroOrMore>
+    <optional>
+      <ref name="colophon">
+        <a:documentation>Colophon or postface material</a:documentation>
+      </ref>
+    </optional>
   </define>
   <define name="misccontainer">
     <a:documentation>Elements added to metanorma-extension are open-ended, and constitute source data</a:documentation>
@@ -1608,9 +1618,7 @@ used in document amendments</a:documentation>
   <define name="term">
     <a:documentation>Terminology entry with its definition</a:documentation>
     <element name="term">
-      <ref name="OptionalId"/>
-      <ref name="LocalizedStringAttributes"/>
-      <ref name="BlockAttributes"/>
+      <ref name="TermAttributes"/>
       <oneOrMore>
         <ref name="preferred">
           <a:documentation>One or more names under which the term being defined is canonically known</a:documentation>
@@ -1661,6 +1669,11 @@ used in document amendments</a:documentation>
         <a:documentation>Bibliographic references for the managed term</a:documentation>
       </ref>
     </element>
+  </define>
+  <define name="TermAttributes">
+    <ref name="OptionalId"/>
+    <ref name="LocalizedStringAttributes"/>
+    <ref name="BlockAttributes"/>
   </define>
   <define name="preferred">
     <element name="preferred">
@@ -2323,25 +2336,31 @@ links within an SVG file, so that the SVG file can hyperlink to anchors within t
     </element>
   </define>
   <define name="ul_li">
-    <a:documentation>Unorderd list item for standards documents</a:documentation>
+    <a:documentation>Unordered list item for standards documents</a:documentation>
     <element name="li">
       <ref name="OptionalId"/>
-      <optional>
-        <attribute name="uncheckedcheckbox">
-          <a:documentation>Include a checkbox for the list item</a:documentation>
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="checkedcheckbox">
-          <a:documentation>Check the checkbox for the list item</a:documentation>
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <oneOrMore>
-        <ref name="BasicBlock"/>
-      </oneOrMore>
+      <ref name="UlLiAttributes"/>
+      <ref name="UlLiBody"/>
     </element>
+  </define>
+  <define name="UlLiBody">
+    <oneOrMore>
+      <ref name="BasicBlock"/>
+    </oneOrMore>
+  </define>
+  <define name="UlLiAttributes">
+    <optional>
+      <attribute name="uncheckedcheckbox">
+        <a:documentation>Include a checkbox for the list item</a:documentation>
+        <data type="boolean"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="checkedcheckbox">
+        <a:documentation>Check the checkbox for the list item</a:documentation>
+        <data type="boolean"/>
+      </attribute>
+    </optional>
   </define>
   <define name="floating-title">
     <a:documentation>A floating title, outside of the clause hierarchy of the document</a:documentation>

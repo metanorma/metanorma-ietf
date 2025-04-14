@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar ns='https://www.metanorma.org/ns/standoc' xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-  <!--
-    VERSION v1.2.1
-    Currently we inherit from a namespaced grammar, isostandard. Until we inherit from isodoc,
-    we cannot have a new default namespace: we will end up with a grammar with two different
-    namespaces, one for isostandard and one for ietf additions. And we do not want that.
-  -->
   <include href="relaton-ietf.rng"/>
   <include href="isodoc.rng">
-    <define name="ParagraphAttrs">
+    <define name="ParagraphAttributes">
       <optional>
         <attribute name="align">
           <ref name="Alignments"/>
@@ -28,7 +22,7 @@
         <attribute name="indent"/>
       </optional>
     </define>
-    <define name="UlAttr">
+    <define name="UlAttributes">
       <optional>
         <attribute name="nobullet">
           <data type="boolean"/>
@@ -54,7 +48,7 @@
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="OlAttr">
+    <define name="OlAttributes">
       <attribute name="type">
         <choice>
           <value>roman</value>
@@ -86,7 +80,7 @@
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="DlAttr">
+    <define name="DlAttributes">
       <optional>
         <attribute name="newline"/>
       </optional>
@@ -106,34 +100,12 @@
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="review">
-      <element name="review">
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-        <attribute name="reviewer"/>
-        <optional>
-          <attribute name="date">
-            <data type="dateTime"/>
-          </attribute>
-        </optional>
-        <attribute name="from">
-          <data type="IDREF"/>
-        </attribute>
-        <optional>
-          <attribute name="to">
-            <data type="IDREF"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="display"/>
-        </optional>
-        <oneOrMore>
-          <ref name="paragraph"/>
-        </oneOrMore>
-      </element>
+    <define name="ReviewAttributes" combine="interleave">
+      <optional>
+        <attribute name="display"/>
+      </optional>
     </define>
-    <define name="NoteAttr">
+    <define name="NoteAttributes">
       <optional>
         <attribute name="removeInRFC"/>
       </optional>
@@ -146,7 +118,7 @@
         <ref name="paragraph"/>
       </oneOrMore>
     </define>
-    <define name="PreAttr">
+    <define name="PreAttributes">
       <optional>
         <attribute name="alt"/>
       </optional>
@@ -154,12 +126,12 @@
         <attribute name="align"/>
       </optional>
     </define>
-    <define name="ImageAttr" combine="interleave">
+    <define name="ImageAttributes" combine="interleave">
       <optional>
         <attribute name="align"/>
       </optional>
     </define>
-    <define name="SourceAttr" combine="interleave">
+    <define name="SourceAttributes" combine="interleave">
       <optional>
         <attribute name="number"/>
       </optional>
@@ -213,7 +185,7 @@
         <ref name="erefTypeURI"/>
       </element>
     </define>
-    <define name="TableAttr" combine="interleave">
+    <define name="TableAttributes" combine="interleave">
       <optional>
         <attribute name="number"/>
       </optional>
@@ -225,17 +197,7 @@
       </optional>
     </define>
     <define name="Clause-Section">
-      <optional>
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="language"/>
-      </optional>
-      <optional>
-        <attribute name="script"/>
-      </optional>
+      <ref name="Section-Attributes"/>
       <optional>
         <attribute name="numbered"/>
       </optional>
@@ -245,17 +207,6 @@
       <optional>
         <attribute name="toc"/>
       </optional>
-      <optional>
-        <attribute name="inline-header">
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <attribute name="obligation">
-        <choice>
-          <value>normative</value>
-          <value>informative</value>
-        </choice>
-      </attribute>
       <optional>
         <ref name="section-title"/>
       </optional>
@@ -274,23 +225,7 @@
     </define>
     <define name="annex">
       <element name="annex">
-        <optional>
-          <attribute name="id">
-            <data type="ID"/>
-          </attribute>
-        </optional>
-        <optional>
-          <attribute name="language"/>
-        </optional>
-        <optional>
-          <attribute name="script"/>
-        </optional>
-        <attribute name="obligation">
-          <choice>
-            <value>normative</value>
-            <value>informative</value>
-          </choice>
-        </attribute>
+        <ref name="Annex-Section-Attributes"/>
         <optional>
           <attribute name="numbered"/>
         </optional>
@@ -314,17 +249,7 @@
       </element>
     </define>
     <define name="Content-Section">
-      <optional>
-        <attribute name="id">
-          <data type="ID"/>
-        </attribute>
-      </optional>
-      <optional>
-        <attribute name="language"/>
-      </optional>
-      <optional>
-        <attribute name="script"/>
-      </optional>
+      <ref name="Section-Attributes"/>
       <optional>
         <attribute name="numbered"/>
       </optional>
@@ -358,51 +283,9 @@
             <data type="boolean"/>
           </attribute>
         </optional>
-        <element name="primary">
-          <oneOrMore>
-            <ref name="PureTextElement"/>
-          </oneOrMore>
-        </element>
-        <optional>
-          <element name="secondary">
-            <oneOrMore>
-              <ref name="PureTextElement"/>
-            </oneOrMore>
-          </element>
-        </optional>
-        <optional>
-          <element name="tertiary">
-            <oneOrMore>
-              <ref name="PureTextElement"/>
-            </oneOrMore>
-          </element>
-        </optional>
-      </element>
-    </define>
-    <define name="standard-document">
-      <element name="metanorma">
-        <ref name="Root-Attributes"/>
-        <ref name="bibdata"/>
-        <zeroOrMore>
-          <ref name="termdocsource"/>
-        </zeroOrMore>
-        <optional>
-          <ref name="misccontainer"/>
-        </optional>
-        <optional>
-          <ref name="boilerplate"/>
-        </optional>
-        <ref name="preface"/>
-        <oneOrMore>
-          <ref name="sections"/>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="annex"/>
-        </zeroOrMore>
-        <ref name="bibliography"/>
-        <zeroOrMore>
-          <ref name="indexsect"/>
-        </zeroOrMore>
+        <ref name="index-primary"/>
+        <ref name="index-secondary"/>
+        <ref name="index-tertiary"/>
       </element>
     </define>
   </include>
@@ -415,11 +298,6 @@
   </define>
   <define name="bcp14">
     <element name="bcp14">
-      <text/>
-    </element>
-  </define>
-  <define name="comment">
-    <element name="comment">
       <text/>
     </element>
   </define>

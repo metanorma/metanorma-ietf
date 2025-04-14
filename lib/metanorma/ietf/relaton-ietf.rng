@@ -1,66 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0">
   <include href="biblio-standoc.rng">
-    <define name="DocumentType">
-      <choice>
-        <value>rfc</value>
-        <value>internet-draft</value>
-      </choice>
-    </define>
-    <define name="BibDataExtensionType">
-      <optional>
-        <attribute name="schema-version"/>
-      </optional>
-      <optional>
-        <ref name="doctype"/>
-      </optional>
-      <optional>
-        <ref name="docsubtype"/>
-      </optional>
-      <ref name="flavor"/>
-      <zeroOrMore>
-        <ref name="editorialgroup"/>
-      </zeroOrMore>
-      <zeroOrMore>
-        <ref name="ics"/>
-      </zeroOrMore>
-      <zeroOrMore>
-        <ref name="area"/>
-      </zeroOrMore>
-      <optional>
-        <ref name="stream"/>
-      </optional>
-      <optional>
-        <ref name="ipr"/>
-      </optional>
-      <optional>
-        <ref name="consensus"/>
-      </optional>
-      <optional>
-        <ref name="index-include"/>
-      </optional>
-      <optional>
-        <ref name="ipr-extract"/>
-      </optional>
-      <optional>
-        <ref name="sort-refs"/>
-      </optional>
-      <optional>
-        <ref name="sym-refs"/>
-      </optional>
-      <optional>
-        <ref name="toc-include"/>
-      </optional>
-      <optional>
-        <ref name="toc-depth"/>
-      </optional>
-      <optional>
-        <ref name="show-on-front-page"/>
-      </optional>
-      <optional>
-        <ref name="processing-instructions"/>
-      </optional>
-    </define>
     <define name="editorialgroup">
       <element name="editorialgroup">
         <zeroOrMore>
@@ -68,7 +8,76 @@
         </zeroOrMore>
       </element>
     </define>
+    <define name="DocumentType">
+      <choice>
+        <value>rfc</value>
+        <value>internet-draft</value>
+      </choice>
+    </define>
   </include>
+  <define name="BibDataExtensionType" combine="interleave">
+    <zeroOrMore>
+      <ref name="area">
+        <a:documentation>which IETF area this document relates to. Value should be either the full name or the abbreviation of one of the IETF areas as
+listed on &lt;http://www.ietf.org/iesg/area.html</a:documentation>
+      </ref>
+    </zeroOrMore>
+    <optional>
+      <ref name="stream">
+        <a:documentation>Document stream of document described in https://tools.ietf.org/html/rfc7841</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="ipr">
+        <a:documentation>IP status of document. See https://tools.ietf.org/html/rfc7991#section-2.45.5</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="processing-instructions">
+        <a:documentation>Processing instructions which will be added to generated RFC XML in the form `&lt;?rfc keyword='value'?&gt;</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="consensus">
+        <a:documentation>Document consensus for this document       </a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="index-include">
+        <a:documentation>Specifies whether formatter should include an index in generated files. If the source file has no `&lt;iref&gt;` elements, an index is never generated</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="ipr-extract">
+        <a:documentation>Identifies a section that can be extracted from text. See https://tools.ietf.org/html/rfc7991#section-2.45.6</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="sort-refs">
+        <a:documentation>Specifies whether the prep tool for RFC XML should sort references</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="sym-refs">
+        <a:documentation>Specifies whether the RFC XML formatter should use symbolic references (such as "`[RFC2119]`") or not (such as "`[3]`")</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="toc-include">
+        <a:documentation>Specifies whether the RFC XML formatter should contain a table of contents</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="toc-depth">
+        <a:documentation>Determines the depth of the table-of-contents; e.g. a value of `3` means three levels of heading are included</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="show-on-front-page">
+        <a:documentation>Display organization of author on front page of IAB documents. Applied to all organizations named in the document front matter</a:documentation>
+      </ref>
+    </optional>
+  </define>
   <define name="committee">
     <element name="committee">
       <ref name="IsoWorkgroup"/>
