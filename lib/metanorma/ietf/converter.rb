@@ -119,14 +119,14 @@ module Metanorma
 
       def norm_ref_preface(sect); end
 
-      def clause_parse(attrs, xml, node)
+      def clause_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
         attrs[:toc] = node.attr("toc")
         super
       end
 
-      def annex_parse(attrs, xml, node)
+      def annex_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
         attrs[:toc] = node.attr("toc")
