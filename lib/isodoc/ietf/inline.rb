@@ -3,54 +3,54 @@ module IsoDoc
     class RfcConvert < ::IsoDoc::Convert
       def em_parse(node, out)
         out.em do |e|
-          node.children.each { |n| parse(n, e) }
+          children_parse(node, e)
         end
       end
 
       def sup_parse(node, out)
         out.sup do |e|
-          node.children.each { |n| parse(n, e) }
+          children_parse(node, e)
         end
       end
 
       def sub_parse(node, out)
         out.sub do |e|
-          node.children.each { |n| parse(n, e) }
+          children_parse(node, e)
         end
       end
 
       def tt_parse(node, out)
         out.tt do |e|
-          node.children.each { |n| parse(n, e) }
+          children_parse(node, e)
         end
       end
 
       def strong_parse(node, out)
         out.strong do |e|
-          node.children.each { |n| parse(n, e) }
+          children_parse(node, e)
         end
       end
 
       def bcp14_parse(node, out)
         out.bcp14 do |e|
-          node.children.each { |n| parse(n, e) }
+          children_parse(node, e)
         end
       end
 
       def display_text_parse(node, out)
-        node.children.each { |n| parse(n, out) }
+        children_parse(node, out)
       end
 
       def strike_parse(node, out)
-        node.children.each { |n| parse(n, out) }
+        children_parse(node, out)
       end
 
       def smallcap_parse(node, out)
-        node.children.each { |n| parse(n, out) }
+        children_parse(node, out)
       end
 
       def keyword_parse(node, out)
-        node.children.each { |n| parse(n, out) }
+        children_parse(node, out)
       end
 
       def text_parse(node, out)
@@ -65,8 +65,8 @@ module IsoDoc
                when "MathML"
                  a = node.at(ns("./asciimath"))&.remove
                  a&.children&.text ||
-                 Plurimath::Math
-                 .parse(node.children.to_xml, "mathml").to_asciimath
+                   Plurimath::Math
+                     .parse(node.children.to_xml, "mathml").to_asciimath
                else HTMLEntities.new.encode(node.text)
                end
         out << "#{@openmathdelim} #{stem} #{@closemathdelim}"
@@ -85,7 +85,7 @@ module IsoDoc
       def semx_link_parse(node, out)
         out.eref **attr_code(target: node["target"],
                              brackets: node["style"]) do |l|
-          node.children.each { |n| parse(n, l) }
+          children_parse(node, l)
         end
       end
 
@@ -183,7 +183,11 @@ module IsoDoc
       end
 
       def span_parse(node, out)
-        children_parse(node, out)
+        if node["class"] == "bcp14"
+          bcp14_parse(node, out)
+        else
+          children_parse(node, out)
+        end
       end
     end
   end

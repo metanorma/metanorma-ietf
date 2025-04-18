@@ -56,11 +56,16 @@ module Metanorma
           when :latexmath then stem_parse(node.text, xml, :latexmath, node)
           else
             case node.role
-            when "bcp14" then xml.bcp14 { |s| s << node.text.upcase }
-            else
-              xml << node.text
+            when "bcp14" then bcp14(node, xml)
+            else xml << node.text
             end
           end
+        end
+      end
+
+      def bcp14(node, xml)
+        xml.span **{ class: "bcp14" } do |s|
+          s << node.text.upcase
         end
       end
 

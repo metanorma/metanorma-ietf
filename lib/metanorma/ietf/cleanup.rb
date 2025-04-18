@@ -43,12 +43,11 @@ module Metanorma
                       "NOT RECOMMENDED", "OPTIONAL"].freeze
 
       def bcp14_cleanup(xmldoc)
-        return unless @bcp_bold
-
+        @bcp_bold or return
         xmldoc.xpath("//strong").each do |s|
-          next unless BCP_KEYWORDS.include?(s.text)
-
-          s.name = "bcp14"
+          BCP_KEYWORDS.include?(s.text) or next
+          s["class"] = "bcp14"
+          s.name = "span"
         end
       end
 

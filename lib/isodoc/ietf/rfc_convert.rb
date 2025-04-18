@@ -67,7 +67,7 @@ module IsoDoc
 
       def error_parse(node, out)
         case node.name
-        when "bcp14" then bcp14_parse(node, out)
+        when "bcp14" then bcp14_parse(node, out) # legacy
         when "concept" then concept_parse(node, out)
         when "display-text" then display_text_parse(node, out)
         when "verbal-definition", "non-verbal-representation",

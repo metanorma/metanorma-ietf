@@ -15,18 +15,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       .convert("test", input, false)
     expect(Xml::C14n.format(strip_guid(File.read("test.rfc.xml"))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
-       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3">
-          <front>
-             <title>Document title</title>
-             <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"/>
-             <abstract anchor="_">
-                <t>&lt;pizza&gt;</t>
-             </abstract>
-          </front>
-          <middle/>
-          <back/>
-       </rfc>
-    OUTPUT
+        <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3">
+           <front>
+              <title>Document title</title>
+              <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"/>
+              <abstract anchor="_">
+                 <t>&lt;pizza&gt;</t>
+              </abstract>
+           </front>
+           <middle/>
+           <back/>
+        </rfc>
+      OUTPUT
   end
 
   it "processes inline formatting" do
@@ -35,7 +35,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <preface><foreword>
       <p>
       <em>A</em> <strong>B</strong> <sup>C</sup> <sub>D</sub> <tt>E</tt>
-      <strike>F</strike> <smallcap>G</smallcap> <keyword>I</keyword> <bcp14>must</bcp14> <br/> <hr/>
+      <strike>F</strike> <smallcap>G</smallcap> <keyword>I</keyword>
+      <span class="bcp14">must</span> <span class="random">would</span> <br/> <hr/>
       <bookmark id="H"/> <pagebreak/>
       </p>
       </foreword></preface>
@@ -52,6 +53,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <tt>E</tt>
          F G I
         <bcp14>must</bcp14>
+        would
         <br/>
         <bookmark anchor='H'/>
       </t>
@@ -575,29 +577,29 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     expect(Xml::C14n.format(strip_guid(File.read("test.rfc.xml"))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
-         <?xml version="1.0"?>
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
-      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
-        <front>
-          <title>Document title</title>
-          <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
-          <abstract anchor="_">
-      <t>
-      <abc>X &#x3e; Y
-      A
-      </abc>
-      </t>
-      </abstract>
-        </front>
-        <middle></middle>
-        <back></back>
-      </rfc>
-    OUTPUT
+           <?xml version="1.0"?>
+        <?rfc strict="yes"?>
+        <?rfc compact="yes"?>
+        <?rfc subcompact="no"?>
+        <?rfc tocdepth="4"?>
+        <?rfc symrefs="yes"?>
+        <?rfc sortrefs="yes"?>
+        <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
+          <front>
+            <title>Document title</title>
+            <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
+            <abstract anchor="_">
+        <t>
+        <abc>X &#x3e; Y
+        A
+        </abc>
+        </t>
+        </abstract>
+          </front>
+          <middle></middle>
+          <back></back>
+        </rfc>
+      OUTPUT
   end
 
   it "processes concept markup" do
