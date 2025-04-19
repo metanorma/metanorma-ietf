@@ -56,11 +56,16 @@ module Metanorma
           when :latexmath then stem_parse(node.text, xml, :latexmath, node)
           else
             case node.role
-            when "bcp14" then xml.bcp14 { |s| s << node.text.upcase }
-            else
-              xml << node.text
+            when "bcp14" then bcp14(node, xml)
+            else xml << node.text
             end
           end
+        end
+      end
+
+      def bcp14(node, xml)
+        xml.span **{ class: "bcp14" } do |s|
+          s << node.text.upcase
         end
       end
 
@@ -119,14 +124,14 @@ module Metanorma
 
       def norm_ref_preface(sect); end
 
-      def clause_parse(attrs, xml, node)
+      def clause_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
         attrs[:toc] = node.attr("toc")
         super
       end
 
-      def annex_parse(attrs, xml, node)
+      def annex_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")
         attrs[:removeInRFC] = node.attr("removeInRFC")
         attrs[:toc] = node.attr("toc")

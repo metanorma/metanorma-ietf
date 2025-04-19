@@ -509,7 +509,7 @@ RSpec.describe Metanorma::Ietf do
             <sections>
           <p id='_'>
             I
-            <bcp14>MUST NOT</bcp14>
+            <span class="bcp14">MUST NOT</span>
              do this.
           </p>
         </sections>
