@@ -127,7 +127,7 @@ module IsoDoc
         origin = elem.at(ns("./origin"))
         s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
         termsource_add_modification_text(elem.at(ns("./modification")))
-        while elem&.next_element&.name == "termsource"
+        while elem&.next_element&.name == "source"
           elem << "; #{to_xml(elem.next_element.remove.children)}"
         end
       end

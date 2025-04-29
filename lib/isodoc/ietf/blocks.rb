@@ -57,7 +57,7 @@ module IsoDoc
         end
       end
 
-      def source_parse(node, out)
+      def semx_source_parse(node, out)
         termref_parse(node, out)
       end
 

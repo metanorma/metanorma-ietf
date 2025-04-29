@@ -23,12 +23,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </ul>
       </termexample>
 
-      <termsource status="modified">
+      <source status="modified">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
           <modification>
           <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
         </modification>
-      </termsource></term>
+      </source></term>
 
       <term id="paddy"><preferred><expression><name>paddy</name></expression></preferred>
       <admitted><expression><name>paddy rice</name></expression></admitted>
@@ -47,9 +47,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <ul><li>A</li></ul>
         <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
       </termnote>
-      <termsource status="identical">
+      <source status="identical">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
-      </termsource></term>
+      </source></term>
       </terms>
       </sections>
       </iso-standard>
