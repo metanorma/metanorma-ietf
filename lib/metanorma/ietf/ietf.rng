@@ -100,11 +100,6 @@
         <ref name="note"/>
       </zeroOrMore>
     </define>
-    <define name="ReviewAttributes" combine="interleave">
-      <optional>
-        <attribute name="display"/>
-      </optional>
-    </define>
     <define name="NoteAttributes">
       <optional>
         <attribute name="removeInRFC"/>
@@ -124,19 +119,6 @@
       </optional>
       <optional>
         <attribute name="align"/>
-      </optional>
-    </define>
-    <define name="ImageAttributes" combine="interleave">
-      <optional>
-        <attribute name="align"/>
-      </optional>
-    </define>
-    <define name="SourceAttributes" combine="interleave">
-      <optional>
-        <attribute name="number"/>
-      </optional>
-      <optional>
-        <attribute name="markers"/>
       </optional>
     </define>
     <define name="xref">
@@ -184,17 +166,6 @@
       <element name="source">
         <ref name="erefTypeURI"/>
       </element>
-    </define>
-    <define name="TableAttributes" combine="interleave">
-      <optional>
-        <attribute name="number"/>
-      </optional>
-      <optional>
-        <attribute name="align"/>
-      </optional>
-      <optional>
-        <attribute name="width"/>
-      </optional>
     </define>
     <define name="Clause-Section">
       <ref name="Section-Attributes"/>
@@ -288,18 +259,30 @@
         <ref name="index-tertiary"/>
       </element>
     </define>
+    <define name="TextElement" combine="choice">
+      <ref name="review"/>
+    </define>
   </include>
   <!-- end overrides -->
-  <define name="TextElement" combine="choice">
-    <choice>
-      <ref name="bcp14"/>
-      <ref name="review"/>
-    </choice>
+  <define name="ReviewAttributes" combine="interleave">
+    <optional>
+      <attribute name="display"/>
+    </optional>
   </define>
-  <define name="bcp14">
-    <element name="bcp14">
-      <text/>
-    </element>
+  <define name="ImageAttributes" combine="interleave">
+    <optional>
+      <attribute name="align"/>
+    </optional>
+  </define>
+  <define name="SourceAttributes" combine="interleave">
+    <optional>
+      <attribute name="markers"/>
+    </optional>
+  </define>
+  <define name="TableAttributes" combine="interleave">
+    <optional>
+      <attribute name="align"/>
+    </optional>
   </define>
   <define name="erefTypeURI">
     <optional>
