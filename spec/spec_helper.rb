@@ -65,9 +65,16 @@ def strip_guid(xml)
     .gsub(%r{ from="_[^"]+"}, ' from="_"')
     .gsub(%r{ to="_[^"]+"}, ' to="_"')
     .gsub(%r{ target="_[^"]+"}, ' target="_"')
-    .gsub(%r{ anchor="_[^"]+"}, ' anchor="_"')
+    .gsub(%r( anchor="_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), ' anchor="_"')
+    .gsub(%r( bibitemid="_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), ' bibitemid="_"')
     .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched/>")
     .gsub(%r{ schema-version="[^"]+"}, "")
+end
+
+def mock_preserve_idrefs
+  allow_any_instance_of(Metanorma::Standoc::Cleanup)
+    .to receive(:contenthash_id_update_idrefs) do |_instance, doc, *_args|
+    end
 end
 
 def dtd_absolute_path

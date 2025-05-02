@@ -589,7 +589,7 @@ RSpec.describe Metanorma::Ietf do
           </presentation-metadata>
          </metanorma-extension>
                <preface>
-                 <abstract id='_'>
+                 <abstract id='_' anchor="_abstract">
                  <title>Abstract</title>
                    <p id='_'>This is the abstract of the document</p>
                    <p id='_'>This is the second paragraph of the abstract of the document.</p>
@@ -600,7 +600,7 @@ RSpec.describe Metanorma::Ietf do
                  </abstract>
                </preface>
                <sections>
-                 <clause id='_' language='en' inline-header='false' obligation='normative'>
+                 <clause id='_' anchor="_clause_1" language='en' inline-header='false' obligation='normative'>
                    <title>Clause 1</title>
                  </clause>
                </sections>
@@ -623,11 +623,11 @@ RSpec.describe Metanorma::Ietf do
         == References
         * [[[I-D.abarth-cake,IETF(I-D.draft-abarth-cake-01)]]], _Title_
       INPUT
-      doc = Asciidoctor.convert(input, *OPTIONS).gsub(
+      doc = strip_guid(Asciidoctor.convert(input, *OPTIONS).gsub(
         / schema-version="[^"]+"/, ""
-      )
-      expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
-      expect(doc).to include('<bibitem id="I-D.abarth-cake" type="standard">')
+      ))
+      expect(doc).to include('<eref type="inline" bibitemid="_" citeas="Internet-Draft draft-abarth-cake-01"/>')
+      expect(doc).to include('<bibitem id="_" type="standard" anchor="I-D.abarth-cake">')
       expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
     end
   end
@@ -650,11 +650,11 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
        #{BLANK_HDR}
         <sections>
-          <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+          <clause id='_' anchor="_clause" numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
             <title>Clause</title>
           </clause>
         </sections>
-        <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+        <annex id='_' anchor="_appendix" numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
           <title>Appendix</title>
         </annex>
       </metanorma>

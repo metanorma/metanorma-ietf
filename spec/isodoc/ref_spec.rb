@@ -309,7 +309,7 @@ RSpec.describe IsoDoc::Ietf do
              </section>
           </middle>
           <back>
-             <references anchor="_">
+             <references anchor="_normative_references">
                 <name>Normative References</name>
                 <reference target="https://www.rfc-editor.org/info/rfc2119" anchor="RFC2119">
                    <stream>IETF</stream>
@@ -405,7 +405,7 @@ RSpec.describe IsoDoc::Ietf do
                    </front>
                 </reference>
              </references>
-             <references anchor="_">
+             <references anchor="_bibliography">
                 <name>Bibliography</name>
                 <reference anchor="ISBN">
                    <front>
@@ -671,7 +671,7 @@ RSpec.describe IsoDoc::Ietf do
              </section>
           </middle>
           <back>
-             <references anchor="_">
+             <references anchor="_normative_references">
                 <name>Normative References</name>
                 <reference anchor="ISO712">
                    <front>
@@ -713,7 +713,7 @@ RSpec.describe IsoDoc::Ietf do
                    <refcontent>ISO 20483:2013-2014</refcontent>
                 </reference>
              </references>
-             <references anchor="_">
+             <references anchor="_bibliography">
                 <name>Bibliography</name>
                 <reference anchor="ISBN">
                    <front>
@@ -1002,15 +1002,15 @@ RSpec.describe IsoDoc::Ietf do
             </author>
           </front>
           <middle>
-            <section anchor="_">
+            <section anchor="_clause">
               <name>Clause</name>
               <t anchor="_">A</t>
             </section>
           </middle>
                    <back>
-             <references anchor="_">
+             <references anchor="_references">
                <name>References</name>
-               <references anchor="_">
+               <references anchor="_normative_references">
                  <name>Normative references</name>
                  <referencegroup target="https://www.rfc-editor.org/info/std69" anchor="a">
                    <reference target="https://www.rfc-editor.org/info/rfc5730" anchor="_">

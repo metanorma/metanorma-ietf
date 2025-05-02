@@ -26,7 +26,7 @@ module Metanorma
 
       def cref_cleanup(xmldoc)
         xmldoc.xpath("//crefref").each do |r|
-          if c = xmldoc.at("//review[@id = '#{r.text}']")
+          if c = xmldoc.at("//review[@anchor = '#{r.text}']")
             id = "_#{UUIDTools::UUID.random_create}"
             c["from"] = id
             c["to"] = id

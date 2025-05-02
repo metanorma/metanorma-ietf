@@ -37,7 +37,7 @@ RSpec.describe Metanorma::Ietf do
     xml = <<~OUTPUT
            #{BLANK_HDR}
            <sections>
-          <ul id='id' nobullet='true' spacing='compact' indent='5' bare='true'>
+          <ul id="_" anchor="id" nobullet='true' spacing='compact' indent='5' bare='true'>
             <li>
               <p id='_'>First</p>
             </li>
@@ -47,7 +47,7 @@ RSpec.describe Metanorma::Ietf do
               <p id='_'>entry2</p>
             </li>
           </ul>
-          <ol id='id1' type='alphabet' group='6' spacing='normal' start='2' indent='5'>
+          <ol id="_" anchor="id1" type='alphabet' group='6' spacing='normal' start='2' indent='5'>
             <li>
               <p id='_'>First</p>
             </li>
