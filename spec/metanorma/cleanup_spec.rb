@@ -184,33 +184,33 @@ RSpec.describe Metanorma::Ietf do
       * [[[iso216,ISO 216:2001]]], _Reference_
     INPUT
     output = <<~OUTPUT
-            #{BLANK_HDR}
-              <preface><foreword id="_" obligation="informative">
-              <title>Foreword</title>
-              <p id="_">
-              <eref type='inline' displayFormat='of' relative='123' bibitemid='_' citeas='ISO&#xa0;216:2001'><display-text>text</display-text></eref>
-      <xref target='_' format='counter'><display-text>text1</display-text></xref>
-            </p>
-            </foreword></preface><sections>
-            </sections><bibliography><references id="_" anchor="biblio" obligation="informative" normative="true">
-              <title>Normative References</title>
-              <bibitem id="_" anchor="iso216" type="standard">
-               <title format="text/plain">Reference</title>
-               <docidentifier>ISO 216:2001</docidentifier>
-               <docnumber>216</docnumber>
-               <date type="published">
-                 <on>2001</on>
-               </date>
-               <contributor>
-                 <role type="publisher"/>
-                 <organization>
-                   <name>ISO</name>
-                 </organization>
-               </contributor>
-             </bibitem>
-            </references>
-            </bibliography>
-            </metanorma>
+      #{BLANK_HDR}
+        <preface><foreword id="_" obligation="informative">
+        <title>Foreword</title>
+        <p id="_">
+        <eref type='inline' displayFormat='of' relative='123' bibitemid='iso216' citeas='ISO&#xa0;216:2001'><display-text>text</display-text></eref>
+      <xref target='biblio' format='counter'><display-text>text1</display-text></xref>
+      </p>
+      </foreword></preface><sections>
+      </sections><bibliography><references id="_" anchor="biblio" obligation="informative" normative="true">
+        <title>Normative References</title>
+        <bibitem id="_" anchor="iso216" type="standard">
+         <title format="text/plain">Reference</title>
+         <docidentifier>ISO 216:2001</docidentifier>
+         <docnumber>216</docnumber>
+         <date type="published">
+           <on>2001</on>
+         </date>
+         <contributor>
+           <role type="publisher"/>
+           <organization>
+             <name>ISO</name>
+           </organization>
+         </contributor>
+       </bibitem>
+      </references>
+      </bibliography>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -230,7 +230,7 @@ RSpec.describe Metanorma::Ietf do
       <preface><foreword id="_" obligation="informative">
         <title>Foreword</title>
         <p id="_">
-        <eref type="inline" bibitemid="_" citeas="ISO&#xa0;216">
+        <eref type="inline" bibitemid="iso216" citeas="ISO&#xa0;216">
         <localityStack>
         <locality type="whole"/><locality type="clause"><referenceFrom>3</referenceFrom></locality><locality type="example"><referenceFrom>9</referenceFrom><referenceTo>11</referenceTo></locality><locality type="locality:prelude"><referenceFrom>33</referenceFrom></locality><locality type="locality:entirety"/>
         </localityStack><display-text>the reference</display-text></eref>
@@ -273,7 +273,7 @@ RSpec.describe Metanorma::Ietf do
              <foreword id="_" obligation="informative">
                <title>Foreword</title>
                <p id="_">
-               <eref type="inline" bibitemid="_" citeas="ISO&#xa0;216"/>
+               <eref type="inline" bibitemid="iso216" citeas="ISO&#xa0;216"/>
              </p>
              </foreword></preface><sections>
              </sections>
@@ -389,8 +389,8 @@ RSpec.describe Metanorma::Ietf do
           #{BLANK_HDR}
       <sections><clause id="_" anchor="_clause" inline-header="false" obligation="normative">
         <title>Clause</title>
-        <p id="_"><eref type="inline" bibitemid="_" citeas="[2]"/>
-      <eref type="inline" bibitemid="_" citeas="ISO&#xa0;124"/></p>
+        <p id="_"><eref type="inline" bibitemid="iso123" citeas="[2]"/>
+      <eref type="inline" bibitemid="iso124" citeas="ISO&#xa0;124"/></p>
       </clause>
       </sections>
       <bibliography><references id="_" anchor="_bibliography" obligation="informative" normative="false">
@@ -495,7 +495,6 @@ RSpec.describe Metanorma::Ietf do
          </references></clause></bibliography>
          </metanorma>
     OUTPUT
-    mock_preserve_idrefs
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
@@ -635,7 +634,7 @@ RSpec.describe Metanorma::Ietf do
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
-   it "moves title footnotes to bibdata" do
+  it "moves title footnotes to bibdata" do
     input = <<~INPUT
       = Document title footnote:[ABC] footnote:[DEF]
       Author

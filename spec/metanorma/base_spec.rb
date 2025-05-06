@@ -626,7 +626,7 @@ RSpec.describe Metanorma::Ietf do
       doc = strip_guid(Asciidoctor.convert(input, *OPTIONS).gsub(
         / schema-version="[^"]+"/, ""
       ))
-      expect(doc).to include('<eref type="inline" bibitemid="_" citeas="Internet-Draft draft-abarth-cake-01"/>')
+      expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
       expect(doc).to include('<bibitem id="_" type="standard" anchor="I-D.abarth-cake">')
       expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
     end

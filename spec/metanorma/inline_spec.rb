@@ -130,37 +130,37 @@ RSpec.describe Metanorma::Ietf do
                  <title>Section</title>
                  <p id="_">
                     Inline Reference to
-                    <xref target="_"/>
+                    <xref target="reference"/>
                     Footnoted Reference to
-                    <xref target="_">
+                    <xref target="reference">
                        <display-text>fn</display-text>
                     </xref>
                     Inline Reference with Text to
-                    <xref target="_">
+                    <xref target="reference">
                        <display-text>text</display-text>
                     </xref>
                     Inline Reference with Format to
-                    <xref target="_" format="counter">
+                    <xref target="reference" format="counter">
                        <display-text>xyz</display-text>
                     </xref>
                     Footnoted Reference with Text to
-                    <xref target="_">
+                    <xref target="reference">
                        <display-text>text</display-text>
                     </xref>
                     Anchored Crossreference to other document
-                    <eref type="inline" relative="b" bibitemid="_" citeas="x"/>
+                    <eref type="inline" relative="b" bibitemid="doc" citeas="x"/>
                     Inline Reference with Anchor to
-                    <eref type="inline" relative="fragment" bibitemid="_" citeas="x">
+                    <eref type="inline" relative="fragment" bibitemid="doc" citeas="x">
                        <display-text>text</display-text>
                     </eref>
                     Inline Reference with Anchor and format and text to
-                    <eref type="inline" displayFormat="of" relative="fragment" bibitemid="_" citeas="x">
+                    <eref type="inline" displayFormat="of" relative="fragment" bibitemid="doc" citeas="x">
                        <display-text>text</display-text>
                     </eref>
                     Inline Reference with Anchor and format and no text to
-                    <eref type="inline" displayFormat="parens" relative="fragment" bibitemid="_" citeas="x"/>
+                    <eref type="inline" displayFormat="parens" relative="fragment" bibitemid="doc" citeas="x"/>
                     Inline Reference with Anchor and no format and no text to
-                    <eref type="inline" relative="fragment" bibitemid="_" citeas="x">
+                    <eref type="inline" relative="fragment" bibitemid="doc" citeas="x">
                        <display-text>parens</display-text>
                     </eref>
                  </p>

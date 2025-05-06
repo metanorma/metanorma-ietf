@@ -129,7 +129,7 @@ RSpec.describe Metanorma::Ietf do
              <p id="_" anchor="foreword">Foreword</p>
           </sections>
           <review-container>
-             <review id="_" reviewer="ISO" date="20170101T00:00:00Z" type="todo" display="false" from="_" to="_">
+             <review id="_" reviewer="ISO" date="20170101T00:00:00Z" type="todo" display="false" from="foreword" to="foreword">
                 <name>Title</name>
                 <p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
                 <p id="_">
@@ -606,14 +606,14 @@ RSpec.describe Metanorma::Ietf do
                    <name>Caption</name>
                    <body>
                       puts "Hello, world." %w{a b c}.each do |x| puts x end
-                      <eref type="inline" bibitemid="_" citeas="RFC 4918">
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
                          <localityStack>
                             <locality type="section">
                                <referenceFrom>14.24</referenceFrom>
                             </locality>
                          </localityStack>
                       </eref>
-                      <eref type="inline" bibitemid="_" citeas="RFC 4918">
+                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
                          <localityStack>
                             <locality type="section">
                                <referenceFrom>14.24</referenceFrom>
@@ -623,10 +623,10 @@ RSpec.describe Metanorma::Ietf do
                       </eref>
                       <link target="http://www.example.com"/>
                       <link target="http://www.example.com">example</link>
-                      <xref target="_">
+                      <xref target="A">
                          <display-text>Goodbye</display-text>
                       </xref>
-                      <xref target="_">
+                      <xref target="A">
                          <display-text>Goodbye</display-text>
                       </xref>
                    </body>
@@ -674,9 +674,9 @@ RSpec.describe Metanorma::Ietf do
 
        %w{a b c}.each do |x|
          puts x <callout target="_">2</callout>
-       end</body><annotation id="_">
+       end</body><annotation id="_" anchor="_">
          <p id="_">This is one callout</p>
-       </annotation><annotation id="_">
+       </annotation><annotation id="_" anchor="_">
          <p id="_">This is another callout</p>
        </annotation></sourcecode>
        </sections>
