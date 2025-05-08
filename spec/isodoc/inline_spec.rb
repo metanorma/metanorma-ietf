@@ -453,7 +453,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/>
       <back>
-        <references anchor='_'>
+        <references anchor="_normative_references">
           <name>Normative References</name>
           <reference anchor='ISO712'>
             <front>
@@ -542,7 +542,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract></front><middle/>
       <back>
-        <references anchor='_'>
+        <references anchor="_normative_references">
           <name>Normative References</name>
           <reference anchor='ISO712'>
             <front>
@@ -790,7 +790,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              </section>
           </middle>
           <back>
-             <references anchor="_">
+             <references anchor="_normative_references">
                 <name>Normative References</name>
                 <t>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</t>
                 <reference anchor="ISO712">

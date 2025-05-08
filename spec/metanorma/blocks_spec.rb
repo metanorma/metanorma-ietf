@@ -58,7 +58,7 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
              #{BLANK_HDR}
-      <sections><p id="foreword">Foreword</p>
+      <sections><p id="_" anchor="foreword">Foreword</p>
       </sections>
       </metanorma>
     OUTPUT
@@ -126,7 +126,7 @@ RSpec.describe Metanorma::Ietf do
       </ext>
              </bibdata>
                        <sections>
-             <p id="foreword">Foreword</p>
+             <p id="_" anchor="foreword">Foreword</p>
           </sections>
           <review-container>
              <review id="_" reviewer="ISO" date="20170101T00:00:00Z" type="todo" display="false" from="foreword" to="foreword">
@@ -158,9 +158,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
              #{BLANK_HDR}
       <sections>
-        <terms id="_" obligation="normative">
+        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
         <title>Terms and definitions</title>
-        <term id="term-Term1">
+        <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
         <termnote id="_">
         <p id="_">This is a note</p>
@@ -187,9 +187,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
                     #{BLANK_HDR}
                     <sections>
-        <terms id="_" obligation="normative">
+        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
         <title>Terms and Definitions</title>
-        <clause id="_" inline-header="false" obligation="normative">
+        <clause id="_" anchor="_term1" inline-header="false" obligation="normative">
         <title>Term1</title>
         <note id="_">
         <p id="_">This is a note</p>
@@ -217,11 +217,12 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
                     #{BLANK_HDR}
                     <sections>
-        <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
-      <term id="term-Term1">
+        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <title>Terms, definitions and symbols</title>
+      <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
       </term>
-      <definitions id="_" obligation="normative" type="symbols">
+      <definitions id="_" anchor="_symbols" obligation="normative" type="symbols">
         <title>Symbols</title>
         <note id="_">
         <p id="_">This is a note</p>
@@ -252,7 +253,7 @@ RSpec.describe Metanorma::Ietf do
         <p id="_">This is a note</p>
       </note>
       </foreword></preface><sections>
-      <clause id="_" inline-header="false" obligation="normative">
+      <clause id="_" anchor="_clause_1" inline-header="false" obligation="normative">
         <title>Clause 1</title>
         <note id="_">
         <p id="_">This is a note</p>
@@ -278,8 +279,8 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
-           <figure id="lit">
-        <pre id='_' align='left' alt='hello'>&lt;LITERAL&gt;</pre>
+           <figure id="_" anchor="lit">
+        <pre align='left' alt='hello'>&lt;LITERAL&gt;</pre>
         </figure>
        </sections>
        </metanorma>
@@ -357,9 +358,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
             #{BLANK_HDR}
             <sections>
-        <terms id="_" obligation="normative">
+        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
         <title>Terms and definitions</title>
-        <term id="term-Term1">
+        <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
       <termexample id="_">
         <p id="_">This is an example</p>
@@ -386,9 +387,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
             #{BLANK_HDR}
       <sections>
-        <terms id="_" obligation="normative">
+        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
         <title>Terms and Definitions</title>
-        <clause id="_" inline-header="false" obligation="normative">
+        <clause id="_" anchor="_term1" inline-header="false" obligation="normative">
         <title>Term1</title>
         <example id="_">
         <p id="_">This is an example</p>
@@ -417,11 +418,12 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
                     #{BLANK_HDR}
       <sections>
-        <terms id="_" obligation="normative"><title>Terms, definitions and symbols</title>
-      <term id="term-Term1">
+        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <title>Terms, definitions and symbols</title>
+      <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
       </term>
-      <definitions id="_" obligation="normative" type="symbols">
+      <definitions id="_" anchor="_symbols" obligation="normative" type="symbols">
         <title>Symbols</title>
         <example id="_">
         <p id="_">This is an example</p>
@@ -478,7 +480,7 @@ RSpec.describe Metanorma::Ietf do
          <title>Foreword</title>
          <p id="_">This is a preamble</p>
        </foreword></preface><sections>
-       <clause id="_" inline-header="false" obligation="normative">
+       <clause id="_" anchor="_section_1" inline-header="false" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
        </metanorma>
@@ -501,7 +503,7 @@ RSpec.describe Metanorma::Ietf do
          <title>Foreword</title>
          <p id="_">This is a preamble</p>
        </foreword></preface><sections>
-       <clause id="_" inline-header="false" obligation="normative">
+       <clause id="_" anchor="_section_1" inline-header="false" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
        </metanorma>
@@ -638,9 +640,9 @@ RSpec.describe Metanorma::Ietf do
 
        </sections>
           <bibliography>
-             <references id="A" normative="false" obligation="informative">
+             <references id="_" anchor="A" normative="false" obligation="informative">
                 <title>Bibliography</title>
-                <bibitem id="RFC4918">
+                <bibitem id="_" anchor="RFC4918">
                    <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
                    <docidentifier>RFC 4918</docidentifier>
                    <docnumber>4918</docnumber>
@@ -672,9 +674,9 @@ RSpec.describe Metanorma::Ietf do
 
        %w{a b c}.each do |x|
          puts x <callout target="_">2</callout>
-       end</body><annotation id="_">
+       end</body><annotation id="_" anchor="_">
          <p id="_">This is one callout</p>
-       </annotation><annotation id="_">
+       </annotation><annotation id="_" anchor="_">
          <p id="_">This is another callout</p>
        </annotation></sourcecode>
        </sections>
@@ -699,9 +701,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
-         <terms id="_" obligation="normative">
+         <terms id="_" anchor="_terms_and_definitions" obligation="normative">
          <title>Terms and definitions</title>
-         <term id="term-Term1">
+         <term id="_" anchor="term-Term1">
          <preferred><expression><name>Term1</name></expression></preferred>
                  <definition>
           <verbal-definition>
@@ -739,9 +741,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
             <sections>
-         <terms id="_" obligation="normative">
+         <terms id="_" anchor="_terms_and_definitions" obligation="normative">
          <title>Terms and definitions</title>
-         <term id="term-Term1">
+         <term id="_" anchor="term-Term1">
          <preferred><expression><name>Term1</name></expression></preferred>
                  <definition>
           <verbal-definition>
@@ -784,14 +786,14 @@ RSpec.describe Metanorma::Ietf do
            <table id='_' align='right'>
              <thead>
                <tr>
-                 <th valign="top" align='left'>A</th>
-                 <th valign="top" align='left'>B</th>
+                 <th id="_" valign="top" align='left'>A</th>
+                 <th id="_" valign="top" align='left'>B</th>
                </tr>
              </thead>
              <tbody>
                <tr>
-                 <td valign="top" align='left'>C</td>
-                 <td valign="top" align='left'>D</td>
+                 <td id="_" valign="top" align='left'>C</td>
+                 <td id="_" valign="top" align='left'>D</td>
                </tr>
              </tbody>
            </table>

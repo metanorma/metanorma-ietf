@@ -93,7 +93,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
            #{BLANK_HDR}
       <sections>
-        <p id="_">Text <bookmark id="bookmark"/> Text</p>
+        <p id="_">Text <bookmark id="_" anchor="bookmark"/> Text</p>
       </sections>
       </metanorma>
     OUTPUT
@@ -126,7 +126,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
           <sections>
-              <clause id="reference" inline-header="false" obligation="normative">
+              <clause id="_" anchor="reference" inline-header="false" obligation="normative">
                  <title>Section</title>
                  <p id="_">
                     Inline Reference to
@@ -167,9 +167,9 @@ RSpec.describe Metanorma::Ietf do
               </clause>
            </sections>
            <bibliography>
-              <references id="reference" normative="true" obligation="informative">
+              <references id="_" anchor="reference" normative="true" obligation="informative">
                  <title>Normative References</title>
-                 <bibitem id="doc">
+                 <bibitem id="_" anchor="doc">
                     <formattedref format="application/x-isodoc+xml">Reference</formattedref>
                     <docidentifier>x</docidentifier>
                  </bibitem>
@@ -201,13 +201,13 @@ RSpec.describe Metanorma::Ietf do
            #{BLANK_HDR}
       <sections>
 
-      </sections><bibliography><references id="_" obligation="informative" normative="true">
+      </sections><bibliography><references id="_" anchor="_normative_references" obligation="informative" normative="true">
         <title>Normative References</title>
-        <bibitem id="ISO712">
+        <bibitem id="_" anchor="ISO712">
         <formattedref format="application/x-isodoc+xml">Reference</formattedref>
         <docidentifier>x</docidentifier>
       </bibitem>
-        <bibitem id="ISO713">
+        <bibitem id="_" anchor="ISO713">
         <formattedref format="application/x-isodoc+xml">Reference</formattedref>
         <docidentifier>ISO713</docidentifier>
         <docnumber>713</docnumber>
@@ -235,7 +235,7 @@ RSpec.describe Metanorma::Ietf do
         <p id="_">Footnote text</p>
       </fn></p>
       </foreword></preface><sections>
-      <clause id="_" inline-header="false" obligation="normative">
+      <clause id="_" anchor="_title_footnote_text_2" inline-header="false" obligation="normative">
         <title>Title<fn reference="2">
         <p id="_">Footnote text 2</p>
       </fn></title>
