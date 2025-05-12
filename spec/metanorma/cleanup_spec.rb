@@ -571,7 +571,7 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR.sub('<language>', '<version> </version><language>')}
           <sections>
              <p id="_">
-                <bookmark id="_"/>
+                <bookmark id="_" anchor="_"/>
                 ABC
                 <bookmark id="_"/>
                 DEF
