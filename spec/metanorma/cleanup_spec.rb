@@ -50,9 +50,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
              <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
-        <term id="_" anchor="term-_lt_relativity_gt_-Tempus">
+        <term id="_" anchor="term-_relativity_-Tempus">
         <preferred><expression><name>Tempus</name></expression></preferred>
         <domain>relativity</domain>
         <definition><verbal-definition><p id="_"> Time</p></verbal-definition></definition>
@@ -91,7 +91,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
                <sections>
-           <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+           <terms id="_" obligation="normative">
              <title>Terms and definitions</title>
              <term id="_" anchor="term-t_90">
                <preferred>
@@ -154,7 +154,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
              #{BLANK_HDR}
                     <sections>
-               <terms id="_" anchor="_terms_and_definitions" obligation="normative"><title>Terms and definitions</title>
+               <terms id="_" obligation="normative"><title>Terms and definitions</title>
       <p id='_'>I am boilerplate</p>
       <ul id='_'>
         <li>
@@ -237,7 +237,7 @@ RSpec.describe Metanorma::Ietf do
         </p>
       </foreword></preface><sections>
       </sections>
-      <bibliography><references id="_" anchor="_normative_references" obligation="informative" normative="true">
+      <bibliography><references id="_" obligation="informative" normative="true">
         <title>Normative References</title>
         <bibitem id="_" anchor="iso216" type="standard">
          <title format="text/plain">Reference</title>
@@ -277,7 +277,7 @@ RSpec.describe Metanorma::Ietf do
              </p>
              </foreword></preface><sections>
              </sections>
-             <bibliography><references id="_" anchor="_clause" obligation="informative" normative="false">
+             <bibliography><references id="_" obligation="informative" normative="false">
         <title>Clause</title>
         <bibitem id="_" anchor="iso216" type="standard">
         <title format="text/plain">Reference</title>
@@ -312,7 +312,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
              #{BLANK_HDR}
       <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
         <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
@@ -350,7 +350,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
       <sections></sections>
-      <bibliography><references id="_" anchor="_normative_references" obligation="informative" normative="true">
+      <bibliography><references id="_" obligation="informative" normative="true">
       <title>Normative References</title>
              <bibitem id="_" anchor="iso216" type="standard">
          <title format="text/plain">Reference</title>
@@ -387,13 +387,13 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
           #{BLANK_HDR}
-      <sections><clause id="_" anchor="_clause" inline-header="false" obligation="normative">
+      <sections><clause id="_" inline-header="false" obligation="normative">
         <title>Clause</title>
         <p id="_"><eref type="inline" bibitemid="iso123" citeas="[2]"/>
       <eref type="inline" bibitemid="iso124" citeas="ISO&#xa0;124"/></p>
       </clause>
       </sections>
-      <bibliography><references id="_" anchor="_bibliography" obligation="informative" normative="false">
+      <bibliography><references id="_" obligation="informative" normative="false">
         <title>Bibliography</title>
         <bibitem id="_" anchor="iso124" type="standard">
         <title format="text/plain">Standard 124</title>
@@ -445,16 +445,16 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-      <sections><clause id="_" anchor="_clause" inline-header="false" obligation="normative">
+      <sections><clause id="_" inline-header="false" obligation="normative">
            <title>Clause</title>
            <p id="_"><eref type="inline" bibitemid="iso123" citeas="[2]"/>
          <eref type="inline" bibitemid="iso124" citeas="ISO&#xa0;124"/>
          <eref type="inline" bibitemid="iso125" citeas="ISO&#xa0;125"/>
          <eref type="inline" bibitemid="iso126" citeas="[4]"/></p>
          </clause>
-         </sections><bibliography><clause id="_" anchor="_bibliography" obligation="informative">
+         </sections><bibliography><clause id="_" obligation="informative">
          <title>Bibliography</title>
-         <references id="_" anchor="_clause_1" obligation="informative" normative="false">
+         <references id="_" obligation="informative" normative="false">
            <title>Clause 1</title>
            <bibitem id="_" anchor="iso124" type="standard">
            <title format="text/plain">Standard 124</title>

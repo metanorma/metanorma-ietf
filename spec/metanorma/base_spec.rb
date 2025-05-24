@@ -589,7 +589,7 @@ RSpec.describe Metanorma::Ietf do
           </presentation-metadata>
          </metanorma-extension>
                <preface>
-                 <abstract id='_' anchor="_abstract">
+                 <abstract id='_'>
                  <title>Abstract</title>
                    <p id='_'>This is the abstract of the document</p>
                    <p id='_'>This is the second paragraph of the abstract of the document.</p>
@@ -600,7 +600,7 @@ RSpec.describe Metanorma::Ietf do
                  </abstract>
                </preface>
                <sections>
-                 <clause id='_' anchor="_clause_1" language='en' inline-header='false' obligation='normative'>
+                 <clause id='_' language='en' inline-header='false' obligation='normative'>
                    <title>Clause 1</title>
                  </clause>
                </sections>
@@ -650,11 +650,11 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
        #{BLANK_HDR}
         <sections>
-          <clause id='_' anchor="_clause" numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+          <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
             <title>Clause</title>
           </clause>
         </sections>
-        <annex id='_' anchor="_appendix" numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+        <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
           <title>Appendix</title>
         </annex>
       </metanorma>

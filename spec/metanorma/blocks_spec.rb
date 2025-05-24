@@ -158,7 +158,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
              #{BLANK_HDR}
       <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
         <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
@@ -187,9 +187,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
                     #{BLANK_HDR}
                     <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms and Definitions</title>
-        <clause id="_" anchor="_term1" inline-header="false" obligation="normative">
+        <clause id="_" inline-header="false" obligation="normative">
         <title>Term1</title>
         <note id="_">
         <p id="_">This is a note</p>
@@ -217,12 +217,12 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
                     #{BLANK_HDR}
                     <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms, definitions and symbols</title>
       <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
       </term>
-      <definitions id="_" anchor="_symbols" obligation="normative" type="symbols">
+      <definitions id="_" obligation="normative" type="symbols">
         <title>Symbols</title>
         <note id="_">
         <p id="_">This is a note</p>
@@ -253,7 +253,7 @@ RSpec.describe Metanorma::Ietf do
         <p id="_">This is a note</p>
       </note>
       </foreword></preface><sections>
-      <clause id="_" anchor="_clause_1" inline-header="false" obligation="normative">
+      <clause id="_" inline-header="false" obligation="normative">
         <title>Clause 1</title>
         <note id="_">
         <p id="_">This is a note</p>
@@ -358,7 +358,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
             #{BLANK_HDR}
             <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms and definitions</title>
         <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
@@ -387,9 +387,9 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
             #{BLANK_HDR}
       <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms and Definitions</title>
-        <clause id="_" anchor="_term1" inline-header="false" obligation="normative">
+        <clause id="_" inline-header="false" obligation="normative">
         <title>Term1</title>
         <example id="_">
         <p id="_">This is an example</p>
@@ -418,12 +418,12 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
                     #{BLANK_HDR}
       <sections>
-        <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+        <terms id="_" obligation="normative">
         <title>Terms, definitions and symbols</title>
       <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
       </term>
-      <definitions id="_" anchor="_symbols" obligation="normative" type="symbols">
+      <definitions id="_" obligation="normative" type="symbols">
         <title>Symbols</title>
         <example id="_">
         <p id="_">This is an example</p>
@@ -480,7 +480,7 @@ RSpec.describe Metanorma::Ietf do
          <title>Foreword</title>
          <p id="_">This is a preamble</p>
        </foreword></preface><sections>
-       <clause id="_" anchor="_section_1" inline-header="false" obligation="normative">
+       <clause id="_" inline-header="false" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
        </metanorma>
@@ -503,7 +503,7 @@ RSpec.describe Metanorma::Ietf do
          <title>Foreword</title>
          <p id="_">This is a preamble</p>
        </foreword></preface><sections>
-       <clause id="_" anchor="_section_1" inline-header="false" obligation="normative">
+       <clause id="_" inline-header="false" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
        </metanorma>
@@ -701,7 +701,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
        <sections>
-         <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+         <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <term id="_" anchor="term-Term1">
          <preferred><expression><name>Term1</name></expression></preferred>
@@ -741,7 +741,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
             <sections>
-         <terms id="_" anchor="_terms_and_definitions" obligation="normative">
+         <terms id="_" obligation="normative">
          <title>Terms and definitions</title>
          <term id="_" anchor="term-Term1">
          <preferred><expression><name>Term1</name></expression></preferred>
