@@ -69,15 +69,15 @@ RSpec.describe Metanorma::Ietf::Processor do
              </copyright>
              <relation type="derivedFrom">
     <bibitem>
-    <title>--</title>
+    <title id="_">--</title>
     <docidentifier>https://www.rfc-editor.org/rfc/rfc1149.txt</docidentifier>
     </bibitem>
     </relation>
              <series type="stream">
-               <title>IETF</title>
+               <title id="_">IETF</title>
              </series>
              <series type="intended">
-             <title>std</title>
+             <title id="_">std</title>
              </series>
              <ext>
       <doctype>rfc</doctype>
@@ -90,10 +90,10 @@ RSpec.describe Metanorma::Ietf::Processor do
            </bibdata>
                   <sections>
       <terms id="A" obligation="normative">
-      <title>Terms and definitions</title>
+      <title id="_">Terms and definitions</title>
              <p>No terms and definitions are listed in this document.</p>
       <clause id="B" inline-header="false" obligation="normative">
-      <title>Term1</title>
+      <title id="_">Term1</title>
       <note id="C">
       <p id="D">This is a note</p>
     </note>

@@ -46,7 +46,7 @@ module Metanorma
         draft? or return
         noko do |xml|
           xml.review **sidebar_attrs(node) do |r|
-            node.title.nil? or r.name { |name| name << node.title }
+            block_title(node, r)
             wrap_in_para(node, r)
           end
         end
@@ -57,7 +57,7 @@ module Metanorma
           xml.note **attr_code(id_attr(node).merge(
                                  removeInRFC: node.attr("remove-in-rfc"),
                                )) do |c|
-            node.title.nil? or c.name { |name| name << node.title }
+            block_title(node, c)
             wrap_in_para(node, c)
           end
         end
@@ -66,7 +66,7 @@ module Metanorma
       def literal(node)
         noko do |xml|
           xml.figure **literal_attrs(node) do |f|
-            figure_title(node, f)
+            block_title(node, f)
             f.pre node.lines.join("\n"),
                   **attr_code(align: node.attr("align"), alt: node.attr("alt"))
           end

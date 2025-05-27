@@ -590,18 +590,18 @@ RSpec.describe Metanorma::Ietf do
          </metanorma-extension>
                <preface>
                  <abstract id='_'>
-                 <title>Abstract</title>
+                 <title id="_">Abstract</title>
                    <p id='_'>This is the abstract of the document</p>
                    <p id='_'>This is the second paragraph of the abstract of the document.</p>
                    <note removeInRFC='true' id='_'>
-        <name>Note Title</name>
+        <name id="_">Note Title</name>
         <p id='_'>Note contents</p>
       </note>
                  </abstract>
                </preface>
                <sections>
                  <clause id='_' language='en' inline-header='false' obligation='normative'>
-                   <title>Clause 1</title>
+                   <title id="_">Clause 1</title>
                  </clause>
                </sections>
              </metanorma>
@@ -651,11 +651,11 @@ RSpec.describe Metanorma::Ietf do
        #{BLANK_HDR}
         <sections>
           <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
-            <title>Clause</title>
+            <title id="_">Clause</title>
           </clause>
         </sections>
         <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
-          <title>Appendix</title>
+          <title id="_">Appendix</title>
         </annex>
       </metanorma>
     OUTPUT

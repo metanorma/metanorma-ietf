@@ -51,11 +51,11 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR}
              <sections>
         <terms id="_" obligation="normative">
-        <title>Terms and definitions</title>
+        <title id="_">Terms and definitions</title>
         <term id="_" anchor="term-_relativity_-Tempus">
         <preferred><expression><name>Tempus</name></expression></preferred>
         <domain>relativity</domain>
-        <definition><verbal-definition><p id="_"> Time</p></verbal-definition></definition>
+        <definition id="_"><verbal-definition id="_"><p id="_"> Time</p></verbal-definition></definition>
       </term>
       </terms>
       </sections>
@@ -92,7 +92,7 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR}
                <sections>
            <terms id="_" obligation="normative">
-             <title>Terms and definitions</title>
+             <title id="_">Terms and definitions</title>
              <term id="_" anchor="term-t_90">
                <preferred>
                  <letter-symbol>
@@ -111,8 +111,8 @@ RSpec.describe Metanorma::Ietf do
                    </name>
                  </letter-symbol>
                </preferred>
-               <definition>
-                 <verbal-definition>
+               <definition id="_">
+                 <verbal-definition id="_">
                    <p id="_">This paragraph is extraneous</p>
                    <formula id="_">
                      <stem type="MathML" block="true">
@@ -154,7 +154,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
              #{BLANK_HDR}
                     <sections>
-               <terms id="_" obligation="normative"><title>Terms and definitions</title>
+               <terms id="_" obligation="normative"><title id="_">Terms and definitions</title>
       <p id='_'>I am boilerplate</p>
       <ul id='_'>
         <li>
@@ -163,7 +163,7 @@ RSpec.describe Metanorma::Ietf do
       </ul>
              <term id="_" anchor="term-Time">
              <preferred><expression><name>Time</name></expression></preferred>
-               <definition><verbal-definition><p id="_">This paragraph is extraneous</p></verbal-definition></definition>
+               <definition id="_"><verbal-definition id="_"><p id="_">This paragraph is extraneous</p></verbal-definition></definition>
              </term></terms>
              </sections>
              </metanorma>
@@ -186,14 +186,14 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
         <preface><foreword id="_" obligation="informative">
-        <title>Foreword</title>
+        <title id="_">Foreword</title>
         <p id="_">
         <eref type='inline' displayFormat='of' relative='123' bibitemid='iso216' citeas='ISO&#xa0;216:2001'><display-text>text</display-text></eref>
       <xref target='biblio' format='counter'><display-text>text1</display-text></xref>
       </p>
       </foreword></preface><sections>
       </sections><bibliography><references id="_" anchor="biblio" obligation="informative" normative="true">
-        <title>Normative References</title>
+        <title id="_">Normative References</title>
         <bibitem id="_" anchor="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216:2001</docidentifier>
@@ -228,7 +228,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
       <preface><foreword id="_" obligation="informative">
-        <title>Foreword</title>
+        <title id="_">Foreword</title>
         <p id="_">
         <eref type="inline" bibitemid="iso216" citeas="ISO&#xa0;216">
         <localityStack>
@@ -238,7 +238,7 @@ RSpec.describe Metanorma::Ietf do
       </foreword></preface><sections>
       </sections>
       <bibliography><references id="_" obligation="informative" normative="true">
-        <title>Normative References</title>
+        <title id="_">Normative References</title>
         <bibitem id="_" anchor="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>
@@ -271,14 +271,14 @@ RSpec.describe Metanorma::Ietf do
              #{BLANK_HDR}
              <preface>
              <foreword id="_" obligation="informative">
-               <title>Foreword</title>
+               <title id="_">Foreword</title>
                <p id="_">
                <eref type="inline" bibitemid="iso216" citeas="ISO&#xa0;216"/>
              </p>
              </foreword></preface><sections>
              </sections>
              <bibliography><references id="_" obligation="informative" normative="false">
-        <title>Clause</title>
+        <title id="_">Clause</title>
         <bibitem id="_" anchor="iso216" type="standard">
         <title format="text/plain">Reference</title>
         <docidentifier>ISO 216</docidentifier>
@@ -313,11 +313,11 @@ RSpec.describe Metanorma::Ietf do
              #{BLANK_HDR}
       <sections>
         <terms id="_" obligation="normative">
-        <title>Terms and definitions</title>
+        <title id="_">Terms and definitions</title>
         <term id="_" anchor="term-Term1">
         <preferred><expression><name>Term1</name></expression></preferred>
-                <definition>
-          <verbal-definition>
+                <definition id="_">
+          <verbal-definition id="_">
             <p id='_'>Definition</p>
           </verbal-definition>
         </definition>
@@ -351,7 +351,7 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR}
       <sections></sections>
       <bibliography><references id="_" obligation="informative" normative="true">
-      <title>Normative References</title>
+      <title id="_">Normative References</title>
              <bibitem id="_" anchor="iso216" type="standard">
          <title format="text/plain">Reference</title>
          <docidentifier>ISO 216</docidentifier>
@@ -388,13 +388,13 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
           #{BLANK_HDR}
       <sections><clause id="_" inline-header="false" obligation="normative">
-        <title>Clause</title>
+        <title id="_">Clause</title>
         <p id="_"><eref type="inline" bibitemid="iso123" citeas="[2]"/>
       <eref type="inline" bibitemid="iso124" citeas="ISO&#xa0;124"/></p>
       </clause>
       </sections>
       <bibliography><references id="_" obligation="informative" normative="false">
-        <title>Bibliography</title>
+        <title id="_">Bibliography</title>
         <bibitem id="_" anchor="iso124" type="standard">
         <title format="text/plain">Standard 124</title>
         <docidentifier>ISO 124</docidentifier>
@@ -446,16 +446,16 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       #{BLANK_HDR}
       <sections><clause id="_" inline-header="false" obligation="normative">
-           <title>Clause</title>
+           <title id="_">Clause</title>
            <p id="_"><eref type="inline" bibitemid="iso123" citeas="[2]"/>
          <eref type="inline" bibitemid="iso124" citeas="ISO&#xa0;124"/>
          <eref type="inline" bibitemid="iso125" citeas="ISO&#xa0;125"/>
          <eref type="inline" bibitemid="iso126" citeas="[4]"/></p>
          </clause>
          </sections><bibliography><clause id="_" obligation="informative">
-         <title>Bibliography</title>
+         <title id="_">Bibliography</title>
          <references id="_" obligation="informative" normative="false">
-           <title>Clause 1</title>
+           <title id="_">Clause 1</title>
            <bibitem id="_" anchor="iso124" type="standard">
            <title format="text/plain">Standard 124</title>
            <docidentifier>ISO 124</docidentifier>
@@ -612,13 +612,13 @@ RSpec.describe Metanorma::Ietf do
                <sections>
            <table id="_">
              <thead>
-               <tr>
+               <tr id="_">
                  <th id="_" valign="top" align="left">A</th>
                  <th id="_" valign="top" align="left">B</th>
                </tr>
              </thead>
              <tbody>
-               <tr>
+               <tr id="_">
                  <td id="_" valign="top" align="left">C</td>
                  <td id="_" valign="top" align="left">D</td>
                </tr>

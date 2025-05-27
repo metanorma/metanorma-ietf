@@ -292,7 +292,7 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract anchor="_">
+             <abstract>
                 <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
@@ -654,7 +654,7 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract anchor="_">
+             <abstract>
                 <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>

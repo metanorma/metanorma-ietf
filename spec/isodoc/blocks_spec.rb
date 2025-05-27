@@ -14,7 +14,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
                <middle>
-                 <section anchor="_">
+                 <section>
                  </section>
                </middle>
                <back/>
@@ -38,7 +38,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
                <middle>
-                 <section anchor="_">
+                 <section>
                    <aside anchor='note1'>
                    <t>
                      NOTE: These results are based on a study carried out on three different
@@ -69,7 +69,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
                <middle>
-                 <section anchor="_">
+                 <section>
                   <aside anchor='A'>
                    <t>NOTE: These results are based on a study carried out on three different types of kernel.</t>
                    <t anchor='_'>They are based on a study carried out on three different types of kernel.</t>
@@ -102,7 +102,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
            <middle>
-             <section anchor="_">
+             <section>
              <aside anchor="A">
                <t>NOTE: </t>
                <dl>
@@ -141,7 +141,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{RFC_HDR}
            <middle>
-             <section anchor="_">
+             <section>
              <aside anchor='A'>
              <t>
                  NOTE 1: These results are based on a study carried out on three
@@ -176,7 +176,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{RFC_HDR}
         <middle>
-          <section anchor="_">
+          <section>
             <t anchor='A'>ABC </t>
             <aside anchor='B'>
               <t>NOTE 1: XYZ</t>
@@ -416,7 +416,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
          <preface>
-             <foreword id="_" obligation="informative">
+             <foreword obligation="informative">
                 <title>Foreword</title>
                 <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true">
                    <name>Caption</name>
@@ -722,7 +722,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
         #{RFC_HDR}
         <middle>
-          <section anchor="_">
+          <section>
             <section anchor='extraneous_matter'>
               <name>extraneous matter</name>
               <t>EM</t>
