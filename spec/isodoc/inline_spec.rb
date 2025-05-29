@@ -19,7 +19,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            <front>
               <title>Document title</title>
               <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"/>
-              <abstract anchor="_">
+              <abstract>
                  <t>&lt;pizza&gt;</t>
               </abstract>
            </front>
@@ -588,7 +588,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <front>
             <title>Document title</title>
             <seriesInfo value="" status="Published" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
-            <abstract anchor="_">
+            <abstract>
         <t>
         <abc>X &#x3e; Y
         A
@@ -704,7 +704,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
           <front>
              <seriesInfo value="" name="RFC" asciiName="RFC"/>
-             <abstract anchor="_">
+             <abstract>
                 <t>
                    <ul>
                       <li>

@@ -73,7 +73,7 @@ RSpec.describe Metanorma::Ietf do
             <dt>Notes1<strong>:</strong></dt>
             <dd/>
             <dt>Notes:</dt>
-            <dd>
+            <dd id="_">
               <p id='_'>Note 1.</p>
               <p id='_'>Note 2.</p>
               <p id='_'>Note 3.</p>

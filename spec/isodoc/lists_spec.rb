@@ -57,7 +57,7 @@ RSpec.describe IsoDoc do
     output = <<~OUTPUT
       #{XML_HDR}
          <ol anchor='_' spacing='compact' type='a' group='X' start='7' indent="5">
-             <li anchor="_">
+             <li>
                <t anchor='_'>all information necessary for the complete identification of the sample;</t>
              </li>
              <ol>
@@ -99,13 +99,13 @@ RSpec.describe IsoDoc do
     output = <<~OUTPUT
       #{XML_HDR}
          <ol anchor='_' type='I'>
-                 <li anchor='_'>
+                 <li>
                    <t anchor='_'>all information necessary for the complete identification of the sample;</t>
                  </li>
-                 <li anchor="_">
+                 <li>
                    <t anchor='_'>a reference to this document (i.e. ISO 17301-1);</t>
                  </li>
-                 <li anchor="_">
+                 <li>
                    <t anchor='_'>the sampling method used;</t>
                  </li>
                </ol>

@@ -103,7 +103,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
           <front>
             <seriesInfo value='' name='RFC' asciiName='RFC'/>
-            <abstract anchor="_"> </abstract>
+            <abstract> </abstract>
           </front>
           <middle>
             <section anchor='B'>
@@ -112,7 +112,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <name>Introduction Subsection</name>
               </section>
             </section>
-            <section anchor="_">
+            <section>
   <name>Acknowledgements</name>
   <t anchor='A1'>This is a preamble</t>
 </section>

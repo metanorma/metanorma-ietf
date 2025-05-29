@@ -127,7 +127,7 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR}
           <sections>
               <clause id="_" anchor="reference" inline-header="false" obligation="normative">
-                 <title>Section</title>
+                 <title id="_">Section</title>
                  <p id="_">
                     Inline Reference to
                     <xref target="reference"/>
@@ -168,7 +168,7 @@ RSpec.describe Metanorma::Ietf do
            </sections>
            <bibliography>
               <references id="_" anchor="reference" normative="true" obligation="informative">
-                 <title>Normative References</title>
+                 <title id="_">Normative References</title>
                  <bibitem id="_" anchor="doc">
                     <formattedref format="application/x-isodoc+xml">Reference</formattedref>
                     <docidentifier>x</docidentifier>
@@ -202,7 +202,7 @@ RSpec.describe Metanorma::Ietf do
       <sections>
 
       </sections><bibliography><references id="_" obligation="informative" normative="true">
-        <title>Normative References</title>
+        <title id="_">Normative References</title>
         <bibitem id="_" anchor="ISO712">
         <formattedref format="application/x-isodoc+xml">Reference</formattedref>
         <docidentifier>x</docidentifier>
@@ -230,13 +230,13 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
            #{BLANK_HDR}
              <preface><foreword id="_" obligation="informative">
-        <title>Foreword</title>
-        <p id="_">Hello!<fn reference="1">
+        <title id="_">Foreword</title>
+        <p id="_">Hello!<fn id="_" reference="1">
         <p id="_">Footnote text</p>
       </fn></p>
       </foreword></preface><sections>
       <clause id="_" inline-header="false" obligation="normative">
-        <title>Title<fn reference="2">
+        <title id="_">Title<fn id="_" reference="2">
         <p id="_">Footnote text 2</p>
       </fn></title>
       </clause></sections>

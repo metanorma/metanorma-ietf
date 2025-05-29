@@ -166,7 +166,7 @@ XML_HDR = <<~"HDR".freeze
   <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
     <front>
     <seriesInfo value='' name='RFC' asciiName='RFC'/>
-      <abstract anchor="_">
+      <abstract>
 HDR
 
 RFC_HDR = <<~"HDR".freeze
