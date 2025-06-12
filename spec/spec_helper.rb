@@ -1,15 +1,3 @@
-require "vcr"
-
-VCR.configure do |config|
-  config.cassette_library_dir = "spec/vcr_cassettes"
-  config.hook_into :webmock
-  config.default_cassette_options = {
-    clean_outdated_http_interactions: true,
-    re_record_interval: 1512000,
-    record: :once,
-  }
-end
-
 require "simplecov"
 SimpleCov.start do
   add_filter "/spec/"
@@ -92,6 +80,16 @@ VALIDATING_BLANK_HDR = <<~"HDR".freeze
   :docfile: test.adoc
   :nodoc:
   :data-uri-image: false
+
+HDR
+
+LOCAL_CACHED_ISOBIB_BLANK_HDR = <<~HDR.freeze
+  = Document title
+  Author
+  :docfile: test.adoc
+  :nodoc:
+  :novalid:
+  :local-cache: spec/relatondb
 
 HDR
 

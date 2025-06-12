@@ -55,7 +55,6 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "warns of invalid workgroup" do
-    VCR.use_cassette "workgroup_fetch" do
       FileUtils.rm_f "test.err.html"
       Asciidoctor.convert(<<~INPUT, *OPTIONS)
         = Document title
@@ -68,11 +67,9 @@ RSpec.describe Metanorma::Ietf do
       INPUT
       expect(File.read("test.err.html"))
         .to include("unrecognised working group")
-    end
   end
 
   it "does not warn of valid workgroup suffixed with Working Group" do
-    VCR.use_cassette "workgroup_fetch" do
       FileUtils.rm_f "test.err.html"
       Asciidoctor.convert(<<~INPUT, *OPTIONS)
         = Document title
@@ -87,7 +84,6 @@ RSpec.describe Metanorma::Ietf do
         expect(File.read("test.err.html"))
           .not_to include("unrecognised working group")
       end
-    end
   end
 
   it "warns of cref macro not pointing to valid element" do
