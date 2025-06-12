@@ -2,7 +2,6 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf do
   it "processes IsoXML bibliographies" do
-    VCR.use_cassette "isodoc1" do
       FileUtils.rm_f "test.rfc.xml"
       input = <<~INPUT
             <iso-standard xmlns="http://riboseinc.com/isoxml">
@@ -468,11 +467,9 @@ RSpec.describe IsoDoc::Ietf do
       xml = File.read("test.rfc.xml")
       expect(Xml::C14n.format(strip_guid(xml)))
         .to be_equivalent_to Xml::C14n.format(output)
-    end
   end
 
   it "processes IsoXML bibliographies with xincludes" do
-    VCR.use_cassette "isodoc2" do
       FileUtils.rm_f "test.rfc.xml"
       input = <<~INPUT
             <iso-standard xmlns="http://riboseinc.com/isoxml">
@@ -765,7 +762,6 @@ RSpec.describe IsoDoc::Ietf do
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
       expect(Xml::C14n.format(strip_guid(xml))).to be_equivalent_to Xml::C14n.format(output)
-    end
   end
 
   it "processes nested bibliographies" do
@@ -880,7 +876,6 @@ RSpec.describe IsoDoc::Ietf do
   end
 
   it "processes referencegroup" do
-    VCR.use_cassette "isodoc3" do
       input = <<~INPUT
                     <ietf-standard xmlns="http://riboseinc.com/isoxml">
                         <bibdata>
@@ -1115,6 +1110,5 @@ RSpec.describe IsoDoc::Ietf do
       xml = File.read("test.rfc.xml")
       expect(Xml::C14n.format(strip_guid(xml)))
         .to be_equivalent_to Xml::C14n.format(output)
-    end
   end
 end

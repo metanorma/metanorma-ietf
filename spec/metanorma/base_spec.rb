@@ -16,7 +16,6 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "processes a blank document" do
-    VCR.use_cassette "workgroup_fetch" do
       input = <<~INPUT
         = Document title
         Author
@@ -33,7 +32,6 @@ RSpec.describe Metanorma::Ietf do
       OUTPUT
       expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
         .to be_equivalent_to strip_guid(Xml::C14n.format(output))
-    end
   end
 
   it "converts a blank document" do
@@ -611,9 +609,8 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "cites drafts of internet drafts" do
-    VCR.use_cassette "abarth-02" do
       input = <<~INPUT
-        = Document title
+        #{LOCAL_CACHED_ISOBIB_BLANK_HDR}
         Author
         :docfile: test.adoc
 
@@ -629,7 +626,6 @@ RSpec.describe Metanorma::Ietf do
       expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
       expect(doc).to include('<bibitem id="_" type="standard" anchor="I-D.abarth-cake">')
       expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
-    end
   end
 
   it "processes clause attributes" do
