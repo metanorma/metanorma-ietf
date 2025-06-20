@@ -39,7 +39,7 @@ RSpec.describe IsoDoc::Ietf do
             <title format="text/plain">IETF</title>
               </series>  <keyword>Standards</keyword>  <keyword>Track</keyword>  <keyword>Documents</keyword></bibitem>
               <title type="main" format="text/plain">The "data" URL scheme</title>
-              <bibitem id="RFC2397"  type="standard" schema-version="v1.2.4">
+              <bibitem anchor="RFC2397"  id="1" type="standard" schema-version="v1.2.4">
               <title type="main" format="text/plain">The "data" URL scheme</title
   <uri type="src">https://www.rfc-editor.org/info/rfc2397</uri>
   <docidentifier type="IETF" primary="true">RFC 2397</docidentifier>

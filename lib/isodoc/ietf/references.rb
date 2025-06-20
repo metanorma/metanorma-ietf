@@ -60,7 +60,7 @@ module IsoDoc
         target = nil
         uris&.each { |u| target = u.text if %w(src HTML).include?(u["type"]) }
         list.reference **attr_code(target: target,
-                                   anchor: bib["id"]) do |r|
+                                   anchor: bib["anchor"] || bib["id"]) do |r|
                                      bibitem_render(r, bib)
                                    end
       end
