@@ -10,6 +10,16 @@ module Metanorma
         xmldoc
       end
 
+        # simplified
+      def boilerplate_isodoc(xmldoc)
+        x = xmldoc.dup
+        x.root.add_namespace(nil, xml_namespace)
+        #xml = Nokogiri::XML(x.to_xml)
+        @isodoc ||= isodoc(@lang, @script, @locale)
+        # initialise @isodoc.xrefs, for @isodoc.xrefs.info
+        @isodoc
+      end
+
       def dt_cleanup(xmldoc)
         xmldoc.xpath("//dt").each do |dt|
           /:$/.match?(dt.text.strip) and next
