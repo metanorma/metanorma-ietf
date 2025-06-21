@@ -2,7 +2,7 @@ require "isodoc"
 
 module IsoDoc
   module Ietf
-    class  Metadata < IsoDoc::Metadata
+    class Metadata < IsoDoc::Metadata
       TITLE_RFC = "//bibdata//title[@type='main' and @language='en']".freeze
 
       def title(isoxml, _out)
@@ -47,7 +47,7 @@ module IsoDoc
 
       def doctype(isoxml, _out)
         super
-        set(:doctype, "Rfc") if get[:doctype].nil?
+        set(:doctype, "RFC") if get[:doctype].nil?
       end
     end
   end

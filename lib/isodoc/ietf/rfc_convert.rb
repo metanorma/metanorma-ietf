@@ -48,17 +48,17 @@ module IsoDoc
       end
 
       def populate_id(docxml)
-      docxml.xpath("//*[@id]").each do |x|
-        x["semx-id"] = x["id"]
-        x["anchor"] and x["id"] = to_ncname(x["anchor"])
+        docxml.xpath("//*[@id]").each do |x|
+          x["semx-id"] = x["id"]
+          x["anchor"] and x["id"] = to_ncname(x["anchor"])
+        end
       end
-    end
 
       # do not sanitise "#"
-    def to_ncname(ident)
-      ret = ident.split("#", 2)
-      ret.map { |x| Metanorma::Utils::to_ncname(x) }.join("#")
-    end
+      def to_ncname(ident)
+        ret = ident.split("#", 2)
+        ret.map { |x| Metanorma::Utils::to_ncname(x) }.join("#")
+      end
 
       def metadata_init(lang, script, locale, i18n)
         @meta = Metadata.new(lang, script, locale, i18n)
