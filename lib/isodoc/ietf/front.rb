@@ -37,7 +37,7 @@ module IsoDoc
       end
 
       def seriesinfo(isoxml, front)
-        rfc_seriesinfo(isoxml, front) if @meta.get[:doctype] == "Rfc"
+        rfc_seriesinfo(isoxml, front) if @meta.get[:doctype] == "RFC"
         id_seriesinfo(isoxml, front) if @meta.get[:doctype] == "Internet Draft"
       end
 
@@ -55,8 +55,8 @@ module IsoDoc
         i = isoxml&.at(ns("//bibdata/series[@type = 'intended']")) and
           front.seriesInfo nil,
                            **attr_code(name: "",
-                                       status: i&.at(ns("./title"))&.text,
-                                       value: i&.at(ns("./number"))&.text || "")
+                                       status: i.at(ns("./title"))&.text,
+                                       value: i.at(ns("./number"))&.text || "")
       end
 
       def id_seriesinfo(isoxml, front)
