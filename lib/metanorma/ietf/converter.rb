@@ -25,7 +25,6 @@ module Metanorma
       end
 
       def makexml(node)
-        @draft = node.attributes.has_key?("draft")
         @workgroups = cache_workgroup(node)
         @bcp_bold = !node.attr?("no-rfc-bold-bcp14")
         @xinclude = node.attr?("use-xinclude")
