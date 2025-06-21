@@ -64,8 +64,8 @@ module IsoDoc
         @meta = Metadata.new(lang, script, locale, i18n)
       end
 
-      def xref_init(lang, script, klass, i18n, options)
-        @xrefs = Xref.new(lang, script, klass, i18n, options)
+      def xref_init(lang, script, _klass, i18n, options)
+        @xrefs = Xref.new(lang, script, self, i18n, options)
       end
 
       def extract_delims(text)
