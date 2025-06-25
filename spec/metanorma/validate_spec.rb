@@ -114,11 +114,11 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     if File.exist?("test.err.html")
       expect(File.read("test.err.html"))
-        .to include("No matching review for cref:​[xyz]")
+        .to include("No matching annotation for cref:​[xyz]")
       expect(File.read("test.err.html"))
-        .to include("No matching review for cref:​[abc]")
+        .to include("No matching annotation for cref:​[abc]")
       expect(File.read("test.err.html"))
-        .not_to include("No matching review for cref:​[def]")
+        .not_to include("No matching annotation for cref:​[def]")
     end
   end
 

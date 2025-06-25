@@ -577,11 +577,11 @@ RSpec.describe Metanorma::Ietf do
                 DEF
              </p>
           </sections>
-          <review-container>
-             <review id="_" anchor="def" reviewer="(Unknown)" date="2000-01-01T00:00:00Z" type="todo" from="_" to="_">
+          <annotation-container>
+             <annotation id="_" anchor="def" reviewer="(Unknown)" date="2000-01-01T00:00:00Z" type="review" from="_" to="_">
                 <p id="_">What?</p>
-             </review>
-          </review-container>
+             </annotation>
+          </annotation-container>
        </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))

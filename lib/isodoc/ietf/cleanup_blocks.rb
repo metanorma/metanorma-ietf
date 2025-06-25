@@ -109,7 +109,7 @@ module IsoDoc
       def sourcecode_remove_markup(node)
         node.traverse do |n|
           n.text? and next
-          %w(name callout annotation note sourcecode).include? n.name and next
+          %w(name callout callout-annotation note sourcecode).include? n.name and next
           sourcecode_remove_markup_elem(n)
         end
       end

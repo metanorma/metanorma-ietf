@@ -42,7 +42,7 @@ RSpec.describe Metanorma::Ietf do
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
-  it "ignores review blocks unless document is in draft mode" do
+  it "ignores annotation blocks unless document is in draft mode" do
     input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       [[foreword]]
@@ -66,7 +66,7 @@ RSpec.describe Metanorma::Ietf do
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
-  it "processes review blocks if document is in draft mode" do
+  it "processes annotation blocks if document is in draft mode" do
     input = <<~INPUT
       = Document title
       Author
@@ -128,16 +128,16 @@ RSpec.describe Metanorma::Ietf do
                        <sections>
              <p id="_" anchor="foreword">Foreword</p>
           </sections>
-          <review-container>
-             <review id="_" reviewer="ISO" date="20170101T00:00:00Z" type="todo" display="false" from="foreword" to="foreword">
+          <annotation-container>
+             <annotation id="_" reviewer="ISO" date="20170101T00:00:00Z" type="review" display="false" from="foreword" to="foreword">
                 <name id="_">Title</name>
                 <p id="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</p>
                 <p id="_">
                    For further information on the Foreword, see
                    <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
                 </p>
-             </review>
-          </review-container>
+             </annotation>
+          </annotation-container>
        </metanorma>
     OUTPUT
     xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
@@ -674,11 +674,11 @@ RSpec.describe Metanorma::Ietf do
 
        %w{a b c}.each do |x|
          puts x <callout target="_">2</callout>
-       end</body><annotation id="_" anchor="_">
+       end</body><callout-annotation id="_" anchor="_">
          <p id="_">This is one callout</p>
-       </annotation><annotation id="_" anchor="_">
+       </callout-annotation><callout-annotation id="_" anchor="_">
          <p id="_">This is another callout</p>
-       </annotation></sourcecode>
+       </callout-annotation></sourcecode>
        </sections>
        </metanorma>
     OUTPUT

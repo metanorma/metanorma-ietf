@@ -36,14 +36,14 @@ module Metanorma
 
       def cref_cleanup(xmldoc)
         xmldoc.xpath("//crefref").each do |r|
-          if c = xmldoc.at("//review[@anchor = '#{r.text}']")
+          if c = xmldoc.at("//annotation[@anchor = '#{r.text}']")
             id = "_#{UUIDTools::UUID.random_create}"
             c["from"] = id
             c["to"] = id
             r.replace("<bookmark id='#{id}'/>")
           else
             @log.add("Crossrefences", r,
-                     "No matching review for cref:[#{r.text}]", severity: 1)
+                     "No matching annotation for cref:[#{r.text}]", severity: 1)
           end
         end
       end
