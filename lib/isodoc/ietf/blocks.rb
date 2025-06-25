@@ -83,10 +83,10 @@ module IsoDoc
 
       def annotation_parse(node, out)
         @sourcecode = false
-        node.at(ns("./annotation")) or return
+        node.at(ns("./callout-annotation")) or return
         out.t { |p| p << @i18n.key }
         out.dl do |dl|
-          node.xpath(ns("./annotation")).each do |a|
+          node.xpath(ns("./callout-annotation")).each do |a|
             annotation_parse1(a, dl)
           end
         end

@@ -505,11 +505,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <sourcecode id="_"><body>puts "Hello, world." <callout target="A">1</callout>
          %w{a b c}.each do |x|
            puts x <callout target="B">2</callout>
-         end</body><annotation id="A">
+         end</body><callout-annotation id="A">
            <p id="_">This is <em>one</em> callout</p>
-         </annotation><annotation id="B">
+         </callout-annotation><callout-annotation id="B">
            <p id="_">This is another callout</p>
-         </annotation></sourcecode>
+         </callout-annotation></sourcecode>
       </foreword></preface>
       </iso-standard>
     INPUT

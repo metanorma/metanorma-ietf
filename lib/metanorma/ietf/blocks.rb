@@ -38,14 +38,14 @@ module Metanorma
                   ))
       end
 
-      def todo_attrs(node)
+      def sidebar_attrs(node)
         super.merge(attr_code(display: node.attr("display")))
       end
 
       def sidebar(node)
         draft? or return
         noko do |xml|
-          xml.review **sidebar_attrs(node) do |r|
+          xml.annotation **sidebar_attrs(node) do |r|
             block_title(node, r)
             wrap_in_para(node, r)
           end

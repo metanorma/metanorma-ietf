@@ -173,7 +173,7 @@ module IsoDoc
       end
 
       def comments(isoxml, out)
-        isoxml.xpath(ns("//review")).each do |c|
+        isoxml.xpath(ns("//annotation")).each do |c|
           review_note_parse(c, out)
         end
       end
