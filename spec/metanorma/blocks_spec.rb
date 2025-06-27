@@ -42,38 +42,13 @@ RSpec.describe Metanorma::Ietf do
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
-  it "ignores annotation blocks unless document is in draft mode" do
-    input = <<~INPUT
-      #{ASCIIDOC_BLANK_HDR}
-      [[foreword]]
-      .Foreword
-      Foreword
-
-      [reviewer=ISO,date=20170101,from=foreword,to=foreword]
-      ****
-      A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.
-
-      For further information on the Foreword, see *ISO/IEC Directives, Part 2, 2016, Clause 12.*
-      ****
-    INPUT
-    output = <<~OUTPUT
-             #{BLANK_HDR}
-      <sections><p id="_" anchor="foreword">Foreword</p>
-      </sections>
-      </metanorma>
-    OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
-  end
-
-  it "processes annotation blocks if document is in draft mode" do
+  it "processes annotation blocks" do
     input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
       :nodoc:
       :novalid:
-      :draft: 1.2
 
       [[foreword]]
       .Foreword
@@ -98,9 +73,6 @@ RSpec.describe Metanorma::Ietf do
                      <abbreviation>IETF</abbreviation>
                    </organization>
                  </contributor>
-               <version>
-                 <draft>1.2</draft>
-               </version>
                <language>en</language>
                <script>Latn</script>
                <status><stage>published</stage></status>

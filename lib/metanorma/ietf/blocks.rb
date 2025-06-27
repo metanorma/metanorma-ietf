@@ -43,7 +43,6 @@ module Metanorma
       end
 
       def sidebar(node)
-        draft? or return
         noko do |xml|
           xml.annotation **sidebar_attrs(node) do |r|
             block_title(node, r)

@@ -162,7 +162,14 @@ module IsoDoc
         end
       end
 
+      def render_annotations?(node)
+        node.at(ns("//presentation-metadata/render-document-annotations"))
+          &.text == "true" ||
+          node.at(ns("//bibdata/ext/notedraftinprogress"))
+      end
+
       def review_note_parse(node, out)
+        render_annotations?(node) or return
         out.cref **attr_code(anchor: node["id"], display: node["display"],
                              source: node["reviewer"], from: node["from"]) do |c|
           if name = node.at(ns("./name"))
