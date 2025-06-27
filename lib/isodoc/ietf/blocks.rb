@@ -165,7 +165,7 @@ module IsoDoc
       def render_annotations?(node)
         node.at(ns("//presentation-metadata/render-document-annotations"))
           &.text == "true" ||
-          node.at(ns("//bibdata/notedraftinprogress"))
+          node.at(ns("//bibdata/ext/notedraftinprogress"))
       end
 
       def review_note_parse(node, out)

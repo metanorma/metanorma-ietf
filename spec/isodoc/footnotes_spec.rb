@@ -86,6 +86,7 @@ RSpec.describe IsoDoc do
              </abstract>
           </front>
           <middle/>
+          <back/>
        </rfc>
     OUTPUT
     output_annotated = <<~OUTPUT
@@ -119,16 +120,16 @@ RSpec.describe IsoDoc do
       .convert("test", input, true))))
       .to be_equivalent_to Xml::C14n.format(output)
     input1 = input.sub("<preface>", <<~XML)
-                       <metanorma-extension><presentation-metadata><render-document-annotations>true</render-document-annotations></presentation-metadata></metanorma-extension><preface>
-                       XML
+      <metanorma-extension><presentation-metadata><render-document-annotations>true</render-document-annotations></presentation-metadata></metanorma-extension><preface>
+    XML
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input1, true))))
       .to be_equivalent_to Xml::C14n.format(output_annotated)
     input2 = input.sub("<preface>", <<~XML)
-    <bibdata><ext><notedraftinprogress/></ext></bibdata>
+      <bibdata><ext><notedraftinprogress/></ext></bibdata><preface>
     XML
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input2, true))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Xml::C14n.format(output_annotated)
   end
 end
