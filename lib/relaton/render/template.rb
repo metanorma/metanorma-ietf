@@ -17,10 +17,10 @@ module Relaton
     module Ietf
       module Template
         class Name < ::Relaton::Render::Template::Name
-          def customise_liquid
-            super
-            ::Liquid::Template
-              .register_filter(::Relaton::Render::Template::Ascii)
+          def create_liquid_environment
+            env = super
+            env.register_filter(::Relaton::Render::Template::Ascii)
+            env
           end
         end
       end

@@ -840,7 +840,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface><foreword>
-          <requirement id="A" unnumbered="true" model="default">
+          <requirement id="A" model="default">
         <title>A New Requirement</title>
         <identifier>/ogc/recommendation/wfs/2</identifier>
         <inherit>/ss/584/2015/level/1</inherit>
@@ -890,7 +890,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
       #{XML_HDR}
                    <t keepWithNext='true'>
-               Requirement:
+               Requirement 1:
                <br/>
                /ogc/recommendation/wfs/2. A New Requirement
              </t>
