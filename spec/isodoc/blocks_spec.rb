@@ -268,7 +268,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> &#x2014;
         with adjustments]</t>
             </figure>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+    </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -301,6 +303,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               </artwork>
             </figure>
           </abstract>
+          <date day="1" year="2000" month="January"/>
         </front>
         <middle/>
         <back/>
@@ -325,7 +328,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        #{XML_HDR}
               <t anchor='samplecode'  keepWithNext='true'>EXAMPLE: Title</t>
             <t>Hello</t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+    </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -357,7 +362,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <t>Hello</t>
             <t anchor='samplecode3' keepWithNext='true'>EXAMPLE</t>
             <t>Hello</t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -384,7 +391,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         puts y
       </sourcecode>
       <sourcecode anchor="samplecode2" type="ruby" src="http://www.example.com"/>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+    </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -405,7 +414,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
        #{XML_HDR}
               <sourcecode anchor='samplecode'> &lt;xml&gt; </sourcecode>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -479,6 +490,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    <xref target="A">Goodbye</xref>
                 </sourcecode>
              </abstract>
+             <date day="1" year="2000" month="January"/>
           </front>
           <middle/>
           <back>
@@ -530,7 +542,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <t anchor="_">This is another callout</t>
                </dd>
              </dl>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -553,7 +567,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <t keepWithNext='true'>CAUTION</t>
               <t anchor='_'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
             </aside>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -577,7 +593,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <t keepWithNext='true'>Title</t>
               <t anchor='_'>Only use paddy or parboiled rice for the determination of husked rice yield.</t>
             </aside>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -622,7 +640,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               always expressed.</t>
             </aside>
             <t anchor='_'>$$ r = 1 % $$ (1)</t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -650,7 +670,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          World
       </t>
       <t keepWithPrevious='true'>Justify</t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -698,7 +720,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    other products derived from rice, nor to waxy rice (glutinous rice).
                  </t>
                </blockquote>
-         </abstract></front><middle/><back/></rfc>
+         </abstract>
+         <date day="1" year="2000" month="January"/>
+          </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -826,6 +850,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                success-response) end
              </sourcecode>
            </abstract>
+           <date day="1" year="2000" month="January"/>
          </front>
          <middle/>
          <back/>
@@ -914,6 +939,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              end
            </sourcecode>
            </abstract>
+           <date day="1" year="2000" month="January"/>
          </front>
          <middle/>
          <back/>
@@ -1008,6 +1034,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                success-response) end
              </sourcecode>
            </abstract>
+           <date day="1" year="2000" month="January"/>
          </front>
          <middle/>
          <back/>
@@ -1034,7 +1061,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       &#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;B</t>
       <t anchor="_">&#xA0;&#xA0;<em>C</em></t>
                      </sourcecode>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))

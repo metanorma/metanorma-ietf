@@ -49,6 +49,12 @@ module IsoDoc
         super
         set(:doctype, "RFC") if get[:doctype].nil?
       end
+
+      def initialize(lang, script, locale, i18n, fonts_options = {})
+        super
+        @metadata[:publisheddate] = nil
+        @metadata[:circulateddate] = nil
+      end
     end
   end
 end

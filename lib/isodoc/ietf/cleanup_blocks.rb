@@ -109,8 +109,19 @@ module IsoDoc
       def sourcecode_remove_markup(node)
         node.traverse do |n|
           n.text? and next
-          %w(name callout callout-annotation note sourcecode).include? n.name and next
+          %w(name callout callout-annotation note
+             sourcecode).include? n.name and next
           sourcecode_remove_markup_elem(n)
+        end
+      end
+
+      def crossref_remove_markup_elem(node)
+        case node.name
+        when "eref"
+          node.replace(node.children.empty? ? node["target"] : node.children)
+        when "xref"
+          node.children.empty? ? sourcecode_xref(node) : node.replace(node.children)
+          # when "relref" then n.replace(n.children.empty? ? n["target"] : n.children)
         end
       end
 
@@ -118,11 +129,8 @@ module IsoDoc
         case node.name
         when "br" then node.replace("\n")
         when "t" then node.replace("\n\n#{node.children}")
-        when "eref"
-          node.replace(node.children.empty? ? node["target"] : node.children)
-        when "xref"
-          node.children.empty? ? sourcecode_xref(node) : node.replace(node.children)
-          # when "relref" then n.replace(n.children.empty? ? n["target"] : n.children)
+        when "eref", "xref"
+          crossref_remove_markup_elem(node)
         else node.replace(node.children)
         end
       end

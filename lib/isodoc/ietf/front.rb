@@ -177,7 +177,8 @@ module IsoDoc
       end
 
       def date(_isoxml, front)
-        date = @meta.get[:publisheddate] || @meta.get[:circulateddate] || return
+        date = @meta.get[:publisheddate] || @meta.get[:circulateddate] ||
+          Date.today.to_s
         date = date.gsub(/T.*$/, "")
         attr = date_attr(date) || return
         front.date **attr_code(attr)
@@ -220,12 +221,8 @@ module IsoDoc
 
       def abstract(isoxml, front)
         a = isoxml.at(ns("//preface/abstract | //preface/foreword")) || return
-        front.abstract **attr_code(anchor: a["id"]) do |abs|
-          a.children.reject do |c1|
-            %w(title note).include? c1.name
-          end.each do |c1|
-            parse(c1, abs)
-          end
+        front.abstract do |abs|
+          children_parse(a, abs)
         end
       end
 
@@ -239,6 +236,7 @@ module IsoDoc
           a.children.reject { |c1| c1.name == "name" }.each do |c1|
             parse(c1, n)
           end
+          a.remove
         end
       end
 

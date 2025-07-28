@@ -11,7 +11,7 @@ RSpec.describe IsoDoc::Ietf do
             <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
             <ext><ipr>trust200902</ipr></ext>
             </bibdata>
-            <preface><foreword>
+            <sections><introduction id="B"><title>Introduction</title>
           <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
           <eref bibitemid="ISO712"/>
           <eref bibitemid="ISBN"/>
@@ -19,8 +19,8 @@ RSpec.describe IsoDoc::Ietf do
           <eref bibitemid="ISO16634"/>
           <eref bibitemid="ref11"/>
           </p>
-            </foreword></preface>
-            <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+            </introduction>
+            <clause id="A"><title>A-title</title><p>A</p></clause></sections>
             <bibliography><references id="_normative_references" obligation="informative"  normative="true"><title>Normative References</title>
             <bibitem id="RFC2119" type="standard" schema-version="v1.2.4">  <fetched>2023-11-06</fetched>
             <title type="main" format="text/plain">Key words for use in RFCs to Indicate Requirement Levels</title>
@@ -291,7 +291,11 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract>
+             <date day="1" year="2000" month="January"/>
+             </front>
+   <middle>
+      <section anchor="B">
+         <name>Introduction</name>
                 <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
@@ -299,9 +303,7 @@ RSpec.describe IsoDoc::Ietf do
                    <xref target="ISO16634" section="" relative=""/>
                    <xref target="ref11" section="" relative=""/>
                 </t>
-             </abstract>
-          </front>
-          <middle>
+             </section>
              <section anchor="A">
                 <name>A-title</name>
                 <t>A</t>
@@ -323,7 +325,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t anchor="_">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
                       </abstract>
                    </front>
-                   <format target="https://www.rfc-editor.org/info/rfc2119" type="src"/>
                    <seriesInfo value="10.17487/RFC2119" name="DOI"/>
                    <seriesInfo value="14" name="BCP"/>
                    <seriesInfo value="2119" name="RFC"/>
@@ -341,7 +342,6 @@ RSpec.describe IsoDoc::Ietf do
                   <t>A new URL scheme, "data", is defined. It allows inclusion of small data items as "immediate" data, as if it had been included externally. [STANDARDS-TRACK]</t>
                </abstract>
             </front>
-            <format target="https://www.rfc-editor.org/info/rfc2397" type="src"/>
             <seriesInfo value="10.17487/RFC2397" name="DOI"/>
             <seriesInfo value="2397" name="RFC"/>
          </reference>
@@ -352,7 +352,6 @@ RSpec.describe IsoDoc::Ietf do
                          <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                       </author>
                    </front>
-                   <format target="http://www.example.com" type="HTML"/>
                    <refcontent>ISO 712</refcontent>
                 </reference>
                 <reference anchor="ISO16634">
@@ -367,8 +366,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t>This is an abstract</t>
                       </abstract>
                    </front>
-                   <format target="http://www.example.com" type="HTML"/>
-                   <format target="http://www.example.com/rdf" type="RDF"/>
                    <seriesInfo value="1234" name="DOI"/>
                    <refcontent>ISO 16634:-- (all parts)</refcontent>
                 </reference>
@@ -444,7 +441,6 @@ RSpec.describe IsoDoc::Ietf do
                          <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
                       </author>
                    </front>
-                   <format target="https://xml2rfc.tools.ietf.org/10.xml" type="xml"/>
                    <seriesInfo value="10" name="RFC"/>
                 </reference>
                 <reference anchor="I-D.aboba-context-802">
@@ -453,8 +449,6 @@ RSpec.describe IsoDoc::Ietf do
                       <author fullname="Bernard Aboba" asciiFullname="Bernard Aboba"/>
                       <date month="October" year="2003"/>
                    </front>
-                   <format target="https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml" type="xml"/>
-                   <format target="http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt" type="TXT"/>
                    <seriesInfo value="aboba-context-802" name="Internet-Draft"/>
                 </reference>
              </references>
@@ -479,7 +473,7 @@ RSpec.describe IsoDoc::Ietf do
             <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
             <ext><ipr>trust200902</ipr></ext>
             </bibdata>
-            <preface><foreword>
+            <sections><introduction id="B"><title>Introduction</title>
           <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
           <eref bibitemid="ISO712"/>
           <eref bibitemid="ISBN"/>
@@ -487,8 +481,8 @@ RSpec.describe IsoDoc::Ietf do
           <eref bibitemid="ISO16634"/>
           <eref bibitemid="ref11"/>
           </p>
-            </foreword></preface>
-            <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+            </introduction>
+            <clause id="A"><title>A-title</title><p>A</p></clause></sections>
             <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
         <bibitem id="ISO712" type="standard">
           <title format="text/plain">Cereals or cereal products</title>
@@ -651,7 +645,11 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract>
+             <date day="1" year="2000" month="January"/>
+   </front>
+   <middle>
+      <section anchor="B">
+         <name>Introduction</name>
                 <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
@@ -659,9 +657,7 @@ RSpec.describe IsoDoc::Ietf do
                    <xref target="ISO16634" section="" relative=""/>
                    <xref target="ref11" section="" relative=""/>
                 </t>
-             </abstract>
-          </front>
-          <middle>
+                </section>
              <section anchor="A">
                 <name>A-title</name>
                 <t>A</t>
@@ -677,7 +673,6 @@ RSpec.describe IsoDoc::Ietf do
                          <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                       </author>
                    </front>
-                   <format target="http://www.example.com" type="HTML"/>
                    <refcontent>ISO 712</refcontent>
                 </reference>
                 <reference anchor="ISO16634">
@@ -692,8 +687,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t>This is an abstract</t>
                       </abstract>
                    </front>
-                   <format target="http://www.example.com" type="HTML"/>
-                   <format target="http://www.example.com/rdf" type="RDF"/>
                    <seriesInfo value="1234" name="DOI"/>
                    <refcontent>ISO 16634:-- (all parts)</refcontent>
                 </reference>
@@ -750,7 +743,6 @@ RSpec.describe IsoDoc::Ietf do
                          <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
                       </author>
                    </front>
-                   <format target="https://xml2rfc.tools.ietf.org/10.xml" type="xml"/>
                    <seriesInfo value="10" name="RFC"/>
                 </reference>
              </references>
@@ -817,6 +809,7 @@ RSpec.describe IsoDoc::Ietf do
              <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
                <front>
                  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+                 <date day="1" year="2000" month="January"/>
                </front>
                <middle>
                  <section anchor='_clause'>
@@ -995,6 +988,7 @@ RSpec.describe IsoDoc::Ietf do
                 <postal/>
               </address>
             </author>
+            <date day="1" year="2000" month="January"/>
           </front>
           <middle>
             <section anchor="_clause">
@@ -1019,7 +1013,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t anchor="_">This document describes an application-layer client-server protocol for the provisioning and management of objects stored in a shared central repository. Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects. This document includes a protocol specification, an object mapping template, and an XML media type registration. This document obsoletes RFC 4930. [STANDARDS-TRACK]</t>
                        </abstract>
                      </front>
-                     <format target="https://www.rfc-editor.org/info/rfc5730" type="src"/>
                      <seriesInfo value="10.17487/RFC5730" name="DOI"/>
                      <refcontent>BCP 69, RFC 5730</refcontent>
                    </reference>
@@ -1038,7 +1031,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet domain names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to domain names. This document obsoletes RFC 4931. [STANDARDS-TRACK]</t>
                        </abstract>
                      </front>
-                     <format target="https://www.rfc-editor.org/info/rfc5731" type="src"/>
                      <seriesInfo value="10.17487/RFC5731" name="DOI"/>
                      <refcontent>BCP 69, RFC 5731</refcontent>
                    </reference>
@@ -1056,7 +1048,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet host names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to host names. This document obsoletes RFC 4932. [STANDARDS-TRACK]</t>
                        </abstract>
                      </front>
-                     <format target="https://www.rfc-editor.org/info/rfc5732" type="src"/>
                      <seriesInfo value="10.17487/RFC5732" name="DOI"/>
                      <refcontent>BCP 69, RFC 5732</refcontent>
                    </reference>
@@ -1075,7 +1066,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of individual or organizational social information identifiers (known as "contacts") stored in a shared central repository. Specified in Extensible Markup Language (XML), the mapping defines EPP command syntax and semantics as applied to contacts. This document obsoletes RFC 4933. [STANDARDS-TRACK]</t>
                        </abstract>
                      </front>
-                     <format target="https://www.rfc-editor.org/info/rfc5733" type="src"/>
                      <seriesInfo value="10.17487/RFC5733" name="DOI"/>
                      <refcontent>BCP 69, RFC 5733</refcontent>
                    </reference>
@@ -1094,7 +1084,6 @@ RSpec.describe IsoDoc::Ietf do
                          <t anchor="_">This document describes how an Extensible Provisioning Protocol (EPP) session is mapped onto a single Transmission Control Protocol (TCP) connection. This mapping requires use of the Transport Layer Security (TLS) protocol to protect information exchanged between an EPP client and an EPP server. This document obsoletes RFC 4934. [STANDARDS-TRACK]</t>
                        </abstract>
                      </front>
-                     <format target="https://www.rfc-editor.org/info/rfc5734" type="src"/>
                      <seriesInfo value="10.17487/RFC5734" name="DOI"/>
                      <refcontent>BCP 69, RFC 5734</refcontent>
                    </reference>
