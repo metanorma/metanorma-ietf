@@ -352,7 +352,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                          <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                       </author>
                    </front>
-                   <format target="http://www.example.com" type="HTML"/>
                    <refcontent>ISO 712</refcontent>
                 </reference>
              </references>

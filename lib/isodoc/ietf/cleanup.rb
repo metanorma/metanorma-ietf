@@ -37,6 +37,7 @@ module IsoDoc
         biblio_abstract_cleanup(xmldoc)
         biblio_date_cleanup(xmldoc)
         biblio_refcontent_cleanup(xmldoc)
+        biblio_format_cleanup(xmldoc)
         annotation_cleanup(xmldoc)
       end
 
@@ -80,6 +81,12 @@ module IsoDoc
           if val.empty? then a.remove
           else a.children = val
           end
+        end
+      end
+
+      def biblio_format_cleanup(xmldoc)
+        xmldoc.xpath("//reference[format]").each do |r|
+          r.xpath("./format").each(&:remove)
         end
       end
 
