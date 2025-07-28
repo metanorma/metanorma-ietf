@@ -208,12 +208,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 
   it "processes AsciiMath and MathML" do
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml" xmlns:m="mathml">
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface><foreword>
       <p>
       <stem type="AsciiMath">&lt;A&gt;</stem>
-      <stem type="MathML"><m:math><m:mrow><m:mi>X</m:mi></m:mrow></m:math></stem>
-      <stem type="MathML"><m:math><m:mrow><m:mi>X</m:mi></m:mrow></m:math><asciimath>XYZ</asciimath></stem>
+      <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>X</mi></mstyle></math></stem>
+      <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mi>X</mi></mstyle></math><asciimath>XYZ</asciimath></stem>
       <stem type="None">Latex?</stem>
       </p>
       </foreword></preface>

@@ -336,9 +336,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 <t keepWithNext="true">EXAMPLE</t>
                 <t>Hello</t>
              </abstract>
-             <aside>
-                <t>NOTE: Hello</t>
-             </aside>
              <note>
                 <t>Hello</t>
              </note>

@@ -235,6 +235,7 @@ module IsoDoc
           a.children.reject { |c1| c1.name == "name" }.each do |c1|
             parse(c1, n)
           end
+          a.remove
         end
       end
 

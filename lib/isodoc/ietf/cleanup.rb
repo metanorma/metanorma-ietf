@@ -17,8 +17,8 @@ module IsoDoc
         front_cleanup(docxml)
         u_cleanup(docxml)
         biblio_cleanup(docxml) # feeds aside
+        abstract_cleanup(docxml) # bleeds aside
         aside_cleanup(docxml)
-        abstract_cleanup(docxml)
         docxml
       end
 

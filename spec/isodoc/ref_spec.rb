@@ -11,7 +11,7 @@ RSpec.describe IsoDoc::Ietf do
             <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
             <ext><ipr>trust200902</ipr></ext>
             </bibdata>
-            <preface><foreword>
+            <sections><introduction id="B"><title>Introduction</title>
           <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
           <eref bibitemid="ISO712"/>
           <eref bibitemid="ISBN"/>
@@ -19,8 +19,8 @@ RSpec.describe IsoDoc::Ietf do
           <eref bibitemid="ISO16634"/>
           <eref bibitemid="ref11"/>
           </p>
-            </foreword></preface>
-            <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+            </introduction>
+            <clause id="A"><title>A-title</title><p>A</p></clause></sections>
             <bibliography><references id="_normative_references" obligation="informative"  normative="true"><title>Normative References</title>
             <bibitem id="RFC2119" type="standard" schema-version="v1.2.4">  <fetched>2023-11-06</fetched>
             <title type="main" format="text/plain">Key words for use in RFCs to Indicate Requirement Levels</title>
@@ -291,7 +291,10 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract>
+             </front>
+   <middle>
+      <section anchor="B">
+         <name>Introduction</name>
                 <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
@@ -299,9 +302,7 @@ RSpec.describe IsoDoc::Ietf do
                    <xref target="ISO16634" section="" relative=""/>
                    <xref target="ref11" section="" relative=""/>
                 </t>
-             </abstract>
-          </front>
-          <middle>
+             </section>
              <section anchor="A">
                 <name>A-title</name>
                 <t>A</t>
@@ -479,7 +480,7 @@ RSpec.describe IsoDoc::Ietf do
             <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
             <ext><ipr>trust200902</ipr></ext>
             </bibdata>
-            <preface><foreword>
+            <sections><introduction id="B"><title>Introduction</title>
           <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
           <eref bibitemid="ISO712"/>
           <eref bibitemid="ISBN"/>
@@ -487,8 +488,8 @@ RSpec.describe IsoDoc::Ietf do
           <eref bibitemid="ISO16634"/>
           <eref bibitemid="ref11"/>
           </p>
-            </foreword></preface>
-            <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+            </introduction>
+            <clause id="A"><title>A-title</title><p>A</p></clause></sections>
             <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
         <bibitem id="ISO712" type="standard">
           <title format="text/plain">Cereals or cereal products</title>
@@ -651,7 +652,10 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
-             <abstract>
+   </front>
+   <middle>
+      <section anchor="B">
+         <name>Introduction</name>
                 <t anchor="_">
                    <xref target="ISO712" section="" relative=""/>
                    <xref target="ISBN" section="" relative=""/>
@@ -659,9 +663,7 @@ RSpec.describe IsoDoc::Ietf do
                    <xref target="ISO16634" section="" relative=""/>
                    <xref target="ref11" section="" relative=""/>
                 </t>
-             </abstract>
-          </front>
-          <middle>
+                </section>
              <section anchor="A">
                 <name>A-title</name>
                 <t>A</t>
