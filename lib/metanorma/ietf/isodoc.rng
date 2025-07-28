@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-<!-- VERSION v2.0.8 -->
+<!-- VERSION v2.1.0 -->
 
   <!--
     ALERT: cannot have root comments, because of https://github.com/metanorma/metanorma/issues/437
@@ -41,36 +41,6 @@
 All IdRefType instances point not to `@id` in Semantic XML, which is the Content GUID for an element,
 but to `@anchor`, the user-supplied cross-reference</a:documentation>
       <text/>
-    </define>
-    <define name="index-primary">
-      <element name="primary">
-        <oneOrMore>
-          <choice>
-            <ref name="PureTextElement"/>
-            <ref name="stem"/>
-          </choice>
-        </oneOrMore>
-      </element>
-    </define>
-    <define name="index-secondary">
-      <element name="secondary">
-        <oneOrMore>
-          <choice>
-            <ref name="PureTextElement"/>
-            <ref name="stem"/>
-          </choice>
-        </oneOrMore>
-      </element>
-    </define>
-    <define name="index-tertiary">
-      <element name="tertiary">
-        <oneOrMore>
-          <choice>
-            <ref name="PureTextElement"/>
-            <ref name="stem"/>
-          </choice>
-        </oneOrMore>
-      </element>
     </define>
     <define name="review">
       <a:documentation>Generalise BasicDoc element from just review comments, to general annotations;
@@ -592,28 +562,6 @@ normative or informative references, some split references into sections organiz
         </oneOrMore>
       </element>
     </define>
-    <define name="sub">
-      <a:documentation>Subscript text. Corresponds to HTML `sub</a:documentation>
-      <element name="sub">
-        <zeroOrMore>
-          <choice>
-            <ref name="PureTextElement"/>
-            <ref name="stem"/>
-          </choice>
-        </zeroOrMore>
-      </element>
-    </define>
-    <define name="sup">
-      <a:documentation>Superscript text. Corresponds to HTML `sup`</a:documentation>
-      <element name="sup">
-        <zeroOrMore>
-          <choice>
-            <ref name="PureTextElement"/>
-            <ref name="stem"/>
-          </choice>
-        </zeroOrMore>
-      </element>
-    </define>
     <define name="pagebreak">
       <a:documentation>Page break. Only applicable in paged layouts (e.g. PDF, Word), and not flow layouts (e.g. HTML)</a:documentation>
       <element name="pagebreak">
@@ -735,6 +683,12 @@ titlecase, or lowercase</a:documentation>
     <ref name="BlockAttributes"/>
   </define>
   <define name="TableAttributes" combine="interleave">
+    <optional>
+      <attribute name="plain">
+        <a:documentation>Render as a plain attribute, with no shading or borders</a:documentation>
+        <data type="boolean"/>
+      </attribute>
+    </optional>
     <optional>
       <attribute name="width">
         <a:documentation>Width of the table block in rendering</a:documentation>
@@ -1088,7 +1042,6 @@ That concept may be defined as a term within the current document, or it may be 
           <zeroOrMore>
             <choice>
               <ref name="PureTextElement"/>
-              <ref name="stem"/>
               <ref name="index"/>
               <ref name="index-xref"/>
             </choice>
@@ -1101,7 +1054,6 @@ That concept may be defined as a term within the current document, or it may be 
           <zeroOrMore>
             <choice>
               <ref name="PureTextElement"/>
-              <ref name="stem"/>
               <ref name="index"/>
               <ref name="index-xref"/>
             </choice>
@@ -2019,10 +1971,7 @@ used in document amendments</a:documentation>
       <element name="name">
         <a:documentation>The symbolic form of the designation</a:documentation>
         <oneOrMore>
-          <choice>
-            <ref name="PureTextElement"/>
-            <ref name="stem"/>
-          </choice>
+          <ref name="PureTextElement"/>
         </oneOrMore>
       </element>
     </element>
@@ -2075,7 +2024,6 @@ used in document amendments</a:documentation>
         <zeroOrMore>
           <choice>
             <ref name="PureTextElement"/>
-            <ref name="stem"/>
             <ref name="index"/>
             <ref name="index-xref"/>
           </choice>

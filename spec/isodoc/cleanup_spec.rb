@@ -277,11 +277,100 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       .to be_equivalent_to Xml::C14n.format(output)
   end
 
+  it "cleans up abstracts" do
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+              <bibdata>
+            <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
+            <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
+            <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+            <ext><ipr>trust200902</ipr></ext>
+            </bibdata>
+      <preface><foreword id="X"><title>Abstract</title>
+      <p>A. <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="http_1_1" format="title" relative="#abc"><display-text>Requirement <tt>/req/core/http</tt></display-text></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><display-text>Requirement <tt>/req/core/http</tt></display-text></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
+      </p>
+      <note><p>Hello</p></note>
+      <example><p>Hello</p></example>
+      <table><tbody><tr><th>A</th></tr></tbody></table>
+      </foreword>
+      </preface>
+      <bibliography><references id="_normative_references" obligation="informative"  normative="true"><title>Normative references</title>
+              <bibitem id="ISO712" type="standard">
+          <title format="text/plain">Cereals or cereal products</title>
+          <title type="main" format="text/plain">Cereals and cereal products</title>
+          <uri>http://www.example.com</uri>
+          <docidentifier type="ISO">ISO 712</docidentifier>
+          <contributor>
+            <role type="publisher"/>
+            <organization>
+              <name>International Organization for Standardization</name>
+            </organization>
+          </contributor>
+        </bibitem></references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+    output = <<~OUTPUT
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+          <front>
+                <title>The Holy Hand Grenade of Antioch</title>
+      <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+      <author fullname="Arthur son of Uther Pendragon">
+         <address>
+            <postal/>
+         </address>
+      </author>
+             <abstract>
+                <t>
+                   A.
+                   <em>
+                      <strong>&lt;</strong>
+                   </em>
+                   <tt>B</tt>
+                   Requirement
+                   <tt>/req/core/http</tt>
+                   Requirement
+                   <tt>/req/core/http</tt>
+                   ISO 712, Section 3.1
+                </t>
+                <t keepWithNext="true">EXAMPLE</t>
+                <t>Hello</t>
+             </abstract>
+             <aside>
+                <t>NOTE: Hello</t>
+             </aside>
+             <note>
+                <t>Hello</t>
+             </note>
+          </front>
+          <middle/>
+          <back>
+             <references anchor="_normative_references">
+             <name>Normative references</name>
+                <reference anchor="ISO712">
+                   <front>
+                      <title>Cereals and cereal products</title>
+                      <author>
+                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                      </author>
+                   </front>
+                   <format target="http://www.example.com" type="HTML"/>
+                   <refcontent>ISO 712</refcontent>
+                </reference>
+             </references>
+          </back>
+       </rfc>
+    OUTPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    expect(Xml::C14n.format(File.read("test.rfc.xml")))
+      .to be_equivalent_to Xml::C14n.format(output)
+  end
+
   it "cleans up figures" do
     input = <<~INPUT
       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
-               <front>
-                 <abstract>
+               <middle>
+                 <clause>
            <figure anchor='figureA-0'>
            <name>Unnested figure</name>
            <figure anchor="figureA-00">
@@ -323,16 +412,15 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <artwork type='ascii-art'><![CDATA[A <
              B]]></artwork>
                    </figure>
-                   </abstract>
-               </front>
-               <middle/>
+                   </clause>
+               </middle>
                <back/>
              </rfc>
     INPUT
     output = <<~OUTPUT
              <rfc xmlns:xi='http://www.w3.org/2001/XInclude' version='3'>
-               <front>
-                 <abstract>
+               <middle>
+                 <clause>
       <figure anchor='figureA-00'>
         <name>Unnested figure</name>
       </figure>
@@ -532,6 +620,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  </g>
                </svg>
              </artwork>
+               <fn>
+            <t anchor="_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852">[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+         </fn>
                        <dl>
                          <dt>
                            <p>A</p>
@@ -548,13 +639,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <artwork type='ascii-art'><![CDATA[A <
              B]]></artwork>
                    </figure>
-                 </abstract>
-               </front>
-               <middle/>
+                 </clause>
+               </middle>
                 <back>
                  <section>
                    <name>Endnotes</name>
-                   <t anchor='_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
                  </section>
                </back>
              </rfc>
@@ -644,8 +733,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
             <ext><ipr>trust200902</ipr></ext>
             </bibdata>
-         <preface>
-             <foreword id="F" obligation="informative">
+         <sections>
+             <clause id="F" obligation="informative">
                 <title>Foreword</title>
                 <sourcecode id="S" lang="ruby" filename="sourcecode1.rb" markers="true">
                    <name>Caption</name>
@@ -661,10 +750,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       <xref target="A"><display-text>Goodbye</display-text></xref>
                    </body>
                 </sourcecode>
-             </foreword>
-          </preface>
-          <sections>
-
+             </clause>
        </sections>
           <bibliography>
              <references id="A" normative="false" obligation="informative">
@@ -676,7 +762,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                 </bibitem>
              </references>
           </bibliography>
-       </metanorma>
+       </iso-standard>
     INPUT
     output = <<~OUTPUT
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
@@ -688,9 +774,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    <postal/>
                 </address>
              </author>
-             <abstract anchor="F">
+          </front>
+          <middle>
+             <section anchor="F">
+                <name>Foreword</name>
                 <sourcecode anchor="S" type="ruby" name="sourcecode1.rb" markers="true">                puts "Hello, world." %w{a b c}.each do |x| puts x end
-                       RFC 4918, Section
+                       RFC 4918, Section 
                        Hello
                        RFC 4918, Section 14.24
                        Hello
@@ -699,9 +788,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                        Bibliography
                        Goodbye
                     </sourcecode>
-             </abstract>
-          </front>
-          <middle/>
+             </section>
+          </middle>
           <back>
              <references anchor="A">
                 <name>Bibliography</name>
@@ -723,19 +811,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "cleans up annotated bibliography" do
     input = <<~INPUT
       <rfc xmlns:xi='http://www.w3.org/2001/XInclude' xml:lang='en' version='3'>
-         <front>
-           <abstract>
-             <t anchor='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <xref target='ISO712'/>
-               <xref target='ISBN'/>
-               <xref target='ISSN'/>
-               <xref target='ISO16634'/>
-               <xref target='ref1'/>
-               <xref target='ref10'/>
-               <xref target='ref12'/>
-             </t>
-           </abstract>
-         </front>
          <middle/>
          <back>
            <references anchor='_normative_references'>
@@ -844,19 +919,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     INPUT
     output = <<~OUTPUT
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3">
-          <front>
-            <abstract>
-              <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-                <xref target="ISO712"/>
-                <xref target="ISBN"/>
-                <xref target="ISSN"/>
-                <xref target="ISO16634"/>
-                <xref target="ref1"/>
-                <xref target="ref10"/>
-                <xref target="ref12"/>
-              </t>
-            </abstract>
-          </front>
           <middle/>
           <back>
             <references anchor="_normative_references">

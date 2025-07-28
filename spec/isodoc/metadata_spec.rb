@@ -512,7 +512,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       <uri>http://slate.example.com</uri>
                     </address>
                   </author>
-                  <abstract anchor='_'>
+                  <abstract>
                     <t anchor='_'>This is the abstract of the document</t>
                     <t anchor='_'>This is the second paragraph of the abstract of the document.</t>
                   </abstract>

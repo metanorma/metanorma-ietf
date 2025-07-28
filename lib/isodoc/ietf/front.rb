@@ -220,12 +220,8 @@ module IsoDoc
 
       def abstract(isoxml, front)
         a = isoxml.at(ns("//preface/abstract | //preface/foreword")) || return
-        front.abstract **attr_code(anchor: a["id"]) do |abs|
-          a.children.reject do |c1|
-            %w(title note).include? c1.name
-          end.each do |c1|
-            parse(c1, abs)
-          end
+        front.abstract do |abs|
+          children_parse(a, abs)
         end
       end
 

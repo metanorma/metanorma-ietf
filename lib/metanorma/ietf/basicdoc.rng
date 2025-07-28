@@ -198,14 +198,14 @@ Applicable to modify and delete</a:documentation>
         </zeroOrMore>
       </element>
     </optional>
-    <optional>
+    <zeroOrMore>
       <element name="description">
-        <a:documentation>Description of the change described in this block</a:documentation>
-        <zeroOrMore>
+        <a:documentation>Description(s) of the change described in this block</a:documentation>
+        <oneOrMore>
           <ref name="BasicBlock"/>
-        </zeroOrMore>
+        </oneOrMore>
       </element>
-    </optional>
+    </zeroOrMore>
     <optional>
       <element name="newcontent">
         <a:documentation>New content to be added to the document; applicable to add and modify</a:documentation>
@@ -1291,13 +1291,13 @@ Restricted recursively to contain only other such inline elements with no identi
       <ref name="pure_strike"/>
       <ref name="pure_smallcap"/>
       <ref name="br"/>
+      <ref name="stem"/>
     </choice>
   </define>
   <define name="NestedTextElement">
     <a:documentation>Contents of TextElement tags: leaves out tags that should occur only at top level of block: bookmark image hr pagebreak</a:documentation>
     <choice>
       <ref name="PureTextElement"/>
-      <ref name="stem"/>
       <ref name="eref"/>
       <ref name="xref"/>
       <ref name="hyperlink"/>

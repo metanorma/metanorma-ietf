@@ -18,7 +18,18 @@ module IsoDoc
         u_cleanup(docxml)
         biblio_cleanup(docxml) # feeds aside
         aside_cleanup(docxml)
+        abstract_cleanup(docxml)
         docxml
+      end
+
+      def abstract_cleanup(docxml)
+        docxml.xpath("//abstract").each do |a|
+          a.xpath(".//eref | .//xref").each do |node|
+            crossref_remove_markup_elem(node)
+          end
+          a.xpath(".//aside | ./title | .//table")
+            .each(&:remove)
+        end
       end
 
       def biblio_cleanup(xmldoc)
