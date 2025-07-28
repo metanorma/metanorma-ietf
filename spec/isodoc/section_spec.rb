@@ -104,6 +104,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <front>
             <seriesInfo value='' name='RFC' asciiName='RFC'/>
             <abstract> </abstract>
+            <date day="1" year="2000" month="January"/>
           </front>
           <middle>
             <section anchor='B'>

@@ -177,7 +177,8 @@ module IsoDoc
       end
 
       def date(_isoxml, front)
-        date = @meta.get[:publisheddate] || @meta.get[:circulateddate] || return
+        date = @meta.get[:publisheddate] || @meta.get[:circulateddate] ||
+          Date.today.to_s
         date = date.gsub(/T.*$/, "")
         attr = date_attr(date) || return
         front.date **attr_code(attr)

@@ -512,6 +512,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       <uri>http://slate.example.com</uri>
                     </address>
                   </author>
+                  <date day="1" year="2000" month="January"/>
                   <abstract>
                     <t anchor='_'>This is the abstract of the document</t>
                     <t anchor='_'>This is the second paragraph of the abstract of the document.</t>

@@ -22,6 +22,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <abstract>
                  <t>&lt;pizza&gt;</t>
               </abstract>
+              <date day="1" year="2000" month="January"/>
            </front>
            <middle/>
            <back/>
@@ -57,7 +58,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <br/>
         <bookmark anchor='H'/>
       </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -94,7 +97,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      </xref>
                      <xref target='ISO712' section='3.1' sectionFormat="of" relative="xyz"/>
                    </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -121,7 +126,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                   <iref item='AB' subitem='AB'/>
                   .
                   <iref item='D' primary="true"/></t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -143,7 +150,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <t>
                      <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='A' type='svg' alt='alttext'/>
                    </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -176,7 +185,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <eref target='mailto:fred@example.com'>mailto:fred@example.com</eref>
                      <eref target="http://example.com" brackets="angle">example</eref>
                    </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -199,7 +210,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <t>
         <t>&lt;barry fred="http://example.com"&gt;example&lt;/barry&gt;</t>
       </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -228,7 +241,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       $$ XYZ $$
       $$ Latex? $$
       </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))
@@ -251,7 +266,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t> $$$$ A $$$$ $$Hello$$$ </t>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -335,6 +352,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <xref target='Anote2'/>
                </t>
              </abstract>
+             <date day="1" year="2000" month="January"/>
            </front>
            <middle>
              <section anchor='intro'>
@@ -451,7 +469,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <t>
         <xref target='ISO712' section='' sectionFormat='of' relative="#abc">A</xref>
       </t>
-      </abstract></front><middle/>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+        </front><middle/>
       <back>
         <references anchor="_normative_references">
           <name>Normative References</name>
@@ -540,7 +560,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <xref target='ISO712' section='Whole of text' relative='1'/>
                <xref target='ISO712' section='Prelude 7' relative='1'/>
       </t>
-      </abstract></front><middle/>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/>
       <back>
         <references anchor="_normative_references">
           <name>Normative References</name>
@@ -595,6 +617,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </abc>
         </t>
         </abstract>
+        <date day="1" year="2000" month="January"/>
           </front>
           <middle></middle>
           <back></back>
@@ -783,6 +806,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    </ul>
                 </t>
              </abstract>
+             <date day="1" year="2000" month="January"/>
           </front>
           <middle>
              <section anchor="clause1">
@@ -845,6 +869,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
          <front>
            <seriesInfo value='' name='RFC' asciiName='RFC'/>
+           <date day="1" year="2000" month="January"/>
          </front>
          <middle>
            <section anchor='A'>
@@ -1012,6 +1037,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
          <front>
            <seriesInfo value='' name='RFC' asciiName='RFC'/>
+           <date day="1" year="2000" month="January"/>
          </front>
                  <middle>
            <section anchor="A">

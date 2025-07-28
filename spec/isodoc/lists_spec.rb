@@ -26,7 +26,9 @@ RSpec.describe IsoDoc do
           <t anchor='_'>deletion of 4.3.</t>
         </li>
       </ul>
-      </abstract></front><middle/><back/></rfc>
+      </abstract>
+      <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
@@ -71,7 +73,9 @@ RSpec.describe IsoDoc do
                </ol>
              </ol>
            </ol>
-        </abstract></front><middle/><back/></rfc>
+        </abstract>
+        <date day="1" year="2000" month="January"/>
+        </front><middle/><back/></rfc>
     OUTPUT
     expect(strip_guid(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -109,7 +113,9 @@ RSpec.describe IsoDoc do
                    <t anchor='_'>the sampling method used;</t>
                  </li>
                </ol>
-            </abstract></front><middle/><back/></rfc>
+            </abstract>
+            <date day="1" year="2000" month="January"/>
+            </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
@@ -151,7 +157,9 @@ RSpec.describe IsoDoc do
                <aside>
                <t>NOTE: This is a note</t>
                </aside>
-        </abstract></front><middle/><back/></rfc>
+        </abstract>
+        <date day="1" year="2000" month="January"/>
+        </front><middle/><back/></rfc>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)

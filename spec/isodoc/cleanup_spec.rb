@@ -320,6 +320,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <postal/>
          </address>
       </author>
+      <date day="1" year="2000" month="January"/>
              <abstract>
                 <t>
                    A.
@@ -771,6 +772,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    <postal/>
                 </address>
              </author>
+             <date day="1" year="2000" month="January"/>
           </front>
           <middle>
              <section anchor="F">

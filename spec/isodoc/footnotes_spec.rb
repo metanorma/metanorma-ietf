@@ -47,6 +47,7 @@ RSpec.describe IsoDoc do
                      </fn>
                    </t>
                  </abstract>
+                 <date day="1" year="2000" month="January"/>
                </front>
                <middle/>
                <back/>
@@ -84,6 +85,7 @@ RSpec.describe IsoDoc do
                 <bookmark anchor="C"/>
                 <t>C.</t>
              </abstract>
+             <date day="1" year="2000" month="January"/>
           </front>
           <middle/>
           <back/>
@@ -96,6 +98,7 @@ RSpec.describe IsoDoc do
                 <bookmark anchor="C"/>
                 <t>C.</t>
              </abstract>
+             <date day="1" year="2000" month="January"/>
           </front>
           <middle/>
           <back>

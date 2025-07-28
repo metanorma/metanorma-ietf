@@ -141,6 +141,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      </tbody>
                    </table>
                  </abstract>
+                 <date day="1" year="2000" month="January"/>
                </front>
                <middle/>
                <back/>

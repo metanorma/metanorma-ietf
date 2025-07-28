@@ -291,6 +291,7 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
+             <date day="1" year="2000" month="January"/>
              </front>
    <middle>
       <section anchor="B">
@@ -652,6 +653,7 @@ RSpec.describe IsoDoc::Ietf do
                    <postal/>
                 </address>
              </author>
+             <date day="1" year="2000" month="January"/>
    </front>
    <middle>
       <section anchor="B">
@@ -819,6 +821,7 @@ RSpec.describe IsoDoc::Ietf do
              <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
                <front>
                  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+                 <date day="1" year="2000" month="January"/>
                </front>
                <middle>
                  <section anchor='_clause'>
@@ -997,6 +1000,7 @@ RSpec.describe IsoDoc::Ietf do
                 <postal/>
               </address>
             </author>
+            <date day="1" year="2000" month="January"/>
           </front>
           <middle>
             <section anchor="_clause">
