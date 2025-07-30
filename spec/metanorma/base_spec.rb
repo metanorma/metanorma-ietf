@@ -30,8 +30,8 @@ RSpec.describe Metanorma::Ietf do
         <sections/>
         </metanorma>
       OUTPUT
-      expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
-        .to be_equivalent_to strip_guid(Xml::C14n.format(output))
+      expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
+        .to be_equivalent_to strip_guid(Canon.format_xml(output))
   end
 
   it "converts a blank document" do
@@ -47,8 +47,8 @@ RSpec.describe Metanorma::Ietf do
       <sections/>
       </metanorma>
     OUTPUT
-    expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Xml::C14n.format(output))
+    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to strip_guid(Canon.format_xml(output))
     expect(File.exist?("test.rfc.xml")).to be true
   end
 
@@ -455,8 +455,8 @@ RSpec.describe Metanorma::Ietf do
                <sections/>
              </metanorma>
     OUTPUT
-    expect(strip_guid(Xml::C14n.format(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Xml::C14n.format(output))
+    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to strip_guid(Canon.format_xml(output))
   end
 
   it "processes complex metadata" do
@@ -604,8 +604,8 @@ RSpec.describe Metanorma::Ietf do
                </sections>
              </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "cites drafts of internet drafts" do
@@ -655,7 +655,7 @@ RSpec.describe Metanorma::Ietf do
         </annex>
       </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 end

@@ -109,9 +109,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert
+    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert
       .new({}).convert("test", input, true)))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes multiple term definitions" do
@@ -163,8 +163,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <back/>
         </rfc>
       OUTPUT
-      expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({})
+      expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
         .convert("test", input, true)))
-        .to be_equivalent_to Xml::C14n.format(output)
+        .to be_equivalent_to Canon.format_xml(output)
   end
 end

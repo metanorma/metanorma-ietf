@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "processes document with no content" do
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Canon.format_xml(<<~"OUTPUT")
     <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface/>
           <sections/>
@@ -182,13 +182,13 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </back>
         </rfc>
 OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes simple terms & definitions" do
-        expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+        expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Canon.format_xml(<<~"OUTPUT")
                <iso-standard xmlns="http://riboseinc.com/isoxml">
        <sections>
        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
@@ -215,7 +215,7 @@ OUTPUT
 
 
         it "processes sections without titles" do
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Canon.format_xml(<<~"OUTPUT")
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
        <introduction id="M" inline-header="false" obligation="normative"><clause id="N" inline-header="false" obligation="normative">
@@ -252,7 +252,7 @@ OUTPUT
     end
 
         it "processes section attributes" do
-    expect(Xml::C14n.format(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Xml::C14n.format(<<~"OUTPUT")
+    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to Canon.format_xml(<<~"OUTPUT")
       <ietf-standard xmlns="http://riboseinc.com/isoxml">
            <sections>
    <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>

@@ -82,7 +82,7 @@ RSpec.describe Metanorma::Ietf do
         </sections>
       </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(output)))
-      .to be_equivalent_to Xml::C14n.format(xml)
+    expect(Canon.format_xml(strip_guid(output)))
+      .to be_equivalent_to Canon.format_xml(xml)
   end
 end

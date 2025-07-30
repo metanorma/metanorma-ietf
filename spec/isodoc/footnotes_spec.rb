@@ -53,9 +53,9 @@ RSpec.describe IsoDoc do
                <back/>
              </rfc>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes IsoXML reviewer notes" do
@@ -119,20 +119,20 @@ RSpec.describe IsoDoc do
           </back>
        </rfc>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
     input1 = input.sub("<preface>", <<~XML)
       <metanorma-extension><presentation-metadata><render-document-annotations>true</render-document-annotations></presentation-metadata></metanorma-extension><preface>
     XML
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input1, true))))
-      .to be_equivalent_to Xml::C14n.format(output_annotated)
+      .to be_equivalent_to Canon.format_xml(output_annotated)
     input2 = input.sub("<preface>", <<~XML)
       <bibdata><ext><notedraftinprogress/></ext></bibdata><preface>
     XML
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input2, true))))
-      .to be_equivalent_to Xml::C14n.format(output_annotated)
+      .to be_equivalent_to Canon.format_xml(output_annotated)
   end
 end
