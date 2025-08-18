@@ -7,10 +7,15 @@ module Metanorma
 
       def metadata_author(node, xml)
         personal_author(node, xml)
+        committee_contributors(node, xml, default_publisher, {})
       end
 
       def default_publisher
         "IETF"
+      end
+
+      def metadata_committee_types(_node)
+        %w(workgroup)
       end
 
       def org_abbrev
@@ -109,10 +114,10 @@ module Metanorma
         pi_code(rfc_pis, pi)
       end
 
-      def pi_code(rfc_pis, pi)
+      def pi_code(rfc_pis, processing_instruction)
         rfc_pis.each_pair do |k, v|
           v.nil? and next
-          pi.send k.to_s, v
+          processing_instruction.send k.to_s, v
         end
       end
     end

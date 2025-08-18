@@ -269,6 +269,34 @@ RSpec.describe Metanorma::Ietf do
                      <name>Hanna Barbera</name>
                    </organization>
                  </contributor>
+     <contributor>
+        <role type="author">
+           <description>committee</description>
+        </role>
+        <organization>
+           <name>Internet Engineering Task Force</name>
+           <subdivision type="Workgroup" subtype="C">
+              <name>WG</name>
+              <identifier>C 3</identifier>
+              <identifier type="full">C 3</identifier>
+           </subdivision>
+           <abbreviation>IETF</abbreviation>
+        </organization>
+     </contributor>
+     <contributor>
+        <role type="author">
+           <description>committee</description>
+        </role>
+        <organization>
+           <name>Internet Engineering Task Force</name>
+           <subdivision type="Workgroup" subtype="C1">
+              <name>WG1</name>
+              <identifier>C1 31</identifier>
+              <identifier type="full">C1 31</identifier>
+           </subdivision>
+           <abbreviation>IETF</abbreviation>
+        </organization>
+     </contributor>
                  <contributor>
                    <role type='publisher'/>
                    <organization>
@@ -379,10 +407,6 @@ RSpec.describe Metanorma::Ietf do
                  <ext>
                  <doctype>rfc</doctype>
                  <flavor>ietf</flavor>
-      <editorialgroup>
-        <workgroup number='3' type='C'>WG</workgroup>
-        <workgroup number='31' type='C1'>WG1</workgroup>
-      </editorialgroup>
       <area>A</area>
       <area>B</area>
       <area>C</area>
@@ -435,6 +459,9 @@ RSpec.describe Metanorma::Ietf do
                  </ext>
                </bibdata>
                         <metanorma-extension>
+                              <semantic-metadata>
+         <stage-published>false</stage-published>
+      </semantic-metadata>
            <presentation-metadata>
              <name>TOC Heading Levels</name>
              <value>2</value>
@@ -569,6 +596,9 @@ RSpec.describe Metanorma::Ietf do
       </ext>
                </bibdata>
                         <metanorma-extension>
+                              <semantic-metadata>
+         <stage-published>true</stage-published>
+      </semantic-metadata>
            <presentation-metadata>
              <name>TOC Heading Levels</name>
              <value>2</value>

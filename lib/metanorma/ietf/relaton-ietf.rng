@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0">
   <include href="biblio-standoc.rng">
-    <define name="editorialgroup">
-      <element name="editorialgroup">
-        <zeroOrMore>
-          <ref name="committee"/>
-        </zeroOrMore>
-      </element>
-    </define>
     <define name="DocumentType">
       <choice>
         <value>rfc</value>
@@ -77,11 +70,6 @@ listed on &lt;http://www.ietf.org/iesg/area.html</a:documentation>
         <a:documentation>Display organization of author on front page of IAB documents. Applied to all organizations named in the document front matter</a:documentation>
       </ref>
     </optional>
-  </define>
-  <define name="committee">
-    <element name="committee">
-      <ref name="IsoWorkgroup"/>
-    </element>
   </define>
   <define name="area">
     <element name="area">
