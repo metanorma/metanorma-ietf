@@ -10,6 +10,8 @@ module Metanorma
         committee_contributors(node, xml, default_publisher, {})
       end
 
+      def org_author(node, xml); end
+
       def default_publisher
         "IETF"
       end
