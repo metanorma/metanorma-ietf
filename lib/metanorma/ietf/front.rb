@@ -36,19 +36,11 @@ module Metanorma
           end
       end
 
-      def title(node, xml)
-        ["en"].each do |lang|
-          at = { language: lang, format: "text/plain" }
-          xml.title **attr_code(at.merge(type: "main")) do |t|
-            t << (::Metanorma::Utils::asciidoc_sub(node.attr("title")) ||
-              ::Metanorma::Utils::asciidoc_sub(node.attr("title-en")) ||
-              ::Metanorma::Utils::asciidoc_sub(node.attr("doctitle")))
-          end
-          a = node.attr("abbrev") and
-            xml.title a, **attr_code(at.merge(type: "abbrev"))
-          a = node.attr("asciititle") and
-            xml.title a, **attr_code(at.merge(type: "ascii"))
-        end
+      def title_other(node, xml)
+        a = node.attr("abbrev") and
+          add_title_xml(xml, a, "en", "abbrev")
+        a = node.attr("asciititle") and
+          add_title_xml(xml, a, "en", "ascii")
       end
 
       def metadata_committee(node, xml)

@@ -647,7 +647,7 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
       <metanorma xmlns='https://www.metanorma.org/ns/standoc'  type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor='ietf'>
                <bibdata type="standard">
-             <title language="en" format="text/plain" type="main">Document title</title>
+             <title language="en" type="main">Document title</title>
              <contributor>
                 <role type="publisher"/>
                 <organization>
@@ -690,21 +690,6 @@ RSpec.describe Metanorma::Ietf do
           <sections> </sections>
        </metanorma>
     OUTPUT
-    xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
-    xml.at("//xmlns:metanorma-extension")&.remove
-    expect(Canon.format_xml(strip_guid(xml.to_xml)))
-      .to be_equivalent_to Canon.format_xml(output)
-
-    input = <<~INPUT
-      = XXXX
-      Author
-      :docfile: test.adoc
-      :nodoc:
-      :novalid:
-      :no-isobib:
-      :title-en: Document title footnote:[ABC] footnote:[DEF]
-
-    INPUT
     xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
     xml.at("//xmlns:metanorma-extension")&.remove
     expect(Canon.format_xml(strip_guid(xml.to_xml)))

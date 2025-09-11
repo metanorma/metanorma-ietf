@@ -121,7 +121,7 @@ module Metanorma
         [t, rel]
       end
 
-      def norm_ref_preface(sect); end
+      def norm_ref_preface(sect, isodoc); end
 
       def clause_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")

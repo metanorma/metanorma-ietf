@@ -182,9 +182,9 @@ RSpec.describe Metanorma::Ietf do
           <?xml version='1.0' encoding='UTF-8'?>
              <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
-                 <title language='en' format='text/plain' type='main'>Main Title - Title</title>
-              <title language='en' format='text/plain' type='abbrev'>Abbreviated Title</title>
-              <title language='en' format='text/plain' type='ascii'>Ascii Title</title>
+                 <title language='en' type='main'>Main Title - Title</title>
+              <title language='en' type='abbrev'>Abbreviated Title</title>
+              <title language='en' type='ascii'>Ascii Title</title>
                  <docidentifier primary="true">1000</docidentifier>
                  <docnumber>1000</docnumber>
                  <date type='published'>
@@ -519,7 +519,7 @@ RSpec.describe Metanorma::Ietf do
            <?xml version='1.0' encoding='UTF-8'?>
              <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
-                 <title language='en' type="main" format='text/plain'>Document title</title>
+                 <title language='en' type="main">Document title</title>
                  <docidentifier primary="true">1000</docidentifier>
                  <docnumber>1000</docnumber>
                  <contributor>
