@@ -127,6 +127,9 @@ module IsoDoc
         @isodoc.i18n_init("en", "Latn", nil, nil)
       end
 
+      def bibdata(docxml)
+      end
+
       include ::IsoDoc::Ietf::Init
     end
   end

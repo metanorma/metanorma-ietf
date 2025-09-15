@@ -10,7 +10,6 @@ module Metanorma
         xmldoc
       end
 
-        # simplified
       def boilerplate_isodoc(xmldoc)
         x = xmldoc.dup
         x.root.add_namespace(nil, xml_namespace)
