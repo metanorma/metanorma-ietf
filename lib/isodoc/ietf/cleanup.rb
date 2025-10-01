@@ -99,7 +99,12 @@ module IsoDoc
       end
 
       def front_cleanup(xmldoc)
-        xmldoc.xpath("//title").each { |s| s.children = s.text }
+        xmldoc.xpath("//title").each do |s|
+          s.xpath(".//eref[normalize-space(.)='']").each do |e|
+            e.replace(e["target"])
+          end
+          s.children = s.text
+        end
         xmldoc.xpath("//reference/front[not(author)]").each do |f|
           insert = f.at("./seriesInfo[last()]") || f.at("./title")
           insert.next = "<author surname='Unknown'/>"

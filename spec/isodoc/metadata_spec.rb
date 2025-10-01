@@ -92,6 +92,16 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <email>barney2@rockhead.example.com</email>
                    </person>
                  </contributor>
+                 <contributor><role type="author"><description>committee</description></role><organization>
+                <name>Internet Engineering Task Force</name>
+                <subdivision type="Workgroup">
+                <name>WG</name>
+                </subdivision><abbreviation>IETF</abbreviation></organization></contributor>
+                 <contributor><role type="author"><description>committee</description></role><organization>
+                <name>Internet Engineering Task Force</name>
+                <subdivision type="Workgroup">
+                <name>WG1</name>
+                </subdivision><abbreviation>IETF</abbreviation></organization></contributor>
                  <contributor>
                    <role type='publisher'/>
                    <organization>
@@ -215,10 +225,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <keyword>c</keyword>
                  <ext>
                  <doctype>RFC</doctype>
-      <editorialgroup>
-        <workgroup number='3' type='C'>WG</workgroup>
-        <workgroup number='31' type='C1'>WG1</workgroup>
-      </editorialgroup>
       <ics>
         <code>1</code>
       </ics>

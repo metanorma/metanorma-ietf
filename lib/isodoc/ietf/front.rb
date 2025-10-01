@@ -72,7 +72,8 @@ module IsoDoc
         isoxml.xpath("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = " \
           "'author' or xmlns:role/@type = 'editor']").each do |c|
           role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
-          (c.at("./organization") and org_author(c, role, front)) or
+                c.at(ns("./organization/subdivision[@type = 'Workgroup']")) and next
+          (c.at(ns("./organization")) and org_author(c, role, front)) or
             person_author(c, role, front)
         end
       end
@@ -104,7 +105,7 @@ module IsoDoc
         front.author **attrs do |a|
           org = contrib.at(ns("./person/affiliation/organization")) and
             organization(org, a, contrib.document.at(ns("//showOnFrontPage")))
-          address(contrib.xpath(ns(".//address")),
+          address(contrib.at(ns(".//address")),
                   contrib.at(ns(".//phone[not(@type = 'fax')]")),
                   contrib.at(ns(".//phone[@type = 'fax']")),
                   contrib.xpath(ns(".//email")), contrib.at(ns(".//uri")), a)
@@ -126,13 +127,13 @@ module IsoDoc
         name = org.at(ns("./name"))&.text
         out.organization name, **attr_code(
           showOnFrontPage: show&.text, ascii: output_if_translit(name),
-          asciiAbbrev: output_if_translit(org.at(ns("./abbreviation"))),
+          asciiAbbrev: output_if_translit(org.at(ns("./abbreviation"))&.text),
           abbrev: org.at(ns("./abbreviation"))
         )
       end
 
       def address(addr, phone, fax, email, uri, out)
-        return unless addr || phone || fax || email || uri
+        return unless addr || phone || fax || !email.empty? || uri
 
         out.address do |a|
           addr and postal(addr, a)
