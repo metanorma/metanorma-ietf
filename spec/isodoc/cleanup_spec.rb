@@ -315,11 +315,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <front>
                 <title>The Holy Hand Grenade of Antioch</title>
       <seriesInfo value="10" name="RFC" asciiName="RFC"/>
-      <author fullname="Arthur son of Uther Pendragon">
-         <address>
-            <postal/>
-         </address>
-      </author>
+      <author fullname="Arthur son of Uther Pendragon"/>
       <date day="1" year="2000" month="January"/>
              <abstract>
                 <t>
@@ -766,11 +762,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <front>
              <title>The Holy Hand Grenade of Antioch</title>
              <seriesInfo value="10" name="RFC" asciiName="RFC"/>
-             <author fullname="Arthur son of Uther Pendragon">
-                <address>
-                   <postal/>
-                </address>
-             </author>
+             <author fullname="Arthur son of Uther Pendragon"/>
              <date day="1" year="2000" month="January"/>
           </front>
           <middle>

@@ -39,7 +39,8 @@ module IsoDoc
 
       def wg(xml)
         workgroups = []
-        xml.xpath(ns("//bibdata/ext/editorialgroup/workgroup")).each do |wg|
+        xml.xpath(ns("//bibdata/contributor[role/description = 'committee']/" \
+          "organization/subdivision[@type = 'Workgroup']/name")).each do |wg|
           workgroups << wg.text
         end
         set(:wg, workgroups)
