@@ -201,7 +201,7 @@ RSpec.describe IsoDoc::Ietf do
           <abstract>This is an abstract</abstract>
         </bibitem>
         <bibitem id="grail_film">
-          <formattedref format="application/x-isodoc+xml">G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. <em>Monty Python and the Holy Grail</em>.</formattedref>
+          <formattedref format="application/x-isodoc+xml">G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. <em>Monty Python and the Holy Grail</em>.  &lt;<link target="https://www.w3.org/TR/2008/REC-xml-20081126/"/>&gt;.</formattedref>
           <docidentifier>Grail</docidentifier>
         </bibitem>
         </references><references id="_bibliography" obligation="informative" normative="false">
@@ -392,7 +392,7 @@ RSpec.describe IsoDoc::Ietf do
                 </reference>
                 <reference anchor="grail_film">
                    <front>
-                      <title>G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. Monty Python and the Holy Grail.</title>
+                      <title>G. Chapman, J. Cleese, E. Idle, T. Gilliam, T. Jones, M. Palin. 1975. Monty Python and the Holy Grail.  https://www.w3.org/TR/2008/REC-xml-20081126/.</title>
                       <author surname="Unknown"/>
                    </front>
                 </reference>

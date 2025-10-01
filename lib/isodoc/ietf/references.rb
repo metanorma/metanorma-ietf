@@ -29,9 +29,7 @@ module IsoDoc
 
       def bibliography1(node, out)
         out.references **attr_code(anchor: node["id"]) do |div|
-          title = node.at(ns("./title")) and div.name do |name|
-            title.children.each { |n| parse(n, name) }
-          end
+          bibliography1_title(node, div)
           node.elements.select do |e|
             %w(references clause).include? e.name
           end.each { |e| bibliography1(e, out) }
@@ -39,6 +37,12 @@ module IsoDoc
             %w(references title bibitem note).include? e.name
           end.each { |e| parse(e, div) }
           biblio_list(node, div, true)
+        end
+      end
+
+      def bibliography1_title(node, div)
+        title = node.at(ns("./title")) and div.name do |name|
+          title.children.each { |n| parse(n, name) }
         end
       end
 
@@ -66,15 +70,23 @@ module IsoDoc
       end
 
       def bibitem_render(ref, bib)
+        bib1 = bibitem_render_prep(bib)
+        if (f = bib1.at(ns("./formattedref"))) && !bib1.at(ns("./title"))
+          ref.front do |front|
+            front.title do |t|
+              children_parse(f, t)
+            end
+          end
+        else
+          ref << @bibrenderer.render(bib1.to_xml, embedded: true)
+        end
+      end
+
+      def bibitem_render_prep(bib)
         bib1 = bib.clone
         @isodoc.prep_for_rendering(bib1)
         bib1.namespace = nil
-        ret = @bibrenderer.render(bib1.to_xml, embedded: true)
-        ref << if bib1.at(ns("./formattedref")) && !bib1.at(ns("./title"))
-                 "<front><title>#{ret}</title></front>"
-               else
-                 ret
-               end
+        bib1
       end
     end
   end
