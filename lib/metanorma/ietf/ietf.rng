@@ -259,11 +259,11 @@
         <ref name="index-tertiary"/>
       </element>
     </define>
-    <define name="TextElement" combine="choice">
-      <ref name="review"/>
-    </define>
   </include>
   <!-- end overrides -->
+  <define name="TextElement" combine="choice">
+    <ref name="review"/>
+  </define>
   <define name="ReviewAttributes" combine="interleave">
     <optional>
       <attribute name="display"/>

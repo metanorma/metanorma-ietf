@@ -99,7 +99,7 @@ module Relaton
             %w(BCP STD).include?(s.title.title.content)
           end
           bcp and ret.unshift("BCP #{bcp.number}")
-          ret.reject { |x| /^(rfc-anchor|Internet-Draft)/.match? (x) }
+          ret.reject { |x| /(rfc-anchor|Internet-Draft)/.match? (x) }
         end
 
         def simple_xml2hash(doc)

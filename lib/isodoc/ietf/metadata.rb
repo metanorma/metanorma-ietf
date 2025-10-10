@@ -29,7 +29,8 @@ module IsoDoc
 
       def docid(isoxml, _out)
         dn = isoxml.at(ns("//bibdata/docnumber"))
-        set(:docnumber, dn&.text&.sub(/^rfc-/, "")&.sub(/\.[a-z0-9]+$/i, ""))
+        set(:docnumber, dn&.text&.strip&.sub(/^rfc-/, "")
+          &.sub(/\.[a-z0-9]+$/i, ""))
       end
 
       def author(xml, _out)
