@@ -162,6 +162,7 @@ module IsoDoc
         ) or return ""
         ret.gsub(%r{</?span[^>]*>}, "").sub(/^,/, "")
           .sub(/^\s*(Sections?|Clauses?)/, "").strip.sub(/,$/, "")
+          .gsub(/\s+/, " ")
       end
 
       def semx_origin_parse(node, out)

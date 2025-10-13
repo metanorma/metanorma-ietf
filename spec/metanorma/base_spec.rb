@@ -519,7 +519,7 @@ RSpec.describe Metanorma::Ietf do
            <?xml version='1.0' encoding='UTF-8'?>
              <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
-                 <title language='en' type="main">Document title</title>
+                 <title language='el' type="main">Document title</title>
                  <docidentifier primary="true">1000</docidentifier>
                  <docnumber>1000</docnumber>
                  <contributor>
