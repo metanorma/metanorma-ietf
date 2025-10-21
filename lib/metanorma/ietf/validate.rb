@@ -19,15 +19,13 @@ module Metanorma
         stream = doc.at("//bibdata/series[@type = 'stream']/title")&.text
         status = doc.at("//bibdata/status/stage")&.text
         stream == "editorial" && status != "informational" and
-          @log.add("Document Attributes", nil,
-                   "Editorial stream must have Informational status")
+          @log.add("IETF_2", nil)
       end
 
       def image_validate(doc)
         doc.xpath("//image").each do |i|
           i["mimetype"] == "image/svg+xml" and next
-          @log.add("Images", i, "image #{i['src'][0, 40]} is not SVG!",
-                   severity: 1)
+          @log.add("IETF_3", i, params: [i["src"][0, 40]])
         end
       end
 
@@ -37,9 +35,7 @@ module Metanorma
           "organization/subdivision[@type = 'Workgroup']/name").each do |wg|
           wg_norm = wg.text.sub(/ (Working|Research) Group$/, "")
           @workgroups.include?(wg_norm) and next
-          @log.add("Document Attributes", nil,
-                   "IETF: unrecognised working group #{wg.text}",
-                   severity: 1)
+          @log.add("IETF_4", nil, params: [wg.text])
         end
       end
 
