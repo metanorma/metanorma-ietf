@@ -172,6 +172,8 @@ RSpec.describe Metanorma::Ietf do
                  <bibitem id="_" anchor="doc">
                     <formattedref format="application/x-isodoc+xml">Reference</formattedref>
                     <docidentifier>x</docidentifier>
+                    <language>en</language>
+                    <script>Latn</script>
                  </bibitem>
               </references>
            </bibliography>
@@ -206,11 +208,15 @@ RSpec.describe Metanorma::Ietf do
         <bibitem id="_" anchor="ISO712">
         <formattedref format="application/x-isodoc+xml">Reference</formattedref>
         <docidentifier>x</docidentifier>
+        <language>en</language>
+        <script>Latn</script>
       </bibitem>
         <bibitem id="_" anchor="ISO713">
         <formattedref format="application/x-isodoc+xml">Reference</formattedref>
         <docidentifier>ISO713</docidentifier>
         <docnumber>713</docnumber>
+        <language>en</language>
+        <script>Latn</script>
       </bibitem>
       </references>
       </bibliography>
@@ -254,8 +260,8 @@ RSpec.describe Metanorma::Ietf do
     output = <<~OUTPUT
          #{BLANK_HDR}
         <sections>
-            <p id="_">See<index primary="true"><primary>See</primary></index> 
-            Index <em>term</em><index><primary><em>term</em></primary></index> 
+            <p id="_">See<index primary="true"><primary>See</primary></index>#{' '}
+            Index <em>term</em><index><primary><em>term</em></primary></index>#{' '}
             and<index primary="true"><primary>A<sub>B</sub></primary>
             <secondary><stem type="MathML" block="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="false"><mi>α</mi></mstyle></math><asciimath>alpha</asciimath></stem></secondary>
             <tertiary>Ⲁ</tertiary></index>.</p>

@@ -618,6 +618,8 @@ RSpec.describe Metanorma::Ietf do
                    <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
                    <docidentifier>RFC 4918</docidentifier>
                    <docnumber>4918</docnumber>
+                   <language>en</language>
+                   <script>Latn</script>
                 </bibitem>
              </references>
           </bibliography>
