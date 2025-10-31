@@ -13,7 +13,7 @@ module Metanorma
       def boilerplate_isodoc(xmldoc)
         x = xmldoc.dup
         x.root.add_namespace(nil, xml_namespace)
-        #xml = Nokogiri::XML(x.to_xml)
+        # xml = Nokogiri::XML(x.to_xml)
         @isodoc ||= isodoc(@lang, @script, @locale)
         # initialise @isodoc.xrefs, for @isodoc.xrefs.info
         @isodoc
@@ -41,8 +41,7 @@ module Metanorma
             c["to"] = id
             r.replace("<bookmark id='#{id}'/>")
           else
-            @log.add("Crossrefences", r,
-                     "No matching annotation for cref:[#{r.text}]", severity: 1)
+            @log.add("IETF_1", r, params: [r.text])
           end
         end
       end
@@ -103,7 +102,6 @@ module Metanorma
       def section_names_refs_cleanup(xml); end
 
       def note_cleanup(xmldoc); end
-
     end
   end
 end

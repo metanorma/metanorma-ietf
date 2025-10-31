@@ -207,6 +207,8 @@ RSpec.describe Metanorma::Ietf do
              <name>ISO</name>
            </organization>
          </contributor>
+         <language>en</language>
+         <script>Latn</script>
        </bibitem>
       </references>
       </bibliography>
@@ -249,6 +251,8 @@ RSpec.describe Metanorma::Ietf do
              <name>ISO</name>
            </organization>
          </contributor>
+         <language>en</language>
+         <script>Latn</script>
        </bibitem>
       </references>
       </bibliography>
@@ -289,6 +293,8 @@ RSpec.describe Metanorma::Ietf do
             <name>ISO</name>
           </organization>
         </contributor>
+        <language>en</language>
+        <script>Latn</script>
       </bibitem>
       </references></bibliography>
              </metanorma>
@@ -362,6 +368,8 @@ RSpec.describe Metanorma::Ietf do
              <name>ISO</name>
            </organization>
          </contributor>
+         <language>en</language>
+         <script>Latn</script>
        </bibitem>
       </references>
       </bibliography>
@@ -405,12 +413,16 @@ RSpec.describe Metanorma::Ietf do
             <name>ISO</name>
           </organization>
         </contributor>
+        <language>en</language>
+        <script>Latn</script>
       </bibitem>
         <bibitem id="_" anchor="iso123">
         <formattedref format="application/x-isodoc+xml">
           <em>Standard 123</em>
         </formattedref>
         <docidentifier type="metanorma">[2]</docidentifier>
+        <language>en</language>
+        <script>Latn</script>
       </bibitem>
       </references></bibliography>
              </metanorma>
@@ -466,12 +478,16 @@ RSpec.describe Metanorma::Ietf do
                <name>ISO</name>
              </organization>
            </contributor>
+           <language>en</language>
+           <script>Latn</script>
          </bibitem>
            <bibitem id="_" anchor="iso123">
            <formattedref format="application/x-isodoc+xml">
              <em>Standard 123</em>
            </formattedref>
            <docidentifier type="metanorma">[2]</docidentifier>
+           <language>en</language>
+           <script>Latn</script>
          </bibitem>
          </references>
          <references id="_" obligation="informative" normative="false">
@@ -485,12 +501,16 @@ RSpec.describe Metanorma::Ietf do
                <name>ISO</name>
              </organization>
            </contributor>
+           <language>en</language>
+           <script>Latn</script>
          </bibitem>
            <bibitem id="_" anchor="iso126">
            <formattedref format="application/x-isodoc+xml">
              <em>Standard 123</em>
            </formattedref>
            <docidentifier type="metanorma">[4]</docidentifier>
+           <language>en</language>
+           <script>Latn</script>
          </bibitem>
          </references></clause></bibliography>
          </metanorma>
