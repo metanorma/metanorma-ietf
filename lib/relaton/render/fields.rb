@@ -2,7 +2,7 @@ module Relaton
   module Render
     module Ietf
       class Fields < ::Relaton::Render::Fields
-        def nameformat(names)
+        def nameformat(names, hash)
           names.nil? and return names
           parts = %i(surname initials given middle nonpersonal
                      nonpersonalabbrev completename)
@@ -12,7 +12,7 @@ module Relaton
               m[i] << n[i]
             end
           end
-          @r.nametemplate.render(names_out)
+          @r.nametemplate.render(names_out, hash)
         end
 
         # do not format months
