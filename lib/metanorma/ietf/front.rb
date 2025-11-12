@@ -26,13 +26,16 @@ module Metanorma
 
       def metadata_series(node, xml)
         xml.series **{ type: "stream" } do |s|
-          s.title (node.attr("submission-type") || "IETF")
+          add_noko_elem(s, "title", node.attr("submission-type") || "IETF")
+          # s.title (node.attr("submission-type") || "IETF")
         end
         a = node.attr("intended-series") and
           xml.series **{ type: "intended" } do |s|
             parts = a.split(/ /)
-            s.title parts[0]
-            s.number parts[1..-1].join(" ") if parts.size > 1
+            add_noko_elem(s, "title", parts[0])
+            # s.title parts[0]
+            add_noko_elem(s, "number", parts[1..-1].join(" ")) if parts.size > 1
+            # s.number parts[1..-1].join(" ") if parts.size > 1
           end
       end
 
@@ -53,16 +56,20 @@ module Metanorma
       def metadata_ext(node, xml)
         super
         x = node.attr("area") and x.split(/,\s*/).each do |a|
-          xml.area a
+          add_noko_elem(xml, "area", a)
+          # xml.area a
         end
-        xml.ipr (node.attr("ipr") || "trust200902")
+        add_noko_elem(xml, "ipr", node.attr("ipr") || "trust200902")
+        # xml.ipr (node.attr("ipr") || "trust200902")
         x = node.attr("consensus") and xml.consensus (x != "false")
         x = node.attr("index-include") and xml.indexInclude (x != "false")
-        x = node.attr("ipr-extract") and xml.iprExtract x
+        add_noko_elem(xml, "iprExtract", node.attr("ipr-extract"))
+        # x = node.attr("ipr-extract") and xml.iprExtract x
         x = node.attr("sort-refs") and xml.sortRefs (x != "false")
         x = node.attr("sym-refs") and xml.symRefs (x != "false")
         x = node.attr("toc-include") and xml.tocInclude (x != "false")
-        x = node.attr("toc-depth") and xml.tocDepth x
+        add_noko_elem(xml, "tocDepth", node.attr("toc-depth"))
+        # x = node.attr("toc-depth") and xml.tocDepth x
         x = node.attr("show-on-front-page") and xml.showOnFrontPage (x != "false")
         xml.pi { |pi| set_pi(node, pi) }
       end
