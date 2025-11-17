@@ -161,6 +161,10 @@ module Metanorma
         end
       end
 
+      def default_svg_conform_profile
+        :svg_1_2_rfc
+      end
+
       def html_extract_attributes(node)
         super.merge(usexinclude: node.attr("use-xinclude"))
       end
