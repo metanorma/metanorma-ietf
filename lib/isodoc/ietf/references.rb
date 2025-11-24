@@ -19,8 +19,9 @@ module IsoDoc
           i.children = docid_prefix(i["type"], i.text)
         end
         @bibrenderer =
-          ::Relaton::Render::Ietf::General.new(language: @lang,
-                                               i18nhash: @i18n.get)
+          ::Relaton::Render::Ietf::General
+            .new(language: @lang, i18nhash: @i18n.get,
+                 config: @relatonrenderconfig)
       end
 
       def implicit_reference(bib)
