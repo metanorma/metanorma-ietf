@@ -138,8 +138,7 @@ module IsoDoc
       end
 
       def clause_parse_title(_node, div, clause, _out, _heading_attrs = {})
-        return unless clause
-
+        clause or return
         div.name do |n|
           clause&.children&.each { |c2| parse(c2, n) }
         end

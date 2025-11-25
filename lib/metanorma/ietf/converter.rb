@@ -137,7 +137,11 @@ module Metanorma
         super
       end
 
-      def introduction_parse(attrs, xml, node)
+      #def introduction_parse(attrs, xml, node)
+        #clause_parse(attrs, xml, node)
+      #end
+
+      def acknowledgements_parse(attrs, xml, node)
         clause_parse(attrs, xml, node)
       end
 
