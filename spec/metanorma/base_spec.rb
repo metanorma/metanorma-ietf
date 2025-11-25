@@ -16,22 +16,22 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "processes a blank document" do
-      input = <<~INPUT
-        = Document title
-        Author
-        :docfile: test.adoc
-        :nodoc:
-        :novalid:
-        :no-isobib:
-        :flush-caches: true
-      INPUT
-      output = <<~OUTPUT
-        #{BLANK_HDR}
-        <sections/>
-        </metanorma>
-      OUTPUT
-      expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-        .to be_equivalent_to strip_guid(Canon.format_xml(output))
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :no-isobib:
+      :flush-caches: true
+    INPUT
+    output = <<~OUTPUT
+      #{BLANK_HDR}
+      <sections/>
+      </metanorma>
+    OUTPUT
+    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to strip_guid(Canon.format_xml(output))
   end
 
   it "converts a blank document" do
@@ -179,311 +179,316 @@ RSpec.describe Metanorma::Ietf do
       :sortrefs: 35
     INPUT
     output = <<~OUTPUT
-          <?xml version='1.0' encoding='UTF-8'?>
-             <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
-               <bibdata type='standard'>
-                 <title language='en' type='main'>Main Title - Title</title>
-              <title language='en' type='abbrev'>Abbreviated Title</title>
-              <title language='en' type='ascii'>Ascii Title</title>
-                 <docidentifier primary="true">1000</docidentifier>
-                 <docnumber>1000</docnumber>
-                 <date type='published'>
-                   <on>1000-01-01</on>
-                 </date>
-                 <date type='accessed'>
-                   <on>1001-01-01</on>
-                 </date>
-                 <date type='created'>
-                   <on>1002-01-01</on>
-                 </date>
-                 <date type='implemented'>
-                   <on>1003-01-01</on>
-                 </date>
-                 <date type='obsoleted'>
-                   <on>1004-01-01</on>
-                 </date>
-                 <date type='confirmed'>
-                   <on>1005-01-01</on>
-                 </date>
-                 <date type='updated'>
-                   <on>1006-01-01</on>
-                 </date>
-                 <date type='issued'>
-                   <on>1007-01-01</on>
-                 </date>
-                 <date type='circulated'>
-                   <on>1008-01-01</on>
-                 </date>
-                 <date type='unchanged'>
-                   <on>1009-01-01</on>
-                 </date>
-                 <date type='Fred'>
-                   <on>1010-01-01</on>
-                 </date>
-                 <date type='Jack'>
-                   <on>1010-01-01</on>
-                 </date>
-                 <contributor>
-                   <role type='author'/>
-                   <person>
-                     <name>
-                       <completename>Fred Flintstone</completename>
-                     </name>
-                     <affiliation>
-                       <organization>
-                         <name>Slate Rock and Gravel Company</name>
-                         <address>
-                           <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
-                         </address>
-                       </organization>
-                     </affiliation>
-                     <phone>123</phone>
-      <phone type='fax'>123b</phone>
-                     <uri>http://slate.example.com</uri>
-                   </person>
-                 </contributor>
-                 <contributor>
-                   <role type='editor'/>
-                   <person>
-                     <name>
-                       <forename>Barney</forename>
-                       <initial>B. X.</initial>
-                       <surname>Rubble</surname>
-                     </name>
-                     <affiliation>
-                       <organization>
-                         <name>Rockhead and Quarry Cave Construction Company</name>
-                         <address>
-                           <formattedAddress>6A Rubble Way, Bedrock</formattedAddress>
-                         </address>
-                       </organization>
-                     </affiliation>
-                     <phone>123c</phone>
-      <phone type='fax'>123d</phone>
-                     <email>barney@rockhead.example.com</email>
-                   </person>
-                 </contributor>
-                 <contributor>
-                   <role type='publisher'/>
-                   <organization>
-                     <name>Hanna Barbera</name>
-                   </organization>
-                 </contributor>
-     <contributor>
-        <role type="author">
-           <description>committee</description>
-        </role>
-        <organization>
-           <name>Internet Engineering Task Force</name>
-           <subdivision type="Workgroup" subtype="C">
-              <name>WG</name>
-              <identifier>C 3</identifier>
-              <identifier type="full">C 3</identifier>
-           </subdivision>
-           <abbreviation>IETF</abbreviation>
-        </organization>
-     </contributor>
-     <contributor>
-        <role type="author">
-           <description>committee</description>
-        </role>
-        <organization>
-           <name>Internet Engineering Task Force</name>
-           <subdivision type="Workgroup" subtype="C1">
-              <name>WG1</name>
-              <identifier>C1 31</identifier>
-              <identifier type="full">C1 31</identifier>
-           </subdivision>
-           <abbreviation>IETF</abbreviation>
-        </organization>
-     </contributor>
-                 <contributor>
-                   <role type='publisher'/>
-                   <organization>
-                     <name>Cartoon Network</name>
-                   </organization>
-                 </contributor>
-                 <edition>2</edition>
-                 <version>
-                   <revision-date>2000-01-01</revision-date>
-                   <draft>3.4</draft>
-                 </version>
-                 <language>en</language>
-                 <script>Latn</script>
-                 <status>
-                   <stage>10</stage>
-                   <substage>20</substage>
-                   <iteration>3</iteration>
-                 </status>
-                 <copyright>
-                   <from>2001</from>
-                   <owner>
-                     <organization>
-                       <name>Cartoon Network</name>
-                     </organization>
-                   </owner>
-                 </copyright>
-                 <relation type='includedIn'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>INC1</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='includedIn'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>INCL2</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='describedBy'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>DESC1</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='describedBy'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>DESC2</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='derivedFrom'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>https://datatracker.ietf.org/doc/draft-DER1</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='derivedFrom'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>https://datatracker.ietf.org/doc/draft-DER2</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='instanceOf'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>EQ1</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='instanceOf'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>EQ2</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='obsoletes'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>OB1</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='obsoletes'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>OB2</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='updates'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>UPD1</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <relation type='updates'>
-                   <bibitem>
-                     <title>--</title>
-                     <docidentifier>UPD2</docidentifier>
-                   </bibitem>
-                 </relation>
-                 <series type='stream'>
-                   <title>IRTF</title>
-                   </series>
-      <series type='intended'>
-        <title>BCP</title>
-                 </series>
-                 <keyword>a</keyword>
-                 <keyword>b</keyword>
-                 <keyword>c</keyword>
-                 <ext>
-                 <doctype>rfc</doctype>
-                 <flavor>ietf</flavor>
-      <area>A</area>
-      <area>B</area>
-      <area>C</area>
-                   <ipr>noModificationTrust200902,pre5378Trust200902</ipr>
-                   <consensus>false</consensus>
-                   <indexInclude>false</indexInclude>
-                   <iprExtract>Section 3</iprExtract>
-                   <sortRefs>false</sortRefs>
-                   <symRefs>false</symRefs>
-                   <tocInclude>false</tocInclude>
-                   <tocDepth>9</tocDepth>
-                   <showOnFrontPage>false</showOnFrontPage>
-                   <pi>
-        <artworkdelimiter>1</artworkdelimiter>
-        <artworklines>2</artworklines>
-        <authorship>3</authorship>
-        <autobreaks>4</autobreaks>
-        <background>5</background>
-        <colonspace>6</colonspace>
-        <comments>7</comments>
-        <docmapping>8</docmapping>
-        <editing>9</editing>
-        <emoticonic>10</emoticonic>
-        <footer>11</footer>
-        <header>12</header>
-        <inline>13</inline>
-        <iprnotified>14</iprnotified>
-        <linkmailto>15</linkmailto>
-        <linefile>16</linefile>
-        <notedraftinprogress>17</notedraftinprogress>
-        <private>18</private>
-        <refparent>19</refparent>
-        <rfcedstyle>20</rfcedstyle>
-        <slides>21</slides>
-        <text-list-symbols>22</text-list-symbols>
-        <tocappendix>23</tocappendix>
-        <tocindent>24</tocindent>
-        <tocnarrow>25</tocnarrow>
-        <tocompact>26</tocompact>
-        <topblock>27</topblock>
-        <useobject>28</useobject>
-        <strict>29</strict>
-        <compact>30</compact>
-        <subcompact>31</subcompact>
-        <tocinclude>no</tocinclude>
-        <tocdepth>9</tocdepth>
-        <symrefs>false</symrefs>
-        <sortrefs>false</sortrefs>
-      </pi>
-                 </ext>
-               </bibdata>
-                        <metanorma-extension>
-                              <semantic-metadata>
-         <stage-published>false</stage-published>
-      </semantic-metadata>
-           <presentation-metadata>
-             <name>TOC Heading Levels</name>
+           <?xml version='1.0' encoding='UTF-8'?>
+              <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
+                <bibdata type='standard'>
+                  <title language='en' type='main'>Main Title - Title</title>
+               <title language='en' type='abbrev'>Abbreviated Title</title>
+               <title language='en' type='ascii'>Ascii Title</title>
+                  <docidentifier primary="true">1000</docidentifier>
+                  <docnumber>1000</docnumber>
+                  <date type='published'>
+                    <on>1000-01-01</on>
+                  </date>
+                  <date type='accessed'>
+                    <on>1001-01-01</on>
+                  </date>
+                  <date type='created'>
+                    <on>1002-01-01</on>
+                  </date>
+                  <date type='implemented'>
+                    <on>1003-01-01</on>
+                  </date>
+                  <date type='obsoleted'>
+                    <on>1004-01-01</on>
+                  </date>
+                  <date type='confirmed'>
+                    <on>1005-01-01</on>
+                  </date>
+                  <date type='updated'>
+                    <on>1006-01-01</on>
+                  </date>
+                  <date type='issued'>
+                    <on>1007-01-01</on>
+                  </date>
+                  <date type='circulated'>
+                    <on>1008-01-01</on>
+                  </date>
+                  <date type='unchanged'>
+                    <on>1009-01-01</on>
+                  </date>
+                  <date type='Fred'>
+                    <on>1010-01-01</on>
+                  </date>
+                  <date type='Jack'>
+                    <on>1010-01-01</on>
+                  </date>
+                  <contributor>
+                    <role type='author'/>
+                    <person>
+                      <name>
+                        <completename>Fred Flintstone</completename>
+                      </name>
+                      <affiliation>
+                        <organization>
+                          <name>Slate Rock and Gravel Company</name>
+                          <address>
+                            <formattedAddress>6 Rubble Way, Bedrock</formattedAddress>
+                          </address>
+                        </organization>
+                      </affiliation>
+                      <phone>123</phone>
+       <phone type='fax'>123b</phone>
+                      <uri>http://slate.example.com</uri>
+                    </person>
+                  </contributor>
+                  <contributor>
+                    <role type='editor'/>
+                    <person>
+                      <name>
+                        <forename>Barney</forename>
+                        <initial>B. X.</initial>
+                        <surname>Rubble</surname>
+                      </name>
+                      <affiliation>
+                        <organization>
+                          <name>Rockhead and Quarry Cave Construction Company</name>
+                          <address>
+                            <formattedAddress>6A Rubble Way, Bedrock</formattedAddress>
+                          </address>
+                        </organization>
+                      </affiliation>
+                      <phone>123c</phone>
+       <phone type='fax'>123d</phone>
+                      <email>barney@rockhead.example.com</email>
+                    </person>
+                  </contributor>
+                  <contributor>
+                    <role type='publisher'/>
+                    <organization>
+                      <name>Hanna Barbera</name>
+                    </organization>
+                  </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Internet Engineering Task Force</name>
+            <subdivision type="Workgroup" subtype="C">
+               <name>WG</name>
+               <identifier>C 3</identifier>
+               <identifier type="full">C 3</identifier>
+            </subdivision>
+            <abbreviation>IETF</abbreviation>
+         </organization>
+      </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Internet Engineering Task Force</name>
+            <subdivision type="Workgroup" subtype="C1">
+               <name>WG1</name>
+               <identifier>C1 31</identifier>
+               <identifier type="full">C1 31</identifier>
+            </subdivision>
+            <abbreviation>IETF</abbreviation>
+         </organization>
+      </contributor>
+                  <contributor>
+                    <role type='publisher'/>
+                    <organization>
+                      <name>Cartoon Network</name>
+                    </organization>
+                  </contributor>
+                  <edition>2</edition>
+                  <version>
+                    <revision-date>2000-01-01</revision-date>
+                    <draft>3.4</draft>
+                  </version>
+                  <language>en</language>
+                  <script>Latn</script>
+                  <status>
+                    <stage>10</stage>
+                    <substage>20</substage>
+                    <iteration>3</iteration>
+                  </status>
+                  <copyright>
+                    <from>2001</from>
+                    <owner>
+                      <organization>
+                        <name>Cartoon Network</name>
+                      </organization>
+                    </owner>
+                  </copyright>
+                  <relation type='includedIn'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>INC1</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='includedIn'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>INCL2</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='describedBy'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>DESC1</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='describedBy'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>DESC2</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='derivedFrom'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>https://datatracker.ietf.org/doc/draft-DER1</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='derivedFrom'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>https://datatracker.ietf.org/doc/draft-DER2</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='instanceOf'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>EQ1</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='instanceOf'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>EQ2</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='obsoletes'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>OB1</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='obsoletes'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>OB2</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='updates'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>UPD1</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <relation type='updates'>
+                    <bibitem>
+                      <title>--</title>
+                      <docidentifier>UPD2</docidentifier>
+                    </bibitem>
+                  </relation>
+                  <series type='stream'>
+                    <title>IRTF</title>
+                    </series>
+       <series type='intended'>
+         <title>BCP</title>
+                  </series>
+                  <keyword>a</keyword>
+                  <keyword>b</keyword>
+                  <keyword>c</keyword>
+                  <ext>
+                  <doctype>rfc</doctype>
+                  <flavor>ietf</flavor>
+       <area>A</area>
+       <area>B</area>
+       <area>C</area>
+                    <ipr>noModificationTrust200902,pre5378Trust200902</ipr>
+                    <consensus>false</consensus>
+                    <indexInclude>false</indexInclude>
+                    <iprExtract>Section 3</iprExtract>
+                    <sortRefs>false</sortRefs>
+                    <symRefs>false</symRefs>
+                    <tocInclude>false</tocInclude>
+                    <tocDepth>9</tocDepth>
+                    <showOnFrontPage>false</showOnFrontPage>
+                    <pi>
+         <artworkdelimiter>1</artworkdelimiter>
+         <artworklines>2</artworklines>
+         <authorship>3</authorship>
+         <autobreaks>4</autobreaks>
+         <background>5</background>
+         <colonspace>6</colonspace>
+         <comments>7</comments>
+         <docmapping>8</docmapping>
+         <editing>9</editing>
+         <emoticonic>10</emoticonic>
+         <footer>11</footer>
+         <header>12</header>
+         <inline>13</inline>
+         <iprnotified>14</iprnotified>
+         <linkmailto>15</linkmailto>
+         <linefile>16</linefile>
+         <notedraftinprogress>17</notedraftinprogress>
+         <private>18</private>
+         <refparent>19</refparent>
+         <rfcedstyle>20</rfcedstyle>
+         <slides>21</slides>
+         <text-list-symbols>22</text-list-symbols>
+         <tocappendix>23</tocappendix>
+         <tocindent>24</tocindent>
+         <tocnarrow>25</tocnarrow>
+         <tocompact>26</tocompact>
+         <topblock>27</topblock>
+         <useobject>28</useobject>
+         <strict>29</strict>
+         <compact>30</compact>
+         <subcompact>31</subcompact>
+         <tocinclude>no</tocinclude>
+         <tocdepth>9</tocdepth>
+         <symrefs>false</symrefs>
+         <sortrefs>false</sortrefs>
+       </pi>
+                  </ext>
+                </bibdata>
+                         <metanorma-extension>
+                               <semantic-metadata>
+          <stage-published>false</stage-published>
+       </semantic-metadata>
+            <presentation-metadata>
+              <name>TOC Heading Levels</name>
+              <value>2</value>
+            </presentation-metadata>
+            <presentation-metadata>
+              <name>HTML TOC Heading Levels</name>
+              <value>2</value>
+            </presentation-metadata>
+            <presentation-metadata>
+              <name>DOC TOC Heading Levels</name>
+              <value>2</value>
+            </presentation-metadata>
+            <presentation-metadata>
+             <name>PDF TOC Heading Levels</name>
              <value>2</value>
            </presentation-metadata>
-           <presentation-metadata>
-             <name>HTML TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>DOC TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-            <name>PDF TOC Heading Levels</name>
-            <value>2</value>
-          </presentation-metadata>
-         </metanorma-extension>
-               <sections/>
-             </metanorma>
+          </metanorma-extension>
+                <sections/>
+              </metanorma>
     OUTPUT
     expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to strip_guid(Canon.format_xml(output))
+
+    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input
+      .sub(/:title:.*\n/, ""), *OPTIONS))))
+      .to be_equivalent_to strip_guid(Canon.format_xml(output
+      .sub("Main Title - Title", "Document title")))
   end
 
   it "processes complex metadata" do
@@ -639,23 +644,23 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "cites drafts of internet drafts" do
-      input = <<~INPUT
-        #{LOCAL_CACHED_ISOBIB_BLANK_HDR}
-        Author
-        :docfile: test.adoc
+    input = <<~INPUT
+      #{LOCAL_CACHED_ISOBIB_BLANK_HDR}
+      Author
+      :docfile: test.adoc
 
-        <<I-D.abarth-cake>>
+      <<I-D.abarth-cake>>
 
-        [bibliography]
-        == References
-        * [[[I-D.abarth-cake,IETF(I-D.draft-abarth-cake-01)]]], _Title_
-      INPUT
-      doc = strip_guid(Asciidoctor.convert(input, *OPTIONS).gsub(
-        / schema-version="[^"]+"/, ""
-      ))
-      expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
-      expect(doc).to include('<bibitem id="_" type="standard" anchor="I-D.abarth-cake">')
-      expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
+      [bibliography]
+      == References
+      * [[[I-D.abarth-cake,IETF(I-D.draft-abarth-cake-01)]]], _Title_
+    INPUT
+    doc = strip_guid(Asciidoctor.convert(input, *OPTIONS).gsub(
+                       / schema-version="[^"]+"/, ""
+                     ))
+    expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
+    expect(doc).to include('<bibitem id="_" type="standard" anchor="I-D.abarth-cake">')
+    expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
   end
 
   it "processes clause attributes" do
@@ -684,6 +689,59 @@ RSpec.describe Metanorma::Ietf do
           <title id="_">Appendix</title>
         </annex>
       </metanorma>
+    OUTPUT
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
+  end
+
+  it "processes introductions and acknowledgements" do
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+
+      .Foreword
+
+      Abstract
+
+      == Introduction
+
+      Introduction
+
+      == Clause
+
+      Clause
+
+      == Acknowledgements
+
+      Acknowledgements
+
+    INPUT
+    output = <<~OUTPUT
+       #{BLANK_HDR}
+         <preface>
+             <foreword id="_" obligation="informative">
+                <title id="_">Foreword</title>
+                <p id="_">Abstract</p>
+             </foreword>
+             <introduction id="_" obligation="informative">
+                <title id="_">Introduction</title>
+                <p id="_">Introduction</p>
+             </introduction>
+          </preface>
+          <sections>
+             <clause id="_" inline-header="false" obligation="normative">
+                <title id="_">Clause</title>
+                <p id="_">Clause</p>
+             </clause>
+             <clause id="_" inline-header="false" obligation="normative">
+                <title id="_">Acknowledgements</title>
+                <p id="_">Acknowledgements</p>
+             </clause>
+          </sections>
+       </metanorma>
     OUTPUT
     expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Canon.format_xml(output)

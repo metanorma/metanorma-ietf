@@ -33,10 +33,14 @@ module Metanorma
           xml.series **{ type: "intended" } do |s|
             parts = a.split(/ /)
             add_noko_elem(s, "title", parts[0])
-            # s.title parts[0]
             add_noko_elem(s, "number", parts[1..-1].join(" ")) if parts.size > 1
-            # s.number parts[1..-1].join(" ") if parts.size > 1
           end
+      end
+
+      def title_fallback(node, xml)
+        xml.parent.at("./title[not(normalize-space(.)='')]" \
+          "[not(@type = 'abbrev' or @type = 'ascii')]") and return
+        add_title_xml(xml, node.attr("doctitle"), @lang, "main")
       end
 
       def title_other(node, xml)
