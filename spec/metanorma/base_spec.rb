@@ -484,6 +484,11 @@ RSpec.describe Metanorma::Ietf do
     OUTPUT
     expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to strip_guid(Canon.format_xml(output))
+
+    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input
+      .sub(/:title:.*\n/, ""), *OPTIONS))))
+      .to be_equivalent_to strip_guid(Canon.format_xml(output
+      .sub("Main Title - Title", "Document title")))
   end
 
   it "processes complex metadata" do
