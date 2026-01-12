@@ -179,6 +179,7 @@ module Metanorma
 
       def isodoc(lang, script, locale, i18nyaml = nil)
         conv = rfc_converter(EmptyAttr.new)
+        conv.init_i18n({ i18nyaml:, language: lang, script:, locale: })
         i18n = conv.i18n_init(lang, script, locale, i18nyaml)
         conv.metadata_init(lang, script, locale, i18n)
         conv
