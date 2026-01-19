@@ -777,4 +777,108 @@ RSpec.describe Metanorma::Ietf do
     expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Canon.format_xml(output)
   end
+
+  it "processes keys" do
+    input = <<~INPUT
+      #{ASCIIDOC_BLANK_HDR}
+      [%key]
+      A:: B
+      C:: D
+
+      Test
+
+      [%key]
+      This is some discursive nonsense
+
+      Test
+
+      [%key]
+      --
+      A:: B
+      C:: D
+
+      This is some discursive nonsense
+      --
+
+      Test
+
+      [%key]
+      A:: B
+      C:: D
+
+      [%key]
+      This is some discursive nonsense
+
+      [%key]
+      --
+      A:: B
+      C:: D
+
+      This is some discursive nonsense
+      --
+    INPUT
+    output = <<~OUTPUT
+      #{BLANK_HDR}
+      <sections>
+             <key>
+                <dl id="_">
+                   <dt>A:</dt>
+                   <dd id="_">
+                      <p id="_">B</p>
+                   </dd>
+                   <dt>C:</dt>
+                   <dd id="_">
+                      <p id="_">D</p>
+                   </dd>
+                </dl>
+             </key>
+             <p id="_">Test</p>
+             <key>
+                <p id="_">This is some discursive nonsense</p>
+             </key>
+             <p id="_">Test</p>
+             <key>
+                <dl id="_">
+                   <dt>A:</dt>
+                   <dd id="_">
+                      <p id="_">B</p>
+                   </dd>
+                   <dt>C:</dt>
+                   <dd id="_">
+                      <p id="_">D</p>
+                   </dd>
+                </dl>
+                <p id="_">This is some discursive nonsense</p>
+             </key>
+             <p id="_">Test</p>
+             <key>
+                <dl id="_">
+                   <dt>A:</dt>
+                   <dd id="_">
+                      <p id="_">B</p>
+                   </dd>
+                  <dt>C:</dt>
+                   <dd id="_">
+                      <p id="_">D</p>
+                   </dd>
+                </dl>
+                <p id="_">This is some discursive nonsense</p>
+                <dl id="_">
+                   <dt>A:</dt>
+                   <dd id="_">
+                      <p id="_">B</p>
+                   </dd>
+                   <dt>C:</dt>
+                   <dd id="_">
+                      <p id="_">D</p>
+                   </dd>
+                </dl>
+                <p id="_">This is some discursive nonsense</p>
+             </key>
+      </sections>
+      </metanorma>
+    OUTPUT
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
+  end
 end

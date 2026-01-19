@@ -49,10 +49,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <td align="center">6,06</td>
           </tr>
         </tfoot>
+        <key>
         <dl>
         <dt>Drago</dt>
       <dd>A type of rice</dd>
       </dl>
+      </key>
                  <source status="generalisation">
         <origin bibitemid="ISO2191" type="inline" citeas="">
           <localityStack>
