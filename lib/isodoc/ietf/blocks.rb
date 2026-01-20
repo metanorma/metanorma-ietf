@@ -118,9 +118,9 @@ module IsoDoc
 
       def formula_parse(node, out)
         formula_parse1(node, out)
-        formula_where(node.at(ns("./dl")), out)
+        formula_where(node.at(ns("./key")), out)
         node.children.each do |n|
-          %w(stem dl).include? n.name and next
+          %w(stem dl key).include? n.name and next
           parse(n, out)
         end
       end
@@ -213,6 +213,16 @@ module IsoDoc
       end
 
       def toc_parse(_node, _out); end
+
+      def key_parse(node, out)
+        node.children.each do |n|
+          if n.name == "name"
+            key_name_parse(n, out)
+            "<p keep-with-next='true'><strong>#{@i18n.key}</strong></p>"
+          else parse(n, out)
+          end
+        end
+      end
     end
   end
 end

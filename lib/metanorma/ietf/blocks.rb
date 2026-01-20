@@ -8,6 +8,7 @@ module Metanorma
                     "keep-with-previous": node.attr("keepWithPrevious") ||
                            node.attr("keep-with-previous"),
                     indent: node.attr("indent"),
+                    key: node.option?("key") ? "true" : nil,
                   ))
       end
 
@@ -35,6 +36,7 @@ module Metanorma
                     newline: node.attr("newline"),
                     indent: node.attr("indent"),
                     spacing: node.attr("spacing"),
+                    key: node.option?("key") ? "true" : nil,
                   ))
       end
 
