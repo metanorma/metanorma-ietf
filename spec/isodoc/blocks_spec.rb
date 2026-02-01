@@ -207,10 +207,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <fn reference="a">
         <p id="_ef2c85b8-5a5a-4ecd-a1e6-92acefaaa852">The time <stem type="AsciiMath">t_90</stem> was estimated to be 18,2 min for this example.</p>
       </fn>
+      <key>
         <dl>
         <dt>A</dt>
         <dd><p>B</p></dd>
         </dl>
+        </key>
       </figure>
       <figure id="figure-B">
       <pre id="BC" alt="hello">A &lt;
@@ -608,12 +610,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <preface><foreword>
           <formula id="_be9158af-7e93-4ee2-90c5-26d31c181934" unnumbered="true">
         <stem type="AsciiMath">r = 1 %</stem>
+        <key>
       <dl id="_e4fe94fe-1cde-49d9-b1ad-743293b7e21d">
         <dt><stem type="AsciiMath">r</stem></dt>
         <dd>
           <p id="_1b99995d-ff03-40f5-8f2e-ab9665a69b77">is the repeatability limit.</p>
         </dd>
       </dl>
+      </key>
           <note id="_83083c7a-6c85-43db-a9fa-4d8edd0c9fc0">
         <p id="_511aaa98-4116-42af-8e5b-c87cdf5bfdc8">[durationUnits] is essentially a duration statement without the "P" prefix. "P" is unnecessary because between "G" and "U" duration is always expressed.</p>
       </note>
