@@ -1,6 +1,10 @@
 module Metanorma
   module Ietf
-    class Converter < ::Metanorma::Standoc::Converter
+    class Cleanup < ::Metanorma::Standoc::Cleanup
+      def copied_instance_variables
+        super + %i[bcp_bold]
+      end
+
       def cleanup(xmldoc)
         bcp14_cleanup(xmldoc)
         abstract_cleanup(xmldoc)
@@ -13,7 +17,6 @@ module Metanorma
       def boilerplate_isodoc(xmldoc)
         x = xmldoc.dup
         x.root.add_namespace(nil, xml_namespace)
-        # xml = Nokogiri::XML(x.to_xml)
         @isodoc ||= isodoc(@lang, @script, @locale)
         # initialise @isodoc.xrefs, for @isodoc.xrefs.info
         @isodoc
@@ -102,6 +105,8 @@ module Metanorma
       def section_names_refs_cleanup(xml); end
 
       def note_cleanup(xmldoc); end
+
+      def norm_ref_preface(sect, isodoc); end
     end
   end
 end

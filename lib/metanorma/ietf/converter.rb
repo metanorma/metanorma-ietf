@@ -31,6 +31,10 @@ module Metanorma
         super
       end
 
+      def cache_workgroup(_node)
+        Metanorma::Ietf::Data::WORKGROUPS
+      end
+
       def outputs(node, ret)
         File.open("#{@filename}.xml", "w:UTF-8") { |f| f.write(ret) }
         rfc_converter(node).convert("#{@filename}.xml")
@@ -120,8 +124,6 @@ module Metanorma
         end
         [t, rel]
       end
-
-      def norm_ref_preface(sect, isodoc); end
 
       def clause_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")
