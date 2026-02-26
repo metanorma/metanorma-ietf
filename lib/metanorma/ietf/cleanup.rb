@@ -16,8 +16,8 @@ module Metanorma
 
       def boilerplate_isodoc(xmldoc)
         x = xmldoc.dup
-        x.root.add_namespace(nil, xml_namespace)
-        @isodoc ||= isodoc(@lang, @script, @locale)
+        x.root.add_namespace(nil, @converter.xml_namespace)
+        @isodoc ||= @converter.isodoc(@lang, @script, @locale)
         # initialise @isodoc.xrefs, for @isodoc.xrefs.info
         @isodoc
       end

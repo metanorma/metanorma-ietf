@@ -1,5 +1,5 @@
 require "asciidoctor"
-require "metanorma/standoc/converter"
+require "metanorma-standoc"
 require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
