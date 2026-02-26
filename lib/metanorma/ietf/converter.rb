@@ -3,8 +3,6 @@ require "metanorma/standoc/converter"
 require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
-require_relative "./validate"
-require_relative "./cleanup"
 require_relative "./macros"
 
 module Metanorma
