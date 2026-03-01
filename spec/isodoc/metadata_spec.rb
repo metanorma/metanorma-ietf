@@ -429,11 +429,11 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <language>el</language>
                  <script>Grek</script>
                  <abstract>
-                   <p id='_'>This is the abstract of the document</p>
-                   <p id='_'>This is the second paragraph of the abstract of the document.</p>
-                   <note removeInRFC='true' id='_'>
+                   <p id='P1'>This is the abstract of the document</p>
+                   <p id='P2'>This is the second paragraph of the abstract of the document.</p>
+                   <note removeInRFC='true' id='N1'>
         <name>Note Title</name>
-        <p id='_'>Note contents</p>
+        <p id='P3'>Note contents</p>
       </note>
                  </abstract>
                  <status>
@@ -477,12 +477,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </ext>
                </bibdata>
                <preface>
-                 <abstract id='_'>
-                   <p id='_'>This is the abstract of the document</p>
-                   <p id='_'>This is the second paragraph of the abstract of the document.</p>
-                   <note removeInRFC='true' id='_'>
+                 <abstract id='A1'>
+                   <p id='PA1'>This is the abstract of the document</p>
+                   <p id='PA2'>This is the second paragraph of the abstract of the document.</p>
+                   <note removeInRFC='true' id='NA1'>
         <name>Note Title</name>
-        <p id='_'>Note contents</p>
+        <p id='PA3'>Note contents</p>
       </note>
                  </abstract>
                </preface>
@@ -519,26 +519,26 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                     </address>
                   </author>
                   <date day="1" year="2000" month="January"/>
-                  <abstract>
-                    <t anchor='_'>This is the abstract of the document</t>
-                    <t anchor='_'>This is the second paragraph of the abstract of the document.</t>
-                  <aside anchor="_">
-                  <t>NOTE: </t>
-                  <t anchor="_">Note contents</t>
-                  </aside>
-                  </abstract>
-                  <note removeInRFC='true'>
-                    <name>Note Title</name>
-                    <t anchor='_'>Note contents</t>
-                  </note>
-                </front>
-                <middle>
-                  <section anchor='_'>
-                    <name>Clause 1</name>
-                  </section>
-                </middle>
-                <back/>
-              </rfc>
+             <abstract>
+                <t anchor="PA1">This is the abstract of the document</t>
+                <t anchor="PA2">This is the second paragraph of the abstract of the document.</t>
+                <aside anchor="NA1">
+                   <t>NOTE: </t>
+                   <t anchor="PA3">Note contents</t>
+                </aside>
+             </abstract>
+             <note removeInRFC="true">
+                <name>Note Title</name>
+                <t anchor="PA3">Note contents</t>
+             </note>
+          </front>
+          <middle>
+             <section anchor="_">
+                <name>Clause 1</name>
+             </section>
+          </middle>
+          <back/>
+       </rfc>
     OUTPUT
     expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true))).to be_equivalent_to Canon.format_xml(output)

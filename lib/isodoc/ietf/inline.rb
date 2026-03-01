@@ -96,17 +96,8 @@ module IsoDoc
           alt: node["alt"] }
       end
 
-      def image_parse(node, out, caption)
+      def image_parse(node, out)
         out.artwork **attr_code(image_parse_attrs(node))
-        image_title_parse(out, caption)
-      end
-
-      def image_title_parse(out, caption)
-        unless caption.nil?
-          out.t align: "center", keepWithPrevious: "true" do |p|
-            p << caption.to_s
-          end
-        end
       end
 
       def svg_parse(node, out)
