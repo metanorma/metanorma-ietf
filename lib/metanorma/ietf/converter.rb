@@ -1,10 +1,8 @@
 require "asciidoctor"
-require "metanorma/standoc/converter"
+require "metanorma-standoc"
 require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
-require_relative "./validate"
-require_relative "./cleanup"
 require_relative "./macros"
 
 module Metanorma
@@ -31,12 +29,16 @@ module Metanorma
         super
       end
 
+      def cache_workgroup(_node)
+        Metanorma::Ietf::Data::WORKGROUPS
+      end
+
       def outputs(node, ret)
         File.open("#{@filename}.xml", "w:UTF-8") { |f| f.write(ret) }
         rfc_converter(node).convert("#{@filename}.xml")
       end
 
-      def init_misc(node)
+      def init_metadata(node)
         super
         @default_doctype = "internet-draft"
       end
@@ -120,8 +122,6 @@ module Metanorma
         end
         [t, rel]
       end
-
-      def norm_ref_preface(sect, isodoc); end
 
       def clause_attrs_preprocess(attrs, node)
         attrs[:numbered] = node.attr("numbered")

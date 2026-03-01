@@ -3,7 +3,11 @@ require "metanorma-utils"
 
 module Metanorma
   module Ietf
-    class Converter < ::Metanorma::Standoc::Converter
+    class Validate < ::Metanorma::Standoc::Validate
+      def copied_instance_variables
+        super + %i[workgroups]
+      end
+
       def content_validate(doc)
         super
         image_validate(doc)
@@ -41,10 +45,6 @@ module Metanorma
 
       def schema_file
         "ietf.rng"
-      end
-
-      def cache_workgroup(_node)
-        Metanorma::Ietf::Data::WORKGROUPS
       end
     end
   end
