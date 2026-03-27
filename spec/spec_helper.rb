@@ -13,6 +13,20 @@ require "equivalent-xml"
 require "htmlentities"
 require "canon"
 
+Canon::Config.instance.tap do |cfg|
+  # Configure Canon to use spec-friendly match profiles
+  cfg.xml.match.profile = :spec_friendly
+  cfg.html.match.profile = :spec_friendly
+
+  # Configure Canon to show all diffs (including inactive diffs)
+  cfg.html.diff.show_diffs = :normative
+  cfg.xml.diff.show_diffs = :normative
+
+  # Enable verbose diff output for debugging
+  cfg.html.diff.verbose_diff = true
+  cfg.xml.diff.verbose_diff = true
+end
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
@@ -38,11 +52,11 @@ RSpec.configure do |config|
   end
 end
 
-OPTIONS = [backend: :ietf, header_footer: true].freeze
+OPTIONS = [{ backend: :ietf, header_footer: true }].freeze
 
 def htmlencode(xml)
-  HTMLEntities.new.encode(xml, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n")
-    .gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, "&").gsub(/&#x27;/, "'")
+  HTMLEntities.new.encode(xml, :hexadecimal).gsub("&#x3e;", ">").gsub("&#xa;", "\n")
+    .gsub("&#x22;", '"').gsub("&#x3c;", "<").gsub("&#x26;", "&").gsub("&#x27;", "'")
     .gsub(/\\u(....)/) do |_s|
     "&#x#{$1.downcase};"
   end
@@ -63,7 +77,7 @@ def dtd_absolute_path
   Metanorma::Ietf::RFC2629DTD_URL
 end
 
-ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
+ASCIIDOC_BLANK_HDR = <<~HDR.freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -74,7 +88,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
 
 HDR
 
-VALIDATING_BLANK_HDR = <<~"HDR".freeze
+VALIDATING_BLANK_HDR = <<~HDR.freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -146,7 +160,7 @@ BLANK_HDR = <<~"HDR".freeze
           </metanorma-extension>
 HDR
 
-XML_HDR = <<~"HDR".freeze
+XML_HDR = <<~HDR.freeze
   <?xml version='1.0'?>
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
@@ -160,7 +174,7 @@ XML_HDR = <<~"HDR".freeze
       <abstract>
 HDR
 
-RFC_HDR = <<~"HDR".freeze
+RFC_HDR = <<~HDR.freeze
   <?xml version='1.0'?>
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
@@ -177,6 +191,6 @@ HDR
 
 def mock_pdf
   allow(Mn2pdf).to receive(:convert) do |url, output, _c, _d|
-    FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
+    FileUtils.cp(url.gsub('"', ""), output.gsub('"', ""))
   end
 end

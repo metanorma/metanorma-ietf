@@ -53,9 +53,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </back>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up footnotes in a section" do
@@ -119,14 +119,23 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </back>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up table footnotes" do
     input = <<~INPUT
-          #{XML_HDR}
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+        <front>
+        <seriesInfo value='' name='RFC' asciiName='RFC'/>
+          <abstract>
                  </abstract>
                </front>
                <middle>
@@ -272,9 +281,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up abstracts" do
@@ -311,6 +320,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
           <front>
                 <title>The Holy Hand Grenade of Antioch</title>
@@ -355,8 +370,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </rfc>
     OUTPUT
     IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
-    expect(Canon.format_xml(File.read("test.rfc.xml")))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(File.read("test.rfc.xml"))
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up figures" do
@@ -641,14 +656,23 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                </back>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up inline figures" do
     input = <<~INPUT
-           #{XML_HDR}
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+        <front>
+        <seriesInfo value='' name='RFC' asciiName='RFC'/>
+          <abstract>
           <t>
                      <artwork src='rice_images/rice_image1.png' title='titletxt 1' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
                      <artwork src='rice_images/rice_image1.png' title='titletxt 2' anchor='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' type='svg' alt='alttext'/>
@@ -666,14 +690,23 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <back/>
         </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up sourcecode" do
     input = <<~INPUT
-            #{XML_HDR}
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+        <front>
+        <seriesInfo value='' name='RFC' asciiName='RFC'/>
+          <abstract>
                    <figure anchor='_'>
                      <name>Label</name>
                      <sourcecode>
@@ -701,7 +734,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               B
       B1
 
-        C  E]]></sourcecode></figure>
+        C > E]]></sourcecode></figure>
                           <figure anchor="samplecode">
                           <name>
                               Ruby
@@ -712,9 +745,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              ]]></sourcecode></figure>
              </abstract></front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "processes sourcecode with markup" do
@@ -758,6 +791,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </iso-standard>
     INPUT
     output = <<~OUTPUT
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
           <front>
              <title>The Holy Hand Grenade of Antioch</title>
@@ -769,7 +808,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
              <section anchor="F">
                 <name>Foreword</name>
                 <sourcecode anchor="S" type="ruby" name="sourcecode1.rb" markers="true">                puts "Hello, world." %w{a b c}.each do |x| puts x end
-                       RFC 4918, Section 
+                       RFC 4918, Section#{' '}
                        Hello
                        RFC 4918, Section 14.24
                        Hello
@@ -794,8 +833,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </rfc>
     OUTPUT
     IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
-    expect(Canon.format_xml(File.read("test.rfc.xml")))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(File.read("test.rfc.xml"))
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up annotated bibliography" do
@@ -908,123 +947,123 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </rfc>
     INPUT
     output = <<~OUTPUT
-       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3">
-          <middle/>
-          <back>
-             <references anchor="_normative_references">
-                <name>Normative References</name>
-                <reference anchor="ISO712">
-                   <front>
-                      <title>ISO 712, Cereals or cereal products</title>
-                      <author surname="Unknown"/>
-                   </front>
-                </reference>
-                <reference anchor="ISO16634">
-                   <front>
-                      <title>
-                    ISO 16634:-- (all parts), Cereals, pulses, milled cereal products,
-                    xxxx, oilseeds and animal feeding stuffs
-                  </title>
-                      <author>
-                         <organization asciiName="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
-                      </author>
-                      <keyword>keyword1</keyword>
-                      <keyword>keyword2</keyword>
-                      <abstract>
-                         <t>This is an abstract</t>
-                      </abstract>
-                   </front>
-                </reference>
-                <reference anchor="ISO20483">
-                   <front>
-                      <title>ISO 20483:2013-2014, Cereals and pulses</title>
-                      <author fullname="Ölaf Nürk" asciiFullname="Olaf Nurk" surname="Nürk" asciiSurname="Nurk"/>
-                      <author>
-                         <organization/>
-                      </author>
-                      <date year="2013"/>
-                   </front>
-                </reference>
-                <reference anchor="ref1">
-                   <front>
-                      <title>
-                    ICC 167, Standard No I.C.C 167.
-                    
-                      Determination of the protein content in cereal and cereal products
-                      for food and animal feeding stuffs according to the Dumas
-                      combustion method
-                    
-                     (see
-                    http://www.icc.or.at
-                    )
-                  </title>
-                      <author surname="Unknown"/>
-                   </front>
-                   <annotation>
-                NOTE: This is an annotation of ISO 20483:2013-2014
-              </annotation>
-                </reference>
-             </references>
-             <references anchor="_bibliography">
-                <name>Bibliography</name>
-                <reference anchor="ISBN">
-                   <front>
-                      <title>1, Chemicals for analytical laboratory use</title>
-                      <author surname="Unknown"/>
-                   </front>
-                </reference>
-                <reference anchor="ISSN">
-                   <front>
-                      <title>2, Instruments for analytical laboratory use</title>
-                      <author surname="Unknown"/>
-                   </front>
-                   <annotation>
-                NOTE: This is an annotation of document ISSN.
-              </annotation>
-                   <annotation>
-                NOTE: This is another annotation of document ISSN.
-              </annotation>
-                </reference>
-                <reference anchor="ISO3696">
-                   <front>
-                      <title>ISO 3696, Water for analytical laboratory use</title>
-                      <author surname="Unknown"/>
-                   </front>
-                </reference>
-                <reference anchor="ref10">
-                   <front>
-                      <title>
-                    10, Standard No I.C.C 167.
-                    
-                      Determination of the protein content in cereal and cereal products
-                      for food and animal feeding stuffs according to the Dumas
-                      combustion method
-                    
-                     (see
-                    http://www.icc.or.at
-                    )
-                  </title>
-                      <author surname="Unknown"/>
-                   </front>
-                </reference>
-                <xi:include href="https://xml2rfc.tools.ietf.org/10.xml"/>
-                <reference anchor="ref12">
-                   <front>
-                      <title>
-                    Citn, CitationWorks. 2019.
-                    How to cite a reference
-                    .
-                  </title>
-                      <author surname="Unknown"/>
-                   </front>
-                </reference>
-             </references>
-          </back>
-       </rfc>
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en" version="3">
+         <middle/>
+         <back>
+            <references anchor="_normative_references">
+               <name>Normative References</name>
+               <reference anchor="ISO712">
+                  <front>
+                     <title>ISO 712, Cereals or cereal products</title>
+                     <author surname="Unknown"/>
+                  </front>
+               </reference>
+               <reference anchor="ISO16634">
+                  <front>
+                     <title>
+                   ISO 16634:-- (all parts), Cereals, pulses, milled cereal products,
+                   xxxx, oilseeds and animal feeding stuffs
+                 </title>
+                     <author>
+                        <organization asciiName="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                     </author>
+                     <keyword>keyword1</keyword>
+                     <keyword>keyword2</keyword>
+                     <abstract>
+                        <t>This is an abstract</t>
+                     </abstract>
+                  </front>
+               </reference>
+               <reference anchor="ISO20483">
+                  <front>
+                     <title>ISO 20483:2013-2014, Cereals and pulses</title>
+                     <author fullname="Ölaf Nürk" asciiFullname="Olaf Nurk" surname="Nürk" asciiSurname="Nurk"/>
+                     <author>
+                        <organization/>
+                     </author>
+                     <date year="2013"/>
+                  </front>
+               </reference>
+               <reference anchor="ref1">
+                  <front>
+                     <title>
+                   ICC 167, Standard No I.C.C 167.
+      #{'             '}
+                     Determination of the protein content in cereal and cereal products
+                     for food and animal feeding stuffs according to the Dumas
+                     combustion method
+      #{'             '}
+                    (see
+                   http://www.icc.or.at
+                   )
+                 </title>
+                     <author surname="Unknown"/>
+                  </front>
+                  <annotation>
+               NOTE: This is an annotation of ISO 20483:2013-2014
+             </annotation>
+               </reference>
+            </references>
+            <references anchor="_bibliography">
+               <name>Bibliography</name>
+               <reference anchor="ISBN">
+                  <front>
+                     <title>1, Chemicals for analytical laboratory use</title>
+                     <author surname="Unknown"/>
+                  </front>
+               </reference>
+               <reference anchor="ISSN">
+                  <front>
+                     <title>2, Instruments for analytical laboratory use</title>
+                     <author surname="Unknown"/>
+                  </front>
+                  <annotation>
+               NOTE: This is an annotation of document ISSN.
+             </annotation>
+                  <annotation>
+               NOTE: This is another annotation of document ISSN.
+             </annotation>
+               </reference>
+               <reference anchor="ISO3696">
+                  <front>
+                     <title>ISO 3696, Water for analytical laboratory use</title>
+                     <author surname="Unknown"/>
+                  </front>
+               </reference>
+               <reference anchor="ref10">
+                  <front>
+                     <title>
+                   10, Standard No I.C.C 167.
+      #{'             '}
+                     Determination of the protein content in cereal and cereal products
+                     for food and animal feeding stuffs according to the Dumas
+                     combustion method
+      #{'             '}
+                    (see
+                   http://www.icc.or.at
+                   )
+                 </title>
+                     <author surname="Unknown"/>
+                  </front>
+               </reference>
+               <xi:include href="https://xml2rfc.tools.ietf.org/10.xml"/>
+               <reference anchor="ref12">
+                  <front>
+                     <title>
+                   Citn, CitationWorks. 2019.
+                   How to cite a reference
+                   .
+                 </title>
+                     <author surname="Unknown"/>
+                  </front>
+               </reference>
+            </references>
+         </back>
+      </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up definition lists" do
@@ -1069,9 +1108,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "reports parsing errors on RFC XML output" do
@@ -1120,9 +1159,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </t>
       </abstract> </front> <middle/> <back/> </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up lists with single paragraphs" do
@@ -1159,76 +1198,76 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       </ol>
       </abstract> </front> <middle/> <back/> </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 
   it "cleans up crefs" do
     input = <<~INPUT
-          <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-          <front>
-             <seriesInfo value="" name="RFC" asciiName="RFC"/>
-             <abstract anchor="_">
-                <t anchor="A">A.</t>
-                <t anchor="B">B.</t>
-                <bookmark anchor="C"/>
-                <t>C.</t>
-             </abstract>
-          </front>
-          <middle/>
-          <back>
-             <cref anchor="_" display="false" source="ISO" from="A">
-                Title
-                <t anchor="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</t>
-                <t anchor="_">
-                   For further information on the Foreword, see
-                   <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-                </t>
-             </cref>
-             <cref anchor="_" source="ISO" from="A">
-                <t anchor="_">Second note.</t>
-             </cref>
-             <cref anchor="_" source="ISO" from="C">
-                <t anchor="_">Third note.</t>
-             </cref>
-          </back>
-       </rfc>
+         <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+         <front>
+            <seriesInfo value="" name="RFC" asciiName="RFC"/>
+            <abstract anchor="_">
+               <t anchor="A">A.</t>
+               <t anchor="B">B.</t>
+               <bookmark anchor="C"/>
+               <t>C.</t>
+            </abstract>
+         </front>
+         <middle/>
+         <back>
+            <cref anchor="_" display="false" source="ISO" from="A">
+               Title
+               <t anchor="_">A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions.</t>
+               <t anchor="_">
+                  For further information on the Foreword, see
+                  <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+               </t>
+            </cref>
+            <cref anchor="_" source="ISO" from="A">
+               <t anchor="_">Second note.</t>
+            </cref>
+            <cref anchor="_" source="ISO" from="C">
+               <t anchor="_">Third note.</t>
+            </cref>
+         </back>
+      </rfc>
     INPUT
     output = <<~OUTPUT
-       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
-          <front>
-             <seriesInfo value="" name="RFC" asciiName="RFC"/>
-             <abstract anchor="_">
-                <t anchor="A">
-                   <cref anchor="_" display="false" source="ISO">
-                      Title A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions. For further information on the Foreword, see
-                      <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
-                   </cref>
-                   <cref anchor="_" source="ISO">
-                Second note.
-             </cref>
-                   A.
-                </t>
-                <t anchor="B">B.</t>
-                <t>
-                   <cref anchor="_" source="ISO">
-                Third note.
-             </cref>
-                </t>
-                <t>C.</t>
-             </abstract>
-          </front>
-          <middle/>
-          <back>
-             
-             
-             
-          </back>
-       </rfc>
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" submissionType="IETF" version="3">
+         <front>
+            <seriesInfo value="" name="RFC" asciiName="RFC"/>
+            <abstract anchor="_">
+               <t anchor="A">
+                  <cref anchor="_" display="false" source="ISO">
+                     Title A Foreword shall appear in each document. The generic text is shown here. It does not contain requirements, recommendations or permissions. For further information on the Foreword, see
+                     <strong>ISO/IEC Directives, Part 2, 2016, Clause 12.</strong>
+                  </cref>
+                  <cref anchor="_" source="ISO">
+               Second note.
+            </cref>
+                  A.
+               </t>
+               <t anchor="B">B.</t>
+               <t>
+                  <cref anchor="_" source="ISO">
+               Third note.
+            </cref>
+               </t>
+               <t>C.</t>
+            </abstract>
+         </front>
+         <middle/>
+         <back>
+      #{'      '}
+      #{'      '}
+      #{'      '}
+         </back>
+      </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .cleanup(Nokogiri::XML(input)).to_s))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .cleanup(Nokogiri::XML(input)).to_s)
+      .to be_xml_equivalent_to output
   end
 end

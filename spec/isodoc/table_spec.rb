@@ -149,8 +149,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 end

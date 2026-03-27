@@ -30,15 +30,27 @@ RSpec.describe Metanorma::Ietf do
       super<sup>script</sup>
       sub<sub>script</sub>
       sub<sub><em>scr</em>ipt</sub>
-      <stem type="MathML" block="false"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub> <mrow> <mrow> <mi mathvariant="bold-italic">F</mi> </mrow> </mrow> <mrow> <mrow> <mi mathvariant="bold-italic">Α</mi> </mrow> </mrow> </msub> </math></stem>
-      alt deprecated domain strike smallcap keyword
+      <stem block="false" type="MathML"><math xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns="http://www.w3.org/1998/Math/MathML">
+               <mml:msub xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+                  <mml:mrow>
+                     <mml:mrow>
+                        <mml:mi mathvariant="bold-italic">F</mml:mi>
+                     </mml:mrow>
+                  </mml:mrow>
+                  <mml:mrow>
+                     <mml:mrow>
+                        <mml:mi mathvariant="bold-italic">Α</mml:mi>
+                     </mml:mrow>
+                  </mml:mrow>
+               </mml:msub>
+            </math></stem> alt deprecated domain strike smallcap keyword
       <span class="bcp14">KEYWORD</span>
       </p>
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes breaks" do
@@ -59,8 +71,8 @@ RSpec.describe Metanorma::Ietf do
       <pagebreak/></sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes links" do
@@ -81,8 +93,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes bookmarks" do
@@ -97,8 +109,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes crossreferences" do
@@ -179,8 +191,8 @@ RSpec.describe Metanorma::Ietf do
            </bibliography>
         </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes bibliographic anchors" do
@@ -222,8 +234,8 @@ RSpec.describe Metanorma::Ietf do
       </bibliography>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes footnotes" do
@@ -248,8 +260,8 @@ RSpec.describe Metanorma::Ietf do
       </clause></sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes index terms" do
@@ -268,7 +280,7 @@ RSpec.describe Metanorma::Ietf do
         </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 end

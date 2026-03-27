@@ -52,8 +52,8 @@ module Metanorma
 
       def check_xml2rfc_present?(format)
         if which("xml2rfc").nil?
-          raise "[metanorma-ietf] Fatal: unable to generate #{format}," \
-                " the command `xml2rfc` is not found in path."
+          raise "[metanorma-ietf] Fatal: unable to generate #{format}, " \
+                "the command `xml2rfc` is not found in path."
         end
       end
 

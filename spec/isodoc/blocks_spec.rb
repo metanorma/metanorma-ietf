@@ -20,9 +20,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes labelled notes" do
@@ -50,9 +50,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes multi-para notes" do
@@ -79,9 +79,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes non-para notes" do
@@ -120,9 +120,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            <back/>
          </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes note sequences" do
@@ -159,9 +159,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            <back/>
          </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes paragraphs containing notes" do
@@ -189,9 +189,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes figures" do
@@ -274,9 +274,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
     </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes figures with raw svg" do
@@ -311,8 +311,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))).to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_xml_equivalent_to output
   end
 
   it "processes examples" do
@@ -334,9 +334,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
     </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sequences of examples" do
@@ -368,9 +368,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sourcecode" do
@@ -397,9 +397,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
     </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sourcecode with escapes preserved" do
@@ -420,9 +420,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sourcecode with markup" do
@@ -507,9 +507,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </back>
        </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sourcecode with annotations" do
@@ -548,9 +548,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes admonitions" do
@@ -573,9 +573,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes admonitions with titles" do
@@ -599,9 +599,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes formulae" do
@@ -648,9 +648,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes paragraph attributes" do
@@ -678,9 +678,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes blockquotes" do
@@ -728,9 +728,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <date day="1" year="2000" month="January"/>
           </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term domains" do
@@ -764,9 +764,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes permissions" do
@@ -860,9 +860,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes requirements" do
@@ -949,9 +949,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes recommendation" do
@@ -1044,9 +1044,9 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
          <back/>
        </rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes pseudocode" do
@@ -1069,8 +1069,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 end

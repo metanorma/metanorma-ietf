@@ -320,6 +320,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       <?rfc strict="29"?>
       <?rfc compact="30"?>
       <?rfc subcompact="31"?>
+      <?rfc toc="no"?>
       <?rfc tocdepth="4"?>
       <?rfc symrefs="yes"?>
       <?rfc sortrefs="yes"?>
@@ -377,8 +378,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                <back/>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)).to be_xml_equivalent_to output
   end
 
   it "processes IsoXML metadata" do
@@ -540,7 +541,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           <back/>
        </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)).to be_xml_equivalent_to output
   end
 end

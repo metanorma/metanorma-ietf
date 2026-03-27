@@ -30,8 +30,8 @@ RSpec.describe Metanorma::Ietf do
       <sections/>
       </metanorma>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output)
   end
 
   it "converts a blank document" do
@@ -47,8 +47,8 @@ RSpec.describe Metanorma::Ietf do
       <sections/>
       </metanorma>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output)
     expect(File.exist?("test.rfc.xml")).to be true
   end
 
@@ -263,12 +263,6 @@ RSpec.describe Metanorma::Ietf do
                       <email>barney@rockhead.example.com</email>
                     </person>
                   </contributor>
-                  <contributor>
-                    <role type='publisher'/>
-                    <organization>
-                      <name>Hanna Barbera</name>
-                    </organization>
-                  </contributor>
       <contributor>
          <role type="author">
             <description>committee</description>
@@ -297,6 +291,12 @@ RSpec.describe Metanorma::Ietf do
             <abbreviation>IETF</abbreviation>
          </organization>
       </contributor>
+                  <contributor>
+                    <role type='publisher'/>
+                    <organization>
+                      <name>Hanna Barbera</name>
+                    </organization>
+                  </contributor>
                   <contributor>
                     <role type='publisher'/>
                     <organization>
@@ -472,13 +472,15 @@ RSpec.describe Metanorma::Ietf do
                 <sections/>
               </metanorma>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output))
-
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input
-      .sub(/:title:.*\n/, ""), *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output
-      .sub("Main Title - Title", "Document title")))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output)
+    expect(strip_guid(Asciidoctor.convert(input
+      .sub(/:title:.*\n/, ""), *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output
+      .sub("<title language='en' type='main'>Main Title - Title</title>", "")
+      .sub("<title language='en' type='ascii'>Ascii Title</title>",
+           "<title language='en' type='ascii'>Ascii Title</title>\n" \
+           "<title language='en' type='main'>Document title</title>"))
   end
 
   it "processes complex metadata" do
@@ -619,8 +621,8 @@ RSpec.describe Metanorma::Ietf do
                </sections>
              </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "cites drafts of internet drafts" do
@@ -670,8 +672,8 @@ RSpec.describe Metanorma::Ietf do
         </annex>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes introductions and acknowledgements" do
@@ -700,30 +702,30 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-       #{BLANK_HDR}
-         <preface>
-             <foreword id="_" obligation="informative">
-                <title id="_">Foreword</title>
-                <p id="_">Abstract</p>
-             </foreword>
-             <introduction id="_" obligation="informative">
-                <title id="_">Introduction</title>
-                <p id="_">Introduction</p>
-             </introduction>
-          </preface>
-          <sections>
-             <clause id="_" inline-header="false" obligation="normative">
-                <title id="_">Clause</title>
-                <p id="_">Clause</p>
-             </clause>
-             <clause id="_" inline-header="false" obligation="normative">
-                <title id="_">Acknowledgements</title>
-                <p id="_">Acknowledgements</p>
-             </clause>
-          </sections>
-       </metanorma>
+      #{BLANK_HDR}
+        <preface>
+            <foreword id="_" obligation="informative">
+               <title id="_">Foreword</title>
+               <p id="_">Abstract</p>
+            </foreword>
+            <introduction id="_" obligation="informative">
+               <title id="_">Introduction</title>
+               <p id="_">Introduction</p>
+            </introduction>
+         </preface>
+         <sections>
+            <clause id="_" inline-header="false" obligation="normative">
+               <title id="_">Clause</title>
+               <p id="_">Clause</p>
+            </clause>
+            <clause id="_" inline-header="false" obligation="normative">
+               <title id="_">Acknowledgements</title>
+               <p id="_">Acknowledgements</p>
+            </clause>
+         </sections>
+      </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 end

@@ -455,8 +455,8 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(Canon.format_xml(strip_guid(xml)))
-        .to be_equivalent_to Canon.format_xml(output)
+      expect(strip_guid(xml))
+        .to be_xml_equivalent_to output
   end
 
   it "processes IsoXML bibliographies with xincludes" do
@@ -745,7 +745,7 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(Canon.format_xml(strip_guid(xml))).to be_equivalent_to Canon.format_xml(output)
+      expect(strip_guid(xml)).to be_xml_equivalent_to output
   end
 
   it "processes nested bibliographies" do
@@ -856,8 +856,8 @@ RSpec.describe IsoDoc::Ietf do
                </back>
              </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))).to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)).to be_xml_equivalent_to output
   end
 
   it "processes referencegroup" do
@@ -1085,7 +1085,7 @@ RSpec.describe IsoDoc::Ietf do
         .convert("test", input, false)
       expect(File.exist?("test.rfc.xml")).to be true
       xml = File.read("test.rfc.xml")
-      expect(Canon.format_xml(strip_guid(xml)))
-        .to be_equivalent_to Canon.format_xml(output)
+      expect(strip_guid(xml))
+        .to be_xml_equivalent_to output
   end
 end
