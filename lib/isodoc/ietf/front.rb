@@ -4,6 +4,7 @@ module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
       def make_front(out, isoxml)
+        #require "debug"; binding.b
         info(isoxml, out)
         out.front do |front|
           title isoxml, front
@@ -50,8 +51,8 @@ module IsoDoc
       end
 
       def rfc_seriesinfo(isoxml, front)
-        front.seriesInfo **seriesinfo_attr(isoxml).merge({ name: "RFC",
-                                                           asciiName: "RFC" })
+        front.seriesInfo **seriesinfo_attr(isoxml), name: "RFC",
+                                                    asciiName: "RFC"
         i = isoxml&.at(ns("//bibdata/series[@type = 'intended']")) and
           front.seriesInfo nil,
                            **attr_code(name: "",
@@ -61,18 +62,17 @@ module IsoDoc
 
       def id_seriesinfo(isoxml, front)
         front.seriesInfo nil,
-                         **seriesinfo_attr(isoxml)
-                           .merge({ name: "Internet-Draft",
-                                    asciiName: "Internet-Draft" })
+                         **seriesinfo_attr(isoxml), name: "Internet-Draft",
+                                                    asciiName: "Internet-Draft"
         i = isoxml&.at(ns("//bibdata/series[@type = 'intended']/title"))&.text and
           front.seriesInfo **attr_code(name: "", value: "", status: i)
       end
 
       def author(isoxml, front)
         isoxml.xpath("//xmlns:bibdata/xmlns:contributor[xmlns:role/@type = " \
-          "'author' or xmlns:role/@type = 'editor']").each do |c|
+                     "'author' or xmlns:role/@type = 'editor']").each do |c|
           role = c.at(ns("./role/@type")).text == "editor" ? "editor" : nil
-                c.at(ns("./organization/subdivision[@type = 'Workgroup']")) and next
+          c.at(ns("./organization/subdivision[@type = 'Workgroup']")) and next
           (c.at(ns("./organization")) and org_author(c, role, front)) or
             person_author(c, role, front)
         end
@@ -190,7 +190,7 @@ module IsoDoc
         if date.length == 4 && date =~ /^\d\d\d\d$/ then { year: date }
         elsif /^\d\d\d\d-?\d\d$/.match?(date)
           m = /^(?<year>\d\d\d\d)-(?<month>\d\d)$/.match date
-          { month: Date::MONTHNAMES[(m[:month]).to_i], year: m[:year] }
+          { month: Date::MONTHNAMES[m[:month].to_i], year: m[:year] }
         else
           begin
             d = Date.iso8601 date

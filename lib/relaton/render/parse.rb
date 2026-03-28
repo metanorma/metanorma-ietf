@@ -29,28 +29,36 @@ module Relaton
 
         def series_xml2hash1(series, doc)
           ret = super
-          %w(BCP RFC I-D. Internet-Draft).include?(ret[:series_title]) and
-            return {}
+          plain_title = ret[:series_title]&.gsub(/<\/?esc>/, "")
+          %w(BCP RFC I-D. Internet-Draft).include?(plain_title) and return {}
           ret
         end
 
         def uris(doc)
-          doc.link.map { |u| { content: u.content.to_s.strip, type: u.type } }
+          Array(doc.source).map do |u|
+            { content: u.content.to_s.strip, type: u.type }
+          end
         end
 
         def keywords(doc)
-          doc.keyword.map { |u| content(u) }
+          Array(doc.keyword).map { |u| keyword1(u) }.compact
+        end
+
+        def keyword1(kw)
+          v = Array(kw.vocab).first
+          v and return content(v)
+          t = Array(kw.taxon).first
+          t and return content(t)
+          kw.vocabid&.term
         end
 
         def abstract(doc)
-          doc.abstract.join
+          Array(doc.abstract).map { |a| content(a) }.join
         end
 
         def extractname(contributor)
-          org = contributor.entity if contributor.entity
-            .is_a?(RelatonBib::Organization)
-          person = contributor.entity if contributor.entity
-            .is_a?(RelatonBib::Person)
+          org = contributor.organization
+          person = contributor.person
           if org
             return { nonpersonal: extract_orgname(org),
                      nonpersonalabbrev: extract_orgabbrev(org) }
@@ -77,8 +85,8 @@ module Relaton
 
         # not just year-only
         def date(doc, host)
-          ret = date1(doc.date)
-          host and ret ||= date1(host.date)
+          ret = date1(Array(doc.date))
+          host and ret ||= date1(Array(host.date))
           datepick(ret)
         end
 
@@ -95,11 +103,12 @@ module Relaton
 
         def authoritative_identifier(doc)
           ret = super
-          bcp = doc.series.detect do |s|
-            %w(BCP STD).include?(s.title.title.content)
+          bcp = Array(doc.series).detect do |s|
+            %w(BCP STD).include?(Array(s.title).first&.content)
           end
-          bcp and ret.unshift("BCP #{bcp.number}")
-          ret.reject { |x| /(rfc-anchor|Internet-Draft)/.match? (x) }
+          bcp and ret.unshift("BCP\u00A0#{bcp.number}")
+          ret.reject { |x| /(rfc-anchor|Internet-Draft)/.match?(x) }
+            .map { |x| x.gsub(/<\/?esc>/, "").tr(" ", "\u00A0") }
         end
 
         def simple_xml2hash(doc)
@@ -107,15 +116,15 @@ module Relaton
         end
 
         def series(doc)
-          a = doc.series.reject { |s| s.type == "stream" }
+          a = Array(doc.series).reject { |s| s.type == "stream" }
           a.empty? and return nil
           a.detect { |s| s.type == "main" } ||
             a.detect { |s| s.type.nil? } || a.first
         end
 
         def stream(doc)
-          a = doc.series.detect { |s| s.type == "stream" } or return nil
-          a.title&.title&.content == "Legacy" and return nil
+          a = Array(doc.series).detect { |s| s.type == "stream" } or return nil
+          Array(a.title).first&.content == "Legacy" and return nil
           series_title(a, doc)
         end
 
@@ -124,7 +133,7 @@ module Relaton
         end
 
         def included_xml2hash(doc)
-          r = doc.relation.select { |x| x.type == "includes" }.map do |x|
+          r = Array(doc.relation).select { |x| x.type == "includes" }.map do |x|
             parse_single_bibitem(x.bibitem)
           end
           r.empty? and return {}
@@ -132,7 +141,7 @@ module Relaton
         end
 
         def parse_single_bibitem(doc)
-          data = extract(doc)
+          extract(doc)
           # enhance_data(data, r.template_raw)
           # data_liquid = @fieldsklass.new(renderer: self)
           #  .compound_fields_format(data)

@@ -15,12 +15,6 @@ module Relaton
           @r.nametemplate.render(names_out, hash)
         end
 
-        # do not format months
-        def dateformat(date, _hash, _type)
-          date.nil? and return nil
-          date_range(date)
-        end
-
         def compound_fields_format(hash)
           ret = super
           ret[:included]&.each do |h|
