@@ -2,6 +2,7 @@ require "relaton-render"
 require_relative "parse"
 require_relative "template"
 require_relative "fields"
+require_relative "date"
 
 module Relaton
   module Render
@@ -16,6 +17,7 @@ module Relaton
           @parseklass = Relaton::Render::Ietf::Parse
           @nametemplateklass = Relaton::Render::Ietf::Template::Name
           @fieldsklass = Relaton::Render::Ietf::Fields
+          @dateklass = Relaton::Render::Ietf::Date
         end
       end
     end
