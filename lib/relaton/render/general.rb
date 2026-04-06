@@ -3,6 +3,7 @@ require_relative "date"
 require_relative "parse"
 require_relative "template"
 require_relative "fields"
+require_relative "date"
 
 module Relaton
   module Render
