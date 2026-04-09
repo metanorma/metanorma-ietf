@@ -1,4 +1,5 @@
 require "relaton-render"
+require_relative "date"
 require_relative "parse"
 require_relative "template"
 require_relative "fields"

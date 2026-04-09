@@ -37,7 +37,7 @@ RSpec.describe IsoDoc::Ietf do
             <title format="text/plain">RFC</title>
                 <number>2119</number>  </series>  <series type="stream">
             <title format="text/plain">IETF</title>
-              </series>  <keyword>Standards</keyword>  <keyword>Track</keyword>  <keyword>Documents</keyword></bibitem>
+              </series>  <keyword>><vocab>Standards</vocab></keyword>  <keyword><vocab>Track</vocab></keyword>  <keyword><vocab>Documents</vocab></keyword></bibitem>
               <title type="main" format="text/plain">The "data" URL scheme</title>
               <bibitem anchor="RFC2397"  id="1" type="standard" schema-version="v1.2.4">
               <title type="main" format="text/plain">The "data" URL scheme</title
@@ -80,10 +80,10 @@ RSpec.describe IsoDoc::Ietf do
   <series type="stream">
     <title format="text/plain">Legacy</title>
   </series>
-  <keyword>DATA-URL</keyword>
-  <keyword>uniform resource locator</keyword>
-  <keyword>identifiers</keyword>
-  <keyword>media type</keyword>
+  <keyword><vocab>DATA-URL</vocab></keyword>
+  <keyword><vocab>uniform resource locator</vocab></keyword>
+  <keyword><vocab>identifiers</vocab></keyword>
+  <keyword><vocab>media type</vocab></keyword>
   <ext schema-version="v1.0.1">
     <stream>Legacy</stream>
   </ext>
@@ -121,8 +121,8 @@ RSpec.describe IsoDoc::Ietf do
               <abbreviation>ISO1</abbreviation>
             </organization>
           </contributor>
-          <keyword>keyword1</keyword>
-          <keyword>keyword2</keyword>
+          <keyword><vocab>keyword1</vocab></keyword>
+          <keyword><vocab>keyword2</vocab></keyword>
           <abstract><p>This is an abstract</p></abstract>
           <note format="text/plain" reference="1">ISO DATE: Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
           <extent type="part">
@@ -513,8 +513,8 @@ RSpec.describe IsoDoc::Ietf do
               <abbreviation>ISO1</abbreviation>
             </organization>
           </contributor>
-          <keyword>keyword1</keyword>
-          <keyword>keyword2</keyword>
+          <keyword><vocab>keyword1</vocab></keyword>
+          <keyword><vocab>keyword2</vocab></keyword>
           <abstract><p>This is an abstract</p></abstract>
           <note format="text/plain" reference="1">ISO DATE: Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
           <extent type="part">
@@ -892,7 +892,7 @@ RSpec.describe IsoDoc::Ietf do
         <title format="text/plain">RFC</title>
                 <number>5730</number>      </series>      <series type="stream">
         <title format="text/plain">IETF</title>
-              </series>      <keyword>shared framework mapping</keyword>    </bibitem>
+              </series>      <keyword><vocab>shared framework mapping</vocab></keyword>    </bibitem>
           </relation>  <relation type="includes">    <bibitem type="standard">
         <title type="main" format="text/plain">Extensible Provisioning Protocol (EPP) Domain Name Mapping</title>
               <uri type="src">https://www.rfc-editor.org/info/rfc5731</uri>      <docidentifier type="IETF" primary="true">RFC 5731</docidentifier>      <docidentifier type="DOI">10.17487/RFC5731</docidentifier>      <docnumber>RFC5731</docnumber>      <date type="published">        <on>2009-08</on>      </date>      <contributor>        <role type="author"/>        <person>
@@ -908,7 +908,7 @@ RSpec.describe IsoDoc::Ietf do
         <title format="text/plain">RFC</title>
                 <number>5731</number>      </series>      <series type="stream">
         <title format="text/plain">IETF</title>
-              </series>      <keyword>EPP</keyword>      <keyword>Extensible Provisioning Protocol</keyword>      <keyword>XML</keyword>      <keyword>domain</keyword>      <keyword>domain name</keyword>    </bibitem>
+              </series>      <keyword><vocab>EPP</vocab></keyword>      <keyword><vocab>Extensible Provisioning Protocol</vocab></keyword>      <keyword><vocab>XML</vocab></keyword>      <keyword><vocab>domain</vocab></keyword>      <keyword><vocab>domain name</vocab></keyword>    </bibitem>
           </relation>  <relation type="includes">    <bibitem type="standard">
         <title type="main" format="text/plain">Extensible Provisioning Protocol (EPP) Host Mapping</title>
               <uri type="src">https://www.rfc-editor.org/info/rfc5732</uri>      <docidentifier type="IETF" primary="true">RFC 5732</docidentifier>      <docidentifier type="DOI">10.17487/RFC5732</docidentifier>      <docnumber>RFC5732</docnumber>      <date type="published">        <on>2009-08</on>      </date>      <contributor>        <role type="author"/>        <person>
@@ -924,7 +924,7 @@ RSpec.describe IsoDoc::Ietf do
         <title format="text/plain">RFC</title>
                 <number>5732</number>      </series>      <series type="stream">
         <title format="text/plain">IETF</title>
-              </series>      <keyword>EPP</keyword>      <keyword>Extensible Provisioning Protocol</keyword>      <keyword>XML</keyword>      <keyword>host</keyword>    </bibitem>
+              </series>      <keyword><vocab>EPP</vocab></keyword>      <keyword><vocab>Extensible Provisioning Protocol</vocab></keyword>      <keyword><vocab>XML</vocab></keyword>      <keyword><vocab>host</vocab></keyword>    </bibitem>
           </relation>  <relation type="includes">    <bibitem type="standard">
         <title type="main" format="text/plain">Extensible Provisioning Protocol (EPP) Contact Mapping</title>
               <uri type="src">https://www.rfc-editor.org/info/rfc5733</uri>      <docidentifier type="IETF" primary="true">RFC 5733</docidentifier>      <docidentifier type="DOI">10.17487/RFC5733</docidentifier>      <docnumber>RFC5733</docnumber>      <date type="published">        <on>2009-08</on>      </date>      <contributor>        <role type="author"/>        <person>
@@ -940,7 +940,7 @@ RSpec.describe IsoDoc::Ietf do
         <title format="text/plain">RFC</title>
                 <number>5733</number>      </series>      <series type="stream">
         <title format="text/plain">IETF</title>
-              </series>      <keyword>EPP</keyword>      <keyword>Extensible Provisioning Protocol</keyword>      <keyword>XML</keyword>      <keyword>contact</keyword>      <keyword>registrant</keyword>    </bibitem>
+              </series>      <keyword><vocab>EPP</vocab></keyword>      <keyword><vocab>Extensible Provisioning Protocol</vocab></keyword>      <keyword><vocab>XML</vocab></keyword>      <keyword><vocab>contact</vocab></keyword>      <keyword><vocab>registrant</vocab></keyword>    </bibitem>
           </relation>  <relation type="includes">    <bibitem type="standard">
         <title type="main" format="text/plain">Extensible Provisioning Protocol (EPP) Transport over TCP</title>
               <uri type="src">https://www.rfc-editor.org/info/rfc5734</uri>      <docidentifier type="IETF" primary="true">RFC 5734</docidentifier>      <docidentifier type="DOI">10.17487/RFC5734</docidentifier>      <docnumber>RFC5734</docnumber>      <date type="published">        <on>2009-08</on>      </date>      <contributor>        <role type="author"/>        <person>
@@ -956,7 +956,7 @@ RSpec.describe IsoDoc::Ietf do
         <title format="text/plain">RFC</title>
                 <number>5734</number>      </series>      <series type="stream">
         <title format="text/plain">IETF</title>
-              </series>      <keyword>EPP</keyword>      <keyword>Extensible Provisioning Protocol</keyword>      <keyword>XML</keyword>      <keyword>TCP</keyword>      <keyword>TLS</keyword>    </bibitem>
+              </series>      <keyword><vocab>EPP</vocab></keyword>      <keyword><vocab>Extensible Provisioning Protocol</vocab></keyword>      <keyword><vocab>XML</vocab></keyword>      <keyword><vocab>TCP</vocab></keyword>      <keyword><vocab>TLS</vocab></keyword>    </bibitem>
           </relation></bibitem>
               </references>
               </clause>
@@ -971,115 +971,115 @@ RSpec.describe IsoDoc::Ietf do
         <?rfc tocdepth="4"?>
         <?rfc symrefs="yes"?>
         <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
           <front>
-            <title>The Holy Hand Grenade of Antioch</title>
-            <seriesInfo value="10" name="RFC" asciiName="RFC"/>
-            <author fullname="Arthur son of Uther Pendragon"/>
-            <date day="1" year="2000" month="January"/>
+             <title>The Holy Hand Grenade of Antioch</title>
+             <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+             <author fullname="Arthur son of Uther Pendragon"/>
+             <date day="1" year="2000" month="January"/>
           </front>
           <middle>
-            <section anchor="_clause">
-              <name>Clause</name>
-              <t anchor="_">A</t>
-            </section>
+             <section anchor="_clause">
+                <name>Clause</name>
+                <t anchor="_">A</t>
+             </section>
           </middle>
-                   <back>
+          <back>
              <references anchor="_references">
-               <name>References</name>
-               <references anchor="_normative_references">
-                 <name>Normative references</name>
-                 <referencegroup target="https://www.rfc-editor.org/info/std69" anchor="a">
-                   <reference target="https://www.rfc-editor.org/info/rfc5730" anchor="_">
-                     <stream>IETF</stream>
-                     <front>
-                       <title>Extensible Provisioning Protocol (EPP)</title>
-                       <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
-                       <date month="August" year="2009"/>
-                       <keyword>shared framework mapping</keyword>
-                       <abstract>
-                         <t anchor="_">This document describes an application-layer client-server protocol for the provisioning and management of objects stored in a shared central repository. Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects. This document includes a protocol specification, an object mapping template, and an XML media type registration. This document obsoletes RFC 4930. [STANDARDS-TRACK]</t>
-                       </abstract>
-                     </front>
-                     <seriesInfo value="10.17487/RFC5730" name="DOI"/>
-                     <refcontent>BCP 69, RFC 5730</refcontent>
-                   </reference>
-                   <reference target="https://www.rfc-editor.org/info/rfc5731" anchor="_">
-                     <stream>IETF</stream>
-                     <front>
-                       <title>Extensible Provisioning Protocol (EPP) Domain Name Mapping</title>
-                       <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
-                       <date month="August" year="2009"/>
-                       <keyword>EPP</keyword>
-                       <keyword>Extensible Provisioning Protocol</keyword>
-                       <keyword>XML</keyword>
-                       <keyword>domain</keyword>
-                       <keyword>domain name</keyword>
-                       <abstract>
-                         <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet domain names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to domain names. This document obsoletes RFC 4931. [STANDARDS-TRACK]</t>
-                       </abstract>
-                     </front>
-                     <seriesInfo value="10.17487/RFC5731" name="DOI"/>
-                     <refcontent>BCP 69, RFC 5731</refcontent>
-                   </reference>
-                   <reference target="https://www.rfc-editor.org/info/rfc5732" anchor="_">
-                     <stream>IETF</stream>
-                     <front>
-                       <title>Extensible Provisioning Protocol (EPP) Host Mapping</title>
-                       <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
-                       <date month="August" year="2009"/>
-                       <keyword>EPP</keyword>
-                       <keyword>Extensible Provisioning Protocol</keyword>
-                       <keyword>XML</keyword>
-                       <keyword>host</keyword>
-                       <abstract>
-                         <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet host names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to host names. This document obsoletes RFC 4932. [STANDARDS-TRACK]</t>
-                       </abstract>
-                     </front>
-                     <seriesInfo value="10.17487/RFC5732" name="DOI"/>
-                     <refcontent>BCP 69, RFC 5732</refcontent>
-                   </reference>
-                   <reference target="https://www.rfc-editor.org/info/rfc5733" anchor="_">
-                     <stream>IETF</stream>
-                     <front>
-                       <title>Extensible Provisioning Protocol (EPP) Contact Mapping</title>
-                       <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
-                       <date month="August" year="2009"/>
-                       <keyword>EPP</keyword>
-                       <keyword>Extensible Provisioning Protocol</keyword>
-                       <keyword>XML</keyword>
-                       <keyword>contact</keyword>
-                       <keyword>registrant</keyword>
-                       <abstract>
-                         <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of individual or organizational social information identifiers (known as "contacts") stored in a shared central repository. Specified in Extensible Markup Language (XML), the mapping defines EPP command syntax and semantics as applied to contacts. This document obsoletes RFC 4933. [STANDARDS-TRACK]</t>
-                       </abstract>
-                     </front>
-                     <seriesInfo value="10.17487/RFC5733" name="DOI"/>
-                     <refcontent>BCP 69, RFC 5733</refcontent>
-                   </reference>
-                   <reference target="https://www.rfc-editor.org/info/rfc5734" anchor="_">
-                     <stream>IETF</stream>
-                     <front>
-                       <title>Extensible Provisioning Protocol (EPP) Transport over TCP</title>
-                       <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
-                       <date month="August" year="2009"/>
-                       <keyword>EPP</keyword>
-                       <keyword>Extensible Provisioning Protocol</keyword>
-                       <keyword>XML</keyword>
-                       <keyword>TCP</keyword>
-                       <keyword>TLS</keyword>
-                       <abstract>
-                         <t anchor="_">This document describes how an Extensible Provisioning Protocol (EPP) session is mapped onto a single Transmission Control Protocol (TCP) connection. This mapping requires use of the Transport Layer Security (TLS) protocol to protect information exchanged between an EPP client and an EPP server. This document obsoletes RFC 4934. [STANDARDS-TRACK]</t>
-                       </abstract>
-                     </front>
-                     <seriesInfo value="10.17487/RFC5734" name="DOI"/>
-                     <refcontent>BCP 69, RFC 5734</refcontent>
-                   </reference>
-                 </referencegroup>
-               </references>
+                <name>References</name>
+                <references anchor="_normative_references">
+                   <name>Normative references</name>
+                   <referencegroup target="https://www.rfc-editor.org/info/std69" anchor="a">
+                      <reference target="https://www.rfc-editor.org/info/rfc5730" anchor="_">
+                         <stream>IETF</stream>
+                         <front>
+                            <title>Extensible Provisioning Protocol (EPP)</title>
+                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <date month="August" year="2009"/>
+                            <keyword>shared framework mapping</keyword>
+                            <abstract>
+                               <t anchor="_">This document describes an application-layer client-server protocol for the provisioning and management of objects stored in a shared central repository. Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects. This document includes a protocol specification, an object mapping template, and an XML media type registration. This document obsoletes RFC 4930. [STANDARDS-TRACK]</t>
+                            </abstract>
+                         </front>
+                         <seriesInfo value="10.17487/RFC5730" name="DOI"/>
+                         <refcontent>BCP 69, RFC 5730</refcontent>
+                      </reference>
+                      <reference target="https://www.rfc-editor.org/info/rfc5731" anchor="_">
+                         <stream>IETF</stream>
+                         <front>
+                            <title>Extensible Provisioning Protocol (EPP) Domain Name Mapping</title>
+                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <date month="August" year="2009"/>
+                            <keyword>EPP</keyword>
+                            <keyword>Extensible Provisioning Protocol</keyword>
+                            <keyword>XML</keyword>
+                            <keyword>domain</keyword>
+                            <keyword>domain name</keyword>
+                            <abstract>
+                               <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet domain names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to domain names. This document obsoletes RFC 4931. [STANDARDS-TRACK]</t>
+                            </abstract>
+                         </front>
+                         <seriesInfo value="10.17487/RFC5731" name="DOI"/>
+                         <refcontent>BCP 69, RFC 5731</refcontent>
+                      </reference>
+                      <reference target="https://www.rfc-editor.org/info/rfc5732" anchor="_">
+                         <stream>IETF</stream>
+                         <front>
+                            <title>Extensible Provisioning Protocol (EPP) Host Mapping</title>
+                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <date month="August" year="2009"/>
+                            <keyword>EPP</keyword>
+                            <keyword>Extensible Provisioning Protocol</keyword>
+                            <keyword>XML</keyword>
+                            <keyword>host</keyword>
+                            <abstract>
+                               <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet host names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to host names. This document obsoletes RFC 4932. [STANDARDS-TRACK]</t>
+                            </abstract>
+                         </front>
+                         <seriesInfo value="10.17487/RFC5732" name="DOI"/>
+                         <refcontent>BCP 69, RFC 5732</refcontent>
+                      </reference>
+                      <reference target="https://www.rfc-editor.org/info/rfc5733" anchor="_">
+                         <stream>IETF</stream>
+                         <front>
+                            <title>Extensible Provisioning Protocol (EPP) Contact Mapping</title>
+                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <date month="August" year="2009"/>
+                            <keyword>EPP</keyword>
+                            <keyword>Extensible Provisioning Protocol</keyword>
+                            <keyword>XML</keyword>
+                            <keyword>contact</keyword>
+                            <keyword>registrant</keyword>
+                            <abstract>
+                               <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of individual or organizational social information identifiers (known as "contacts") stored in a shared central repository. Specified in Extensible Markup Language (XML), the mapping defines EPP command syntax and semantics as applied to contacts. This document obsoletes RFC 4933. [STANDARDS-TRACK]</t>
+                            </abstract>
+                         </front>
+                         <seriesInfo value="10.17487/RFC5733" name="DOI"/>
+                         <refcontent>BCP 69, RFC 5733</refcontent>
+                      </reference>
+                      <reference target="https://www.rfc-editor.org/info/rfc5734" anchor="_">
+                         <stream>IETF</stream>
+                         <front>
+                            <title>Extensible Provisioning Protocol (EPP) Transport over TCP</title>
+                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <date month="August" year="2009"/>
+                            <keyword>EPP</keyword>
+                            <keyword>Extensible Provisioning Protocol</keyword>
+                            <keyword>XML</keyword>
+                            <keyword>TCP</keyword>
+                            <keyword>TLS</keyword>
+                            <abstract>
+                               <t anchor="_">This document describes how an Extensible Provisioning Protocol (EPP) session is mapped onto a single Transmission Control Protocol (TCP) connection. This mapping requires use of the Transport Layer Security (TLS) protocol to protect information exchanged between an EPP client and an EPP server. This document obsoletes RFC 4934. [STANDARDS-TRACK]</t>
+                            </abstract>
+                         </front>
+                         <seriesInfo value="10.17487/RFC5734" name="DOI"/>
+                         <refcontent>BCP 69, RFC 5734</refcontent>
+                      </reference>
+                   </referencegroup>
+                </references>
              </references>
-           </back>
-         </rfc>
+          </back>
+       </rfc>
       OUTPUT
       IsoDoc::Ietf::RfcConvert.new({})
         .convert("test", input, false)

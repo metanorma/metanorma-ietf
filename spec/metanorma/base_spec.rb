@@ -1,6 +1,6 @@
 require "spec_helper"
 require "fileutils"
-require "relaton_ietf"
+require "relaton/ietf"
 
 RSpec.describe Metanorma::Ietf do
   before do
@@ -700,28 +700,28 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-       #{BLANK_HDR}
-         <preface>
-             <foreword id="_" obligation="informative">
-                <title id="_">Foreword</title>
-                <p id="_">Abstract</p>
-             </foreword>
-             <introduction id="_" obligation="informative">
-                <title id="_">Introduction</title>
-                <p id="_">Introduction</p>
-             </introduction>
-          </preface>
-          <sections>
-             <clause id="_" inline-header="false" obligation="normative">
-                <title id="_">Clause</title>
-                <p id="_">Clause</p>
-             </clause>
-             <clause id="_" inline-header="false" obligation="normative">
-                <title id="_">Acknowledgements</title>
-                <p id="_">Acknowledgements</p>
-             </clause>
-          </sections>
-       </metanorma>
+      #{BLANK_HDR}
+        <preface>
+            <foreword id="_" obligation="informative">
+               <title id="_">Foreword</title>
+               <p id="_">Abstract</p>
+            </foreword>
+            <introduction id="_" obligation="informative">
+               <title id="_">Introduction</title>
+               <p id="_">Introduction</p>
+            </introduction>
+         </preface>
+         <sections>
+            <clause id="_" inline-header="false" obligation="normative">
+               <title id="_">Clause</title>
+               <p id="_">Clause</p>
+            </clause>
+            <clause id="_" inline-header="false" obligation="normative">
+               <title id="_">Acknowledgements</title>
+               <p id="_">Acknowledgements</p>
+            </clause>
+         </sections>
+      </metanorma>
     OUTPUT
     expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Canon.format_xml(output)
