@@ -93,7 +93,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </iso-standard>
     INPUT
     output = <<~OUTPUT
-     <?xml version='1.0'?>
         <?rfc strict="yes"?>
         <?rfc compact="yes"?>
         <?rfc subcompact="no"?>

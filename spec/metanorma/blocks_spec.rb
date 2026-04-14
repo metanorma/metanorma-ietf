@@ -571,60 +571,41 @@ RSpec.describe Metanorma::Ietf do
       * [[[RFC4918,RFC 4918]]]
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
-        <preface>
-             <foreword id="_" obligation="informative">
-                <title id="_">Foreword</title>
-                <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true">
-                   <name id="_">Caption</name>
-                   <body>
-                      puts "Hello, world." %w{a b c}.each do |x| puts x end
-                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
-                         <localityStack>
-                            <locality type="section">
-                               <referenceFrom>14.24</referenceFrom>
-                            </locality>
-                         </localityStack>
-                      </eref>
-                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
-                         <localityStack>
-                            <locality type="section">
-                               <referenceFrom>14.24</referenceFrom>
-                            </locality>
-                         </localityStack>
-                         <display-text>Hello</display-text>
-                      </eref>
-                      <link target="http://www.example.com"/>
-                      <link target="http://www.example.com">example</link>
-                      <xref target="A">
-                         <display-text>Goodbye</display-text>
-                      </xref>
-                      <xref target="A">
-                         <display-text>Goodbye</display-text>
-                      </xref>
-                   </body>
-                </sourcecode>
-                <sourcecode id="_" lang="ruby" src="http://www.example.com">
-                   <body/>
-                </sourcecode>
-             </foreword>
-          </preface>
-          <sections>
+            #{BLANK_HDR}
+              <preface>
+                   <foreword id="_" obligation="informative">
+                      <title id="_">Foreword</title>
+      <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name id="_">Caption</name><body>puts "Hello, world."
+      %w{a b c}.each do |x|
+        puts x
+      end
+      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><localityStack><locality type="section"><referenceFrom>14.24</referenceFrom></locality></localityStack></eref>
+      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><localityStack><locality type="section"><referenceFrom>14.24</referenceFrom></locality></localityStack><display-text>Hello</display-text></eref>
+      <link target="http://www.example.com"/>
+      <link target="http://www.example.com">example</link>
+      <xref target="A"><display-text>Goodbye</display-text></xref>
+      <xref target="A"><display-text>Goodbye</display-text></xref></body></sourcecode>
 
-       </sections>
-          <bibliography>
-             <references id="_" anchor="A" normative="false" obligation="informative">
-                <title id="_">Bibliography</title>
-                <bibitem id="_" anchor="RFC4918">
-                   <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
-                   <docidentifier>RFC 4918</docidentifier>
-                   <docnumber>4918</docnumber>
-                   <language>en</language>
-                   <script>Latn</script>
-                </bibitem>
-             </references>
-          </bibliography>
-       </metanorma>
+
+             <sourcecode id="_" lang="ruby" src="http://www.example.com"><body/></sourcecode>
+
+             </foreword></preface>
+                <sections>
+
+             </sections>
+                <bibliography>
+                   <references id="_" anchor="A" normative="false" obligation="informative">
+                      <title id="_">Bibliography</title>
+                      <bibitem id="_" anchor="RFC4918">
+                         <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
+                         <docidentifier>RFC 4918</docidentifier>
+                         <docnumber>4918</docnumber>
+                         <language>en</language>
+                         <script>Latn</script>
+                      </bibitem>
+                   </references>
+                </bibliography>
+             </metanorma>
     OUTPUT
     expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
       .to be_xml_equivalent_to output
@@ -645,17 +626,16 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-              <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." <callout target="_">1</callout>
+      <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." <callout target="_">1</callout>
+      %w{a b c}.each do |x|
+        puts x <callout target="_">2</callout>
+      end</body><callout-annotation id="_" anchor="_"><p id="_">This is one callout</p>
+      </callout-annotation><callout-annotation id="_" anchor="_"><p id="_">This is another callout</p>
+      </callout-annotation></sourcecode>
 
-       %w{a b c}.each do |x|
-         puts x <callout target="_">2</callout>
-       end</body><callout-annotation id="_" anchor="_">
-         <p id="_">This is one callout</p>
-       </callout-annotation><callout-annotation id="_" anchor="_">
-         <p id="_">This is another callout</p>
-       </callout-annotation></sourcecode>
-       </sections>
-       </metanorma>
+
+      </sections>
+      </metanorma>
     OUTPUT
     expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
       .to be_xml_equivalent_to output

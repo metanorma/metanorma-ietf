@@ -607,7 +607,6 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
 
     expect(strip_guid(File.read("test.rfc.xml")))
       .to be_xml_equivalent_to <<~OUTPUT
-           <?xml version="1.0"?>
         <?rfc strict="yes"?>
         <?rfc compact="yes"?>
         <?rfc subcompact="no"?>

@@ -179,7 +179,6 @@ RSpec.describe Metanorma::Ietf do
       :sortrefs: 35
     INPUT
     output = <<~OUTPUT
-           <?xml version='1.0' encoding='UTF-8'?>
               <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                 <bibdata type='standard'>
                   <title language='en' type='main'>Main Title - Title</title>
@@ -513,7 +512,6 @@ RSpec.describe Metanorma::Ietf do
       == Clause 1
     INPUT
     output = <<~OUTPUT
-           <?xml version='1.0' encoding='UTF-8'?>
              <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
                  <title language='el' type="main">Document title</title>

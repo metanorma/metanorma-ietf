@@ -261,7 +261,6 @@ RSpec.describe IsoDoc::Ietf do
             </iso-standard>
       INPUT
       output = <<~OUTPUT
-       <?xml version="1.0" encoding="UTF-8"?>
      
      
        <?rfc strict="yes"?>
@@ -611,7 +610,6 @@ RSpec.describe IsoDoc::Ietf do
             </iso-standard>
       INPUT
       output = <<~OUTPUT
-       <?xml version="1.0" encoding="UTF-8"?>
      
      
        <?rfc strict="yes"?>
@@ -964,7 +962,6 @@ RSpec.describe IsoDoc::Ietf do
               </ietf-standard>
       INPUT
       output = <<~OUTPUT
-        <?xml version="1.0" encoding="UTF-8"?>
         <?rfc strict="yes"?>
         <?rfc compact="yes"?>
         <?rfc subcompact="no"?>
