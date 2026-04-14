@@ -1,6 +1,6 @@
 require "spec_helper"
 require "fileutils"
-require "relaton_ietf"
+require "relaton/ietf"
 
 RSpec.describe Metanorma::Ietf do
   before do
