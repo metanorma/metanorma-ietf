@@ -8,9 +8,15 @@ on:
     tags: [ v* ]
   pull_request:
 
+permissions:
+  contents: write
 
 jobs:
   rake:
-    uses: metanorma/ci/.github/workflows/xml2rfc-rake.yml@main
+    uses: metanorma/ci/.github/workflows/generic-rake.yml@main
+    with:
+      setup-tools: xml2rfc
+      submodules: false
+      choco-cache: true
     secrets:
       pat_token: ${{ secrets.METANORMA_CI_PAT_TOKEN }}
