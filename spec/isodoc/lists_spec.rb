@@ -30,8 +30,8 @@ RSpec.describe IsoDoc do
       <date day="1" year="2000" month="January"/>
       </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))).to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_xml_equivalent_to output
   end
 
   it "processes ordered lists" do
@@ -77,9 +77,9 @@ RSpec.describe IsoDoc do
         <date day="1" year="2000" month="January"/>
         </front><middle/><back/></rfc>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes Roman Upper ordered lists" do
@@ -117,9 +117,9 @@ RSpec.describe IsoDoc do
             <date day="1" year="2000" month="January"/>
             </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes definition lists" do
@@ -161,7 +161,7 @@ RSpec.describe IsoDoc do
         <date day="1" year="2000" month="January"/>
         </front><middle/><back/></rfc>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
-      .convert("test", input, true)))).to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))).to be_xml_equivalent_to output
   end
 end

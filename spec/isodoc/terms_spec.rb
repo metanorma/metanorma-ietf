@@ -109,14 +109,14 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <back/>
       </rfc>
     OUTPUT
-    expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert
-      .new({}).convert("test", input, true)))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(IsoDoc::Ietf::RfcConvert
+      .new({}).convert("test", input, true))
+      .to be_xml_equivalent_to output
   end
 
   it "processes multiple term definitions" do
-      input = <<~INPUT
-                <iso-standard xmlns="http://riboseinc.com/isoxml">
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
             <sections>
             <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>
             <p>For the purposes of this document, the following terms and definitions apply.</p>
@@ -129,42 +129,42 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         </terms>
         </sections>
         </iso-standard>
-      INPUT
-      output = <<~OUTPUT
-        <?xml version='1.0'?>
-        <?rfc strict="yes"?>
-        <?rfc compact="yes"?>
-        <?rfc subcompact="no"?>
-        <?rfc tocdepth="4"?>
-        <?rfc symrefs="yes"?>
-        <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-          <front>
-            <seriesInfo value='' name='RFC' asciiName='RFC'/>
-            <date day="1" year="2000" month="January"/>
-          </front>
-          <middle>
-            <section anchor='_terms_and_definitions'>
-              <name>Terms and Definitions</name>
-              <t>For the purposes of this document, the following terms and definitions apply.</t>
-              <section anchor='paddy1'>
-                <name>paddy</name>
-                <ol>
-                  <li>
-                    <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>&lt;rice&gt; rice retaining its husk after threshing</t>
-                  </li>
-                  <li>
-                    <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747e'>rice keeping its husk after threshing</t>
-                  </li>
-                </ol>
-              </section>
+    INPUT
+    output = <<~OUTPUT
+      <?xml version='1.0'?>
+      <?rfc strict="yes"?>
+      <?rfc compact="yes"?>
+      <?rfc subcompact="no"?>
+      <?rfc tocdepth="4"?>
+      <?rfc symrefs="yes"?>
+      <?rfc sortrefs="yes"?>
+      <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+        <front>
+          <seriesInfo value='' name='RFC' asciiName='RFC'/>
+          <date day="1" year="2000" month="January"/>
+        </front>
+        <middle>
+          <section anchor='_terms_and_definitions'>
+            <name>Terms and Definitions</name>
+            <t>For the purposes of this document, the following terms and definitions apply.</t>
+            <section anchor='paddy1'>
+              <name>paddy</name>
+              <ol>
+                <li>
+                  <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747f'>&lt;rice&gt; rice retaining its husk after threshing</t>
+                </li>
+                <li>
+                  <t anchor='_eb29b35e-123e-4d1c-b50b-2714d41e747e'>rice keeping its husk after threshing</t>
+                </li>
+              </ol>
             </section>
-          </middle>
-          <back/>
-        </rfc>
-      OUTPUT
-      expect(Canon.format_xml(IsoDoc::Ietf::RfcConvert.new({})
-        .convert("test", input, true)))
-        .to be_equivalent_to Canon.format_xml(output)
+          </section>
+        </middle>
+        <back/>
+      </rfc>
+    OUTPUT
+    expect(IsoDoc::Ietf::RfcConvert.new({})
+      .convert("test", input, true))
+      .to be_xml_equivalent_to output
   end
 end

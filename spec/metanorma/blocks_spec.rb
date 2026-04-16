@@ -16,8 +16,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes open blocks" do
@@ -38,8 +38,8 @@ RSpec.describe Metanorma::Ietf do
       <p id="_">z</p></sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes annotation blocks" do
@@ -114,8 +114,8 @@ RSpec.describe Metanorma::Ietf do
     OUTPUT
     xml = Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
     xml.at("//xmlns:metanorma-extension").remove
-    expect(Canon.format_xml(strip_guid(xml.to_xml)))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(xml.to_xml))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term notes" do
@@ -142,8 +142,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term notes as plain notes in nonterm clauses" do
@@ -171,8 +171,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term notes as plain notes in definitions subclauses of terms & definitions" do
@@ -203,8 +203,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes notes" do
@@ -235,8 +235,8 @@ RSpec.describe Metanorma::Ietf do
       </metanorma>
 
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes literals" do
@@ -258,8 +258,8 @@ RSpec.describe Metanorma::Ietf do
        </metanorma>
 
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes simple admonitions with Asciidoc names" do
@@ -277,8 +277,8 @@ RSpec.describe Metanorma::Ietf do
        </metanorma>
 
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes complex admonitions with non-Asciidoc names" do
@@ -313,8 +313,8 @@ RSpec.describe Metanorma::Ietf do
        </metanorma>
 
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term examples" do
@@ -341,8 +341,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term examples as plain examples in nonterm clauses" do
@@ -371,8 +371,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes term examples as plain examples in definitions subclauses of terms & definitions" do
@@ -404,8 +404,8 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes examples" do
@@ -435,8 +435,8 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes preambles" do
@@ -457,8 +457,8 @@ RSpec.describe Metanorma::Ietf do
        </clause></sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes preambles with titles" do
@@ -480,8 +480,8 @@ RSpec.describe Metanorma::Ietf do
        </clause></sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "accepts attributes on images" do
@@ -502,8 +502,8 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes blockquotes" do
@@ -538,8 +538,8 @@ RSpec.describe Metanorma::Ietf do
              </sections>
              </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes source code" do
@@ -571,63 +571,44 @@ RSpec.describe Metanorma::Ietf do
       * [[[RFC4918,RFC 4918]]]
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
-        <preface>
-             <foreword id="_" obligation="informative">
-                <title id="_">Foreword</title>
-                <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true">
-                   <name id="_">Caption</name>
-                   <body>
-                      puts "Hello, world." %w{a b c}.each do |x| puts x end
-                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
-                         <localityStack>
-                            <locality type="section">
-                               <referenceFrom>14.24</referenceFrom>
-                            </locality>
-                         </localityStack>
-                      </eref>
-                      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918">
-                         <localityStack>
-                            <locality type="section">
-                               <referenceFrom>14.24</referenceFrom>
-                            </locality>
-                         </localityStack>
-                         <display-text>Hello</display-text>
-                      </eref>
-                      <link target="http://www.example.com"/>
-                      <link target="http://www.example.com">example</link>
-                      <xref target="A">
-                         <display-text>Goodbye</display-text>
-                      </xref>
-                      <xref target="A">
-                         <display-text>Goodbye</display-text>
-                      </xref>
-                   </body>
-                </sourcecode>
-                <sourcecode id="_" lang="ruby" src="http://www.example.com">
-                   <body/>
-                </sourcecode>
-             </foreword>
-          </preface>
-          <sections>
+            #{BLANK_HDR}
+              <preface>
+                   <foreword id="_" obligation="informative">
+                      <title id="_">Foreword</title>
+      <sourcecode id="_" lang="ruby" filename="sourcecode1.rb" markers="true"><name id="_">Caption</name><body>puts "Hello, world."
+      %w{a b c}.each do |x|
+        puts x
+      end
+      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><localityStack><locality type="section"><referenceFrom>14.24</referenceFrom></locality></localityStack></eref>
+      <eref type="inline" bibitemid="RFC4918" citeas="RFC 4918"><localityStack><locality type="section"><referenceFrom>14.24</referenceFrom></locality></localityStack><display-text>Hello</display-text></eref>
+      <link target="http://www.example.com"/>
+      <link target="http://www.example.com">example</link>
+      <xref target="A"><display-text>Goodbye</display-text></xref>
+      <xref target="A"><display-text>Goodbye</display-text></xref></body></sourcecode>
 
-       </sections>
-          <bibliography>
-             <references id="_" anchor="A" normative="false" obligation="informative">
-                <title id="_">Bibliography</title>
-                <bibitem id="_" anchor="RFC4918">
-                   <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
-                   <docidentifier>RFC 4918</docidentifier>
-                   <docnumber>4918</docnumber>
-                   <language>en</language>
-                   <script>Latn</script>
-                </bibitem>
-             </references>
-          </bibliography>
-       </metanorma>
+
+             <sourcecode id="_" lang="ruby" src="http://www.example.com"><body/></sourcecode>
+
+             </foreword></preface>
+                <sections>
+
+             </sections>
+                <bibliography>
+                   <references id="_" anchor="A" normative="false" obligation="informative">
+                      <title id="_">Bibliography</title>
+                      <bibitem id="_" anchor="RFC4918">
+                         <formattedref format="application/x-isodoc+xml">[NO INFORMATION AVAILABLE]</formattedref>
+                         <docidentifier>RFC 4918</docidentifier>
+                         <docnumber>4918</docnumber>
+                         <language>en</language>
+                         <script>Latn</script>
+                      </bibitem>
+                   </references>
+                </bibliography>
+             </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes callouts" do
@@ -645,20 +626,19 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-              <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." <callout target="_">1</callout>
+      <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." <callout target="_">1</callout>
+      %w{a b c}.each do |x|
+        puts x <callout target="_">2</callout>
+      end</body><callout-annotation id="_" anchor="_"><p id="_">This is one callout</p>
+      </callout-annotation><callout-annotation id="_" anchor="_"><p id="_">This is another callout</p>
+      </callout-annotation></sourcecode>
 
-       %w{a b c}.each do |x|
-         puts x <callout target="_">2</callout>
-       end</body><callout-annotation id="_" anchor="_">
-         <p id="_">This is one callout</p>
-       </callout-annotation><callout-annotation id="_" anchor="_">
-         <p id="_">This is another callout</p>
-       </callout-annotation></sourcecode>
-       </sections>
-       </metanorma>
+
+      </sections>
+      </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes unmodified term sources" do
@@ -697,8 +677,8 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes modified term sources" do
@@ -740,8 +720,8 @@ RSpec.describe Metanorma::Ietf do
        </sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes table attribute" do
@@ -775,8 +755,8 @@ RSpec.describe Metanorma::Ietf do
          </sections>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes keys" do
@@ -879,7 +859,7 @@ RSpec.describe Metanorma::Ietf do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 end

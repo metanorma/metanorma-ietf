@@ -30,8 +30,8 @@ RSpec.describe Metanorma::Ietf do
       <sections/>
       </metanorma>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output)
   end
 
   it "converts a blank document" do
@@ -47,8 +47,8 @@ RSpec.describe Metanorma::Ietf do
       <sections/>
       </metanorma>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output)
     expect(File.exist?("test.rfc.xml")).to be true
   end
 
@@ -179,7 +179,6 @@ RSpec.describe Metanorma::Ietf do
       :sortrefs: 35
     INPUT
     output = <<~OUTPUT
-           <?xml version='1.0' encoding='UTF-8'?>
               <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                 <bibdata type='standard'>
                   <title language='en' type='main'>Main Title - Title</title>
@@ -263,12 +262,6 @@ RSpec.describe Metanorma::Ietf do
                       <email>barney@rockhead.example.com</email>
                     </person>
                   </contributor>
-                  <contributor>
-                    <role type='publisher'/>
-                    <organization>
-                      <name>Hanna Barbera</name>
-                    </organization>
-                  </contributor>
       <contributor>
          <role type="author">
             <description>committee</description>
@@ -297,6 +290,12 @@ RSpec.describe Metanorma::Ietf do
             <abbreviation>IETF</abbreviation>
          </organization>
       </contributor>
+                  <contributor>
+                    <role type='publisher'/>
+                    <organization>
+                      <name>Hanna Barbera</name>
+                    </organization>
+                  </contributor>
                   <contributor>
                     <role type='publisher'/>
                     <organization>
@@ -472,13 +471,15 @@ RSpec.describe Metanorma::Ietf do
                 <sections/>
               </metanorma>
     OUTPUT
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output))
-
-    expect(strip_guid(Canon.format_xml(Asciidoctor.convert(input
-      .sub(/:title:.*\n/, ""), *OPTIONS))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(output
-      .sub("Main Title - Title", "Document title")))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output)
+    expect(strip_guid(Asciidoctor.convert(input
+      .sub(/:title:.*\n/, ""), *OPTIONS)))
+      .to be_xml_equivalent_to strip_guid(output
+      .sub("<title language='en' type='main'>Main Title - Title</title>", "")
+      .sub("<title language='en' type='ascii'>Ascii Title</title>",
+           "<title language='en' type='ascii'>Ascii Title</title>\n" \
+           "<title language='en' type='main'>Document title</title>"))
   end
 
   it "processes complex metadata" do
@@ -511,7 +512,6 @@ RSpec.describe Metanorma::Ietf do
       == Clause 1
     INPUT
     output = <<~OUTPUT
-           <?xml version='1.0' encoding='UTF-8'?>
              <metanorma xmlns='https://www.metanorma.org/ns/standoc' type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
                <bibdata type='standard'>
                  <title language='el' type="main">Document title</title>
@@ -619,8 +619,8 @@ RSpec.describe Metanorma::Ietf do
                </sections>
              </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "cites drafts of internet drafts" do
@@ -670,8 +670,8 @@ RSpec.describe Metanorma::Ietf do
         </annex>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes introductions and acknowledgements" do
@@ -723,7 +723,7 @@ RSpec.describe Metanorma::Ietf do
          </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 end

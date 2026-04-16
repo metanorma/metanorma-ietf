@@ -13,6 +13,8 @@ require "equivalent-xml"
 require "htmlentities"
 require "canon"
 
+Canon::Config.instance.profile = :metanorma
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
@@ -38,11 +40,11 @@ RSpec.configure do |config|
   end
 end
 
-OPTIONS = [backend: :ietf, header_footer: true].freeze
+OPTIONS = [{ backend: :ietf, header_footer: true }].freeze
 
 def htmlencode(xml)
-  HTMLEntities.new.encode(xml, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n")
-    .gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, "&").gsub(/&#x27;/, "'")
+  HTMLEntities.new.encode(xml, :hexadecimal).gsub("&#x3e;", ">").gsub("&#xa;", "\n")
+    .gsub("&#x22;", '"').gsub("&#x3c;", "<").gsub("&#x26;", "&").gsub("&#x27;", "'")
     .gsub(/\\u(....)/) do |_s|
     "&#x#{$1.downcase};"
   end
@@ -63,7 +65,7 @@ def dtd_absolute_path
   Metanorma::Ietf::RFC2629DTD_URL
 end
 
-ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
+ASCIIDOC_BLANK_HDR = <<~HDR.freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -74,7 +76,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
 
 HDR
 
-VALIDATING_BLANK_HDR = <<~"HDR".freeze
+VALIDATING_BLANK_HDR = <<~HDR.freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -94,7 +96,6 @@ LOCAL_CACHED_ISOBIB_BLANK_HDR = <<~HDR.freeze
 HDR
 
 BLANK_HDR = <<~"HDR".freeze
-  <?xml version='1.0' encoding='UTF-8'?>
          <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
          <bibdata type="standard">
           <title language="en" type="main">Document title</title>
@@ -146,8 +147,7 @@ BLANK_HDR = <<~"HDR".freeze
           </metanorma-extension>
 HDR
 
-XML_HDR = <<~"HDR".freeze
-  <?xml version='1.0'?>
+XML_HDR = <<~HDR.freeze
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
   <?rfc subcompact="no"?>
@@ -160,8 +160,7 @@ XML_HDR = <<~"HDR".freeze
       <abstract>
 HDR
 
-RFC_HDR = <<~"HDR".freeze
-  <?xml version='1.0'?>
+RFC_HDR = <<~HDR.freeze
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
   <?rfc subcompact="no"?>
@@ -177,6 +176,6 @@ HDR
 
 def mock_pdf
   allow(Mn2pdf).to receive(:convert) do |url, output, _c, _d|
-    FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
+    FileUtils.cp(url.gsub('"', ""), output.gsub('"', ""))
   end
 end

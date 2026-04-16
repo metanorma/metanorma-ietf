@@ -11,9 +11,10 @@ RSpec.describe Metanorma::Ietf::Processor do
   end
 
   it "registers output formats against metanorma" do
-    expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
+    output = <<~OUTPUT
       [[:html, "html"], [:pdf, "pdf"], [:rfc, "rfc.xml"], [:rxl, "rxl"], [:txt, "txt"], [:xml, "xml"]]
     OUTPUT
+    expect(processor.output_formats.sort.to_s).to be_equivalent_to output.strip
   end
 
   it "registers version against metanorma" do
@@ -21,12 +22,13 @@ RSpec.describe Metanorma::Ietf::Processor do
   end
 
   it "generates IsoDoc XML from a blank document" do
-    expect(strip_guid(Canon.format_xml(processor.input_to_isodoc(ASCIIDOC_BLANK_HDR, nil))))
-      .to be_equivalent_to strip_guid(Canon.format_xml(<<~"OUTPUT"))
+    output = <<~OUTPUT
             #{BLANK_HDR}
-        <sections/>
-        </metanorma>
-      OUTPUT
+      <sections/>
+      </metanorma>
+    OUTPUT
+    expect(strip_guid(processor.input_to_isodoc(ASCIIDOC_BLANK_HDR, nil)))
+      .to be_xml_equivalent_to strip_guid(output.strip)
   end
 
   input = <<~INPUT
