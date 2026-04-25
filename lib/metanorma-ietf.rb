@@ -1,5 +1,6 @@
 require "asciidoctor" unless defined? Asciidoctor::Converter
-require "metanorma"
+require "metanorma-core"
+require "metanorma-standoc"
 require "vectory"
 
 require_relative "metanorma/ietf"

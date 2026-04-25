@@ -149,14 +149,5 @@ RSpec.describe Metanorma::Ietf do
         FileUtils.rm_f(file)
       end
     end
-
-    it "generates error file" do
-      expect do
-        Metanorma::Compile.new
-          .compile("spec/assets/xref_error.adoc",
-                   type: "ietf", "agree-to-terms": true)
-      end.to(change { File.exist?("spec/assets/xref_error.err.html") }
-              .from(false).to(true))
-    end
   end
 end

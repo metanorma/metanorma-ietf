@@ -12,6 +12,10 @@ module IsoDoc
       def fileloc(loc)
         File.join(File.dirname(__FILE__), loc)
       end
+
+      def presentation_xml_converter
+        ::IsoDoc::PresentationXMLConvert.new(language: @lang, script: @script)
+      end
     end
   end
 end
