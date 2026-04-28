@@ -1,18 +1,18 @@
-require_relative "./terms"
-require_relative "./blocks"
-require_relative "./lists"
-require_relative "./metadata"
-require_relative "./front"
-require_relative "./table"
-require_relative "./inline"
-require_relative "./reqt"
-require_relative "./cleanup"
-require_relative "./footnotes"
-require_relative "./references"
-require_relative "./section"
-require_relative "./validation"
-require_relative "./xref"
-require_relative "./init"
+require_relative "terms"
+require_relative "blocks"
+require_relative "lists"
+require_relative "metadata"
+require_relative "front"
+require_relative "table"
+require_relative "inline"
+require_relative "reqt"
+require_relative "cleanup"
+require_relative "footnotes"
+require_relative "references"
+require_relative "section"
+require_relative "validation"
+require_relative "xref"
+require_relative "init"
 
 module IsoDoc
   module Ietf
@@ -32,10 +32,11 @@ module IsoDoc
 
       def document_preprocess(docxml)
         @isodoc.reqt_models = Metanorma::Requirements
-          .new({ default: "default", lang: @lang, script: @script,
-                 locale: @locale, labels: @i18n.get })
+          .new({ conv: @isodoc, default: "default", lang: @lang,
+                 script: @script, locale: @locale, labels: @i18n.get })
         populate_id(docxml)
         info docxml, nil
+        @xrefs.reqt_models = @isodoc.reqt_models
         @xrefs.parse docxml
         @isodoc.xrefs = @xrefs
         @isodoc.bibrender = @isodoc.bibrenderer
@@ -88,7 +89,7 @@ module IsoDoc
           "fmt-provision"
           node.elements.each { |n| parse(n, out) }
         else
-          text = node.to_xml.gsub(/</, "&lt;").gsub(/>/, "&gt;")
+          text = node.to_xml.gsub("<", "&lt;").gsub(">", "&gt;")
           out.t { |p| p << text }
         end
       end
@@ -127,8 +128,7 @@ module IsoDoc
         @isodoc.i18n_init("en", "Latn", nil, nil)
       end
 
-      def bibdata(docxml)
-      end
+      def bibdata(docxml); end
 
       include ::IsoDoc::Ietf::Init
     end
