@@ -8,6 +8,11 @@
 /spec/reports/
 /tmp/
 .tmp.xml
+test.err.html
+test.rfc.xml
+test.xml
+.asciidoc.log.txt
+metanorma.asciidoc.log.txt
 
 # rspec failure tracking
 .rspec_status
