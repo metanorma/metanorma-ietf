@@ -791,24 +791,25 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </iso-standard>
     INPUT
     output = <<~OUTPUT
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
-      <?rfc sortrefs="yes"?>
-      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
-          <front>
-             <title>The Holy Hand Grenade of Antioch</title>
-             <seriesInfo value="10" name="RFC" asciiName="RFC"/>
-             <author fullname="Arthur son of Uther Pendragon"/>
-             <date day="1" year="2000" month="January"/>
-          </front>
-          <middle>
-             <section anchor="F">
-                <name>Foreword</name>
-                <sourcecode anchor="S" type="ruby" name="sourcecode1.rb" markers="true">                puts "Hello, world." %w{a b c}.each do |x| puts x end
-                       RFC 4918, Section#{' '}
+       <?xml version="1.0" encoding="UTF-8"?>
+       <?rfc strict="yes"?>
+       <?rfc compact="yes"?>
+       <?rfc subcompact="no"?>
+       <?rfc tocdepth="4"?>
+       <?rfc symrefs="yes"?>
+       <?rfc sortrefs="yes"?>
+       <rfc xmlns:xi="http://www.w3.org/2001/XInclude" number="10" category="std" ipr="trust200902" submissionType="IETF" version="3">
+         <front>
+           <title>The Holy Hand Grenade of Antioch</title>
+           <seriesInfo value="10" name="RFC" asciiName="RFC"/>
+           <author fullname="Arthur son of Uther Pendragon"/>
+           <date day="1" year="2000" month="January"/>
+         </front>
+         <middle>
+           <section anchor="F">
+             <name>Foreword</name>
+             <sourcecode anchor="S" type="ruby" name="sourcecode1.rb" markers="true"><![CDATA[                puts "Hello, world." %w{a b c}.each do |x| puts x end
+                       RFC 4918, Section 
                        Hello
                        RFC 4918, Section 14.24
                        Hello
@@ -816,20 +817,20 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                        example
                        Bibliography
                        Goodbye
-                    </sourcecode>
-             </section>
-          </middle>
-          <back>
-             <references anchor="A">
-                <name>Bibliography</name>
-                <reference anchor="RFC4918">
-                   <front>
-                      <title>[NO INFORMATION AVAILABLE]</title>
-                      <author surname="Unknown"/>
-                   </front>
-                </reference>
-             </references>
-          </back>
+                    ]]></sourcecode>
+           </section>
+         </middle>
+         <back>
+           <references anchor="A">
+             <name>Bibliography</name>
+             <reference anchor="RFC4918">
+               <front>
+                 <title>[NO INFORMATION AVAILABLE]</title>
+                 <author surname="Unknown"/>
+               </front>
+             </reference>
+           </references>
+         </back>
        </rfc>
     OUTPUT
     IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)

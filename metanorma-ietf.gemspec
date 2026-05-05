@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "metanorma-standoc", "~> 3.4.0"
   spec.add_dependency "relaton-render"
 
-  spec.add_development_dependency "canon", "= 0.2.3"
+  spec.add_development_dependency "canon" #, "= 0.2.3"
   spec.add_development_dependency "debug"
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
   spec.add_development_dependency "guard", "~> 2.14"
