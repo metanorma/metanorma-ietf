@@ -9,8 +9,8 @@ gemspec
 # Dependencies needed for lutaml-model 0.8 migration (not yet released)
 gem "relaton-bib", github: "relaton/relaton-bib", branch: "fix/lutaml-model-0.8"
 
-# metanorma-plugin-lutaml pins ogc-gml ~> 1.0.0; use branch that relaxes to allow 1.1.x
-gem "metanorma-plugin-lutaml", github: "metanorma/metanorma-plugin-lutaml", branch: "relax-ogc-gml-dep"
+# metanorma-plugin-lutaml main has relaxed ogc-gml dep (not yet released)
+gem "metanorma-plugin-lutaml", github: "metanorma/metanorma-plugin-lutaml", branch: "main"
 
 # Used directly by Transformer (not yet a transitive dependency)
 gem "metanorma-document", "~> 0.2.0"
