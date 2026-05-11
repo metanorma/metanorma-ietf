@@ -222,6 +222,9 @@ RSpec.describe Metanorma::Ietf do
                   <date type='Jack'>
                     <on>1010-01-01</on>
                   </date>
+                  <date type="updated">
+                    <on>2000-01-01</on>
+                  </date>
                   <contributor>
                     <role type='author'/>
                     <person>
@@ -303,10 +306,7 @@ RSpec.describe Metanorma::Ietf do
                     </organization>
                   </contributor>
                   <edition>2</edition>
-                  <version>
-                    <revision-date>2000-01-01</revision-date>
-                    <draft>3.4</draft>
-                  </version>
+                  <version>3.4</version>
                   <language>en</language>
                   <script>Latn</script>
                   <status>
