@@ -27,7 +27,7 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
       #{BLANK_HDR}
-      <sections/>
+          <sections> </sections>
       </metanorma>
     OUTPUT
     expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
@@ -44,7 +44,7 @@ RSpec.describe Metanorma::Ietf do
     INPUT
     output = <<~OUTPUT
           #{BLANK_HDR}
-      <sections/>
+          <sections> </sections>
       </metanorma>
     OUTPUT
     expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
@@ -222,6 +222,9 @@ RSpec.describe Metanorma::Ietf do
                   <date type='Jack'>
                     <on>1010-01-01</on>
                   </date>
+                  <date type="updated">
+                    <on>2000-01-01</on>
+                  </date>
                   <contributor>
                     <role type='author'/>
                     <person>
@@ -303,10 +306,7 @@ RSpec.describe Metanorma::Ietf do
                     </organization>
                   </contributor>
                   <edition>2</edition>
-                  <version>
-                    <revision-date>2000-01-01</revision-date>
-                    <draft>3.4</draft>
-                  </version>
+                  <version>3.4</version>
                   <language>en</language>
                   <script>Latn</script>
                   <status>
@@ -468,7 +468,7 @@ RSpec.describe Metanorma::Ietf do
          <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
            </presentation-metadata>
           </metanorma-extension>
-                <sections/>
+          <sections> </sections>
               </metanorma>
     OUTPUT
     expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
@@ -640,7 +640,7 @@ RSpec.describe Metanorma::Ietf do
                      ))
     expect(doc).to include('<eref type="inline" bibitemid="I-D.abarth-cake" citeas="Internet-Draft draft-abarth-cake-01"/>')
     expect(doc).to include('<bibitem id="_" type="standard" anchor="I-D.abarth-cake">')
-    expect(doc).to include('<uri type="src">https://datatracker.ietf.org/doc/html/draft-abarth-cake-01</uri>')
+    expect(doc).to include('<docidentifier type="Internet-Draft" primary="true">draft-abarth-cake-01</docidentifier>')
   end
 
   it "processes clause attributes" do
