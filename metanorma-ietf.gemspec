@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
+  spec.add_dependency "metanorma-document"
   spec.add_dependency "metanorma-ietf-data"
   spec.add_dependency "metanorma-standoc", "~> 3.4.2"
   spec.add_dependency "relaton-render"
