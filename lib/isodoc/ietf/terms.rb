@@ -30,7 +30,7 @@ module IsoDoc
           name.children.each { |c| parse(c, p) }
         end
       end
-      
+
       def semx_admitted_term_parse(node, out)
         admitted_term_parse(node, out)
       end
@@ -75,12 +75,12 @@ module IsoDoc
 
       def multidef(elem)
         d = elem.at(ns("./definition"))
-      d = d.replace("<ol><li>#{to_xml(d.children)}</li></ol>").first
-      elem.xpath(ns("./definition")).each do |f|
-        f = f.replace("<li>#{to_xml(f.children)}</li>").first
-        d << f
-      end
-      d.wrap("<definition></definition>")
+        d = d.replace("<ol><li>#{to_xml(d.children)}</li></ol>").first
+        elem.xpath(ns("./definition")).each do |f|
+          f = f.replace("<li>#{to_xml(f.children)}</li>").first
+          d << f
+        end
+        d.wrap("<definition></definition>")
       end
 
       def termdocsource_parse(_node, _out); end

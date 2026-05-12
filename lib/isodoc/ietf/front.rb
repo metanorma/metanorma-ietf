@@ -4,7 +4,7 @@ module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
       def make_front(out, isoxml)
-        #require "debug"; binding.b
+        # require "debug"; binding.b
         info(isoxml, out)
         out.front do |front|
           title isoxml, front

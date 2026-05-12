@@ -55,35 +55,35 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "warns of invalid workgroup" do
-      FileUtils.rm_f "test.err.html"
-      Asciidoctor.convert(<<~INPUT, *OPTIONS)
-        = Document title
-        Author
-        :docfile: test.adoc
-        :nodoc:
-        :workgroup: Group
-        :flush-caches: true
+    FileUtils.rm_f "test.err.html"
+    Asciidoctor.convert(<<~INPUT, *OPTIONS)
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :workgroup: Group
+      :flush-caches: true
 
-      INPUT
-      expect(File.read("test.err.html"))
-        .to include("unrecognised working group")
+    INPUT
+    expect(File.read("test.err.html"))
+      .to include("unrecognised working group")
   end
 
   it "does not warn of valid workgroup suffixed with Working Group" do
-      FileUtils.rm_f "test.err.html"
-      Asciidoctor.convert(<<~INPUT, *OPTIONS)
-        = Document title
-        Author
-        :docfile: test.adoc
-        :nodoc:
-        :workgroup: Global Access to the Internet for All Research Group
-        :flush-caches: true
+    FileUtils.rm_f "test.err.html"
+    Asciidoctor.convert(<<~INPUT, *OPTIONS)
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :workgroup: Global Access to the Internet for All Research Group
+      :flush-caches: true
 
-      INPUT
-      if File.exist?("test.err.html")
-        expect(File.read("test.err.html"))
-          .not_to include("unrecognised working group")
-      end
+    INPUT
+    if File.exist?("test.err.html")
+      expect(File.read("test.err.html"))
+        .not_to include("unrecognised working group")
+    end
   end
 
   it "warns of cref macro not pointing to valid element" do
@@ -123,7 +123,7 @@ RSpec.describe Metanorma::Ietf do
   end
 
   it "validates document against Metanorma XML schema" do
-    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+    Asciidoctor.convert(<<~INPUT, *OPTIONS)
       = A
       X
       :docfile: test.adoc

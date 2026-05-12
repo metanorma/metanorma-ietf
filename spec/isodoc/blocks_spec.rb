@@ -238,41 +238,41 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-       #{XML_HDR}
-        <figure anchor='figureA-1'>
-              <name>
-                Split-it-right
-                <em>sample</em>
-                 divider
-              </name>
-              <t anchor='AAA'>Random text</t>
-              <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_' type='svg' alt='alttext'/>
-              <artwork src='rice_images/rice_image1.png' anchor='_' type='svg'/>
-              <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_' type='svg'/>
-               [a]
-              <fn>
-                <t anchor='_'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
-              </fn>
-              <dl>
-                <dt>A</dt>
-                <dd>
-                  <t>B</t>
-                </dd>
-              </dl>
-            </figure>
-            <figure anchor='figure-B'>
-              <artwork anchor='BC' alt='hello' type='ascii-art'><![CDATA[A <
-      B]]></artwork>
-            </figure>
-            <figure anchor='figure-C'>
-              <artwork type='ascii-art'><![CDATA[A <
-      B]]></artwork>
-            <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> &#x2014;
-        with adjustments]</t>
-            </figure>
-      </abstract>
-      <date day="1" year="2000" month="January"/>
-    </front><middle/><back/></rfc>
+         #{XML_HDR}
+          <figure anchor='figureA-1'>
+                <name>
+                  Split-it-right
+                  <em>sample</em>
+                   divider
+                </name>
+                <t anchor='AAA'>Random text</t>
+                <artwork src='rice_images/rice_image1.png' title='titletxt' anchor='_' type='svg' alt='alttext'/>
+                <artwork src='rice_images/rice_image1.png' anchor='_' type='svg'/>
+                <artwork src='data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7' anchor='_' type='svg'/>
+                 [a]
+                <fn>
+                  <t anchor='_'>[a] The time $$ t_90 $$ was estimated to be 18,2 min for this example.</t>
+                </fn>
+                <dl>
+                  <dt>A</dt>
+                  <dd>
+                    <t>B</t>
+                  </dd>
+                </dl>
+              </figure>
+              <figure anchor='figure-B'>
+                <artwork anchor='BC' alt='hello' type='ascii-art'><![CDATA[A <
+        B]]></artwork>
+              </figure>
+              <figure anchor='figure-C'>
+                <artwork type='ascii-art'><![CDATA[A <
+        B]]></artwork>
+              <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> &#x2014;
+          with adjustments]</t>
+              </figure>
+        </abstract>
+        <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))
@@ -327,12 +327,12 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-       #{XML_HDR}
-              <t anchor='samplecode'  keepWithNext='true'>EXAMPLE: Title</t>
-            <t>Hello</t>
-      </abstract>
-      <date day="1" year="2000" month="January"/>
-    </front><middle/><back/></rfc>
+         #{XML_HDR}
+                <t anchor='samplecode'  keepWithNext='true'>EXAMPLE: Title</t>
+              <t>Hello</t>
+        </abstract>
+        <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))
@@ -387,15 +387,15 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
           </iso-standard>
     INPUT
     output = <<~OUTPUT
-       #{XML_HDR}
-              <sourcecode type='ruby' markers='true' anchor='samplecode'>
-        puts x &lt; y;
-        puts y
-      </sourcecode>
-      <sourcecode anchor="samplecode2" type="ruby" src="http://www.example.com"/>
-      </abstract>
-      <date day="1" year="2000" month="January"/>
-    </front><middle/><back/></rfc>
+         #{XML_HDR}
+                <sourcecode type='ruby' markers='true' anchor='samplecode'>
+          puts x &lt; y;
+          puts y
+        </sourcecode>
+        <sourcecode anchor="samplecode2" type="ruby" src="http://www.example.com"/>
+        </abstract>
+        <date day="1" year="2000" month="January"/>
+      </front><middle/><back/></rfc>
     OUTPUT
     expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))
@@ -478,34 +478,34 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </metanorma>
     INPUT
     output = <<~OUTPUT
-       #{XML_HDR}
-                <sourcecode anchor="_" type="ruby" name="sourcecode1.rb" markers="true">
-                   puts "Hello, world." %w{a b c}.each do |x| puts x end
-                   <xref target="RFC4918" section="14.24" relative=""/>
-                   <xref target="RFC4918" section="14.24" relative="">
+      #{XML_HDR}
+               <sourcecode anchor="_" type="ruby" name="sourcecode1.rb" markers="true">
+                  puts "Hello, world." %w{a b c}.each do |x| puts x end
+                  <xref target="RFC4918" section="14.24" relative=""/>
+                  <xref target="RFC4918" section="14.24" relative="">
 
-                         Hello
-                      </xref>
-                   <eref target="http://www.example.com"/>
-                   <eref target="http://www.example.com">example</eref>
-                   <xref target="A">Goodbye</xref>
-                   <xref target="A">Goodbye</xref>
-                </sourcecode>
-             </abstract>
-             <date day="1" year="2000" month="January"/>
-          </front>
-          <middle/>
-          <back>
-             <references anchor="A">
-                <name>Bibliography</name>
-                <reference anchor="RFC4918">
-                   <front>
-                      <title>[NO INFORMATION AVAILABLE]</title>
-                   </front>
-                </reference>
-             </references>
-          </back>
-       </rfc>
+                        Hello
+                     </xref>
+                  <eref target="http://www.example.com"/>
+                  <eref target="http://www.example.com">example</eref>
+                  <xref target="A">Goodbye</xref>
+                  <xref target="A">Goodbye</xref>
+               </sourcecode>
+            </abstract>
+            <date day="1" year="2000" month="January"/>
+         </front>
+         <middle/>
+         <back>
+            <references anchor="A">
+               <name>Bibliography</name>
+               <reference anchor="RFC4918">
+                  <front>
+                     <title>[NO INFORMATION AVAILABLE]</title>
+                  </front>
+               </reference>
+            </references>
+         </back>
+      </rfc>
     OUTPUT
     expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))

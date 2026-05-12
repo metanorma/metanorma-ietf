@@ -1,9 +1,9 @@
 require "asciidoctor"
 require "metanorma-standoc"
 require "isodoc/ietf/rfc_convert"
-require_relative "./front"
-require_relative "./blocks"
-require_relative "./macros"
+require_relative "front"
+require_relative "blocks"
+require_relative "macros"
 
 module Metanorma
   module Ietf
@@ -65,7 +65,7 @@ module Metanorma
       end
 
       def bcp14(node, xml)
-        xml.span **{ class: "bcp14" } do |s|
+        xml.span class: "bcp14" do |s|
           s << node.text.upcase
         end
       end
@@ -137,9 +137,9 @@ module Metanorma
         super
       end
 
-      #def introduction_parse(attrs, xml, node)
-        #clause_parse(attrs, xml, node)
-      #end
+      # def introduction_parse(attrs, xml, node)
+      # clause_parse(attrs, xml, node)
+      # end
 
       def acknowledgements_parse(attrs, xml, node)
         clause_parse(attrs, xml, node)
@@ -188,4 +188,4 @@ module Metanorma
   end
 end
 
-require_relative "./log"
+require_relative "log"

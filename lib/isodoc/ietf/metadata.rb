@@ -8,9 +8,9 @@ module IsoDoc
       def title(isoxml, _out)
         t =  isoxml.at(ns(TITLE_RFC)) and
           set(:doctitle, t.text)
-        t =  isoxml.at(ns(TITLE_RFC.sub(/main/, "abbrev"))) and
+        t =  isoxml.at(ns(TITLE_RFC.sub("main", "abbrev"))) and
           set(:docabbrev, t.text)
-        t =  isoxml.at(ns(TITLE_RFC.sub(/main/, "ascii"))) and
+        t =  isoxml.at(ns(TITLE_RFC.sub("main", "ascii"))) and
           set(:docascii, t.text)
       end
 
@@ -20,10 +20,7 @@ module IsoDoc
       end
 
       def areas(isoxml, _out)
-        ret = []
-        isoxml.xpath(ns("//bibdata/ext/area")).each do |kw|
-          ret << kw.text
-        end
+        ret = isoxml.xpath(ns("//bibdata/ext/area")).map(&:text)
         set(:areas, ret)
       end
 
@@ -39,11 +36,8 @@ module IsoDoc
       end
 
       def wg(xml)
-        workgroups = []
-        xml.xpath(ns("//bibdata/contributor[role/description = 'committee']/" \
-          "organization/subdivision[@type = 'Workgroup']/name")).each do |wg|
-          workgroups << wg.text
-        end
+        workgroups = xml.xpath(ns("//bibdata/contributor[role/description = 'committee']/" \
+                                  "organization/subdivision[@type = 'Workgroup']/name")).map(&:text)
         set(:wg, workgroups)
       end
 

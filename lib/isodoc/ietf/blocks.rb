@@ -77,7 +77,7 @@ module IsoDoc
       def pre_parse(node, out)
         out.artwork **attr_code(anchor: node["id"], align: node["align"],
                                 alt: node["alt"], type: "ascii-art") do |s|
-          s.cdata node.text.sub(/^\n/, "").gsub(/\t/, "    ")
+          s.cdata node.text.sub(/^\n/, "").gsub("\t", "    ")
         end
       end
 
@@ -142,7 +142,7 @@ module IsoDoc
       def admonition_name(node, type)
         name = node&.at(ns("./name")) and return name
         name = Nokogiri::XML::Node.new("name", node.document)
-        type && @i18n.admonition[type] or return
+        (type && @i18n.admonition[type]) or return
         name << @i18n.admonition[type]&.upcase
         name
       end

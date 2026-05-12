@@ -16,7 +16,7 @@ module IsoDoc
       end
 
       def content_validate(xml, filename)
-        #return
+        # return
         err = []
         err += numbered_sections_check(xml)
         err += toc_sections_check(xml)
@@ -131,11 +131,11 @@ module IsoDoc
             ret << "#{x.to_xml} with relative attribute requires a section " \
                    "attribute"
           end
-          if (x["section"]) && t.name != "reference"
+          if x["section"] && t.name != "reference"
             ret << "#{x.to_xml} has a section attribute, but #{x['target']} " \
                    "points to a #{t.name}"
           end
-          if (x["relative"]) && t.name != "reference"
+          if x["relative"] && t.name != "reference"
             ret << "#{x.to_xml} has a relative attribute, but #{x['target']} " \
                    "points to a #{t.name}"
           end

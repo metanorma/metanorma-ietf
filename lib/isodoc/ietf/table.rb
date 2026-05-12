@@ -18,13 +18,9 @@ module IsoDoc
       end
 
       def table_parse_tail(node, out)
-        table_parse_tail_elems.each do |k|
-          node.xpath(ns(k)).each { |n| parse(n, out) }
-        end
-      end
-
-      def table_parse_tail_elems
-        ["./key", "./source", "./note"]
+        (key = node.at(ns("./key"))) && parse(key, out)
+        node.xpath(ns("./source")).each { |n| parse(n, out) }
+        node.xpath(ns("./note")).each { |n| parse(n, out) }
       end
 
       def table_title_parse(node, out)

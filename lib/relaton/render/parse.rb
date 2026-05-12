@@ -41,7 +41,7 @@ module Relaton
         end
 
         def keywords(doc)
-          Array(doc.keyword).map { |u| keyword1(u) }.compact
+          Array(doc.keyword).filter_map { |u| keyword1(u) }
         end
 
         def keyword1(kw)
@@ -107,7 +107,7 @@ module Relaton
             %w(BCP STD).include?(Array(s.title).first&.content)
           end
           bcp and ret.unshift("BCP\u00A0#{bcp.number}")
-          ret.reject { |x| /(rfc-anchor|Internet-Draft)/.match?(x) }
+          ret.grep_v(/(rfc-anchor|Internet-Draft)/)
             .map { |x| x.gsub(/<\/?esc>/, "").tr(" ", "\u00A0") }
         end
 

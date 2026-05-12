@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<rfc number="1149" obsoletes="RFC 1000, RFC1000, 10.17487/RFC1000, RFC 1200, RFC1200, 10.17487/RFC1200" updates="RFC 2010, RFC2010, 10.17487/RFC2010, RFC 2120, RFC2120, 10.17487/RFC2120" category="std" consensus="true" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
+  <front>
+    <title abbrev="IP Datagrams on Avian Carriers">RFC XML v3 Example: A Standard for the Transmission of IP Datagrams on Avian Carriers</title>
+    <seriesInfo name="RFC" value="1149" asciiName="RFC" status="Published" stream="IETF"/>
+    <seriesInfo name="" value="" status="full-standard"/>
+    <author initials="D" surname="Waitzman">
+      <organization>BBN STC</organization>
+      <address>
+        <postal>
+          <postalLine ascii="10 Moulton Street +\">10 Moulton Street +\</postalLine>
+        </postal>
+        <phone>(617) 873-4323</phone>
+        <email>dwaitzman@BBN.COM</email>
+        <uri/>
+      </address>
+    </author>
+    <date day="1" month="January" year="2000"/>
+    <area>Internet</area>
+    <workgroup>Network Working Group</workgroup>
+    <abstract anchor="_04c0c393-3643-4a89-9b8c-26359dc1b4f3">
+      <t anchor="_1df2d6a8-e2e9-4122-a2d5-f4dff091b074">MA 02238
+:contributor-uri: <eref target="http://bbn.com"/>
+:surname_2: Nicholas
+:givenname_2: Nick
+:email_2: <eref target="mailto:opoudjis@gmail.com"/>
+:affiliation_2: BBN STC
+:phone_2: (617) 873-4323
+:address_2: 10 Moulton Street +\
+Cambridge +\
+MA 02238
+:contributor-uri_2: <eref target="http://opoudjis.net"/>
+:equivalent: <eref target="http://example1.com"/>
+:derived-from: RFC 1149
+:mn-document-class: ietf
+:mn-output-extensions: xml,rfc,txt,html,rxl
+:docfile: document.adoc</t>
+      <t anchor="_8060b4ca-30b8-4e89-8c60-380c80cfad30">Avian carriers can provide high delay, low throughput, and low
+altitude service.  The connection topology is limited to a single
+point-to-point path for each carrier, used with standard carriers,
+but many carriers can be used without significant interference with
+each other, outside of early spring.  This is because of the 3D ether
+space available to the carriers, in contrast to the 1D ether used by
+IEEE802.3.  The carriers have an intrinsic collision avoidance
+system, which increases availability.  Unlike some network
+technologies, such as packet radio, communication is not limited to
+line-of-sight distance.  Connection oriented service is available in
+some cities, usually based upon a central hub topology.</t>
+    </abstract>
+    <note>
+      <t anchor="_4e083298-a9e0-4bee-8018-4f89a195aa03">Yes, this is an April Fool's RFC.</t>
+    </note>
+  </front>
+  <middle>
+    <section anchor="frame">
+      <name>Frame Format</name>
+      <t anchor="_d36058ae-878e-4739-9b32-3e73bec060a3">The IP <em>datagram</em> is <strong>printed</strong>, on a small scroll of paper, in
+hexadecimal, with each octet separated by whitestuff and blackstuff.
+The scroll of paper is wrapped around one leg of the avian carrier.
+A band of duct tape is used to secure the datagram's edges.  The
+bandwidth is limited to the leg length.  The MTU is variable, and
+paradoxically, generally increases with increased carrier age.  A
+typical MTU is 256 milligrams.  Some datagram padding may be needed.<relref target="RFC7253">alt</relref></t>
+      <t anchor="_97dc062f-b467-4ab1-a4bd-168829b64809">Upon receipt, the duct tape is removed and the paper copy of the
+datagram is optically scanned into a electronically transmittable
+form.<relref target="RFC7253"/></t>
+      <t anchor="_eaa93a4e-7380-40e7-a78e-9c4c619f4a48">This document extends OpenPGP and its ECC extension to support SM2, SM3 and SM4:</t>
+      <ul anchor="_150b7098-39b4-489a-9a6b-016259c8ec13">
+        <li>support the SM3 hash algorithm for data validation purposes</li>
+        <li>support signatures utilizing the combination of SM3 with other digital
+signing algorithms, such as RSA, ECDSA and SM2</li>
+        <li>support the SM2 asymmetric encryption algorithm for public key
+operations</li>
+        <li>support usage of SM2 in combination with supported hash algorithms, such as
+SHA-256 and SM3</li>
+        <li>support the SM4 symmetric encryption algorithm for data protection purposes</li>
+        <li>defines the OpenPGP profile "OSCCA-SM234" to enable usage of OpenPGP
+in an OSCCA-compliant manner.</li>
+      </ul>
+      <t anchor="_87868839-ee7f-4be3-8176-f7e93d46b91d">Algorithm-Specific Fields for SM2DSA keys:</t>
+      <ul anchor="_78f36624-8d42-4ae4-a760-676aeef23f24">
+        <li>
+          <t anchor="_41fa997f-eb13-469a-8c56-b72a6be3f2e3">a variable-length field containing a curve OID, formatted
+as follows:</t>
+          <ol anchor="_30deb9e9-1270-4de6-88e0-640360628ee1" type="a">
+            <li>a one-octet size of the following field; values 0 and
+0xFF are reserved for future extensions</li>
+            <li>octets representing a curve OID.</li>
+          </ol>
+        </li>
+        <li>MPI of an EC point representing a public key</li>
+      </ul>
+      <section anchor="_definitions">
+        <name>Definitions</name>
+        <dl anchor="_3a5adc12-c745-4d37-a95e-b03680f3dd3c">
+          <dt>OSCCA-compliant</dt>
+          <dd anchor="_33700140-6532-46a6-9082-dc736c568b45">
+            <t anchor="_33700140-6532-46a6-9082-dc736c568b45">All cryptographic algorithms used are compliant with OSCCA  regulations.</t>
+          </dd>
+          <dt>SM2DSA</dt>
+          <dd anchor="_6f277bc4-cd81-4161-807e-ea0fa20c5eef">
+            <t anchor="_6f277bc4-cd81-4161-807e-ea0fa20c5eef">The elliptic curve digital signature algorithm. <relref target="ISO.IEC.10118-3"/></t>
+          </dd>
+          <dt>SM2KEP</dt>
+          <dd anchor="_fba2251e-57bc-4e55-acd7-910776822942">
+            <t anchor="_fba2251e-57bc-4e55-acd7-910776822942">The elliptic curve key exchange protocol.</t>
+          </dd>
+          <dt>SM2PKE</dt>
+          <dd anchor="_75a9acc8-36e2-4558-bf6e-c352bbc29964">
+            <t anchor="_75a9acc8-36e2-4558-bf6e-c352bbc29964">The public key encryption algorithm.</t>
+          </dd>
+        </dl>
+        <section anchor="_elliptic_curve_formula">
+          <name>Elliptic Curve Formula</name>
+          <t anchor="_59f339b5-dc37-4d63-847c-dfcb22c4e27b"/>
+        </section>
+        <section anchor="_curve_parameters">
+          <name>Curve Parameters</name>
+          <figure anchor="curveparam1">
+            <name>Curve Parameters Listing</name>
+            <artwork anchor="_5262c75e-3af8-44d2-b185-7014074ed910" type="ascii-art"><![CDATA[p   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      FFFFFFFF 00000000 FFFFFFFF FFFFFFFF
+a   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      FFFFFFFF 00000000 FFFFFFFF FFFFFFFC
+b   = 28E9FA9E 9D9F5E34 4D5A9E4B CF6509A7
+      F39789F5 15AB8F92 DDBCBD41 4D940E93
+n   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      7203DF6B 21C6052B 53BBF409 39D54123
+x_G = 32C4AE2C 1F198119 5F990446 6A39C994
+      8FE30BBF F2660BE1 715A4589 334C74C7
+y_G = BC3736A2 F4F6779C 59BDCEE3 6B692153
+      D0A9877C C62A4740 02DF32E5 2139F0A0]]></artwork>
+          </figure>
+        </section>
+      </section>
+    </section>
+    <section anchor="_code_to_launch_spaceship">
+      <name>Code to launch spaceship</name>
+      <sourcecode anchor="_8c718f8d-9546-465f-9776-a54d8d584b41" type="ruby">
+module Foo
+  class Bar
+    def prepare_launch(spaceship, rocket)
+      spaceship.load_personnel
+      rocket.load(spaceship)
+      rocket
+    end
+  end
+end
+</sourcecode>
+    </section>
+    <section anchor="_supported_algorithms">
+      <name>Supported Algorithms</name>
+      <section anchor="_public_key_algorithms">
+        <name>Public Key Algorithms</name>
+        <t anchor="_fab0894a-c3c8-47e6-a199-fdf9cb8c5ed8">The SM2 algorithm is supported with the following extension.</t>
+        <aside anchor="_057eb24d-b47b-4b9c-9b0d-12cee3628cf9">
+          <t>NOTE: ECDH is defined in Section 8 of this document.</t>
+        </aside>
+        <t anchor="_5039e210-b270-4e4b-87a7-f06aed23da17">The following public key algorithm IDs are added to expand Section
+9.1 of RFC4880, "Public-Key Algorithms":</t>
+        <table anchor="_2c0c3c2f-871c-4fc1-8e1e-a86e18e2cbf7">
+          <name>Table 2</name>
+          <thead>
+            <tr>
+              <th align="left">ID</th>
+              <th align="left">Description of Algorithm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="left">TBD</td>
+              <td align="left">SM2</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+    <section anchor="_security_considerations">
+      <name>Security Considerations</name>
+      <t anchor="_a827075a-be40-48fc-9016-8e4fb5e0b690">Security is not generally a problem in normal operation, but special
+measures <bcp14>MUST</bcp14> be taken (such as data encryption) when avian carriers
+are used in a tactical environment.<relref target="RFC7253"/>, <relref target="ISO.IEC.10118-3"/></t>
+    </section>
+  </middle>
+  <back>
+    <references anchor="_normative_references">
+      <name>Normative  References</name>
+      <reference anchor="ISO.IEC.10118-3" target="https://www.iso.org/standard/67116.html">
+        <front>
+          <title>IT Security techniques</title>
+          <author>
+            <organization abbrev="ISO" ascii="International Organization for Standardization">International Organization for Standardization</organization>
+          </author>
+          <author>
+            <organization abbrev="IEC" ascii="International Electrotechnical Commission">International Electrotechnical Commission</organization>
+          </author>
+        </front>
+        <format target="https://www.iso.org/standard/67116.html" type="src"/>
+        <format target="https://www.iso.org/obp/ui/#!iso:std:67116:en" type="obp"/>
+        <format target="https://www.iso.org/contents/data/standard/06/71/67116.detail.rss" type="rss"/>
+        <refcontent>ISO/IEC 10118-3</refcontent>
+      </reference>
+    </references>
+    <references anchor="_informative_references">
+      <name>Informative References</name>
+      <reference anchor="RFC7253" target="https://www.rfc-editor.org/info/rfc7253">
+        <front>
+          <title>The OCB Authenticated-Encryption Algorithm</title>
+          <author fullname="T. Krovetz" asciiFullname="T. Krovetz"/>
+          <author fullname="P. Rogaway" asciiFullname="P. Rogaway"/>
+          <date month="May" year="2014"/>
+          <abstract>
+            <t>This document specifies OCB, a shared-key blockcipher-based encryption scheme that provides confidentiality and authenticity for plaintexts and authenticity for associated data.  This document is a product of the Crypto Forum Research Group (CFRG).</t>
+          </abstract>
+        </front>
+        <format target="https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.RFC.7253.xml" type="xml"/>
+        <format target="https://www.rfc-editor.org/info/rfc7253" type="src"/>
+        <refcontent>RFC 7253</refcontent>
+        <seriesInfo name="IETF" value="RFC 7253"/>
+        <seriesInfo name="DOI" value="10.17487/RFC7253"/>
+      </reference>
+    </references>
+  </back>
+</rfc>

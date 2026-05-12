@@ -32,11 +32,11 @@ module IsoDoc
 
       def document_preprocess(docxml)
         @isodoc.reqt_models = Metanorma::Requirements
-          .new({ conv: @isodoc, default: "default", lang: @lang,
-                 script: @script, locale: @locale, labels: @i18n.get })
+          .new({ default: "default", lang: @lang, script: @script,
+                 locale: @locale, labels: @i18n.get,
+                 conv: @isodoc })
         populate_id(docxml)
         info docxml, nil
-        @xrefs.reqt_models = @isodoc.reqt_models
         @xrefs.parse docxml
         @isodoc.xrefs = @xrefs
         @isodoc.bibrender = @isodoc.bibrenderer
