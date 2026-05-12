@@ -25,21 +25,21 @@ module Metanorma
       end
 
       def metadata_series(node, xml)
-        xml.series **{ type: "stream" } do |s|
+        xml.series type: "stream" do |s|
           add_noko_elem(s, "title", node.attr("submission-type") || "IETF")
           # s.title (node.attr("submission-type") || "IETF")
         end
         a = node.attr("intended-series") and
-          xml.series **{ type: "intended" } do |s|
+          xml.series type: "intended" do |s|
             parts = a.split(/ /)
             add_noko_elem(s, "title", parts[0])
-            add_noko_elem(s, "number", parts[1..-1].join(" ")) if parts.size > 1
+            add_noko_elem(s, "number", parts[1..].join(" ")) if parts.size > 1
           end
       end
 
       def title_fallback(node, xml)
         xml.parent.at("./title[not(normalize-space(.)='')]" \
-          "[not(@type = 'abbrev' or @type = 'ascii')]") and return
+                      "[not(@type = 'abbrev' or @type = 'ascii')]") and return
         add_title_xml(xml, node.attr("doctitle"), @lang, "main")
       end
 

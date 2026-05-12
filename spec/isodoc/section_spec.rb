@@ -2,18 +2,19 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Ietf::RfcConvert do
   it "processes document with no content" do
-    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)).to be_xml_equivalent_to <<~"OUTPUT"
-    <iso-standard xmlns="http://riboseinc.com/isoxml">
-          <preface/>
-          <sections/>
-        </iso-standard>
-    INPUT
-    #{RFC_HDR}
-          <middle/>
-          <back/>
-        </rfc>
-    OUTPUT
-    end
+    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test",
+                                                    <<~INPUT, true)).to be_xml_equivalent_to <<~"OUTPUT"
+                                                      <iso-standard xmlns="http://riboseinc.com/isoxml">
+                                                            <preface/>
+                                                            <sections/>
+                                                          </iso-standard>
+                                                    INPUT
+                                                      #{RFC_HDR}
+                                                            <middle/>
+                                                            <back/>
+                                                          </rfc>
+                                                    OUTPUT
+  end
 
   it "processes section names" do
     input = <<~INPUT
@@ -93,190 +94,190 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        </iso-standard>
     INPUT
     output = <<~OUTPUT
-        <?rfc strict="yes"?>
-        <?rfc compact="yes"?>
-        <?rfc subcompact="no"?>
-        <?rfc tocdepth="4"?>
-        <?rfc symrefs="yes"?>
-        <?rfc sortrefs="yes"?>
-        <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
-          <front>
-            <seriesInfo value='' name='RFC' asciiName='RFC'/>
-            <abstract> </abstract>
-            <date day="1" year="2000" month="January"/>
-          </front>
-          <middle>
-            <section anchor='B'>
-              <name>Introduction</name>
-              <section anchor='C'>
-                <name>Introduction Subsection</name>
-              </section>
-            </section>
-            <section>
-  <name>Acknowledgements</name>
-  <t anchor='A1'>This is a preamble</t>
-</section>
-            <section anchor='D'>
-              <name>Scope</name>
-              <t anchor='E'>Text</t>
-            </section>
-            <section anchor='H'>
-              <name>Terms, Definitions, Symbols and Abbreviated Terms</name>
-              <section anchor='I'>
-                <name>Normal Terms</name>
-                <section anchor='J'>
-                  <name>Term2</name>
-                </section>
-              </section>
-              <section anchor='K'>
-                <name>Definitions</name>
-                <dl>
-                  <dt>Symbol</dt>
-                  <dd>Definition</dd>
-                </dl>
-              </section>
-            </section>
-            <section anchor='L'>
-              <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-              </dl>
-            </section>
-            <section anchor='M'>
-              <name>Clause 4</name>
-              <section anchor='N'>
-                <name>Introduction</name>
-              </section>
-              <section anchor='O'>
-                <name>Clause 4.2</name>
-              </section>
-              <section anchor='O1'> </section>
-            </section>
-          </middle>
-          <back>
-          <references anchor='O4'>
-  <name>Refs</name>
-            <references anchor='Q2'>
-              <name>Annex Bibliography</name>
-            </references>
-            </references>
-            <references anchor='R'>
-              <name>Normative References</name>
-            </references>
-            <references anchor='S'>
-  <name>Bibliography</name>
-            <references anchor='T'>
-              <name>Bibliography Subsection</name>
-            </references>
-            </references>
-            <section anchor='P'>
-              <name>Annex</name>
-              <section anchor='Q'>
-                <name>Annex A.1</name>
-                <section anchor='Q1'>
-                  <name>Annex A.1a</name>
-                </section>
-              </section>
-            </section>
-          </back>
-        </rfc>
-OUTPUT
+              <?rfc strict="yes"?>
+              <?rfc compact="yes"?>
+              <?rfc subcompact="no"?>
+              <?rfc tocdepth="4"?>
+              <?rfc symrefs="yes"?>
+              <?rfc sortrefs="yes"?>
+              <rfc xmlns:xi='http://www.w3.org/2001/XInclude' category='std' submissionType='IETF' version='3'>
+                <front>
+                  <seriesInfo value='' name='RFC' asciiName='RFC'/>
+                  <abstract> </abstract>
+                  <date day="1" year="2000" month="January"/>
+                </front>
+                <middle>
+                  <section anchor='B'>
+                    <name>Introduction</name>
+                    <section anchor='C'>
+                      <name>Introduction Subsection</name>
+                    </section>
+                  </section>
+                  <section>
+        <name>Acknowledgements</name>
+        <t anchor='A1'>This is a preamble</t>
+      </section>
+                  <section anchor='D'>
+                    <name>Scope</name>
+                    <t anchor='E'>Text</t>
+                  </section>
+                  <section anchor='H'>
+                    <name>Terms, Definitions, Symbols and Abbreviated Terms</name>
+                    <section anchor='I'>
+                      <name>Normal Terms</name>
+                      <section anchor='J'>
+                        <name>Term2</name>
+                      </section>
+                    </section>
+                    <section anchor='K'>
+                      <name>Definitions</name>
+                      <dl>
+                        <dt>Symbol</dt>
+                        <dd>Definition</dd>
+                      </dl>
+                    </section>
+                  </section>
+                  <section anchor='L'>
+                    <dl>
+                      <dt>Symbol</dt>
+                      <dd>Definition</dd>
+                    </dl>
+                  </section>
+                  <section anchor='M'>
+                    <name>Clause 4</name>
+                    <section anchor='N'>
+                      <name>Introduction</name>
+                    </section>
+                    <section anchor='O'>
+                      <name>Clause 4.2</name>
+                    </section>
+                    <section anchor='O1'> </section>
+                  </section>
+                </middle>
+                <back>
+                <references anchor='O4'>
+        <name>Refs</name>
+                  <references anchor='Q2'>
+                    <name>Annex Bibliography</name>
+                  </references>
+                  </references>
+                  <references anchor='R'>
+                    <name>Normative References</name>
+                  </references>
+                  <references anchor='S'>
+        <name>Bibliography</name>
+                  <references anchor='T'>
+                    <name>Bibliography Subsection</name>
+                  </references>
+                  </references>
+                  <section anchor='P'>
+                    <name>Annex</name>
+                    <section anchor='Q'>
+                      <name>Annex A.1</name>
+                      <section anchor='Q1'>
+                        <name>Annex A.1a</name>
+                      </section>
+                    </section>
+                  </section>
+                </back>
+              </rfc>
+    OUTPUT
     expect(strip_guid(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)))
       .to be_xml_equivalent_to output
   end
 
   it "processes simple terms & definitions" do
-        expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)).to be_xml_equivalent_to <<~"OUTPUT"
-               <iso-standard xmlns="http://riboseinc.com/isoxml">
-       <sections>
-       <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-         <term id="J">
-         <preferred><expression><name>Term2</name></expression></preferred>
-       </term>
-        </terms>
-        </sections>
-        </iso-standard>
-    INPUT
-  #{RFC_HDR}
-  <middle>
-    <section anchor='H'>
-      <name>Terms, Definitions, Symbols and Abbreviated Terms</name>
-      <section anchor='J'>
-        <name>Term2</name>
-      </section>
-    </section>
-  </middle>
-  <back/>
-</rfc>
-    OUTPUT
+    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test",
+                                                    <<~INPUT, true)).to be_xml_equivalent_to <<~"OUTPUT"
+                                                              <iso-standard xmlns="http://riboseinc.com/isoxml">
+                                                      <sections>
+                                                      <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+                                                        <term id="J">
+                                                        <preferred><expression><name>Term2</name></expression></preferred>
+                                                      </term>
+                                                       </terms>
+                                                       </sections>
+                                                       </iso-standard>
+                                                    INPUT
+                                                        #{RFC_HDR}
+                                                        <middle>
+                                                          <section anchor='H'>
+                                                            <name>Terms, Definitions, Symbols and Abbreviated Terms</name>
+                                                            <section anchor='J'>
+                                                              <name>Term2</name>
+                                                            </section>
+                                                          </section>
+                                                        </middle>
+                                                        <back/>
+                                                      </rfc>
+                                                    OUTPUT
   end
 
+  it "processes sections without titles" do
+    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test",
+                                                    <<~INPUT, true)).to be_xml_equivalent_to <<~"OUTPUT"
+                                                      <iso-standard xmlns="http://riboseinc.com/isoxml">
+                                                      <preface>
+                                                       <introduction id="M" inline-header="false" obligation="normative"><clause id="N" inline-header="false" obligation="normative">
+                                                         <title>Intro</title>
+                                                       </clause>
+                                                       <clause id="O" inline-header="true" obligation="normative">
+                                                       </clause></clause>
+                                                       </preface>
+                                                       <sections>
+                                                       <clause id="M1" inline-header="false" obligation="normative"><clause id="N1" inline-header="false" obligation="normative">
+                                                       </clause>
+                                                       <clause id="O1" inline-header="true" obligation="normative">
+                                                       </clause></clause>
+                                                       </sections>
 
-        it "processes sections without titles" do
-    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)).to be_xml_equivalent_to <<~"OUTPUT"
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
-      <preface>
-       <introduction id="M" inline-header="false" obligation="normative"><clause id="N" inline-header="false" obligation="normative">
-         <title>Intro</title>
-       </clause>
-       <clause id="O" inline-header="true" obligation="normative">
-       </clause></clause>
-       </preface>
-       <sections>
-       <clause id="M1" inline-header="false" obligation="normative"><clause id="N1" inline-header="false" obligation="normative">
-       </clause>
-       <clause id="O1" inline-header="true" obligation="normative">
-       </clause></clause>
-       </sections>
+                                                      </iso-standard>
+                                                    INPUT
+                                                          #{RFC_HDR}
+                                                          <middle>
+                                                          <section anchor='M'>
+                                                        <section anchor='N'>
+                                                          <name>Intro</name>
+                                                        </section>
+                                                        <section anchor='O'> </section>
+                                                      </section>
+                                                          <section anchor='M1'>
+                                                            <section anchor='N1'> </section>
+                                                            <section anchor='O1'> </section>
+                                                          </section>
+                                                        </middle>
+                                                        <back/>
+                                                      </rfc>
+                                                    OUTPUT
+  end
 
-      </iso-standard>
-    INPUT
-    #{RFC_HDR}
-    <middle>
-    <section anchor='M'>
-  <section anchor='N'>
-    <name>Intro</name>
-  </section>
-  <section anchor='O'> </section>
-</section>
-    <section anchor='M1'>
-      <section anchor='N1'> </section>
-      <section anchor='O1'> </section>
-    </section>
-  </middle>
-  <back/>
-</rfc>
-OUTPUT
-    end
-
-        it "processes section attributes" do
-    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", true)).to be_xml_equivalent_to <<~"OUTPUT"
-      <ietf-standard xmlns="http://riboseinc.com/isoxml">
-           <sections>
-   <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
-     <title>Clause</title>
-   </clause>
- </sections>
- <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
-   <title>Appendix</title>
- </annex>
-</ietf-standard>
-INPUT
-    #{RFC_HDR}
-  <middle>
-    <section anchor='_' numbered='true' removeInRFC='true' toc='true'>
-      <name>Clause</name>
-    </section>
-  </middle>
-  <back>
-    <section anchor='_' numbered='true' removeInRFC='true' toc='true'>
-      <name>Appendix</name>
-    </section>
-  </back>
-</rfc>
-OUTPUT
-        end
-
-
+  it "processes section attributes" do
+    expect(IsoDoc::Ietf::RfcConvert.new({}).convert("test",
+                                                    <<~INPUT, true)).to be_xml_equivalent_to <<~"OUTPUT"
+                                                            <ietf-standard xmlns="http://riboseinc.com/isoxml">
+                                                                 <sections>
+                                                         <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+                                                           <title>Clause</title>
+                                                         </clause>
+                                                       </sections>
+                                                       <annex id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
+                                                         <title>Appendix</title>
+                                                       </annex>
+                                                      </ietf-standard>
+                                                    INPUT
+                                                          #{RFC_HDR}
+                                                        <middle>
+                                                          <section anchor='_' numbered='true' removeInRFC='true' toc='true'>
+                                                            <name>Clause</name>
+                                                          </section>
+                                                        </middle>
+                                                        <back>
+                                                          <section anchor='_' numbered='true' removeInRFC='true' toc='true'>
+                                                            <name>Appendix</name>
+                                                          </section>
+                                                        </back>
+                                                      </rfc>
+                                                    OUTPUT
+  end
 end

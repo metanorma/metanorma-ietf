@@ -28,3 +28,4 @@ metanorma.asciidoc.log.txt
 /test.err
 /test.rfc.xml.err
 *.gem
+spec/relatondb/

@@ -61,7 +61,8 @@ module IsoDoc
           if attrs = date_attr(d)
             attrs.each { |k, v| a[k] = v }
             a.children.remove
-          else a.remove end
+          else a.remove
+          end
         end
       end
 

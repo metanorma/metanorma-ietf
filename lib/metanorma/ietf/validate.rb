@@ -36,7 +36,7 @@ module Metanorma
       def workgroup_validate(doc)
         @workgroups.empty? and return
         doc.xpath("//bibdata/contributor[role/description = 'committee']/" \
-          "organization/subdivision[@type = 'Workgroup']/name").each do |wg|
+                  "organization/subdivision[@type = 'Workgroup']/name").each do |wg|
           wg_norm = wg.text.sub(/ (Working|Research) Group$/, "")
           @workgroups.include?(wg_norm) and next
           @log.add("IETF_4", nil, params: [wg.text])

@@ -2,7 +2,7 @@ module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
       def recommendation_name(node, out)
-        out.t **{ keepWithNext: "true" } do |p|
+        out.t keepWithNext: "true" do |p|
           node.children&.each { |n| parse(n, p) }
         end
       end
