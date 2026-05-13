@@ -46,23 +46,31 @@ module Metanorma
             si.value = extract_doc_name.to_s
             si.ascii_name = "Internet-Draft"
             si.stream = extract_submission_type
-            bibdata.series.each do |s|
-              next unless s.type == "intended"
-              title = ls_text(s.title)
-              si.status = title&.capitalize || "Informational"
-              break
+            series_list = bibdata.series
+            if series_list
+              series_list = [series_list] unless series_list.is_a?(Array)
+              series_list.each do |s|
+                next unless s.type == "intended"
+                title = ls_text(s.title)
+                si.status = title&.capitalize || "Informational"
+                break
+              end
             end
             si.status ||= "Informational"
             infos << si
           end
 
-          bibdata.series.each do |s|
-            next unless s.type == "intended"
-            si = Rfcxml::V3::SeriesInfo.new
-            si.name = ""
-            si.value = ""
-            si.status = ls_text(s.title)
-            infos << si
+          series_list = bibdata.series
+          if series_list
+            series_list = [series_list] unless series_list.is_a?(Array)
+            series_list.each do |s|
+              next unless s.type == "intended"
+              si = Rfcxml::V3::SeriesInfo.new
+              si.name = ""
+              si.value = ""
+              si.status = ls_text(s.title)
+              infos << si
+            end
           end
 
           infos
@@ -71,7 +79,10 @@ module Metanorma
         def build_authors
           authors = []
           author_idx = 0
-          bibdata.contributor.each do |contrib|
+          contributors = bibdata.contributor
+          return authors unless contributors
+          contributors = [contributors] unless contributors.is_a?(Array)
+          contributors.each do |contrib|
             role_type = contrib.role.first&.type
             next unless %w[author editor].include?(role_type)
 
@@ -277,19 +288,24 @@ module Metanorma
           date = Rfcxml::V3::Date.new
 
           date_str = nil
-          bibdata.date.each do |d|
-            next unless %w[published circulated].include?(d.type)
-            raw = d.on || d.text
-            date_str = raw.to_s if raw
-            break
+          dates = bibdata.date
+          if dates
+            dates = [dates] unless dates.is_a?(Array)
+            dates.each do |d|
+              next unless %w[published circulated].include?(d.type)
+              raw = d.on || d.text
+              date_str = raw.to_s if raw
+              break
+            end
           end
 
           if date_str && !date_str.empty?
             parse_date_into(date, date_str)
           else
-            date.year = "2000"
-            date.month = "January"
-            date.day = "1"
+            today = Date.today
+            date.year = today.year.to_s
+            date.month = month_name(today.month)
+            date.day = today.day.to_s
           end
 
           date

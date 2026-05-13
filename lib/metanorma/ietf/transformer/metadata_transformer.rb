@@ -14,7 +14,17 @@ module Metanorma
         private
 
         def ietf_ext
-          @ietf_ext ||= bibdata.ext
+          @ietf_ext ||= bibdata.ext || NullExt.new
+        end
+
+        class NullExt
+          def method_missing(name, *args)
+            nil
+          end
+
+          def respond_to_missing?(name, include_private = false)
+            true
+          end
         end
 
         def set_rfc_attributes(rfc)
@@ -70,9 +80,13 @@ module Metanorma
         end
 
         def extract_submission_type
-          bibdata.series.each do |s|
-            next unless s.type == "stream"
-            return ls_text(s.title) if ls_text(s.title)
+          series_list = bibdata.series
+          if series_list
+            series_list = [series_list] unless series_list.is_a?(Array)
+            series_list.each do |s|
+              next unless s.type == "stream"
+              return ls_text(s.title) if ls_text(s.title)
+            end
           end
           ietf_ext.submission_type || "IETF"
         end
@@ -82,10 +96,14 @@ module Metanorma
         end
 
         def extract_category
-          bibdata.series.each do |s|
-            next unless s.type == "intended"
-            title = ls_text(s.title)
-            return SERIES2CATEGORY.fetch(title, "std") if title
+          series_list = bibdata.series
+          if series_list
+            series_list = [series_list] unless series_list.is_a?(Array)
+            series_list.each do |s|
+              next unless s.type == "intended"
+              title = ls_text(s.title)
+              return SERIES2CATEGORY.fetch(title, "std") if title
+            end
           end
           "std"
         end
@@ -97,7 +115,10 @@ module Metanorma
 
         def extract_relation_ids(relation_type)
           ids = []
-          bibdata.relation.each do |rel|
+          relations = bibdata.relation
+          return nil unless relations
+          relations = [relations] unless relations.is_a?(Array)
+          relations.each do |rel|
             next unless rel.type == relation_type
             next unless rel.bibitem
             doc_ids = rel.bibitem.docidentifier
@@ -113,7 +134,10 @@ module Metanorma
 
         def build_links
           links = []
-          bibdata.relation.each do |rel|
+          relations = bibdata.relation
+          return links unless relations
+          relations = [relations] unless relations.is_a?(Array)
+          relations.each do |rel|
             next unless rel.type == "derivedFrom"
             next unless rel.bibitem
             doc_ids = rel.bibitem.docidentifier

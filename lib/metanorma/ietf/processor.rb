@@ -2,6 +2,7 @@ require "metanorma/processor"
 require "tempfile"
 
 require "isodoc/ietf/rfc_convert"
+require "metanorma/ietf/transformer"
 
 module Metanorma
   module Ietf
@@ -62,7 +63,8 @@ module Metanorma
         case format
         when :rfc
           outname ||= inname.sub(/\.xml$/, ".rfc.xml")
-          RfcConvert.new(options).convert(inname, isodoc_node, nil, outname)
+          xml = Transformer.convert(isodoc_node, options.merge(validate: true))
+          File.open(outname, "w:UTF-8") { |f| f.write(xml) }
           @done_rfc = true
         when :txt, :pdf, :html
           xml2rfc(isodoc_node, inname, outname, format, options)

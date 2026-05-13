@@ -25,22 +25,24 @@ module Metanorma
           bibitem_id = elem.bibitemid
           link_text = extract_eref_text(elem)
 
-          if bibitem_id
+          return nil unless bibitem_id
+
+          section, relative = extract_eref_locality(elem)
+
+          if section && !section.to_s.empty?
             xref = Rfcxml::V3::Relref.new
             xref.target = bibitem_id.to_s
-
-            section, relative = extract_eref_locality(elem)
             xref.section = section
-            xref.relative = relative
-
-            if elem.display_format
-              xref.display_format = elem.display_format
-            end
-
+            xref.relative = relative unless relative.to_s.empty?
+            xref.display_format = elem.display_format if elem.display_format
             xref.content = [link_text.to_s]
             xref
           else
-            nil
+            # No section info — use <xref> (bibitem IDREF cross-reference)
+            xref = Rfcxml::V3::Xref.new
+            xref.target = bibitem_id.to_s
+            xref.content = [link_text.to_s] unless link_text.to_s.empty?
+            xref
           end
         end
 

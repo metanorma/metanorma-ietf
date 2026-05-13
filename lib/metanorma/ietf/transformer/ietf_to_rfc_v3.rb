@@ -149,9 +149,20 @@ module Metanorma
           id.gsub(/[^a-zA-Z0-9._\-]/, "_")
         end
 
-        # Access bibdata
+        # Access bibdata, returning a NullBibdata when input has no bibdata
         def bibdata
-          @bibdata ||= doc.bibdata
+          @bibdata ||= doc.bibdata || NullBibdata.new
+        end
+
+        # Null object for when input has no bibdata element
+        class NullBibdata
+          def method_missing(name, *args, &block)
+            nil
+          end
+
+          def respond_to_missing?(name, include_private = false)
+            true
+          end
         end
 
         # Get doctype from bibdata ext
@@ -188,7 +199,9 @@ module Metanorma
         # Get the title from bibdata
         def main_title
           titles = bibdata.title
+          return "" unless titles
           titles = [titles] unless titles.is_a?(Array)
+          titles = titles.compact
           main = titles.find { |t| t.type == "main" }
           main ||= titles.first
           return "" unless main
@@ -197,7 +210,9 @@ module Metanorma
 
         def abbrev_title
           titles = bibdata.title
+          return nil unless titles
           titles = [titles] unless titles.is_a?(Array)
+          titles = titles.compact
           abbr = titles.find { |t| t.type == "abbrev" }
           return nil unless abbr
           ls_text(abbr)
@@ -210,7 +225,9 @@ module Metanorma
 
           # Fallback: extract from doc_identifier
           ids = bibdata.docidentifier
+          return nil unless ids
           ids = [ids] unless ids.is_a?(Array)
+          ids = ids.compact
           id = ids.find { |d| d.type == "IETF" }
           id ||= ids.first
           return ls_text(id) if id && !ls_text(id).to_s.empty?
@@ -228,6 +245,18 @@ module Metanorma
             coll = obj.send(attr_name)
           end
           coll << item
+        end
+
+        # Append to a collection and track the element order using
+        # lutaml-model's Builder track_order mechanism.
+        def append_ordered(target, attr, value)
+          safe_append(target, attr, value)
+          target.send(:track_order, attr, value, nil)
+        end
+
+        # Track a text content entry in element_order for mixed-content models.
+        def track_text_order(target, text)
+          target.send(:track_order, :content, text, nil)
         end
 
         # Get paragraphs from any node type.
