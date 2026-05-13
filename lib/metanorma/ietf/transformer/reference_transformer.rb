@@ -338,12 +338,14 @@ module Metanorma
                   author.initials = parts.map { |p| "#{p.chars.first}." }.join(" ")
                   first_name = parts.first
                   author.fullname = "#{first_name} #{surname}"
-                  author.ascii_fullname = "#{Sterile.transliterate(first_name)} #{ascii_s}"
+                  ascii_full = "#{Sterile.transliterate(first_name)} #{ascii_s}"
+                  author.ascii_fullname = ascii_full unless ascii_full == author.fullname
                 end
               end
             elsif complete
               author.fullname = complete
-              author.ascii_fullname = Sterile.transliterate(complete)
+              ascii = Sterile.transliterate(complete)
+              author.ascii_fullname = ascii unless ascii == complete
             end
           end
 
@@ -462,7 +464,7 @@ module Metanorma
             org.abbrev = abbrev_text if abbrev_text
           end
 
-          org.ascii = Sterile.transliterate(name_text) if name_text
+          org.ascii = Sterile.transliterate(name_text) if name_text && Sterile.transliterate(name_text) != name_text
           org
         end
       end

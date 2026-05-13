@@ -120,7 +120,8 @@ module Metanorma
                   author.initials = parts.map { |p| "#{p.chars.first}." }.join(" ")
                   first_name = parts.first
                   author.fullname = "#{first_name} #{surname}"
-                  author.ascii_fullname = "#{Sterile.transliterate(first_name)} #{ascii_surname}"
+                  ascii_full = "#{Sterile.transliterate(first_name)} #{ascii_surname}"
+                  author.ascii_fullname = ascii_full unless ascii_full == author.fullname
                 end
               end
             elsif complete
@@ -231,7 +232,8 @@ module Metanorma
             next if line.to_s.strip.empty?
             pl = Rfcxml::V3::PostalLine.new
             pl.content = [line.to_s.strip]
-            pl.ascii = Sterile.transliterate(line.to_s.strip)
+            ascii_val = Sterile.transliterate(line.to_s.strip)
+            pl.ascii = ascii_val unless ascii_val == line.to_s.strip
             safe_append(postal, :postal_line, pl)
             found = true
           end
