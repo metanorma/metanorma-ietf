@@ -1,4 +1,0 @@
-gem "metanorma-standoc", git: "https://github.com/metanorma/metanorma-standoc", branch: "main"
-gem "metanorma-plugin-lutaml", git: "https://github.com/metanorma/metanorma-plugin-lutaml", branch: "fix/ruby-4.0"
-
-
