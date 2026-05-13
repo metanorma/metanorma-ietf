@@ -55,7 +55,6 @@ module Metanorma
 
         def transform_list_item(item)
           li = Rfcxml::V3::Li.new
-          element_order = []
 
           text = item.text
           if text
@@ -66,8 +65,7 @@ module Metanorma
           get_paragraphs(item).each do |p|
             t = transform_paragraph(p)
             if t
-              safe_append(li, :t, t)
-              element_order << Lutaml::Xml::Element.new("Element", "t")
+              append_ordered(li, :t, t)
             end
           end
 
@@ -75,20 +73,14 @@ module Metanorma
           uls = [uls] unless uls.is_a?(Array)
           uls.each do |ul|
             list = transform_unordered_list(ul)
-            if list
-              safe_append(li, :ul, list)
-              element_order << Lutaml::Xml::Element.new("Element", "ul")
-            end
+            append_ordered(li, :ul, list) if list
           end
 
           ols = item.ordered_lists || []
           ols = [ols] unless ols.is_a?(Array)
           ols.each do |ol|
             list = transform_ordered_list(ol)
-            if list
-              safe_append(li, :ol, list)
-              element_order << Lutaml::Xml::Element.new("Element", "ol")
-            end
+            append_ordered(li, :ol, list) if list
           end
 
           dls = item.definition_lists rescue nil
@@ -97,10 +89,7 @@ module Metanorma
           if dls
             dls.each do |dl|
               list = transform_definition_list(dl)
-              if list
-                safe_append(li, :dl, list)
-                element_order << Lutaml::Xml::Element.new("Element", "dl")
-              end
+              append_ordered(li, :dl, list) if list
             end
           end
 
@@ -109,10 +98,7 @@ module Metanorma
           sourcecodes = [sourcecodes] unless sourcecodes.is_a?(Array)
           sourcecodes.each do |sc|
             src = transform_sourcecode(sc)
-            if src
-              safe_append(li, :sourcecode, src)
-              element_order << Lutaml::Xml::Element.new("Element", "sourcecode")
-            end
+            append_ordered(li, :sourcecode, src) if src
           end
 
           li_t = li.t
@@ -121,15 +107,12 @@ module Metanorma
             li.content = []
           end
 
-          li.element_order = element_order if element_order.any?
           li
         end
 
         def transform_definition_list(dl_node)
           dl = Rfcxml::V3::Dl.new
           dl.anchor = to_ncname(dl_node.id) if dl_node.id
-
-          rfc_order = []
 
           dts = dl_node.dt
           dds = dl_node.dd
@@ -140,19 +123,16 @@ module Metanorma
           dts.each_with_index do |dt, i|
             dt_elem = build_dt(dt)
 
-            safe_append(dl, :dt, dt_elem)
-            rfc_order << Lutaml::Xml::Element.new("Element", "dt")
+            append_ordered(dl, :dt, dt_elem)
 
             dd = dds[i]
             next unless dd
 
             dd_elem = build_dd(dd)
 
-            safe_append(dl, :dd, dd_elem)
-            rfc_order << Lutaml::Xml::Element.new("Element", "dd")
+            append_ordered(dl, :dd, dd_elem)
           end
 
-          dl.element_order = rfc_order if rfc_order.any?
           dl
         end
 
@@ -160,7 +140,6 @@ module Metanorma
           dt_elem = Rfcxml::V3::Dt.new
           dt_elem.anchor = to_ncname(dt.id) if dt.id
 
-          # Check for inline elements via element_order
           src_order = dt.element_order
           if src_order && src_order.any?
             build_dt_interleaved(dt_elem, dt, src_order)
@@ -174,13 +153,12 @@ module Metanorma
 
         def build_dt_interleaved(dt_elem, dt_node, src_order)
           content_fragments = []
-          dt_order = []
           counters = Hash.new(0)
 
           src_order.each do |e|
             if e.text?
               content_fragments << e.text_content
-              dt_order << e
+              track_text_order(dt_elem, e.text_content)
             else
               tag = e.element_tag
               idx = counters[tag]
@@ -188,6 +166,7 @@ module Metanorma
               if inline
                 if inline.is_a?(String)
                   content_fragments << inline
+                  track_text_order(dt_elem, inline)
                 else
                   coll_name = case tag
                               when "xref" then :xref
@@ -201,7 +180,7 @@ module Metanorma
                               end
                   if coll_name
                     safe_append(dt_elem, coll_name, inline)
-                    dt_order << Lutaml::Xml::Element.new("Element", coll_name.to_s)
+                    dt_elem.send(:track_order, coll_name, inline, nil)
                   end
                 end
               end
@@ -210,7 +189,6 @@ module Metanorma
           end
 
           dt_elem.content = content_fragments
-          dt_elem.element_order = dt_order if dt_order.any?
         end
 
         def build_dt_inline(dt_node, tag, idx)
@@ -283,12 +261,16 @@ module Metanorma
         def build_dd(dd)
           dd_elem = Rfcxml::V3::Dd.new
 
-          dd_elem.anchor = to_ncname(dd.id) if dd.id
+          dd_id = to_ncname(dd.id)
+          dd_elem.anchor = dd_id if dd_id
 
           ps = dd.p
           if ps.is_a?(Array)
             ps.each do |p|
               t = transform_paragraph(p)
+              if t && dd_id && t.anchor == dd_id
+                t.anchor = nil
+              end
               safe_append(dd_elem, :t, t) if t
             end
           end

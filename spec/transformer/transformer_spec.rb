@@ -92,7 +92,7 @@ RSpec.describe Metanorma::Ietf::Transformer do
 
     it "builds cross-references" do
       result = described_class.convert(input_xml)
-      expect(result).to include("<relref")
+      expect(result).to include("<xref")
       expect(result).to include('target="RFC7253"')
     end
 
@@ -303,14 +303,12 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
 
     it "converts strong to bcp14 when keyword matches" do
-      text = Rfcxml::V3::Text.new
-      text.content = ["You "]
       strong = Rfcxml::V3::Strong.new
       strong.content = ["MUST"]
-      text.strong = [strong]
-      text.element_order = [
-        Lutaml::Xml::Element.new("Element", "strong"),
-      ]
+      text = Rfcxml::V3::Text.new do |t|
+        t.content ["You "]
+        t.strong strong
+      end
       transformer = Metanorma::Ietf::Transformer::IetfToRfcV3.allocate
       transformer.send(:convert_strong_to_bcp14, text)
       expect(text.bcp14.any? { |b| b.content == "MUST" }).to be true

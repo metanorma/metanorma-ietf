@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "lutaml/xml"
-
 module Metanorma
   module Ietf
     module Transformer
@@ -63,7 +61,6 @@ module Metanorma
 
         def build_interleaved_content(text_elem, p_node, src_order)
           content_fragments = []
-          rfc_order = []
 
           counters = Hash.new(0)
           prev_was_inline = false
@@ -71,7 +68,7 @@ module Metanorma
           src_order.each_with_index do |e, _i|
             if e.text?
               content_fragments << e.text_content
-              rfc_order << e
+              track_text_order(text_elem, e.text_content)
               prev_was_inline = false
             else
               tag = e.element_tag
@@ -81,16 +78,22 @@ module Metanorma
               inline_obj = build_inline_element(p_node, tag, idx)
 
               if inline_obj
-                collection_name = rfc_tag.to_sym
                 if inline_obj.is_a?(String)
                   content_fragments << inline_obj
+                  track_text_order(text_elem, inline_obj)
                 else
+                  actual_tag = if inline_obj.is_a?(Rfcxml::V3::Xref) && rfc_tag == "relref"
+                                 "xref"
+                               else
+                                 rfc_tag
+                               end
+                  collection_name = actual_tag.to_sym
                   if prev_was_inline
                     content_fragments << " "
-                    rfc_order << Lutaml::Xml::Element.new("Text", "")
+                    track_text_order(text_elem, " ")
                   end
                   safe_append(text_elem, collection_name, inline_obj)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
+                  text_elem.send(:track_order, collection_name, inline_obj, nil)
                 end
                 counters[tag] += 1
                 prev_was_inline = true
@@ -102,7 +105,6 @@ module Metanorma
           end
 
           text_elem.content = content_fragments
-          text_elem.element_order = rfc_order if rfc_order.any?
         end
 
         def build_inline_element(p_node, tag, idx)

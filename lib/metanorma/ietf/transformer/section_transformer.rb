@@ -76,7 +76,6 @@ module Metanorma
           name.content = [title_text]
           section.name = name
 
-          # Render bibitem content
           paragraphs = get_paragraphs(bib) rescue []
           paragraphs.each do |p|
             text = extract_paragraph_text(p)
@@ -111,7 +110,6 @@ module Metanorma
             safe_append(back, :section, section) if section
           end
 
-          # Endnotes section for collected footnotes
           endnotes = build_endnotes
           safe_append(back, :section, endnotes) if endnotes
 
@@ -199,10 +197,9 @@ module Metanorma
 
         def parse_ordered_children(clause, section, src_order)
           counters = Hash.new(0)
-          rfc_order = []
 
           if section.name
-            rfc_order << Lutaml::Xml::Element.new("Element", "name")
+            section.send(:track_order, :name, section.name, nil)
           end
 
           src_order.each do |e|
@@ -211,7 +208,6 @@ module Metanorma
             next if tag == "title"
             idx = counters[tag]
             counters[tag] += 1
-            rfc_tag = SRC_TO_RFC_TAG[tag]
 
             case tag
             when "p"
@@ -219,12 +215,10 @@ module Metanorma
               if paras[idx]
                 t = transform_paragraph(paras[idx])
                 if t
-                  safe_append(section, :t, t)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
-                extract_inline_notes(paras[idx]).each do |aside|
-                  safe_append(section, :aside, aside)
-                  rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+                  append_ordered(section, :t, t)
+                  extract_inline_notes(paras[idx]).each do |aside|
+                    append_ordered(section, :aside, aside)
+                  end
                 end
               end
             when "ul"
@@ -232,50 +226,35 @@ module Metanorma
               uls = [uls] unless uls.is_a?(Array)
               if uls[idx]
                 list = transform_unordered_list(uls[idx])
-                if list
-                  safe_append(section, :ul, list)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :ul, list) if list
               end
             when "ol"
               ols = clause.ordered_lists
               ols = [ols] unless ols.is_a?(Array)
               if ols[idx]
                 list = transform_ordered_list(ols[idx])
-                if list
-                  safe_append(section, :ol, list)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :ol, list) if list
               end
             when "dl"
               dls = clause.definition_lists
               dls = [dls] unless dls.is_a?(Array)
               if dls[idx]
                 list = transform_definition_list(dls[idx])
-                if list
-                  safe_append(section, :dl, list)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :dl, list) if list
               end
             when "table"
               tables = clause.tables
               tables = [tables] unless tables.is_a?(Array)
               if tables[idx]
                 table = transform_table(tables[idx])
-                if table
-                  safe_append(section, :table, table)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :table, table) if table
                 build_table_surroundings(tables[idx], section).each do |surr|
                   if surr.is_a?(Rfcxml::V3::Dl)
-                    safe_append(section, :dl, surr)
-                    rfc_order << Lutaml::Xml::Element.new("Element", "dl")
+                    append_ordered(section, :dl, surr)
                   elsif surr.is_a?(Rfcxml::V3::Text)
-                    safe_append(section, :t, surr)
-                    rfc_order << Lutaml::Xml::Element.new("Element", "t")
+                    append_ordered(section, :t, surr)
                   elsif surr.is_a?(Rfcxml::V3::Aside)
-                    safe_append(section, :aside, surr)
-                    rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+                    append_ordered(section, :aside, surr)
                   end
                 end
               end
@@ -285,15 +264,12 @@ module Metanorma
               if figures[idx]
                 f = transform_figure(figures[idx])
                 if f.is_a?(Rfcxml::V3::Figure)
-                  safe_append(section, :figure, f)
-                  rfc_order << Lutaml::Xml::Element.new("Element", "figure")
+                  append_ordered(section, :figure, f)
                 elsif f.is_a?(Rfcxml::V3::Sourcecode)
-                  safe_append(section, :sourcecode, f)
-                  rfc_order << Lutaml::Xml::Element.new("Element", "sourcecode")
+                  append_ordered(section, :sourcecode, f)
                 end
                 extract_figure_asides(figures[idx]).each do |aside|
-                  safe_append(section, :aside, aside)
-                  rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+                  append_ordered(section, :aside, aside)
                 end
               end
             when "sourcecode"
@@ -302,13 +278,10 @@ module Metanorma
               if sourcecodes[idx]
                 src = transform_sourcecode(sourcecodes[idx])
                 if src
-                  safe_append(section, :sourcecode, src)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
+                  append_ordered(section, :sourcecode, src)
                 end
-                # Sourcecode callout annotations
                 build_sourcecode_callouts(sourcecodes[idx]).each do |aside|
-                  safe_append(section, :aside, aside)
-                  rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+                  append_ordered(section, :aside, aside)
                 end
               end
             when "clause"
@@ -316,10 +289,7 @@ module Metanorma
               sub_clauses = [sub_clauses] unless sub_clauses.is_a?(Array)
               if sub_clauses[idx]
                 sec = transform_clause(sub_clauses[idx])
-                if sec
-                  safe_append(section, :section, sec)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :section, sec) if sec
               end
             when "formula"
               formulas = clause.formulas
@@ -328,11 +298,9 @@ module Metanorma
                 elements = transform_formula(formulas[idx])
                 elements.each do |elem|
                   if elem.is_a?(Rfcxml::V3::Text)
-                    safe_append(section, :t, elem)
-                    rfc_order << Lutaml::Xml::Element.new("Element", "t")
+                    append_ordered(section, :t, elem)
                   elsif elem.is_a?(Rfcxml::V3::Dl)
-                    safe_append(section, :dl, elem)
-                    rfc_order << Lutaml::Xml::Element.new("Element", "dl")
+                    append_ordered(section, :dl, elem)
                   end
                 end
               end
@@ -341,82 +309,58 @@ module Metanorma
               notes = [notes] unless notes.is_a?(Array)
               if notes[idx]
                 aside = transform_note(notes[idx], section)
-                if aside
-                  safe_append(section, :aside, aside)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :aside, aside) if aside
               end
             when "quote"
               quotes = clause.quote_blocks
               quotes = [quotes] unless quotes.is_a?(Array)
               if quotes[idx]
                 bq = transform_quote(quotes[idx])
-                if bq
-                  safe_append(section, :blockquote, bq)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :blockquote, bq) if bq
               end
             when "example"
               examples = clause.examples
               examples = [examples] unless examples.is_a?(Array)
               if examples[idx]
                 ts = transform_example(examples[idx])
-                ts.each do |_t|
-                  safe_append(section, :t, _t)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                ts.each { |_t| append_ordered(section, :t, _t) }
               end
             when "terms"
               terms = clause.terms
               terms = [terms] unless terms.is_a?(Array)
               if terms[idx]
                 sec = transform_terms_section(terms[idx])
-                if sec
-                  safe_append(section, :section, sec)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :section, sec) if sec
               end
             when "definitions"
               defs = clause.definitions
               defs = [defs] unless defs.is_a?(Array)
               if defs[idx]
                 sec = transform_definitions_section(defs[idx])
-                if sec
-                  safe_append(section, :section, sec)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :section, sec) if sec
               end
             when "admonition"
               admonitions = clause.admonitions
               admonitions = [admonitions] unless admonitions.is_a?(Array)
               if admonitions[idx]
                 aside = transform_admonition(admonitions[idx])
-                if aside
-                  safe_append(section, :aside, aside)
-                  rfc_order << Lutaml::Xml::Element.new("Element", rfc_tag)
-                end
+                append_ordered(section, :aside, aside) if aside
               end
             end
           end
-
-          section.element_order = rfc_order if rfc_order.any?
         end
 
         def parse_unordered_children(clause, section)
-          rfc_order = []
-
           if section.name
-            rfc_order << Lutaml::Xml::Element.new("Element", "name")
+            section.send(:track_order, :name, section.name, nil)
           end
 
           get_paragraphs(clause).each do |p|
             t = transform_paragraph(p)
             if t
-              safe_append(section, :t, t)
-              rfc_order << Lutaml::Xml::Element.new("Element", "t")
+              append_ordered(section, :t, t)
               extract_inline_notes(p).each do |aside|
-                safe_append(section, :aside, aside)
-                rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+                append_ordered(section, :aside, aside)
               end
             end
           end
@@ -425,20 +369,14 @@ module Metanorma
           notes = [notes] unless notes.is_a?(Array)
           notes.each do |note|
             aside = transform_note(note, section)
-            if aside
-              safe_append(section, :aside, aside)
-              rfc_order << Lutaml::Xml::Element.new("Element", "aside")
-            end
+            append_ordered(section, :aside, aside) if aside
           end
 
           examples = clause.examples
           examples = [examples] unless examples.is_a?(Array)
           examples.each do |ex|
             ts = transform_example(ex)
-            ts.each do |_t|
-              safe_append(section, :t, _t)
-              rfc_order << Lutaml::Xml::Element.new("Element", "t")
-            end
+            ts.each { |_t| append_ordered(section, :t, _t) }
           end
 
           sourcecodes = clause.sourcecode_blocks
@@ -446,12 +384,10 @@ module Metanorma
           sourcecodes.each do |sc|
             src = transform_sourcecode(sc)
             if src
-              safe_append(section, :sourcecode, src)
-              rfc_order << Lutaml::Xml::Element.new("Element", "sourcecode")
+              append_ordered(section, :sourcecode, src)
             end
             build_sourcecode_callouts(sc).each do |aside|
-              safe_append(section, :aside, aside)
-              rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+              append_ordered(section, :aside, aside)
             end
           end
 
@@ -459,20 +395,14 @@ module Metanorma
           quotes = [quotes] unless quotes.is_a?(Array)
           quotes.each do |q|
             bq = transform_quote(q)
-            if bq
-              safe_append(section, :blockquote, bq)
-              rfc_order << Lutaml::Xml::Element.new("Element", "blockquote")
-            end
+            append_ordered(section, :blockquote, bq) if bq
           end
 
           admonitions = clause.admonitions
           admonitions = [admonitions] unless admonitions.is_a?(Array)
           admonitions.each do |admon|
             aside = transform_admonition(admon)
-            if aside
-              safe_append(section, :aside, aside)
-              rfc_order << Lutaml::Xml::Element.new("Element", "aside")
-            end
+            append_ordered(section, :aside, aside) if aside
           end
 
           formulas = clause.formulas
@@ -481,11 +411,9 @@ module Metanorma
             elements = transform_formula(f)
             elements.each do |elem|
               if elem.is_a?(Rfcxml::V3::Text)
-                safe_append(section, :t, elem)
-                rfc_order << Lutaml::Xml::Element.new("Element", "t")
+                append_ordered(section, :t, elem)
               elsif elem.is_a?(Rfcxml::V3::Dl)
-                safe_append(section, :dl, elem)
-                rfc_order << Lutaml::Xml::Element.new("Element", "dl")
+                append_ordered(section, :dl, elem)
               end
             end
           end
@@ -494,30 +422,21 @@ module Metanorma
           uls = [uls] unless uls.is_a?(Array)
           uls.each do |ul|
             list = transform_unordered_list(ul)
-            if list
-              safe_append(section, :ul, list)
-              rfc_order << Lutaml::Xml::Element.new("Element", "ul")
-            end
+            append_ordered(section, :ul, list) if list
           end
 
           ols = clause.ordered_lists
           ols = [ols] unless ols.is_a?(Array)
           ols.each do |ol|
             list = transform_ordered_list(ol)
-            if list
-              safe_append(section, :ol, list)
-              rfc_order << Lutaml::Xml::Element.new("Element", "ol")
-            end
+            append_ordered(section, :ol, list) if list
           end
 
           dls = clause.definition_lists
           dls = [dls] unless dls.is_a?(Array)
           dls.each do |dl|
             list = transform_definition_list(dl)
-            if list
-              safe_append(section, :dl, list)
-              rfc_order << Lutaml::Xml::Element.new("Element", "dl")
-            end
+            append_ordered(section, :dl, list) if list
           end
 
           tables = clause.tables
@@ -525,19 +444,15 @@ module Metanorma
           tables.each do |tbl|
             table = transform_table(tbl)
             if table
-              safe_append(section, :table, table)
-              rfc_order << Lutaml::Xml::Element.new("Element", "table")
+              append_ordered(section, :table, table)
             end
             build_table_surroundings(tbl, section).each do |surr|
               if surr.is_a?(Rfcxml::V3::Dl)
-                safe_append(section, :dl, surr)
-                rfc_order << Lutaml::Xml::Element.new("Element", "dl")
+                append_ordered(section, :dl, surr)
               elsif surr.is_a?(Rfcxml::V3::Text)
-                safe_append(section, :t, surr)
-                rfc_order << Lutaml::Xml::Element.new("Element", "t")
+                append_ordered(section, :t, surr)
               elsif surr.is_a?(Rfcxml::V3::Aside)
-                safe_append(section, :aside, surr)
-                rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+                append_ordered(section, :aside, surr)
               end
             end
           end
@@ -547,15 +462,12 @@ module Metanorma
           figures.each do |fig|
             f = transform_figure(fig)
             if f.is_a?(Rfcxml::V3::Figure)
-              safe_append(section, :figure, f)
-              rfc_order << Lutaml::Xml::Element.new("Element", "figure")
+              append_ordered(section, :figure, f)
             elsif f.is_a?(Rfcxml::V3::Sourcecode)
-              safe_append(section, :sourcecode, f)
-              rfc_order << Lutaml::Xml::Element.new("Element", "sourcecode")
+              append_ordered(section, :sourcecode, f)
             end
             extract_figure_asides(fig).each do |aside|
-              safe_append(section, :aside, aside)
-              rfc_order << Lutaml::Xml::Element.new("Element", "aside")
+              append_ordered(section, :aside, aside)
             end
           end
 
@@ -563,33 +475,22 @@ module Metanorma
           sub_clauses = [sub_clauses] unless sub_clauses.is_a?(Array)
           sub_clauses.each do |sub|
             sec = transform_clause(sub)
-            if sec
-              safe_append(section, :section, sec)
-              rfc_order << Lutaml::Xml::Element.new("Element", "section")
-            end
+            append_ordered(section, :section, sec) if sec
           end
 
           terms = clause.terms
           terms = [terms] unless terms.is_a?(Array)
           terms.each do |term_section|
             sec = transform_terms_section(term_section)
-            if sec
-              safe_append(section, :section, sec)
-              rfc_order << Lutaml::Xml::Element.new("Element", "section")
-            end
+            append_ordered(section, :section, sec) if sec
           end
 
           defs = clause.definitions
           defs = [defs] unless defs.is_a?(Array)
           defs.each do |defn|
             sec = transform_definitions_section(defn)
-            if sec
-              safe_append(section, :section, sec)
-              rfc_order << Lutaml::Xml::Element.new("Element", "section")
-            end
+            append_ordered(section, :section, sec) if sec
           end
-
-          section.element_order = rfc_order if rfc_order.any?
         end
       end
     end

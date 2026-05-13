@@ -165,7 +165,10 @@ module Metanorma
           return unless dd
           if dd.t.is_a?(Array) && !dd.t.empty?
             first_t = dd.t.first
-            dd.anchor ||= first_t.anchor if first_t.anchor
+            if first_t&.anchor && !dd.anchor
+              dd.anchor = first_t.anchor
+              first_t.anchor = nil
+            end
           end
         end
 
@@ -281,7 +284,7 @@ module Metanorma
             next if e.text?
             if e.element_tag == old_tag
               if count == old_idx
-                order[i] = Lutaml::Xml::Element.new("Element", new_tag)
+                order[i] = text_elem.send(:build_order_entry, new_tag.to_sym, nil, nil)
                 return
               end
               count += 1
