@@ -47,17 +47,14 @@ module Metanorma
         end
 
         def extract_eref_locality(elem)
-          stacks = elem.locality_stack
-          stacks = [stacks] unless stacks.is_a?(Array)
+          stacks = to_array(elem.locality_stack)
 
           relative_attr = elem.relative.to_s
 
           if relative_attr && !relative_attr.empty?
             section_val = ""
             stacks.each do |stack|
-              locals = stack.bib_locality
-              locals = [locals] unless locals.is_a?(Array)
-              locals.each do |loc|
+              to_array(stack.bib_locality).each do |loc|
                 if loc.type == "section" && loc.reference_from
                   section_val = loc.reference_from.to_s
                 end
@@ -73,9 +70,7 @@ module Metanorma
           anchor_found = false
 
           stacks.each_with_index do |stack, i|
-            locals = stack.bib_locality
-            locals = [locals] unless locals.is_a?(Array)
-            locals.each do |loc|
+            to_array(stack.bib_locality).each do |loc|
               if loc.type == "section" && loc.reference_from
                 sections << loc.reference_from.to_s
               elsif loc.type == "anchor"

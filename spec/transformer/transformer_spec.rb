@@ -249,6 +249,63 @@ RSpec.describe Metanorma::Ietf::Transformer do
   end
 
   describe "cleanup transformer unit tests" do
+    let(:transformer) { Metanorma::Ietf::Transformer::IetfToRfcV3.allocate }
+
+    describe "to_array helper" do
+      it "returns [] for nil" do
+        expect(transformer.send(:to_array, nil)).to eq([])
+      end
+
+      it "wraps non-arrays" do
+        expect(transformer.send(:to_array, "foo")).to eq(["foo"])
+        expect(transformer.send(:to_array, 42)).to eq([42])
+      end
+
+      it "passes arrays through" do
+        expect(transformer.send(:to_array, [1, 2, 3])).to eq([1, 2, 3])
+        expect(transformer.send(:to_array, [])).to eq([])
+      end
+    end
+
+    describe "build_organization" do
+      it "builds org with name" do
+        org_node = Struct.new(:name, :abbreviation).new("IETF", nil)
+        org = transformer.send(:build_organization, org_node)
+        expect(org.content).to eq(["IETF"])
+        expect(org.ascii).to be_nil
+      end
+
+      it "builds org with abbrev" do
+        org_node = Struct.new(:name, :abbreviation).new("IETF", "IETF")
+        org = transformer.send(:build_organization, org_node)
+        expect(org.abbrev).to eq("IETF")
+      end
+
+      it "sets ascii for non-ASCII names" do
+        org_node = Struct.new(:name, :abbreviation).new("Développement", nil)
+        org = transformer.send(:build_organization, org_node)
+        expect(org.ascii).to eq("Developpement")
+      end
+
+      it "omits ascii for ASCII names" do
+        org_node = Struct.new(:name, :abbreviation).new("IETF", nil)
+        org = transformer.send(:build_organization, org_node)
+        expect(org.ascii).to be_nil
+      end
+
+      it "handles array name" do
+        org_node = Struct.new(:name, :abbreviation).new(["IETF"], nil)
+        org = transformer.send(:build_organization, org_node)
+        expect(org.content).to eq(["IETF"])
+      end
+
+      it "handles nil name" do
+        org_node = Struct.new(:name, :abbreviation).new(nil, nil)
+        org = transformer.send(:build_organization, org_node)
+        expect(org.content).to be_nil
+      end
+    end
+
     it "wraps unicode characters in u elements" do
       text = Rfcxml::V3::Text.new
       unicode_str = "Caf\u00E9"

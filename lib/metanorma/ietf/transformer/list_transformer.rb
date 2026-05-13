@@ -12,9 +12,7 @@ module Metanorma
 
           apply_list_attributes(ul, ul_node, %i[empty bare spacing indent])
 
-          items = ul_node.listitem || []
-          items = [items] unless items.is_a?(Array)
-          items.each do |item|
+          to_array(ul_node.listitem || []).each do |item|
             li = transform_list_item(item)
             safe_append(ul, :li, li) if li
           end
@@ -34,9 +32,7 @@ module Metanorma
 
           apply_list_attributes(ol, ol_node, %i[spacing indent group])
 
-          items = ol_node.listitem || []
-          items = [items] unless items.is_a?(Array)
-          items.each do |item|
+          to_array(ol_node.listitem || []).each do |item|
             li = transform_list_item(item)
             safe_append(ol, :li, li) if li
           end
@@ -69,23 +65,18 @@ module Metanorma
             end
           end
 
-          uls = item.unordered_lists || []
-          uls = [uls] unless uls.is_a?(Array)
-          uls.each do |ul|
+          to_array(item.unordered_lists || []).each do |ul|
             list = transform_unordered_list(ul)
             append_ordered(li, :ul, list) if list
           end
 
-          ols = item.ordered_lists || []
-          ols = [ols] unless ols.is_a?(Array)
-          ols.each do |ol|
+          to_array(item.ordered_lists || []).each do |ol|
             list = transform_ordered_list(ol)
             append_ordered(li, :ol, list) if list
           end
 
           dls = item.definition_lists rescue nil
-          dls = nil if dls && !dls.is_a?(Array) && dls.to_s.empty?
-          dls = [dls] unless dls.nil? || dls.is_a?(Array)
+          dls = nil unless dls.is_a?(Array)
           if dls
             dls.each do |dl|
               list = transform_definition_list(dl)
@@ -94,9 +85,7 @@ module Metanorma
           end
 
           sourcecodes = item.sourcecode rescue nil
-          sourcecodes = [] unless sourcecodes
-          sourcecodes = [sourcecodes] unless sourcecodes.is_a?(Array)
-          sourcecodes.each do |sc|
+          to_array(sourcecodes).each do |sc|
             src = transform_sourcecode(sc)
             append_ordered(li, :sourcecode, src) if src
           end
@@ -180,7 +169,7 @@ module Metanorma
                               end
                   if coll_name
                     safe_append(dt_elem, coll_name, inline)
-                    dt_elem.send(:track_order, coll_name, inline, nil)
+                    track_element_order(dt_elem, coll_name, inline)
                   end
                 end
               end

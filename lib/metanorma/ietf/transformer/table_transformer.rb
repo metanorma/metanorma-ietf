@@ -47,8 +47,7 @@ module Metanorma
         def transform_table_section(section_node, role)
           return nil unless section_node
 
-          rows = section_node.tr
-          rows = [rows] unless rows.is_a?(Array)
+          rows = to_array(section_node.tr)
 
           result_rows = []
           rows.each do |tr|
@@ -67,17 +66,13 @@ module Metanorma
           tr = Rfcxml::V3::Tr.new
 
           if role == :header
-            cells = tr_node.th
-            cells = [cells] unless cells.is_a?(Array)
-            cells.each do |cell|
+            to_array(tr_node.th).each do |cell|
               tc = transform_table_cell(cell)
               safe_append(tr, :th, tc) if tc
             end
             # Also check for td cells in header rows (fallback)
             if tr.th.nil? || !tr.th.is_a?(Array) || tr.th.empty?
-              td_cells = tr_node.td
-              td_cells = [td_cells] unless td_cells.is_a?(Array)
-              td_cells.each do |cell|
+              to_array(tr_node.td).each do |cell|
                 tc = transform_table_cell(cell)
                 safe_append(tr, :th, tc) if tc
               end
@@ -93,9 +88,7 @@ module Metanorma
               end
             end
 
-            cells = tr_node.td
-            cells = [cells] unless cells.is_a?(Array)
-            cells.each do |cell|
+            to_array(tr_node.td).each do |cell|
               tc = transform_table_cell(cell)
               safe_append(tr, :td, tc) if tc
             end

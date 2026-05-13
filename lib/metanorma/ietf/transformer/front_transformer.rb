@@ -144,34 +144,17 @@ module Metanorma
           author
         end
 
-        def build_organization(org_node)
-          org = Rfcxml::V3::Organization.new
-          name_text = org_node.name.is_a?(Array) ? ls_text(org_node.name.first) : ls_text(org_node.name)
-          org.content = [name_text] if name_text
-
-          abbrev = org_node.abbreviation
-          if abbrev
-            abbrev_text = abbrev.is_a?(Array) ? ls_text(abbrev.first) : ls_text(abbrev)
-            org.abbrev = abbrev_text if abbrev_text
-          end
-
-          org.ascii = Sterile.transliterate(name_text) if name_text && Sterile.transliterate(name_text) != name_text
-          org
-        end
-
         def build_address(person, _contrib_idx = 0)
           address = Rfcxml::V3::Address.new
 
-          aff = person.affiliation
-          aff = [aff] unless aff.is_a?(Array)
+          aff = to_array(person.affiliation)
           first_aff = aff.first
           if first_aff&.organization
             postal = build_postal(first_aff.organization)
             address.postal = postal if postal
           end
 
-          phones = person.phone
-          phones = [phones] unless phones.is_a?(Array)
+          phones = to_array(person.phone)
           if phones.any?
             phone_obj = phones.first
             phone_text = phone_obj.content
@@ -182,9 +165,7 @@ module Metanorma
             end
           end
 
-          emails = person.email
-          emails = [emails] unless emails.is_a?(Array)
-          emails.each do |email_text|
+          to_array(person.email).each do |email_text|
             text = email_text.to_s.strip
             next if text.empty?
             email = Rfcxml::V3::Email.new
@@ -335,9 +316,7 @@ module Metanorma
 
         def build_areas
           areas = []
-          area_list = ietf_ext.area
-          area_list = [area_list] unless area_list.is_a?(Array)
-          area_list.compact.each do |text|
+          to_array(ietf_ext.area).compact.each do |text|
             next if text.to_s.empty?
             area = Rfcxml::V3::Area.new
             area.content = [text.to_s]
@@ -351,9 +330,7 @@ module Metanorma
 
           eg = ietf_ext.editorial_group
           if eg
-            eg_wgs = eg.workgroup
-            eg_wgs = [eg_wgs] unless eg_wgs.is_a?(Array)
-            eg_wgs.compact.each do |wg_text|
+            to_array(eg.workgroup).compact.each do |wg_text|
               next if wg_text.nil? || wg_text.to_s.empty?
               wg = Rfcxml::V3::Workgroup.new
               wg.content = [wg_text.to_s]
@@ -366,9 +343,7 @@ module Metanorma
 
         def build_keywords
           kws = []
-          kw_list = bibdata.keyword
-          kw_list = [kw_list] unless kw_list.is_a?(Array)
-          kw_list.compact.each do |k|
+          to_array(bibdata.keyword).compact.each do |k|
             text = ls_text(k)
             next unless text
             kw = Rfcxml::V3::Keyword.new
@@ -411,8 +386,7 @@ module Metanorma
               note.remove_in_rfc = note_node.remove_in_rfc
             end
 
-            names = note_node.name
-            names = [names] unless names.is_a?(Array)
+            names = to_array(note_node.name)
             first_name = names.first
             if first_name
               name_text = ls_text(first_name)

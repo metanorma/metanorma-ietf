@@ -28,8 +28,7 @@ module Metanorma
           src_order = sections.element_order
           if src_order && src_order.any?
             clause_idx = 0
-            clauses = sections.clause || []
-            clauses = [clauses] unless clauses.is_a?(Array)
+            clauses = to_array(sections.clause || [])
 
             src_order.each do |e|
               next if e.text?
@@ -47,9 +46,7 @@ module Metanorma
               end
             end
           else
-            clauses = sections.clause || []
-            clauses = [clauses] unless clauses.is_a?(Array)
-            clauses.each do |clause|
+            to_array(sections.clause || []).each do |clause|
               section = transform_clause(clause)
               safe_append(middle, :section, section) if section
             end
@@ -59,8 +56,7 @@ module Metanorma
         end
 
         def transform_loose_bibitem(sections_node)
-          bibitems = sections_node.bibitem
-          bibitems = [bibitems] unless bibitems.is_a?(Array)
+          bibitems = to_array(sections_node.bibitem)
           return nil if bibitems.empty?
 
           bib = bibitems.first
@@ -199,7 +195,7 @@ module Metanorma
           counters = Hash.new(0)
 
           if section.name
-            section.send(:track_order, :name, section.name, nil)
+            track_element_order(section, :name, section.name)
           end
 
           src_order.each do |e|
@@ -222,29 +218,25 @@ module Metanorma
                 end
               end
             when "ul"
-              uls = clause.unordered_lists
-              uls = [uls] unless uls.is_a?(Array)
+              uls = to_array(clause.unordered_lists)
               if uls[idx]
                 list = transform_unordered_list(uls[idx])
                 append_ordered(section, :ul, list) if list
               end
             when "ol"
-              ols = clause.ordered_lists
-              ols = [ols] unless ols.is_a?(Array)
+              ols = to_array(clause.ordered_lists)
               if ols[idx]
                 list = transform_ordered_list(ols[idx])
                 append_ordered(section, :ol, list) if list
               end
             when "dl"
-              dls = clause.definition_lists
-              dls = [dls] unless dls.is_a?(Array)
+              dls = to_array(clause.definition_lists)
               if dls[idx]
                 list = transform_definition_list(dls[idx])
                 append_ordered(section, :dl, list) if list
               end
             when "table"
-              tables = clause.tables
-              tables = [tables] unless tables.is_a?(Array)
+              tables = to_array(clause.tables)
               if tables[idx]
                 table = transform_table(tables[idx])
                 append_ordered(section, :table, table) if table
@@ -259,8 +251,7 @@ module Metanorma
                 end
               end
             when "figure"
-              figures = clause.figures
-              figures = [figures] unless figures.is_a?(Array)
+              figures = to_array(clause.figures)
               if figures[idx]
                 f = transform_figure(figures[idx])
                 if f.is_a?(Rfcxml::V3::Figure)
@@ -273,8 +264,7 @@ module Metanorma
                 end
               end
             when "sourcecode"
-              sourcecodes = clause.sourcecode_blocks
-              sourcecodes = [sourcecodes] unless sourcecodes.is_a?(Array)
+              sourcecodes = to_array(clause.sourcecode_blocks)
               if sourcecodes[idx]
                 src = transform_sourcecode(sourcecodes[idx])
                 if src
@@ -285,15 +275,13 @@ module Metanorma
                 end
               end
             when "clause"
-              sub_clauses = clause.clause
-              sub_clauses = [sub_clauses] unless sub_clauses.is_a?(Array)
+              sub_clauses = to_array(clause.clause)
               if sub_clauses[idx]
                 sec = transform_clause(sub_clauses[idx])
                 append_ordered(section, :section, sec) if sec
               end
             when "formula"
-              formulas = clause.formulas
-              formulas = [formulas] unless formulas.is_a?(Array)
+              formulas = to_array(clause.formulas)
               if formulas[idx]
                 elements = transform_formula(formulas[idx])
                 elements.each do |elem|
@@ -305,43 +293,37 @@ module Metanorma
                 end
               end
             when "note"
-              notes = clause.notes
-              notes = [notes] unless notes.is_a?(Array)
+              notes = to_array(clause.notes)
               if notes[idx]
                 aside = transform_note(notes[idx], section)
                 append_ordered(section, :aside, aside) if aside
               end
             when "quote"
-              quotes = clause.quote_blocks
-              quotes = [quotes] unless quotes.is_a?(Array)
+              quotes = to_array(clause.quote_blocks)
               if quotes[idx]
                 bq = transform_quote(quotes[idx])
                 append_ordered(section, :blockquote, bq) if bq
               end
             when "example"
-              examples = clause.examples
-              examples = [examples] unless examples.is_a?(Array)
+              examples = to_array(clause.examples)
               if examples[idx]
                 ts = transform_example(examples[idx])
                 ts.each { |_t| append_ordered(section, :t, _t) }
               end
             when "terms"
-              terms = clause.terms
-              terms = [terms] unless terms.is_a?(Array)
+              terms = to_array(clause.terms)
               if terms[idx]
                 sec = transform_terms_section(terms[idx])
                 append_ordered(section, :section, sec) if sec
               end
             when "definitions"
-              defs = clause.definitions
-              defs = [defs] unless defs.is_a?(Array)
+              defs = to_array(clause.definitions)
               if defs[idx]
                 sec = transform_definitions_section(defs[idx])
                 append_ordered(section, :section, sec) if sec
               end
             when "admonition"
-              admonitions = clause.admonitions
-              admonitions = [admonitions] unless admonitions.is_a?(Array)
+              admonitions = to_array(clause.admonitions)
               if admonitions[idx]
                 aside = transform_admonition(admonitions[idx])
                 append_ordered(section, :aside, aside) if aside
@@ -352,7 +334,7 @@ module Metanorma
 
         def parse_unordered_children(clause, section)
           if section.name
-            section.send(:track_order, :name, section.name, nil)
+            track_element_order(section, :name, section.name)
           end
 
           get_paragraphs(clause).each do |p|
@@ -365,23 +347,17 @@ module Metanorma
             end
           end
 
-          notes = clause.notes
-          notes = [notes] unless notes.is_a?(Array)
-          notes.each do |note|
+          to_array(clause.notes).each do |note|
             aside = transform_note(note, section)
             append_ordered(section, :aside, aside) if aside
           end
 
-          examples = clause.examples
-          examples = [examples] unless examples.is_a?(Array)
-          examples.each do |ex|
+          to_array(clause.examples).each do |ex|
             ts = transform_example(ex)
             ts.each { |_t| append_ordered(section, :t, _t) }
           end
 
-          sourcecodes = clause.sourcecode_blocks
-          sourcecodes = [sourcecodes] unless sourcecodes.is_a?(Array)
-          sourcecodes.each do |sc|
+          to_array(clause.sourcecode_blocks).each do |sc|
             src = transform_sourcecode(sc)
             if src
               append_ordered(section, :sourcecode, src)
@@ -391,23 +367,17 @@ module Metanorma
             end
           end
 
-          quotes = clause.quote_blocks
-          quotes = [quotes] unless quotes.is_a?(Array)
-          quotes.each do |q|
+          to_array(clause.quote_blocks).each do |q|
             bq = transform_quote(q)
             append_ordered(section, :blockquote, bq) if bq
           end
 
-          admonitions = clause.admonitions
-          admonitions = [admonitions] unless admonitions.is_a?(Array)
-          admonitions.each do |admon|
+          to_array(clause.admonitions).each do |admon|
             aside = transform_admonition(admon)
             append_ordered(section, :aside, aside) if aside
           end
 
-          formulas = clause.formulas
-          formulas = [formulas] unless formulas.is_a?(Array)
-          formulas.each do |f|
+          to_array(clause.formulas).each do |f|
             elements = transform_formula(f)
             elements.each do |elem|
               if elem.is_a?(Rfcxml::V3::Text)
@@ -418,30 +388,22 @@ module Metanorma
             end
           end
 
-          uls = clause.unordered_lists
-          uls = [uls] unless uls.is_a?(Array)
-          uls.each do |ul|
+          to_array(clause.unordered_lists).each do |ul|
             list = transform_unordered_list(ul)
             append_ordered(section, :ul, list) if list
           end
 
-          ols = clause.ordered_lists
-          ols = [ols] unless ols.is_a?(Array)
-          ols.each do |ol|
+          to_array(clause.ordered_lists).each do |ol|
             list = transform_ordered_list(ol)
             append_ordered(section, :ol, list) if list
           end
 
-          dls = clause.definition_lists
-          dls = [dls] unless dls.is_a?(Array)
-          dls.each do |dl|
+          to_array(clause.definition_lists).each do |dl|
             list = transform_definition_list(dl)
             append_ordered(section, :dl, list) if list
           end
 
-          tables = clause.tables
-          tables = [tables] unless tables.is_a?(Array)
-          tables.each do |tbl|
+          to_array(clause.tables).each do |tbl|
             table = transform_table(tbl)
             if table
               append_ordered(section, :table, table)
@@ -457,9 +419,7 @@ module Metanorma
             end
           end
 
-          figures = clause.figures
-          figures = [figures] unless figures.is_a?(Array)
-          figures.each do |fig|
+          to_array(clause.figures).each do |fig|
             f = transform_figure(fig)
             if f.is_a?(Rfcxml::V3::Figure)
               append_ordered(section, :figure, f)
@@ -471,23 +431,17 @@ module Metanorma
             end
           end
 
-          sub_clauses = clause.clause
-          sub_clauses = [sub_clauses] unless sub_clauses.is_a?(Array)
-          sub_clauses.each do |sub|
+          to_array(clause.clause).each do |sub|
             sec = transform_clause(sub)
             append_ordered(section, :section, sec) if sec
           end
 
-          terms = clause.terms
-          terms = [terms] unless terms.is_a?(Array)
-          terms.each do |term_section|
+          to_array(clause.terms).each do |term_section|
             sec = transform_terms_section(term_section)
             append_ordered(section, :section, sec) if sec
           end
 
-          defs = clause.definitions
-          defs = [defs] unless defs.is_a?(Array)
-          defs.each do |defn|
+          to_array(clause.definitions).each do |defn|
             sec = transform_definitions_section(defn)
             append_ordered(section, :section, sec) if sec
           end

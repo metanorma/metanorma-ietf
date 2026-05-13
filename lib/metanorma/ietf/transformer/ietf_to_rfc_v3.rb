@@ -236,6 +236,12 @@ module Metanorma
           nil
         end
 
+        # Coerce a value into an Array. Returns [] for nil, wraps non-Arrays.
+        def to_array(val)
+          return [] if val.nil?
+          val.is_a?(Array) ? val : [val]
+        end
+
         # Safely append to an rfcxml model collection that may default to nil.
         # Initializes the collection to [] if needed, then appends the item.
         def safe_append(obj, attr_name, item)
@@ -247,16 +253,48 @@ module Metanorma
           coll << item
         end
 
-        # Append to a collection and track the element order using
-        # lutaml-model's Builder track_order mechanism.
+        # Append to a collection and track the element order for serialization.
         def append_ordered(target, attr, value)
           safe_append(target, attr, value)
-          target.send(:track_order, attr, value, nil)
+          track_element_order(target, attr, value)
         end
 
         # Track a text content entry in element_order for mixed-content models.
         def track_text_order(target, text)
-          target.send(:track_order, :content, text, nil)
+          track_element_order(target, :content, text)
+        end
+
+        # Track an already-assigned element in the serialization order.
+        # Encapsulates lutaml-model's internal element_order mechanism.
+        def track_element_order(target, attr, value)
+          target.send(:track_order, attr, value, nil)
+        end
+
+        # Build an element_order entry for a given tag.
+        # Used when replacing entries in existing element_order arrays.
+        def build_order_entry_for(target, tag)
+          target.send(:build_order_entry, tag, nil, nil)
+        end
+
+        # Build an Rfcxml::V3::Organization from a metanorma-document organization node.
+        # Shared between front (author affiliations) and reference (bibitem orgs).
+        def build_organization(org_node)
+          org = Rfcxml::V3::Organization.new
+          name_text = ls_text(to_array(org_node.name).first)
+          org.content = [name_text] if name_text && !name_text.empty?
+
+          abbrev = org_node.abbreviation
+          if abbrev
+            abbrev_text = ls_text(to_array(abbrev).first)
+            org.abbrev = abbrev_text if abbrev_text && !abbrev_text.empty?
+          end
+
+          if name_text && !name_text.empty?
+            ascii = Sterile.transliterate(name_text)
+            org.ascii = ascii unless ascii == name_text
+          end
+
+          org
         end
 
         # Get paragraphs from any node type.

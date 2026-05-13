@@ -35,8 +35,7 @@ module Metanorma
               tag = e.element_tag
               case tag
               when "image"
-                images = figure_node.image || []
-                images = [images] unless images.is_a?(Array)
+                images = to_array(figure_node.image || [])
                 img = images[img_idx]
                 img_idx += 1
                 if img
@@ -44,8 +43,7 @@ module Metanorma
                   safe_append(figure, :artwork, artwork) if artwork
                 end
               when "pre"
-                pres = figure_node.pre || []
-                pres = [pres] unless pres.is_a?(Array)
+                pres = to_array(figure_node.pre || [])
                 pre_node = pres[pre_idx]
                 pre_idx += 1
                 if pre_node
@@ -53,8 +51,7 @@ module Metanorma
                   safe_append(figure, :artwork, artwork) if artwork
                 end
               when "sourcecode"
-                sourcecodes = figure_node.sourcecode_blocks || []
-                sourcecodes = [sourcecodes] unless sourcecodes.is_a?(Array)
+                sourcecodes = to_array(figure_node.sourcecode_blocks || [])
                 if sourcecodes[sc_idx]
                   src = transform_sourcecode(sourcecodes[sc_idx])
                   safe_append(figure, :sourcecode, src) if src
@@ -64,16 +61,12 @@ module Metanorma
             end
           else
             # Fallback without element_order
-            images = figure_node.image || []
-            images = [images] unless images.is_a?(Array)
-            images.each do |img|
+            to_array(figure_node.image || []).each do |img|
               artwork = transform_image_to_artwork(img)
               safe_append(figure, :artwork, artwork) if artwork
             end
 
-            pres = figure_node.pre || []
-            pres = [pres] unless pres.is_a?(Array)
-            pres.each do |pre_node|
+            to_array(figure_node.pre || []).each do |pre_node|
               artwork = transform_pre_to_artwork(pre_node)
               safe_append(figure, :artwork, artwork) if artwork
             end
@@ -99,8 +92,7 @@ module Metanorma
         end
 
         def transform_pseudocode(figure_node)
-          sourcecodes = figure_node.sourcecode_blocks || []
-          sourcecodes = [sourcecodes] unless sourcecodes.is_a?(Array)
+          sourcecodes = to_array(figure_node.sourcecode_blocks || [])
           sc = sourcecodes.first
           if sc
             return transform_sourcecode(sc)
@@ -201,9 +193,7 @@ module Metanorma
 
         def extract_figure_asides(figure_node)
           asides = []
-          notes = figure_node.note || []
-          notes = [notes] unless notes.is_a?(Array)
-          notes.each do |note_node|
+          to_array(figure_node.note || []).each do |note_node|
             asides << build_inline_note_aside(note_node)
           end
           asides

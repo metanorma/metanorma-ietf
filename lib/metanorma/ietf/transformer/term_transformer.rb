@@ -27,16 +27,12 @@ module Metanorma
             end
           end
 
-          terms = terms_node.term
-          terms = [terms] unless terms.is_a?(Array)
-          terms.each do |term|
+          to_array(terms_node.term).each do |term|
             term_sec = transform_term(term)
             safe_append(section, :section, term_sec) if term_sec
           end
 
-          nested = terms_node.terms
-          nested = [nested] unless nested.is_a?(Array)
-          nested.each do |ts|
+          to_array(terms_node.terms).each do |ts|
             sec = transform_terms_section(ts)
             safe_append(section, :section, sec) if sec
           end
@@ -57,8 +53,7 @@ module Metanorma
           section = Rfcxml::V3::Section.new
           section.anchor = to_ncname(term_node.id) if term_node.id
 
-          preferred = term_node.preferred
-          preferred = [preferred] unless preferred.is_a?(Array)
+          preferred = to_array(term_node.preferred)
 
           if preferred.first
             name = Rfcxml::V3::Name.new
@@ -162,33 +157,25 @@ module Metanorma
           end
 
           # Term notes with numbering
-          notes = term_node.notes
-          notes = [notes] unless notes.is_a?(Array)
-          notes.each_with_index do |note, idx|
+          to_array(term_node.notes).each_with_index do |note, idx|
             aside = transform_note(note, section, note_counter: idx + 1)
             safe_append(section, :aside, aside) if aside
           end
 
           # Term sources → <t>[SOURCE: ...]</t>
-          sources = term_node.source
-          sources = [sources] unless sources.is_a?(Array)
-          sources.each do |src|
+          to_array(term_node.source).each do |src|
             t = transform_term_source(src)
             safe_append(section, :t, t) if t
           end
 
           # Related terms
-          related_list = term_node.related
-          related_list = [related_list] unless related_list.is_a?(Array)
-          related_list.each do |rel|
+          to_array(term_node.related).each do |rel|
             t = transform_related_term(rel)
             safe_append(section, :t, t) if t
           end
 
           # Nested terms
-          nested = term_node.term
-          nested = [nested] unless nested.is_a?(Array)
-          nested.each do |t|
+          to_array(term_node.term).each do |t|
             sec = transform_term(t)
             safe_append(section, :section, sec) if sec
           end
@@ -314,9 +301,7 @@ module Metanorma
             section.name = name unless name.content.nil? || name.content.empty?
           end
 
-          dls = defn_node.definition_lists
-          dls = [dls] unless dls.is_a?(Array)
-          dls.each do |dl|
+          to_array(defn_node.definition_lists).each do |dl|
             list = transform_definition_list(dl)
             safe_append(section, :dl, list) if list
           end

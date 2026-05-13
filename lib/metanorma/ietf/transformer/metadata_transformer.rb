@@ -121,9 +121,7 @@ module Metanorma
           relations.each do |rel|
             next unless rel.type == relation_type
             next unless rel.bibitem
-            doc_ids = rel.bibitem.docidentifier
-            doc_ids = [doc_ids] unless doc_ids.is_a?(Array)
-            doc_ids.each do |di|
+            to_array(rel.bibitem.docidentifier).each do |di|
               text = ls_text(di)
               ids << text if text && !text.empty?
             end
@@ -140,9 +138,7 @@ module Metanorma
           relations.each do |rel|
             next unless rel.type == "derivedFrom"
             next unless rel.bibitem
-            doc_ids = rel.bibitem.docidentifier
-            doc_ids = [doc_ids] unless doc_ids.is_a?(Array)
-            doc_ids.each do |di|
+            to_array(rel.bibitem.docidentifier).each do |di|
               target = ls_text(di)
               next if target.nil? || target.empty?
               link = Rfcxml::V3::Link.new

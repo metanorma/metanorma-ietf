@@ -21,12 +21,10 @@ module Metanorma
           end
 
           src_order = refs_node.element_order
-          bibitems = refs_node.references
-          bibitems = [bibitems] unless bibitems.is_a?(Array)
+          bibitems = to_array(refs_node.references)
           bibitem_queue = bibitems.dup
 
-          passthroughs = refs_node.passthrough
-          passthroughs = [passthroughs] unless passthroughs.is_a?(Array)
+          passthroughs = to_array(refs_node.passthrough)
           pass_queue = passthroughs.dup
 
           if src_order && src_order.any?
@@ -153,9 +151,7 @@ module Metanorma
           target = extract_bibitem_target(bibitem)
           group.target = target if target && !target.empty?
 
-          constituents = bibitem.constituent
-          constituents = [constituents] unless constituents.is_a?(Array)
-          constituents.each do |constituent|
+          to_array(bibitem.constituent).each do |constituent|
             next unless constituent
             ref = transform_constituent(constituent)
             safe_append(group, :reference, ref) if ref
@@ -182,9 +178,7 @@ module Metanorma
             end
           end
 
-          ids = constituent.docidentifier
-          ids = [ids] unless ids.is_a?(Array)
-          ids.each do |d|
+          to_array(constituent.docidentifier).each do |d|
             next unless d.type == "IETF" || d.type == "DOI"
             si = Rfcxml::V3::SeriesInfo.new
             si.name = d.type
@@ -254,8 +248,7 @@ module Metanorma
         def bibitem_anchor(bibitem)
           return nil unless bibitem
 
-          ids = bibitem.docidentifier
-          ids = [ids] unless ids.is_a?(Array)
+          ids = to_array(bibitem.docidentifier)
           ietf_id = ids.find { |d| d.type == "IETF" }
           if ietf_id
             text = id_content(ietf_id)
@@ -269,8 +262,7 @@ module Metanorma
         end
 
         def extract_bibitem_target(bibitem)
-          uris = bibitem.link
-          uris = [uris] unless uris.is_a?(Array)
+          uris = to_array(bibitem.link)
 
           src = uris.find { |u| u.type == "src" }
           if src
@@ -282,8 +274,7 @@ module Metanorma
         end
 
         def extract_bibitem_title(bibitem)
-          titles = bibitem.title
-          titles = [titles] unless titles.is_a?(Array)
+          titles = to_array(bibitem.title)
 
           first = titles.first
           return ls_text(first) if first
@@ -294,13 +285,9 @@ module Metanorma
         def extract_bibitem_authors(bibitem)
           authors = []
           publishers = []
-          contributors = bibitem.contributor
-          contributors = [contributors] unless contributors.is_a?(Array)
-
-          contributors.each do |contrib|
+          to_array(bibitem.contributor).each do |contrib|
             next unless contrib.role
-            roles = contrib.role
-            roles = [roles] unless roles.is_a?(Array)
+            roles = to_array(contrib.role)
             role_type = roles.first&.type
 
             org = contrib.organization
@@ -350,15 +337,14 @@ module Metanorma
           end
 
           if org
-            author.organization = build_reference_organization(org)
+            author.organization = build_organization(org)
           end
 
           author
         end
 
         def extract_bibitem_date(bibitem)
-          dates = bibitem.date
-          dates = [dates] unless dates.is_a?(Array)
+          dates = to_array(bibitem.date)
 
           pub = dates.find { |d| d.type == "published" }
           return nil unless pub
@@ -388,8 +374,7 @@ module Metanorma
         end
 
         def extract_bibitem_abstract(bibitem)
-          abstracts = bibitem.abstract
-          abstracts = [abstracts] unless abstracts.is_a?(Array)
+          abstracts = to_array(bibitem.abstract)
           return nil if abstracts.empty?
 
           abs_text = abstracts.first
@@ -404,8 +389,7 @@ module Metanorma
         end
 
         def extract_bibitem_refcontent(bibitem)
-          ids = bibitem.docidentifier
-          ids = [ids] unless ids.is_a?(Array)
+          ids = to_array(bibitem.docidentifier)
 
           id = ids.find { |d| d.type == "IETF" }
           id ||= ids.find { |d| d.type == "ISO" }
@@ -418,9 +402,7 @@ module Metanorma
         def extract_bibitem_series_info(bibitem)
           infos = []
 
-          ids = bibitem.docidentifier
-          ids = [ids] unless ids.is_a?(Array)
-          ids.each do |d|
+          to_array(bibitem.docidentifier).each do |d|
             next unless d.type == "IETF" || d.type == "DOI"
             si = Rfcxml::V3::SeriesInfo.new
             si.name = d.type
@@ -453,20 +435,6 @@ module Metanorma
           ls_text(doc_id)
         end
 
-        def build_reference_organization(org_node)
-          org = Rfcxml::V3::Organization.new
-          name_text = org_node.name.is_a?(Array) ? ls_text(org_node.name.first) : ls_text(org_node.name)
-          org.content = [name_text] if name_text
-
-          abbrev = org_node.abbreviation
-          if abbrev
-            abbrev_text = abbrev.is_a?(Array) ? ls_text(abbrev.first) : ls_text(abbrev)
-            org.abbrev = abbrev_text if abbrev_text
-          end
-
-          org.ascii = Sterile.transliterate(name_text) if name_text && Sterile.transliterate(name_text) != name_text
-          org
-        end
       end
     end
   end

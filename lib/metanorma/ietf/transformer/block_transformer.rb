@@ -93,7 +93,7 @@ module Metanorma
                     track_text_order(text_elem, " ")
                   end
                   safe_append(text_elem, collection_name, inline_obj)
-                  text_elem.send(:track_order, collection_name, inline_obj, nil)
+                  track_element_order(text_elem, collection_name, inline_obj)
                 end
                 counters[tag] += 1
                 prev_was_inline = true
@@ -395,8 +395,7 @@ module Metanorma
           annotations = sc_node.callout_annotations
           return [] unless annotations.is_a?(Array) && !annotations.empty?
 
-          callouts = sc_node.callouts
-          callouts = [callouts] unless callouts.is_a?(Array)
+          callouts = to_array(sc_node.callouts)
           callout_map = {}
           callouts.each { |c| callout_map[c.target.to_s] = c if c && c.target }
 
@@ -451,14 +450,12 @@ module Metanorma
         end
 
         def extract_inline_notes(paragraph)
-          notes = paragraph.note
-          notes = [notes] unless notes.is_a?(Array)
+          notes = to_array(paragraph.note)
           notes.map { |n| build_inline_note_aside(n) }
         end
 
         def build_iref_from_model(p_node, idx)
-          coll = p_node.index
-          coll = [coll] unless coll.is_a?(Array)
+          coll = to_array(p_node.index)
           return nil unless coll[idx]
 
           elem = coll[idx]

@@ -284,7 +284,7 @@ module Metanorma
             next if e.text?
             if e.element_tag == old_tag
               if count == old_idx
-                order[i] = text_elem.send(:build_order_entry, new_tag.to_sym, nil, nil)
+                order[i] = build_order_entry_for(text_elem, new_tag.to_sym)
                 return
               end
               count += 1
