@@ -7,15 +7,9 @@ module Metanorma
         private
 
         def extract_paragraph_text(paragraph)
-          if paragraph.content
-            c = paragraph.content
-            case c
-            when String then c
-            when Array then c.join
-            else c.to_s
-            end
-          elsif paragraph.text
-            paragraph.text.is_a?(Array) ? paragraph.text.join : paragraph.text.to_s
+          text = paragraph.text
+          if text && !Array(text).empty?
+            text.is_a?(Array) ? text.join : text.to_s
           else
             ""
           end

@@ -248,6 +248,8 @@ module Metanorma
         def bibitem_anchor(bibitem)
           return nil unless bibitem
 
+          return bibitem.anchor if bibitem.anchor && !bibitem.anchor.to_s.empty?
+
           ids = to_array(bibitem.docidentifier)
           ietf_id = ids.find { |d| d.type == "IETF" }
           if ietf_id

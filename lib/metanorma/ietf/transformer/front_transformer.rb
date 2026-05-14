@@ -276,9 +276,12 @@ module Metanorma
             dates = [dates] unless dates.is_a?(Array)
             dates.each do |d|
               next unless %w[published circulated].include?(d.type)
-              raw = d.on || d.text
-              date_str = raw.to_s if raw
-              break
+              raw = d.on
+              if raw
+                date_str = raw.is_a?(String) ? raw : extract_date_text(raw)
+              end
+              date_str ||= d.text if d.text
+              break if date_str && !date_str.to_s.empty?
             end
           end
 
@@ -312,6 +315,18 @@ module Metanorma
 
         def month_name(month_num)
           %w[January February March April May June July August September October November December][month_num - 1]
+        end
+
+        def extract_date_text(date_obj)
+          return date_obj.to_s unless date_obj
+
+          if date_obj.content && !date_obj.content.to_s.empty?
+            date_obj.content.to_s
+          elsif date_obj.text && !date_obj.text.to_s.empty?
+            date_obj.text.to_s
+          else
+            date_obj.to_s
+          end
         end
 
         def build_areas
