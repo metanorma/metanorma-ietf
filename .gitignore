@@ -27,3 +27,8 @@ metanorma.asciidoc.log.txt
 /Gemfile.lock
 /test.err
 /test.rfc.xml.err
+document.xml
+document.err.html
+document.rfc.xml.err
+*.gem
+spec/relatondb/

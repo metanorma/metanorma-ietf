@@ -4,8 +4,6 @@ gemspec
 
 gem "canon"
 gem "equivalent-xml"
-gem "guard"
-gem "guard-rspec"
 gem "htmlentities"
 gem "metanorma", github: "metanorma/metanorma", branch: "main"
 gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
