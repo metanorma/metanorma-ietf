@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "base"
+require_relative "null_objects"
+require_relative "order_tracker"
 require_relative "metadata_transformer"
 require_relative "front_transformer"
 require_relative "section_transformer"
@@ -17,7 +20,9 @@ require_relative "validation_transformer"
 module Metanorma
   module Ietf
     module Transformer
+      # Forward transformer: Metanorma XML → RFC XML v3
       class IetfToRfcV3
+        include Base
         include MetadataTransformer
         include FrontTransformer
         include SectionTransformer
@@ -58,114 +63,10 @@ module Metanorma
 
         private
 
-        # Extract text from various metanorma-document string types
-        # LocalizedString has .value (Array of String)
-        # TypedTitleString has .content (String)
-        # Some models use .text or plain String
-        # Types that use .text for their primary content
-        TEXT_BASED_TYPES = [
-          Metanorma::Document::Components::Inline::TitleWithAnnotationElement,
-          Metanorma::Document::Components::Inline::EmRawElement,
-          Metanorma::Document::Components::Inline::StrongRawElement,
-          Metanorma::Document::Components::Inline::SupElement,
-          Metanorma::Document::Components::Inline::TtElement,
-          Metanorma::Document::Components::Inline::Bcp14Element,
-          Metanorma::Document::Components::Inline::SpanElement,
-          Metanorma::Document::Components::Inline::SmallCapElement,
-          Metanorma::Document::Components::Inline::NameWithIdElement,
-          Metanorma::Document::Components::Inline::ErefElement,
-          Metanorma::Document::Components::Inline::XrefElement,
-          Metanorma::Document::Components::Inline::FmtTitleElement,
-          Metanorma::Document::Components::Inline::FmtXrefLabelElement,
-          Metanorma::Document::Components::Inline::FmtNameElement,
-          Metanorma::Document::Components::Inline::FmtFnLabelElement,
-          Metanorma::Document::Components::Inline::FmtSourcecodeElement,
-          Metanorma::Document::Components::Inline::FmtConceptElement,
-          Metanorma::Document::Components::Inline::FmtXrefElement,
-          Metanorma::Document::Components::Inline::SemxElement,
-          Metanorma::Document::Components::Inline::BiblioTagElement,
-          Metanorma::Document::Components::Inline::DisplayTextElement,
-          Metanorma::Document::Components::Inline::VariantTitleElement,
-        ].freeze
-
-        def ls_text(obj)
-          return nil unless obj
-          return obj if obj.is_a?(String)
-          return obj.map { |o| ls_text(o) }.compact.join if obj.is_a?(Array)
-
-          # LocalizedString and FormattedString have .value
-          if obj.is_a?(Metanorma::Document::Components::DataTypes::LocalizedString) ||
-             obj.is_a?(Metanorma::Document::Components::DataTypes::FormattedString)
-            val = obj.value
-            return val.is_a?(Array) ? val.join : val.to_s
-          end
-
-          # DocumentIdentifier has .id
-          if obj.is_a?(Metanorma::Document::Relaton::DocumentIdentifier)
-            return obj.id.to_s
-          end
-
-          # Many inline element types use .text
-          if TEXT_BASED_TYPES.any? { |t| obj.is_a?(t) }
-            t = obj.text
-            return t.is_a?(Array) ? t.join : t.to_s
-          end
-
-          # Most other types have .content (TypedTitleString, Name, LinkElement, etc.)
-          c = obj.content
-          if c
-            return c.is_a?(Array) ? c.join : c.to_s
-          end
-
-          t = obj.text
-          if t
-            return t.is_a?(Array) ? t.join : t.to_s
-          end
-          obj.to_s
-        end
-
-        def escape_xml_text(str)
-          str.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
-        end
-
-        # Extract text from title/name elements that may be LocalizedString or raw
-        def extract_text(node)
-          return "" unless node
-          result = ls_text(node)
-          result.is_a?(String) ? result.strip : ""
-        end
-
-        # Get the anchor/id for a node
-        def anchor_for(node)
-          node.anchor || node.id || node.semx_id
-        end
-
-        # Sanitize an id to be a valid NCName (for XML anchors)
-        def to_ncname(id)
-          return nil unless id
-          id = id.to_s.strip
-          return nil if id.empty?
-          id = "_" + id unless id.match?(/\A[a-zA-Z_]/)
-          id.gsub(/[^a-zA-Z0-9._\-]/, "_")
-        end
-
-        # Access bibdata, returning a NullBibdata when input has no bibdata
         def bibdata
           @bibdata ||= doc.bibdata || NullBibdata.new
         end
 
-        # Null object for when input has no bibdata element
-        class NullBibdata
-          def method_missing(name, *args, &block)
-            nil
-          end
-
-          def respond_to_missing?(name, include_private = false)
-            true
-          end
-        end
-
-        # Get doctype from bibdata ext
         def doctype
           @doctype ||= begin
             dt = bibdata.ext.doctype
@@ -183,7 +84,6 @@ module Metanorma
           doctype == "internet-draft"
         end
 
-        # Resolve the document language
         def lang
           langs = bibdata.language
           if langs.is_a?(Array) && !langs.empty?
@@ -196,7 +96,6 @@ module Metanorma
           "en"
         end
 
-        # Get the title from bibdata
         def main_title
           titles = bibdata.title
           return "" unless titles
@@ -218,12 +117,10 @@ module Metanorma
           ls_text(abbr)
         end
 
-        # Get docnumber
         def docnumber
           dn = bibdata.docnumber
           return dn if dn && !dn.to_s.empty?
 
-          # Fallback: extract from doc_identifier
           ids = bibdata.docidentifier
           return nil unless ids
           ids = [ids] unless ids.is_a?(Array)
@@ -236,81 +133,46 @@ module Metanorma
           nil
         end
 
-        # Coerce a value into an Array. Returns [] for nil, wraps non-Arrays.
-        def to_array(val)
-          return [] if val.nil?
-          val.is_a?(Array) ? val : [val]
+        def escape_xml_text(str)
+          str.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
         end
 
-        # Safely append to an rfcxml model collection that may default to nil.
-        # Initializes the collection to [] if needed, then appends the item.
+        # Delegate to OrderTracker for all order operations
+        def append_ordered(target, attr, value)
+          OrderTracker.append_ordered(target, attr, value)
+        end
+
         def safe_append(obj, attr_name, item)
-          coll = obj.send(attr_name)
+          coll = obj.public_send(attr_name)
           unless coll.is_a?(Array)
-            obj.send(:"#{attr_name}=", [])
-            coll = obj.send(attr_name)
+            obj.public_send(:"#{attr_name}=", [])
+            coll = obj.public_send(attr_name)
           end
           coll << item
         end
 
-        # Append to a collection and track the element order for serialization.
-        def append_ordered(target, attr, value)
-          safe_append(target, attr, value)
-          track_element_order(target, attr, value)
-        end
-
-        # Track a text content entry in element_order for mixed-content models.
         def track_text_order(target, text)
-          track_element_order(target, :content, text)
+          OrderTracker.track_text(target, text)
         end
 
-        # Track an already-assigned element in the serialization order.
-        # Encapsulates lutaml-model's internal element_order mechanism.
         def track_element_order(target, attr, value)
-          target.send(:track_order, attr, value, nil)
+          OrderTracker.track_element(target, attr)
         end
 
-        # Build an element_order entry for a given tag.
-        # Used when replacing entries in existing element_order arrays.
         def build_order_entry_for(target, tag)
-          target.send(:build_order_entry, tag, nil, nil)
+          Lutaml::Xml::Element.new("Element", tag.to_s, node_type: :element)
         end
 
-        # Build an Rfcxml::V3::Organization from a metanorma-document organization node.
-        # Shared between front (author affiliations) and reference (bibitem orgs).
         def build_organization(org_node)
-          org = Rfcxml::V3::Organization.new
-          name_text = ls_text(to_array(org_node.name).first)
-          org.content = [name_text] if name_text && !name_text.empty?
-
-          abbrev = org_node.abbreviation
-          if abbrev
-            abbrev_text = ls_text(to_array(abbrev).first)
-            org.abbrev = abbrev_text if abbrev_text && !abbrev_text.empty?
-          end
-
-          if name_text && !name_text.empty?
-            ascii = Sterile.transliterate(name_text)
-            org.ascii = ascii unless ascii == name_text
-          end
-
-          org
+          build_rfc_organization(org_node)
         end
 
-        # Get paragraphs from any node type.
-        # Different metanorma-document node types use different attribute names:
-        # - ClauseSection: .paragraphs
-        # - NoteBlock: .content (array of ParagraphBlock)
-        # - DdElement: .p
-        # - ListItem: .text or .paragraphs
         def get_paragraphs(node)
-          # NoteBlock uses .content for its paragraphs
           if node.is_a?(Metanorma::Document::Components::Blocks::NoteBlock)
             c = node.content
             return c.is_a?(Array) ? c : []
           end
 
-          # DdElement and TableCell use .p for paragraphs
           if node.is_a?(Metanorma::Document::Components::Lists::DdElement) ||
              node.is_a?(Metanorma::Document::Components::Tables::TableCell)
             ps = node.p
