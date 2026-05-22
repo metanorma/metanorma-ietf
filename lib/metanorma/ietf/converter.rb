@@ -1,6 +1,5 @@
 require "asciidoctor"
 require "metanorma-standoc"
-require "isodoc/ietf/rfc_convert"
 require_relative "./front"
 require_relative "./blocks"
 require_relative "./macros"
@@ -31,11 +30,6 @@ module Metanorma
 
       def cache_workgroup(_node)
         Metanorma::Ietf::Data::WORKGROUPS
-      end
-
-      def outputs(node, ret)
-        File.open("#{@filename}.xml", "w:UTF-8") { |f| f.write(ret) }
-        rfc_converter(node).convert("#{@filename}.xml")
       end
 
       def init_metadata(node)
@@ -171,18 +165,6 @@ module Metanorma
 
       def html_extract_attributes(node)
         super.merge(usexinclude: node.attr("use-xinclude"))
-      end
-
-      def rfc_converter(node)
-        IsoDoc::Ietf::RfcConvert.new(html_extract_attributes(node))
-      end
-
-      def isodoc(lang, script, locale, i18nyaml = nil)
-        conv = rfc_converter(::Metanorma::Standoc::EmptyAttr.new)
-        conv.init_i18n({ i18nyaml:, language: lang, script:, locale: })
-        i18n = conv.i18n_init(lang, script, locale, i18nyaml)
-        conv.metadata_init(lang, script, locale, i18n)
-        conv
       end
     end
   end
