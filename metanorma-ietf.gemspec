@@ -36,22 +36,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
+  spec.add_dependency "metanorma-document"
   spec.add_dependency "metanorma-ietf-data"
   spec.add_dependency "metanorma-standoc", "~> 3.4.2"
   spec.add_dependency "relaton-render"
 
-  spec.add_development_dependency "canon" #, "= 0.2.3"
-  spec.add_development_dependency "debug"
-  spec.add_development_dependency "equivalent-xml", "~> 0.6"
-  spec.add_development_dependency "guard", "~> 2.14"
-  spec.add_development_dependency "guard-rspec", "~> 4.7"
-  spec.add_development_dependency "openssl"
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rspec", "~> 3.6"
-  spec.add_development_dependency "rubocop", "~> 1"
-  spec.add_development_dependency "rubocop-performance"
-  spec.add_development_dependency "simplecov", "~> 0.15"
-  spec.add_development_dependency "timecop", "~> 0.9"
-  spec.add_development_dependency "webmock"
   spec.metadata["rubygems_mfa_required"] = "true"
 end

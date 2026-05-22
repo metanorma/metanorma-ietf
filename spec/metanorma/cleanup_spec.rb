@@ -614,6 +614,8 @@ RSpec.describe Metanorma::Ietf do
       Author
       :docfile: test.adoc
       :draft:
+      :nodoc:
+      :novalid:
 
       |===
       |A |B

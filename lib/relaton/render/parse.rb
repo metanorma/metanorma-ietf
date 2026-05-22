@@ -53,7 +53,19 @@ module Relaton
         end
 
         def abstract(doc)
-          Array(doc.abstract).map { |a| content(a) }.join
+          Array(doc.abstract).map { |a| abstract_content(a) }.join
+        end
+
+        def abstract_content(abstract_node)
+          raw = abstract_node.content
+          return content(abstract_node) if raw.nil? || raw.strip.empty?
+
+          raw_stripped = raw.strip
+          if raw_stripped.include?("<p")
+            raw_stripped
+          else
+            content(abstract_node)
+          end
         end
 
         def extractname(contributor)

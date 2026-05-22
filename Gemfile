@@ -1,9 +1,19 @@
-Encoding.default_external = Encoding::UTF_8
-Encoding.default_internal = Encoding::UTF_8
-
 source "https://rubygems.org"
-git_source(:github) { |repo| "https://github.com/#{repo}" }
 
 gemspec
+
+gem "canon"
+gem "equivalent-xml"
+gem "htmlentities"
+gem "metanorma", github: "metanorma/metanorma", branch: "main"
+gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
+gem "rake"
+gem "relaton-bib", "~>2.1"
+gem "rspec"
+gem "rubocop"
+gem "rubocop-performance"
+gem "simplecov"
+gem "timecop"
+gem "webmock"
 
 eval_gemfile("Gemfile.devel") rescue nil
