@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="2.3.0">
+<bibdata type="standard">
+<title language="en" format="text/plain" type="main">RFC XML v3 Example: A Standard for the Transmission of IP Datagrams on Avian Carriers</title>
+<title language="en" format="text/plain" type="abbrev">IP Datagrams on Avian Carriers</title>
+<docidentifier>1149</docidentifier>
+<docnumber>1149</docnumber>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<forename>David</forename>
+
+<surname>Waitzman</surname>
+</name>
+<affiliation>
+<organization>
+<name>BBN STC</name>
+<address>
+<formattedAddress>10 Moulton Street +\</formattedAddress>
+</address>
+</organization>
+</affiliation>
+<phone>(617) 873-4323</phone>
+<email>dwaitzman@BBN.COM</email>
+</person>
+</contributor>
+<contributor>
+<role type="publisher"/>
+<organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation>
+</organization>
+</contributor>
+<version>
+<revision-date>1990-04-01</revision-date>
+</version>
+<language>en</language>
+<script>Latn</script>
+<status>
+<stage>published</stage>
+</status>
+<copyright>
+<from>2021</from>
+<owner>
+<organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation>
+</organization>
+</owner>
+</copyright>
+<relation type="obsoletes">
+<bibitem type="standard">
+  <fetched>2021-03-18</fetched>
+  <title format="text/plain" language="en" script="Latn">Request For Comments reference guide</title>
+  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.RFC.1000.xml</uri>
+  <uri type="src">https://www.rfc-editor.org/info/rfc1000</uri>
+  <docidentifier type="IETF">RFC 1000</docidentifier>
+  <docidentifier type="rfc-anchor">RFC1000</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC1000</docidentifier>
+  <date type="published">
+    <on>1987-08</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">J.K. Reynolds</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>Internet Engineering Task Force</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">J. Postel</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>Internet Engineering Task Force</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract format="text/plain" language="en" script="Latn">This RFC Reference Guide is intended to provide a historical account by categorizing and summarizing of the Request for Comments numbers 1 through 999 issued between the years 1969-1987.  These documents have been crossed referenced to indicate which RFCs are current, obsolete, or revised.</abstract>
+  <series type="main">
+    <title format="text/plain" language="en" script="Latn">RFC</title>
+    <number>1000</number>
+  </series>
+  <place>Fremont, CA</place>
+</bibitem>
+</relation>
+<relation type="obsoletes">
+<bibitem type="standard">
+  <fetched>2021-03-18</fetched>
+  <title format="text/plain" language="en" script="Latn">IAB official protocol standards</title>
+  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.RFC.1200.xml</uri>
+  <uri type="src">https://www.rfc-editor.org/info/rfc1200</uri>
+  <docidentifier type="IETF">RFC 1200</docidentifier>
+  <docidentifier type="rfc-anchor">RFC1200</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC1200</docidentifier>
+  <date type="published">
+    <on>1991-04</on>
+  </date>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>Defense Advanced Research Projects Agency</name>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>Internet Activities Board</name>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract format="text/plain" language="en" script="Latn">This memo describes the state of standardization of protocols used in the Internet as determined by the Internet Activities Board (IAB).  An overview of the standards procedures is presented first, followed by discussions of the standardization process and the RFC document series, then the explanation of the terms is presented, the lists of protocols in each stage of standardization follows, and finally pointers to references and contacts for further information.</abstract>
+  <series type="main">
+    <title format="text/plain" language="en" script="Latn">RFC</title>
+    <number>1200</number>
+  </series>
+  <place>Fremont, CA</place>
+</bibitem>
+</relation>
+<relation type="updates">
+<bibitem type="standard">
+  <fetched>2021-03-18</fetched>
+  <title format="text/plain" language="en" script="Latn">Operational Criteria for Root Name Servers</title>
+  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.RFC.2010.xml</uri>
+  <uri type="src">https://www.rfc-editor.org/info/rfc2010</uri>
+  <docidentifier type="IETF">RFC 2010</docidentifier>
+  <docidentifier type="rfc-anchor">RFC2010</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC2010</docidentifier>
+  <date type="published">
+    <on>1996-10</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">B. Manning</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>Internet Engineering Task Force</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">P. Vixie</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>Internet Engineering Task Force</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract format="text/plain" language="en" script="Latn">This document specifies the operational requirements of root name servers, including host hardware capacities, name server software revisions, network connectivity, and physical environment.  This memo provides information for the Internet community.  This memo does not specify an Internet standard of any kind.</abstract>
+  <series type="main">
+    <title format="text/plain" language="en" script="Latn">RFC</title>
+    <number>2010</number>
+  </series>
+  <place>Fremont, CA</place>
+</bibitem>
+</relation>
+<relation type="updates">
+<bibitem type="standard">
+  <fetched>2021-03-18</fetched>
+  <title format="text/plain" language="en" script="Latn">Managing the X.500 Root Naming Context</title>
+  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.RFC.2120.xml</uri>
+  <uri type="src">https://www.rfc-editor.org/info/rfc2120</uri>
+  <docidentifier type="IETF">RFC 2120</docidentifier>
+  <docidentifier type="rfc-anchor">RFC2120</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC2120</docidentifier>
+  <date type="published">
+    <on>1997-03</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">D. Chadwick</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>Internet Engineering Task Force</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract format="text/plain" language="en" script="Latn">This document describes the use of 1993 ISO X.500 Standard protocols for managing the root context. Whilst the ASN.1 is compatible with that of the X.500 Standard, the actual settings of the parameters are supplementary to that of the X.500 Standard.  This memo defines an Experimental Protocol for the Internet community.</abstract>
+  <series type="main">
+    <title format="text/plain" language="en" script="Latn">RFC</title>
+    <number>2120</number>
+  </series>
+  <place>Fremont, CA</place>
+</bibitem>
+</relation>
+<series type="stream">
+<title>IETF</title>
+</series>
+<series type="intended">
+<title>full-standard</title>
+</series>
+<ext>
+<doctype>rfc</doctype>
+<editorialgroup>
+<workgroup>Network Working Group</workgroup>
+</editorialgroup>
+<area>Internet</area>
+<ipr>trust200902</ipr>
+<consensus>true</consensus>
+<pi>
+<toc>yes</toc>
+</pi>
+</ext>
+</bibdata>
+<preface><foreword id="_04c0c393-3643-4a89-9b8c-26359dc1b4f3" obligation="informative"><title>Foreword</title><p id="_1df2d6a8-e2e9-4122-a2d5-f4dff091b074">MA 02238
+:contributor-uri: <link target="http://bbn.com"/>
+:surname_2: Nicholas
+:givenname_2: Nick
+:email_2: <link target="mailto:opoudjis@gmail.com"/>
+:affiliation_2: BBN STC
+:phone_2: (617) 873-4323
+:address_2: 10 Moulton Street +\
+Cambridge +\
+MA 02238
+:contributor-uri_2: <link target="http://opoudjis.net"/>
+:equivalent: <link target="http://example1.com"/>
+:derived-from: RFC 1149
+:mn-document-class: ietf
+:mn-output-extensions: xml,rfc,txt,html,rxl
+:docfile: document.adoc</p>
+<p id="_8060b4ca-30b8-4e89-8c60-380c80cfad30">Avian carriers can provide high delay, low throughput, and low
+altitude service.  The connection topology is limited to a single
+point-to-point path for each carrier, used with standard carriers,
+but many carriers can be used without significant interference with
+each other, outside of early spring.  This is because of the 3D ether
+space available to the carriers, in contrast to the 1D ether used by
+IEEE802.3.  The carriers have an intrinsic collision avoidance
+system, which increases availability.  Unlike some network
+technologies, such as packet radio, communication is not limited to
+line-of-sight distance.  Connection oriented service is available in
+some cities, usually based upon a central hub topology.</p>
+<note id="_bc90a89d-30eb-4151-b09e-444cdafa3679">
+<p id="_4e083298-a9e0-4bee-8018-4f89a195aa03">Yes, this is an April Fool's RFC.</p>
+</note></foreword></preface><sections>
+<clause id="frame" inline-header="false" obligation="normative"><title>Frame Format</title><p id="_d36058ae-878e-4739-9b32-3e73bec060a3">The IP <em>datagram</em> is <strong>printed</strong>, on a small scroll of paper, in
+hexadecimal, with each octet separated by whitestuff and blackstuff.
+The scroll of paper is wrapped around one leg of the avian carrier.
+A band of duct tape is used to secure the datagram's edges.  The
+bandwidth is limited to the leg length.  The MTU is variable, and
+paradoxically, generally increases with increased carrier age.  A
+typical MTU is 256 milligrams.  Some datagram padding may be needed.<eref type="inline" bibitemid="RFC7253" citeas="RFC 7253">alt</eref></p>
+<p id="_97dc062f-b467-4ab1-a4bd-168829b64809">Upon receipt, the duct tape is removed and the paper copy of the
+datagram is optically scanned into a electronically transmittable
+form.<eref type="inline" bibitemid="RFC7253" citeas="RFC 7253"/></p>
+<p id="_eaa93a4e-7380-40e7-a78e-9c4c619f4a48">This document extends OpenPGP and its ECC extension to support SM2, SM3 and SM4:</p>
+<ul id="_150b7098-39b4-489a-9a6b-016259c8ec13">
+<li>
+<p id="_8ab263b6-e318-45b8-8528-bf4b33d43181">support the SM3 hash algorithm for data validation purposes</p>
+</li>
+<li>
+<p id="_f59ba89d-bf40-47dc-91bd-5a001c0ff84b">support signatures utilizing the combination of SM3 with other digital
+signing algorithms, such as RSA, ECDSA and SM2</p>
+</li>
+<li>
+<p id="_b6ff790e-57d6-4a89-b1f1-efafa9e82848">support the SM2 asymmetric encryption algorithm for public key
+operations</p>
+</li>
+<li>
+<p id="_c42b30c1-8f40-476b-9352-32a9717b7e2c">support usage of SM2 in combination with supported hash algorithms, such as
+SHA-256 and SM3</p>
+</li>
+<li>
+<p id="_192fa06c-facb-468b-9cc7-733ed1cde80e">support the SM4 symmetric encryption algorithm for data protection purposes</p>
+</li>
+<li>
+<p id="_24d44564-448a-4336-9ad0-8e7a7730975c">defines the OpenPGP profile "OSCCA-SM234" to enable usage of OpenPGP
+in an OSCCA-compliant manner.</p>
+</li>
+</ul>
+<p id="_87868839-ee7f-4be3-8176-f7e93d46b91d">Algorithm-Specific Fields for SM2DSA keys:</p>
+<ul id="_78f36624-8d42-4ae4-a760-676aeef23f24">
+<li>
+<p id="_41fa997f-eb13-469a-8c56-b72a6be3f2e3">a variable-length field containing a curve OID, formatted
+as follows:</p>
+<ol id="_30deb9e9-1270-4de6-88e0-640360628ee1" type="alphabet">
+<li>
+<p id="_766f38af-03e9-41fb-be3c-5c34a24a9484">a one-octet size of the following field; values 0 and
+0xFF are reserved for future extensions</p>
+</li>
+<li>
+<p id="_e9655d16-b4ed-4f4c-b0f6-3700f53ff08f">octets representing a curve OID.</p>
+</li>
+</ol>
+</li>
+<li>
+<p id="_ce30db7b-fde7-458d-9ef0-187ab6cbae5a">MPI of an EC point representing a public key</p>
+</li>
+</ul>
+<clause id="_definitions" inline-header="false" obligation="normative"><title>Definitions</title><dl id="_3a5adc12-c745-4d37-a95e-b03680f3dd3c">
+<dt>OSCCA-compliant</dt>
+<dd>
+<p id="_33700140-6532-46a6-9082-dc736c568b45">All cryptographic algorithms used are compliant with OSCCA  regulations.</p>
+</dd>
+<dt>SM2DSA</dt>
+<dd>
+<p id="_6f277bc4-cd81-4161-807e-ea0fa20c5eef">The elliptic curve digital signature algorithm. <eref type="inline" bibitemid="ISO.IEC.10118-3" citeas="ISO/IEC 10118-3"/></p>
+</dd>
+<dt>SM2KEP</dt>
+<dd>
+<p id="_fba2251e-57bc-4e55-acd7-910776822942">The elliptic curve key exchange protocol.</p>
+</dd>
+<dt>SM2PKE</dt>
+<dd>
+<p id="_75a9acc8-36e2-4558-bf6e-c352bbc29964">The public key encryption algorithm.</p>
+</dd>
+</dl>
+<clause id="_elliptic_curve_formula" inline-header="false" obligation="normative">
+<title>Elliptic Curve Formula</title>
+<formula id="_59f339b5-dc37-4d63-847c-dfcb22c4e27b">
+<stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mrow><mi>y</mi></mrow><mrow><mn>2</mn></mrow></msup><mo>=</mo><msup><mrow><mi>x</mi></mrow><mrow><mn>3</mn></mrow></msup><mo>+</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></math></stem>
+</formula>
+</clause>
+<clause id="_curve_parameters" inline-header="false" obligation="normative">
+<title>Curve Parameters</title>
+<figure id="curveparam1">
+<name>Curve Parameters Listing</name>
+<pre id="_5262c75e-3af8-44d2-b185-7014074ed910">p   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      FFFFFFFF 00000000 FFFFFFFF FFFFFFFF
+a   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      FFFFFFFF 00000000 FFFFFFFF FFFFFFFC
+b   = 28E9FA9E 9D9F5E34 4D5A9E4B CF6509A7
+      F39789F5 15AB8F92 DDBCBD41 4D940E93
+n   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      7203DF6B 21C6052B 53BBF409 39D54123
+x_G = 32C4AE2C 1F198119 5F990446 6A39C994
+      8FE30BBF F2660BE1 715A4589 334C74C7
+y_G = BC3736A2 F4F6779C 59BDCEE3 6B692153
+      D0A9877C C62A4740 02DF32E5 2139F0A0</pre>
+</figure>
+</clause></clause></clause>
+<clause id="_code_to_launch_spaceship" inline-header="false" obligation="normative"><title>Code to launch spaceship</title><sourcecode lang="ruby" id="_8c718f8d-9546-465f-9776-a54d8d584b41">&lt;CODE BEGINS&gt;
+module Foo
+  class Bar
+    def prepare_launch(spaceship, rocket)
+      spaceship.load_personnel
+      rocket.load(spaceship)
+      rocket
+    end
+  end
+end
+&lt;CODE ENDS&gt;</sourcecode>
+</clause>
+<clause id="_supported_algorithms" inline-header="false" obligation="normative">
+<title>Supported Algorithms</title>
+<clause id="_public_key_algorithms" inline-header="false" obligation="normative"><title>Public Key Algorithms</title><p id="_fab0894a-c3c8-47e6-a199-fdf9cb8c5ed8">The SM2 algorithm is supported with the following extension.<note id="_057eb24d-b47b-4b9c-9b0d-12cee3628cf9">
+<p id="_b470000b-5c99-435a-9276-7b49fd1915b0">ECDH is defined in Section 8 of this document.</p>
+</note></p>
+
+<p id="_5039e210-b270-4e4b-87a7-f06aed23da17">The following public key algorithm IDs are added to expand Section
+9.1 of RFC4880, "Public-Key Algorithms":</p>
+<table id="_2c0c3c2f-871c-4fc1-8e1e-a86e18e2cbf7">
+<name>Table 2</name>
+<thead>
+<tr>
+<th valign="top" align="left">ID</th>
+<th valign="top" align="left">Description of Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td valign="top" align="left">TBD</td>
+<td valign="top" align="left">SM2</td>
+</tr>
+</tbody>
+</table></clause>
+</clause>
+<clause id="_security_considerations" inline-header="false" obligation="normative">
+<title>Security Considerations</title>
+<p id="_a827075a-be40-48fc-9016-8e4fb5e0b690">Security is not generally a problem in normal operation, but special<br/>
+measures <bcp14>MUST</bcp14> be taken (such as data encryption) when avian carriers
+are used in a tactical environment.<eref type="inline" bibitemid="RFC7253" citeas="RFC 7253"/>, <eref type="inline" bibitemid="ISO.IEC.10118-3" citeas="ISO/IEC 10118-3"/></p>
+</clause>
+
+</sections><bibliography><references id="_normative_references" normative="false" obligation="informative"><title>Normative  References</title><bibitem id="ISO.IEC.10118-3" type="standard">  <fetched>2021-03-18</fetched>  <title type="title-intro" format="text/plain" language="en" script="Latn">IT Security techniques</title>  <title type="title-main" format="text/plain" language="en" script="Latn">Hash-functions</title>  <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: Dedicated hash-functions</title>  <title type="main" format="text/plain" language="en" script="Latn">IT Security techniques&#8201;&#8212;&#8201;Hash-functions&#8201;&#8212;&#8201;Part 3: Dedicated hash-functions</title>  <uri type="src">https://www.iso.org/standard/67116.html</uri>  <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:67116:en</uri>  <uri type="rss">https://www.iso.org/contents/data/standard/06/71/67116.detail.rss</uri>  <docidentifier type="ISO">ISO/IEC 10118-3</docidentifier>  <docidentifier type="URN">urn:iso:std:iso-iec:10118:-3:stage-60.60:ed-4:en</docidentifier>  <docnumber>10118</docnumber>  <contributor>    <role type="publisher"/>    <organization>      <name>International Organization for Standardization</name>      <abbreviation>ISO</abbreviation>      <uri>www.iso.org</uri>    </organization>  </contributor>  <contributor>    <role type="publisher"/>    <organization>      <name>International Electrotechnical Commission</name>      <abbreviation>IEC</abbreviation>      <uri>www.iec.ch</uri>    </organization>  </contributor>  <edition>4</edition>  <language>en</language>  <script>Latn</script>  <status>    <stage>60</stage>    <substage>60</substage>  </status>  <copyright>    <from>2018</from>    <owner>      <organization>        <name>ISO/IEC</name>      </organization>    </owner>  </copyright>  <relation type="obsoletes">    <bibitem type="standard">      <formattedref format="text/plain">ISO/IEC 10118-3:2004</formattedref>    </bibitem>  </relation>  <relation type="obsoletes">    <bibitem type="standard">      <formattedref format="text/plain">ISO/IEC 10118-3:2004/Amd 1:2006</formattedref>    </bibitem>  </relation>  <relation type="obsoletes">    <bibitem type="standard">      <formattedref format="text/plain">ISO/IEC 10118-3:2004/Cor 1:2011</formattedref>    </bibitem>  </relation>  <relation type="instance">    <bibitem type="standard">      <fetched>2021-03-18</fetched>      <title type="title-intro" format="text/plain" language="en" script="Latn">IT Security techniques</title>      <title type="title-main" format="text/plain" language="en" script="Latn">Hash-functions</title>      <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: Dedicated hash-functions</title>      <title type="main" format="text/plain" language="en" script="Latn">IT Security techniques&#8201;&#8212;&#8201;Hash-functions&#8201;&#8212;&#8201;Part 3: Dedicated hash-functions</title>      <uri type="src">https://www.iso.org/standard/67116.html</uri>      <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:67116:en</uri>      <uri type="rss">https://www.iso.org/contents/data/standard/06/71/67116.detail.rss</uri>      <docidentifier type="ISO">ISO/IEC 10118-3:2018</docidentifier>      <docidentifier type="URN">urn:iso:std:iso-iec:10118:-3:stage-60.60:ed-4:en</docidentifier>      <docnumber>10118</docnumber>      <date type="published">        <on>2018-10</on>      </date>      <contributor>        <role type="publisher"/>        <organization>          <name>International Organization for Standardization</name>          <abbreviation>ISO</abbreviation>          <uri>www.iso.org</uri>        </organization>      </contributor>      <contributor>        <role type="publisher"/>        <organization>          <name>International Electrotechnical Commission</name>          <abbreviation>IEC</abbreviation>          <uri>www.iec.ch</uri>        </organization>      </contributor>      <edition>4</edition>      <language>en</language>      <script>Latn</script>      <abstract format="text/plain" language="en" script="Latn">This document specifies dedicated hash-functions, i.e. specially designed hash-functions. The hash-functions in this document are based on the iterative use of a round-function. Distinct round-functions are specified, giving rise to distinct dedicated hash-functions.The use of Dedicated Hash-Functions 1, 2 and 3 in new digital signature implementations is deprecated.NOTE       As a result of their short hash-code length and/or cryptanalytic results, Dedicated Hash-Functions 1, 2 and 3 do not provide a sufficient level of collision resistance for future digital signature applications and they are therefore, only usable for legacy applications. However, for applications where collision resistance is not required, such as in hash-functions as specified in ISO/IEC 9797&#8209;2, or in key derivation functions specified in ISO/IEC 11770&#8209;6, their use is not deprecated.Numerical examples for dedicated hash-functions specified in this document are given in Annex B as additional information. For information purposes, SHA-3 extendable-output functions are specified in Annex C.</abstract>      <status>        <stage>60</stage>        <substage>60</substage>      </status>      <copyright>        <from>2018</from>        <owner>          <organization>            <name>ISO/IEC</name>          </organization>        </owner>      </copyright>      <relation type="obsoletes">        <bibitem type="standard">          <formattedref format="text/plain">ISO/IEC 10118-3:2004</formattedref>        </bibitem>      </relation>      <relation type="obsoletes">        <bibitem type="standard">          <formattedref format="text/plain">ISO/IEC 10118-3:2004/Amd 1:2006</formattedref>        </bibitem>      </relation>      <relation type="obsoletes">        <bibitem type="standard">          <formattedref format="text/plain">ISO/IEC 10118-3:2004/Cor 1:2011</formattedref>        </bibitem>      </relation>      <place>Geneva</place>    </bibitem>  </relation>  <place>Geneva</place></bibitem> </references><references id="_informative_references" normative="false" obligation="informative"><title>Informative References</title><bibitem id="RFC7253" type="standard">  <fetched>2021-03-18</fetched>  <title format="text/plain" language="en" script="Latn">The OCB Authenticated-Encryption Algorithm</title>  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.RFC.7253.xml</uri>  <uri type="src">https://www.rfc-editor.org/info/rfc7253</uri>  <docidentifier type="IETF">RFC 7253</docidentifier>  <docidentifier type="rfc-anchor">RFC7253</docidentifier>  <docidentifier type="DOI">10.17487/RFC7253</docidentifier>  <date type="published">    <on>2014-05</on>  </date>  <contributor>    <role type="author"/>    <person>      <name>        <completename language="en">T. Krovetz</completename>      </name>      <affiliation>        <organization>          <name>Internet Engineering Task Force</name>          <abbreviation>IETF</abbreviation>        </organization>      </affiliation>    </person>  </contributor>  <contributor>    <role type="author"/>    <person>      <name>        <completename language="en">P. Rogaway</completename>      </name>      <affiliation>        <organization>          <name>Internet Engineering Task Force</name>          <abbreviation>IETF</abbreviation>        </organization>      </affiliation>    </person>  </contributor>  <contributor>    <role type="publisher"/>    <organization>      <name>Internet Engineering Task Force</name>      <abbreviation>IETF</abbreviation>    </organization>  </contributor>  <language>en</language>  <script>Latn</script>  <abstract format="text/plain" language="en" script="Latn">This document specifies OCB, a shared-key blockcipher-based encryption scheme that provides confidentiality and authenticity for plaintexts and authenticity for associated data.  This document is a product of the Crypto Forum Research Group (CFRG).</abstract>  <series type="main">    <title format="text/plain" language="en" script="Latn">RFC</title>    <number>7253</number>  </series>  <place>Fremont, CA</place></bibitem> </references></bibliography>
+</ietf-standard>
