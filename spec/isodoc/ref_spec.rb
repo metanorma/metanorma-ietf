@@ -317,7 +317,7 @@ RSpec.describe IsoDoc::Ietf do
                       <keyword>Track</keyword>
                       <keyword>Documents</keyword>
                       <abstract>
-                         <t anchor="_">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+                         <t>In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
                       </abstract>
                    </front>
                    <seriesInfo value="10.17487/RFC2119" name="DOI"/>
@@ -995,7 +995,7 @@ RSpec.describe IsoDoc::Ietf do
                             <date month="August" year="2009"/>
                             <keyword>shared framework mapping</keyword>
                             <abstract>
-                               <t anchor="_">This document describes an application-layer client-server protocol for the provisioning and management of objects stored in a shared central repository. Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects. This document includes a protocol specification, an object mapping template, and an XML media type registration. This document obsoletes RFC 4930. [STANDARDS-TRACK]</t>
+                               <t>This document describes an application-layer client-server protocol for the provisioning and management of objects stored in a shared central repository. Specified in XML, the protocol defines generic object management operations and an extensible framework that maps protocol operations to objects. This document includes a protocol specification, an object mapping template, and an XML media type registration. This document obsoletes RFC 4930. [STANDARDS-TRACK]</t>
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5730" name="DOI"/>
@@ -1013,7 +1013,7 @@ RSpec.describe IsoDoc::Ietf do
                             <keyword>domain</keyword>
                             <keyword>domain name</keyword>
                             <abstract>
-                               <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet domain names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to domain names. This document obsoletes RFC 4931. [STANDARDS-TRACK]</t>
+                               <t>This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet domain names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to domain names. This document obsoletes RFC 4931. [STANDARDS-TRACK]</t>
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5731" name="DOI"/>
@@ -1030,7 +1030,7 @@ RSpec.describe IsoDoc::Ietf do
                             <keyword>XML</keyword>
                             <keyword>host</keyword>
                             <abstract>
-                               <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet host names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to host names. This document obsoletes RFC 4932. [STANDARDS-TRACK]</t>
+                               <t>This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of Internet host names stored in a shared central repository. Specified in XML, the mapping defines EPP command syntax and semantics as applied to host names. This document obsoletes RFC 4932. [STANDARDS-TRACK]</t>
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5732" name="DOI"/>
@@ -1048,7 +1048,7 @@ RSpec.describe IsoDoc::Ietf do
                             <keyword>contact</keyword>
                             <keyword>registrant</keyword>
                             <abstract>
-                               <t anchor="_">This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of individual or organizational social information identifiers (known as "contacts") stored in a shared central repository. Specified in Extensible Markup Language (XML), the mapping defines EPP command syntax and semantics as applied to contacts. This document obsoletes RFC 4933. [STANDARDS-TRACK]</t>
+                               <t>This document describes an Extensible Provisioning Protocol (EPP) mapping for the provisioning and management of individual or organizational social information identifiers (known as "contacts") stored in a shared central repository. Specified in Extensible Markup Language (XML), the mapping defines EPP command syntax and semantics as applied to contacts. This document obsoletes RFC 4933. [STANDARDS-TRACK]</t>
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5733" name="DOI"/>
@@ -1066,7 +1066,7 @@ RSpec.describe IsoDoc::Ietf do
                             <keyword>TCP</keyword>
                             <keyword>TLS</keyword>
                             <abstract>
-                               <t anchor="_">This document describes how an Extensible Provisioning Protocol (EPP) session is mapped onto a single Transmission Control Protocol (TCP) connection. This mapping requires use of the Transport Layer Security (TLS) protocol to protect information exchanged between an EPP client and an EPP server. This document obsoletes RFC 4934. [STANDARDS-TRACK]</t>
+                               <t>This document describes how an Extensible Provisioning Protocol (EPP) session is mapped onto a single Transmission Control Protocol (TCP) connection. This mapping requires use of the Transport Layer Security (TLS) protocol to protect information exchanged between an EPP client and an EPP server. This document obsoletes RFC 4934. [STANDARDS-TRACK]</t>
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5734" name="DOI"/>
