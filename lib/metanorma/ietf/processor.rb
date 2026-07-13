@@ -1,5 +1,6 @@
 require "metanorma/processor"
 require "tempfile"
+require_relative "transformer"
 
 module Metanorma
   module Ietf
@@ -54,13 +55,33 @@ module Metanorma
         end
       end
 
+      def document_transformers
+        {
+          rfc: {
+            reader: Metanorma::IetfDocument::Root,
+            transformer: Transformer::IetfToRfcV3,
+            strip_default_namespace: true,
+            to_xml_options: { pretty: true, declaration: true,
+                              encoding: "utf-8" },
+            post_process: method(:warn_rfc_xml_validation),
+          },
+        }
+      end
+
+      def warn_rfc_xml_validation(xml, transformer, options)
+        options[:validate] and
+          transformer.validate_rfc_xml(xml)
+            .each { |e| warn "RFC XML: #{e}" }
+        xml
+      end
+
       def output(isodoc_node, inname, outname, format, options = {})
         options_preprocess(options)
         case format
         when :rfc
           outname ||= inname.sub(/\.xml$/, ".rfc.xml")
-          xml = Transformer.convert(isodoc_node, options.merge(validate: true))
-          File.open(outname, "w:UTF-8") { |f| f.write(xml) }
+          super(isodoc_node, inname, outname, format,
+                options.merge(validate: true))
           @done_rfc = true
         when :txt, :pdf, :html
           xml2rfc(isodoc_node, inname, outname, format, options)
