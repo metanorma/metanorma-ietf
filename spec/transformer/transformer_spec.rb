@@ -241,6 +241,23 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
   end
 
+  describe "image transformation" do
+    let(:transformer) { Metanorma::Ietf::Transformer::IetfToRfcV3.allocate }
+
+    # the model maps the src XML attribute to :source (Media superclass);
+    # calling .src raised NoMethodError and killed the whole document
+    it "reads image src via the model's source attribute" do
+      img = Metanorma::Document::Components::IdElements::Image.from_xml(
+        '<image id="_i" src="https://example.com/x.svg" ' \
+        'mimetype="image/svg+xml" alt="Orb"/>',
+      )
+      art = transformer.send(:transform_image_to_artwork, img)
+      expect(art.src).to eq("https://example.com/x.svg")
+      expect(art.type).to eq("svg")
+      expect(art.alt).to eq("Orb")
+    end
+  end
+
   describe "cleanup transformer unit tests" do
     let(:transformer) { Metanorma::Ietf::Transformer::IetfToRfcV3.allocate }
 
