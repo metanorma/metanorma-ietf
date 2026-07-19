@@ -135,10 +135,21 @@ module Relaton
             a.detect { |s| s.type.nil? } || a.first
         end
 
+        # the enumeration <stream> admits per v3.rng, keyed by downcased
+        # relaton stream title
+        XML2RFC_STREAMS = {
+          "iab" => "IAB", "ietf" => "IETF", "irtf" => "IRTF",
+          "independent" => "independent",
+          "independent submission" => "independent"
+        }.freeze
+
+        # Normalise the stream to the xml2rfc enumeration; values outside
+        # it (Legacy et al.) are omitted rather than emitted verbatim,
+        # which was fatal to xml2rfc (INDEPENDENT, #270)
         def stream(doc)
           a = Array(doc.series).detect { |s| s.type == "stream" } or return nil
-          Array(a.title).first&.content == "Legacy" and return nil
-          series_title(a, doc)
+          t = Array(a.title).first&.content or return nil
+          XML2RFC_STREAMS[t.downcase]
         end
 
         def extract(doc)

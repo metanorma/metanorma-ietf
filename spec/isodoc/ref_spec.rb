@@ -1124,4 +1124,42 @@ RSpec.describe IsoDoc::Ietf do
       </reference>
     OUTPUT
   end
+
+  it "normalises reference stream to the xml2rfc enumeration (#270)" do
+    # relaton stream values arrive in arbitrary case (INDEPENDENT), but
+    # <stream> admits only IAB/IETF/IRTF/independent; unknown streams
+    # are omitted rather than emitted verbatim, which was xml2rfc-fatal
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-stream-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      <bibliography><references id="_bibliography" obligation="informative" normative="false">
+      <title>Bibliography</title>
+      <bibitem anchor="RFC1149" id="_r1" type="standard">
+        <title format="text/plain">Avian carriers</title>
+        <docidentifier type="IETF" primary="true">RFC 1149</docidentifier>
+        <series type="stream"><title format="text/plain">INDEPENDENT</title></series>
+      </bibitem>
+      <bibitem anchor="XYZ" id="_r2" type="standard">
+        <title format="text/plain">Mystery stream</title>
+        <docidentifier type="XYZ" primary="true">XYZ 1</docidentifier>
+        <series type="stream"><title format="text/plain">Homebrew</title></series>
+      </bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    xml = File.read("test.rfc.xml")
+    ref1 = xml[%r{<reference anchor="RFC1149".*?</reference>}m]
+    expect(ref1).to include("<stream>independent</stream>")
+    ref2 = xml[%r{<reference anchor="XYZ".*?</reference>}m]
+    expect(ref2).not_to include("<stream>")
+  end
 end
