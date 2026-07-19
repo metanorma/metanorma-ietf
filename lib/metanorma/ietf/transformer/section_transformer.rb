@@ -136,7 +136,7 @@ module Metanorma
         def transform_clause(clause)
           section = Rfcxml::V3::Section.new
 
-          section.anchor = to_ncname(clause.id) if clause.id
+          section.anchor = to_ncname(anchor_for(clause)) if anchor_for(clause)
 
           unnumbered = clause.unnumbered if clause.class.method_defined?(:unnumbered)
           if unnumbered == "true"

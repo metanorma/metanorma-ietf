@@ -60,7 +60,8 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
 
     it "conserves user-authored anchors" do
-      pending "N2: user anchors dropped from sections"
+      # N2 mapping half fixed (anchor_for sweep); management half is the
+      # presentation layer's per the architecture decision
       in_anchors = input.xpath("//*[@anchor]").map { |n| n["anchor"] }.uniq
       skip "no user anchors in fixture" if in_anchors.empty?
       out_anchors = output.xpath("//*[@anchor]").map { |n| n["anchor"] }
