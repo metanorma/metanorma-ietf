@@ -231,12 +231,12 @@ module Metanorma
           c = sc_node.content
           if c
             content = c.is_a?(Array) ? c.join : c.to_s
-          else
-            body = sc_node.body
-            if body
-              bc = body.content
-              content = bc.is_a?(Array) ? bc.join : bc.to_s
-            end
+          end
+          # current Semantic XML nests the code text in sourcecode/body;
+          # content then parses as an empty (but truthy) collection
+          if content.strip.empty? && sc_node.respond_to?(:body) && sc_node.body
+            bc = sc_node.body.content
+            content = bc.is_a?(Array) ? bc.join : bc.to_s
           end
 
           sourcecode.content = [content] unless content.empty?
