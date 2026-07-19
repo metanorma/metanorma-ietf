@@ -117,11 +117,20 @@ module IsoDoc
 
       def crossref_remove_markup_elem(node)
         case node.name
-        when "eref"
-          node.replace(node.children.empty? ? node["target"] : node.children)
+        when "eref" then crossref_flatten_eref(node)
         when "xref"
           node.children.empty? ? sourcecode_xref(node) : node.replace(node.children)
           # when "relref" then n.replace(n.children.empty? ? n["target"] : n.children)
+        end
+      end
+
+      # empty eref: insert the target as a text node, not a raw string
+      # that Nokogiri would reparse as markup (#267)
+      def crossref_flatten_eref(node)
+        if node.children.empty?
+          node.replace(node.document.create_text_node(node["target"]))
+        else
+          node.replace(node.children)
         end
       end
 

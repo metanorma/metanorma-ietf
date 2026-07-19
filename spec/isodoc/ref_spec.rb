@@ -1085,4 +1085,43 @@ RSpec.describe IsoDoc::Ietf do
       expect(strip_guid(xml))
         .to be_xml_equivalent_to output
   end
+
+  it "renders formattedref with literal bracketed URL as text, " \
+     "not fabricated markup (#267)" do
+    # A formattedref carrying a literal "<" + <link/> + ">" used to be
+    # flattened into the title via a string -> XML reparse, fabricating an
+    # element named "http:" -- a QName violation fatal to xml2rfc
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-formattedref-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      <bibliography><references id="_bibliography" obligation="informative" normative="false">
+      <title>Bibliography</title>
+      <bibitem anchor="IERS" id="_iers001">
+        <formattedref format="application/x-isodoc+xml">International Earth Rotation Service Bulletins, &lt;<link target="http://hpiers.obspm.fr/eop-pc/products/bulletins.html"/>&gt;.</formattedref>
+        <docidentifier>IERS</docidentifier>
+      </bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    xml = File.read("test.rfc.xml")
+    expect(xml).not_to include("<http:")
+    ref = xml[%r{<reference anchor="IERS".*?</reference>}m]
+    expect(strip_guid(ref)).to be_xml_equivalent_to <<~OUTPUT
+      <reference anchor="IERS">
+        <front>
+          <title>International Earth Rotation Service Bulletins, &#x3c;http://hpiers.obspm.fr/eop-pc/products/bulletins.html&#x3e;.</title>
+          <author surname="Unknown"/>
+        </front>
+      </reference>
+    OUTPUT
+  end
 end
