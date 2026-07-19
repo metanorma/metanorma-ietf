@@ -47,9 +47,15 @@ module IsoDoc
         set(:wg, workgroups)
       end
 
+      # Standoc emits <doctype>rfc</doctype>, which the base class
+      # capitalises to "Rfc"; the front/section renderers compare against
+      # the exact "RFC", so the document's own RFC seriesInfo (and with it
+      # the "Request for Comments" masthead line) was dropped (#268).
+      # Normalise casing here so every consumer sees "RFC".
       def doctype(isoxml, _out)
         super
-        set(:doctype, "RFC") if get[:doctype].nil?
+        d = get[:doctype]
+        d.nil? || d.casecmp?("rfc") and set(:doctype, "RFC")
       end
 
       def initialize(lang, script, locale, i18n, fonts_options = {})

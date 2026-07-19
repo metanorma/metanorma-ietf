@@ -79,7 +79,8 @@ module IsoDoc
         xmldoc.xpath("//refcontent").each do |a|
           val = a.text.strip
           if val.empty? then a.remove
-          else a.children = val
+          else a.content = val # not children=: a literal "<" in the text
+            # would be reparsed as markup and fabricate an element (#267)
           end
         end
       end
@@ -98,17 +99,25 @@ module IsoDoc
         end.join
       end
 
+      # Flatten titles to the plain text RFC XML v3 allows, without a
+      # string -> XML round-trip: replacing an empty eref with its raw
+      # target string, then reparsing the title text as markup, fabricated
+      # an element out of a URL adjacent to a literal "<" in a formattedref
+      # ("<http:>", a QName violation fatal to xml2rfc, #267). Text nodes
+      # and content= keep the same flattening semantics with escaping.
       def front_cleanup(xmldoc)
-        xmldoc.xpath("//title").each do |s|
-          s.xpath(".//eref[normalize-space(.)='']").each do |e|
-            e.replace(e["target"])
-          end
-          s.children = s.text
-        end
+        xmldoc.xpath("//title").each { |s| title_flatten(s, xmldoc) }
         xmldoc.xpath("//reference/front[not(author)]").each do |f|
           insert = f.at("./seriesInfo[last()]") || f.at("./title")
           insert.next = "<author surname='Unknown'/>"
         end
+      end
+
+      def title_flatten(title, xmldoc)
+        title.xpath(".//eref[normalize-space(.)='']").each do |e|
+          e.replace(xmldoc.create_text_node(e["target"]))
+        end
+        title.content = title.text
       end
     end
   end

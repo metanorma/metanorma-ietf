@@ -292,11 +292,11 @@ RSpec.describe IsoDoc::Ietf do
       <section anchor="B">
          <name>Introduction</name>
                 <t anchor="_">
-                   <xref target="ISO712" section="" relative=""/>
-                   <xref target="ISBN" section="" relative=""/>
-                   <xref target="ISSN" section="" relative=""/>
-                   <xref target="ISO16634" section="" relative=""/>
-                   <xref target="ref11" section="" relative=""/>
+                   <xref target="ISO712"/>
+                   <xref target="ISBN"/>
+                   <xref target="ISSN"/>
+                   <xref target="ISO16634"/>
+                   <xref target="ref11"/>
                 </t>
              </section>
              <section anchor="A">
@@ -311,7 +311,7 @@ RSpec.describe IsoDoc::Ietf do
                    <stream>IETF</stream>
                    <front>
                       <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-                      <author fullname="S. Bradner" asciiFullname="S. Bradner"/>
+                      <author fullname="S. Bradner"/>
                       <date month="March" year="1997"/>
                       <keyword>Standards</keyword>
                       <keyword>Track</keyword>
@@ -327,7 +327,7 @@ RSpec.describe IsoDoc::Ietf do
                 <reference target="https://www.rfc-editor.org/info/rfc2397" anchor="RFC2397">
             <front>
                <title>The "data" URL scheme</title>
-               <author fullname="L. Masinter" asciiFullname="L. Masinter"/>
+               <author fullname="L. Masinter"/>
                <date month="August" year="1998"/>
                <keyword>DATA-URL</keyword>
                <keyword>uniform resource locator</keyword>
@@ -344,7 +344,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and cereal products</title>
                       <author>
-                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                         <organization>International Organization for Standardization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 712</refcontent>
@@ -353,7 +353,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
                       <author>
-                         <organization ascii="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                         <organization abbrev="ISO1">International Supporters of Odium</organization>
                       </author>
                       <keyword>keyword1</keyword>
                       <keyword>keyword2</keyword>
@@ -368,7 +368,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and pulses</title>
                       <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <author surname="Citizen" initials="A.B."/>
                       <date year="2013"/>
                       <abstract>
                          <t>This is an abstract</t>
@@ -380,8 +380,8 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and pulses II</title>
                       <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
-                      <author surname="Third" asciiSurname="Third" initials="Th." asciiInitials="Th."/>
+                      <author surname="Citizen" initials="A.B."/>
+                      <author surname="Third" initials="Th."/>
                       <date year="2013"/>
                       <abstract>
                          <t>This is an abstract</t>
@@ -402,7 +402,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Chemicals for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
+                         <organization abbrev="ISBN">International SBN</organization>
                       </author>
                    </front>
                 </reference>
@@ -410,7 +410,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Instruments for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
+                         <organization abbrev="ISSN">International SSN</organization>
                       </author>
                    </front>
                    <annotation>
@@ -424,7 +424,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Water for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International Standards Organization" abbrev="ISO">International Standards Organization</organization>
+                         <organization abbrev="ISO">International Standards Organization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 3696</refcontent>
@@ -433,7 +433,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                       <author>
-                         <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+                         <organization abbrev="IETF">Internet Engineering Task Force</organization>
                       </author>
                    </front>
                    <seriesInfo value="10" name="RFC"/>
@@ -441,7 +441,7 @@ RSpec.describe IsoDoc::Ietf do
                 <reference anchor="I-D.aboba-context-802">
                    <front>
                       <title>A Model for Context Transfer in IEEE 802</title>
-                      <author fullname="Bernard Aboba" asciiFullname="Bernard Aboba"/>
+                      <author fullname="Bernard Aboba"/>
                       <date month="October" year="2003"/>
                    </front>
                    <seriesInfo value="aboba-context-802" name="Internet-Draft"/>
@@ -641,11 +641,11 @@ RSpec.describe IsoDoc::Ietf do
       <section anchor="B">
          <name>Introduction</name>
                 <t anchor="_">
-                   <xref target="ISO712" section="" relative=""/>
-                   <xref target="ISBN" section="" relative=""/>
-                   <xref target="ISSN" section="" relative=""/>
-                   <xref target="ISO16634" section="" relative=""/>
-                   <xref target="ref11" section="" relative=""/>
+                   <xref target="ISO712"/>
+                   <xref target="ISBN"/>
+                   <xref target="ISSN"/>
+                   <xref target="ISO16634"/>
+                   <xref target="ref11"/>
                 </t>
                 </section>
              <section anchor="A">
@@ -660,7 +660,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and cereal products</title>
                       <author>
-                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                         <organization>International Organization for Standardization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 712</refcontent>
@@ -669,7 +669,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
                       <author>
-                         <organization ascii="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                         <organization abbrev="ISO1">International Supporters of Odium</organization>
                       </author>
                       <keyword>keyword1</keyword>
                       <keyword>keyword2</keyword>
@@ -684,7 +684,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and pulses</title>
                       <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <author surname="Citizen" initials="A.B."/>
                       <date year="2013"/>
                       <abstract>
                          <t>This is an abstract</t>
@@ -699,7 +699,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Chemicals for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
+                         <organization abbrev="ISBN">International SBN</organization>
                       </author>
                    </front>
                 </reference>
@@ -707,7 +707,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Instruments for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
+                         <organization abbrev="ISSN">International SSN</organization>
                       </author>
                    </front>
                    <annotation>
@@ -721,7 +721,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Water for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International Standards Organization" abbrev="ISO">International Standards Organization</organization>
+                         <organization abbrev="ISO">International Standards Organization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 3696</refcontent>
@@ -730,7 +730,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                       <author>
-                         <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+                         <organization abbrev="IETF">Internet Engineering Task Force</organization>
                       </author>
                    </front>
                    <seriesInfo value="10" name="RFC"/>
@@ -991,7 +991,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP)</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>shared framework mapping</keyword>
                             <abstract>
@@ -1005,7 +1005,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Domain Name Mapping</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1023,7 +1023,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Host Mapping</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1040,7 +1040,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Contact Mapping</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1058,7 +1058,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Transport over TCP</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1084,5 +1084,82 @@ RSpec.describe IsoDoc::Ietf do
       xml = File.read("test.rfc.xml")
       expect(strip_guid(xml))
         .to be_xml_equivalent_to output
+  end
+
+  it "renders formattedref with literal bracketed URL as text, " \
+     "not fabricated markup (#267)" do
+    # A formattedref carrying a literal "<" + <link/> + ">" used to be
+    # flattened into the title via a string -> XML reparse, fabricating an
+    # element named "http:" -- a QName violation fatal to xml2rfc
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-formattedref-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      <bibliography><references id="_bibliography" obligation="informative" normative="false">
+      <title>Bibliography</title>
+      <bibitem anchor="IERS" id="_iers001">
+        <formattedref format="application/x-isodoc+xml">International Earth Rotation Service Bulletins, &lt;<link target="http://hpiers.obspm.fr/eop-pc/products/bulletins.html"/>&gt;.</formattedref>
+        <docidentifier>IERS</docidentifier>
+      </bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    xml = File.read("test.rfc.xml")
+    expect(xml).not_to include("<http:")
+    ref = xml[%r{<reference anchor="IERS".*?</reference>}m]
+    expect(strip_guid(ref)).to be_xml_equivalent_to <<~OUTPUT
+      <reference anchor="IERS">
+        <front>
+          <title>International Earth Rotation Service Bulletins, &#x3c;http://hpiers.obspm.fr/eop-pc/products/bulletins.html&#x3e;.</title>
+          <author surname="Unknown"/>
+        </front>
+      </reference>
+    OUTPUT
+  end
+
+  it "normalises reference stream to the xml2rfc enumeration (#270)" do
+    # relaton stream values arrive in arbitrary case (INDEPENDENT), but
+    # <stream> admits only IAB/IETF/IRTF/independent; unknown streams
+    # are omitted rather than emitted verbatim, which was xml2rfc-fatal
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-stream-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      <bibliography><references id="_bibliography" obligation="informative" normative="false">
+      <title>Bibliography</title>
+      <bibitem anchor="RFC1149" id="_r1" type="standard">
+        <title format="text/plain">Avian carriers</title>
+        <docidentifier type="IETF" primary="true">RFC 1149</docidentifier>
+        <series type="stream"><title format="text/plain">INDEPENDENT</title></series>
+      </bibitem>
+      <bibitem anchor="XYZ" id="_r2" type="standard">
+        <title format="text/plain">Mystery stream</title>
+        <docidentifier type="XYZ" primary="true">XYZ 1</docidentifier>
+        <series type="stream"><title format="text/plain">Homebrew</title></series>
+      </bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    xml = File.read("test.rfc.xml")
+    ref1 = xml[%r{<reference anchor="RFC1149".*?</reference>}m]
+    expect(ref1).to include("<stream>independent</stream>")
+    ref2 = xml[%r{<reference anchor="XYZ".*?</reference>}m]
+    expect(ref2).not_to include("<stream>")
   end
 end

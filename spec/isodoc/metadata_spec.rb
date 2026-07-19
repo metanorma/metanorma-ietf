@@ -544,4 +544,28 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     expect(IsoDoc::Ietf::RfcConvert.new({})
       .convert("test", input, true)).to be_xml_equivalent_to output
   end
+
+  it "emits RFC seriesInfo for lowercase doctype rfc (#268)" do
+    # Standoc emits <doctype>rfc</doctype> (lowercase); the base metadata
+    # class capitalises it to "Rfc", which used to miss the exact "RFC"
+    # comparison gating rfc_seriesinfo, dropping the document's own
+    # seriesInfo and with it the "Request for Comments" masthead line
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata type="standard">
+      <title language="en" format="text/plain" type="main">Date and Time on the Internet</title>
+      <docidentifier>RFC 3339</docidentifier>
+      <docnumber>3339</docnumber>
+      <ext><doctype>rfc</doctype><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      </iso-standard>
+    INPUT
+    out = IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
+    xml = Nokogiri::XML(out)
+    si = xml.at("//front/seriesInfo[@name = 'RFC']")
+    expect(si).not_to be_nil
+    expect(si["value"]).to eq "3339"
+    expect(xml.root["number"]).to eq "3339"
+  end
 end

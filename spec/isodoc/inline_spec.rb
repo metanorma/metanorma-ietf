@@ -98,7 +98,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                        Requirement
                        <tt>/req/core/http</tt>
                      </xref>
-                     <xref target='ISO712' section='' relative=''>
+                     <xref target='ISO712'>
                        Requirement
                        <tt>/req/core/http</tt>
                      </xref>
@@ -474,7 +474,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t>
-        <xref target='ISO712' section='' sectionFormat='of' relative="#abc">A</xref>
+        <xref target='ISO712' sectionFormat='of' relative="#abc">A</xref>
       </t>
       </abstract>
       <date day="1" year="2000" month="January"/>
@@ -486,7 +486,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <front>
         <title>Cereals and cereal products</title>
         <author>
-          <organization ascii="International Organization for Standardization" abbrev="ISO">International Organization for Standardization</organization>
+          <organization abbrev="ISO">International Organization for Standardization</organization>
         </author>
       </front>
       <refcontent>ISO&#xa0;712</refcontent>
@@ -546,20 +546,20 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
     output = <<~OUTPUT
           #{XML_HDR}
           <t>
-                         <xref target='ISO712' section='' relative=''/>
-               <xref target='ISO712' section='' relative=''/>
-               <xref target='ISO712' section='Table 1' relative=''/>
-               <xref target='ISO712' section='Table 1&#x2013;1' relative=''/>
-               <xref target='ISO712' section='1, Table 1' relative=''/>
-               <xref target='ISO712' section='1' relative=''/>
-               <xref target='ISO712' section='1.5' relative=''/>
-               <xref target='ISO712' section='Table 1' relative=''>A</xref>
-               <xref target='ISO712' section='Whole of text' relative=''/>
-               <xref target='ISO712' section='Prelude 7' relative=''/>
-               <xref target='ISO712' section='' relative=''>A</xref>
-               <xref target='ISO712' section='1 and 3' relative=''/>
-               <xref target='ISO712' section='1 and Table 3' relative=''/>
-               <xref target='ISO712' section='' relative='1'>A</xref>
+                         <xref target='ISO712'/>
+               <xref target='ISO712'/>
+               <xref target='ISO712' section='Table 1'/>
+               <xref target='ISO712' section='Table 1&#x2013;1'/>
+               <xref target='ISO712' section='1, Table 1'/>
+               <xref target='ISO712' section='1'/>
+               <xref target='ISO712' section='1.5'/>
+               <xref target='ISO712' section='Table 1'>A</xref>
+               <xref target='ISO712' section='Whole of text'/>
+               <xref target='ISO712' section='Prelude 7'/>
+               <xref target='ISO712'>A</xref>
+               <xref target='ISO712' section='1 and 3'/>
+               <xref target='ISO712' section='1 and Table 3'/>
+               <xref target='ISO712' relative='1'>A</xref>
                <xref target='ISO712' section='1 and Clause 9' relative='xyz'/>
                <xref target='ISO712' section='1' relative='1'/>
                <xref target='ISO712' section='1.5' relative='1'/>
@@ -577,7 +577,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <front>
         <title>Cereals and cereal products</title>
         <author>
-          <organization ascii="International Organization for Standardization" abbrev="ISO">International Organization for Standardization</organization>
+          <organization abbrev="ISO">International Organization for Standardization</organization>
         </author>
       </front>
       <refcontent>ISO&#xa0;712</refcontent>
@@ -764,19 +764,19 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       <li>
                          <em>term</em>
                          [term defined in
-                         <xref target="ISO712" section="" relative=""/>
+                         <xref target="ISO712"/>
                          ]
                       </li>
                       <li>
                          <em>word</em>
                          [term defined in
-                         <xref target="ISO712" section="" relative="">The Aforementioned Citation</xref>
+                         <xref target="ISO712">The Aforementioned Citation</xref>
                          ]
                       </li>
                       <li>
                          <em>word</em>
                          [term defined in
-                         <xref target="ISO712" section="3.1, Figure a" relative="">
+                         <xref target="ISO712" section="3.1, Figure a">
 
 
                </xref>
@@ -785,7 +785,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       <li>
                          <em>word</em>
                          [term defined in
-                         <xref target="ISO712" section="3.1 and Figure b" relative="">
+                         <xref target="ISO712" section="3.1 and Figure b">
 
 
                </xref>
@@ -794,7 +794,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                       <li>
                          <em>word</em>
                          [term defined in
-                         <xref target="ISO712" section="3.1 and Figure b" relative="">
+                         <xref target="ISO712" section="3.1 and Figure b">
 
 
                The Aforementioned Citation
@@ -835,7 +835,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    <front>
                       <title>Cereals and cereal products</title>
                       <author>
-                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                         <organization>International Organization for Standardization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 712</refcontent>
@@ -1057,18 +1057,18 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                  <middle>
            <section anchor="A">
              <name>Section</name>
-             <t anchor="_"><xref target="ref1" section="3 to 5" relative=""/><xref target="ref1" section="3 to Clause 5, Table 2" relative=""/>
+             <t anchor="_"><xref target="ref1" section="3 to 5"/><xref target="ref1" section="3 to Clause 5, Table 2"/>
                  text
                </t>
-             <xref target="ref1" section="3 and 5" relative=""/>
-             <xref target="ref1" section="3, 5, and 7" relative=""/>
-             <xref target="ref1" section="3 and Annex 5" relative=""/>
-             <xref target="ref1" section="3 or 5" relative="">
+             <xref target="ref1" section="3 and 5"/>
+             <xref target="ref1" section="3, 5, and 7"/>
+             <xref target="ref1" section="3 and Annex 5"/>
+             <xref target="ref1" section="3 or 5">
 
 
                  text
                </xref>
-             <xref target="ref1" section="3 to 5 and 8 to 10" relative=""/>
+             <xref target="ref1" section="3 to 5 and 8 to 10"/>
            </section>
          </middle>
          <back/>

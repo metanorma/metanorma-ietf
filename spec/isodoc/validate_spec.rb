@@ -246,7 +246,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <reference anchor="RFC2119">
               <front>
                 <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-                <author fullname="S. Bradner" asciiFullname="S. Bradner"></author>
+                <author fullname="S. Bradner"></author>
                 <date month="March" year="1997"></date>
                 <abstract>
                   <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
@@ -261,7 +261,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <reference target="https://www.rfc-editor.org/info/rfc7991" anchor="RFC7991">
               <front>
                 <title>The "xml2rfc" Version 3 Vocabulary</title>
-                <author fullname="P. Hoffman" asciiFullname="P. Hoffman"></author>
+                <author fullname="P. Hoffman"></author>
                 <date month="December" year="2016"></date>
                 <abstract>
                   <t>This document defines the "xml2rfc" version 3 vocabulary: an XML-based language used for writing RFCs and Internet-Drafts.  It is heavily derived from the version 2 vocabulary that is also under discussion.  This document obsoletes the v2 grammar described in RFC 7749.</t>
@@ -358,7 +358,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
         <references anchor="_normative_references">
         <reference anchor="RFC2119">
               <front>
-                <author fullname="S. Bradner" asciiFullname="S. Bradner"></author>
+                <author fullname="S. Bradner"></author>
                 <date month="March" year="1997"></date>
                 <abstract>
                   <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
@@ -373,7 +373,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <reference target="https://www.rfc-editor.org/info/rfc7991" anchor="RFC7991">
               <front>
                 <title>The "xml2rfc" Version 3 Vocabulary</title>
-                <author fullname="P. Hoffman" asciiFullname="P. Hoffman"></author>
+                <author fullname="P. Hoffman"></author>
                 <date month="December" year="2016"></date>
                 <abstract>
                   <t>This document defines the "xml2rfc" version 3 vocabulary: an XML-based language used for writing RFCs and Internet-Drafts.  It is heavily derived from the version 2 vocabulary that is also under discussion.  This document obsoletes the v2 grammar described in RFC 7749.</t>
@@ -389,7 +389,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <front>
                 <title>Automatic Cryptographic Validation Protocol</title>
                 <author>
-                  <organization ascii="National Institute of Standards and Technology" abbrev="NIST">National Institute of Standards and Technology</organization>
+                  <organization abbrev="NIST">National Institute of Standards and Technology</organization>
                 </author>
                 <date year="2019"></date>
               </front>
@@ -398,7 +398,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <front>
                 <title>Automatic Cryptographic Validation Protocol</title>
                 <author>
-                  <organization ascii="National Institute of Standards and Technology" abbrev="NIST">National Institute of Standards and Technology</organization>
+                  <organization abbrev="NIST">National Institute of Standards and Technology</organization>
                 </author>
                 <date year="2019"></date>
               </front>
