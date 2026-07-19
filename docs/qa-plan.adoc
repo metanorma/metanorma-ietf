@@ -387,7 +387,7 @@ from input · *blk* = untestable, transformer crashed first (N12).
 | N5 | IETF-as-author / masthead corruption | ✓ both | *blk* | — (I-D masthead clean) | ✓ masthead
 | N6 | NOTE numbering lost | ✓ | *blk* | not comparable (no old output) | — (single notes)
 | N7 | inline citation displaced/empty | ✓ | *blk* | not assessed | —
-| N8 | front keyword/workgroup loss | ✓ new drops 14 kw | old itself drops 12 kw | — | inverse: old drops wg, new keeps
+| N8 | front keyword/workgroup loss | 14 ref-level kws dropped (front n/a) | 12 ref-level (front n/a) | — | inverse: old drops wg, new keeps
 | N9 | seriesInfo: BCP dropped / IETF-series added | ✓ both | *blk* (old keeps 2 BCP) | ✓ 4 IETF-series | ✓ IETF-series
 | N10 | ISO titles truncated | ✓ | n/a | n/a | ✓
 | N11 | `<u>` bare-unicode dropped | ✓ (1) | *blk* (old emits 99) | n/a | n/a
@@ -398,6 +398,15 @@ from input · *blk* = untestable, transformer crashed first (N12).
 | O3 | old: junk `section=""`/`ascii=` attrs | ✓ | ✓ (ascii) | n/a | —
 | O4 | old: invalid `<stream>` content (fatal) | n/a | ✓ (5) | n/a | n/a
 |===
+
+*N8 correction (2026-07-20).* The dropped keywords on rfc-3339 and
+antioch are *reference-level* (inside relaton-fetched bibitems), not
+document front — an earlier revision of this matrix misattributed them.
+Reference-keyword emission belongs to the reference-rendering family
+(the layer, with N9). The document-front keyword/workgroup paths now
+support the Relaton 2.0 shapes (`keyword/vocab`; workgroup as a
+contributor organization subdivision), with synthetic-witness specs,
+since no corpus document currently declares either in current schema.
 
 *Asymmetry summary.* Both paths have defects, but they are not of the same
 kind: the old path's are *localised bugs in a maintained codepath*

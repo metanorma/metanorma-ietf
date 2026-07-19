@@ -226,6 +226,47 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
   end
 
+  describe "front metadata (Relaton 2.0 shapes)" do
+    # no corpus document currently declares front keywords or a workgroup
+    # in current schema, so these are synthetic witnesses (campaign N8)
+    let(:input_xml) do
+      <<~XML
+        <metanorma type="semantic" version="test" flavor="ietf">
+          <bibdata type="standard">
+            <title language="en" format="text/plain">Synthetic</title>
+            <docidentifier type="IETF">RFC 9999</docidentifier>
+            <contributor>
+              <role type="publisher"/>
+              <organization>
+                <name>Internet Engineering Task Force</name>
+                <subdivision type="workgroup"><name>Synthetic Working Group</name></subdivision>
+                <abbreviation>IETF</abbreviation>
+              </organization>
+            </contributor>
+            <language>en</language>
+            <script>Latn</script>
+            <keyword><vocab>alpha</vocab></keyword>
+            <keyword><vocab>beta</vocab></keyword>
+            <status><stage>published</stage></status>
+            <ext><doctype>rfc</doctype><flavor>ietf</flavor></ext>
+          </bibdata>
+          <sections><clause id="_c1" obligation="normative"><title>One</title>
+            <p id="_p1">Text.</p></clause></sections>
+        </metanorma>
+      XML
+    end
+    let(:result) { described_class.convert(input_xml) }
+
+    it "reads keywords nested in keyword/vocab" do
+      expect(result).to include("<keyword>alpha</keyword>")
+      expect(result).to include("<keyword>beta</keyword>")
+    end
+
+    it "reads the workgroup from a contributor organization subdivision" do
+      expect(result).to include("<workgroup>Synthetic Working Group</workgroup>")
+    end
+  end
+
   describe "formula transformation" do
     let(:input_xml) { File.read("spec/fixtures/transformer/input/example.xml") }
     let(:result) { described_class.convert(input_xml) }
