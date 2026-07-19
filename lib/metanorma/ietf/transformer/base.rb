@@ -77,8 +77,21 @@ module Metanorma
         end
 
         # Get the anchor/id for a node
+        # Semantic XML carries user-authored anchors as anchor= alongside
+        # GUID id= (metanorma-standoc#1007), and IDREFs point at the anchor:
+        # prefer it over the id when emitting. Not every model maps anchor,
+        # hence the respond_to? guards.
+        # TRANSITIONAL: presentation XML overwrites id with anchor, so once
+        # the pipeline rebases onto the presentation-XML input stage this
+        # preference collapses to plain id and the helper can be retired.
         def anchor_for(node)
-          node.anchor || node.id || node.semx_id
+          %i[anchor id semx_id].each do |m|
+            next unless node.respond_to?(m)
+
+            v = node.public_send(m)
+            return v if v && !v.to_s.strip.empty?
+          end
+          nil
         end
 
         # Sanitize an id to be a valid NCName (for XML anchors)

@@ -9,7 +9,7 @@ module Metanorma
 
         def transform_references_section(refs_node)
           references = Rfcxml::V3::References.new
-          references.anchor = to_ncname(refs_node.id) if refs_node.id
+          references.anchor = to_ncname(anchor_for(refs_node)) if anchor_for(refs_node)
 
           title = refs_node.title
           if title

@@ -13,7 +13,7 @@ module Metanorma
           end
 
           figure = Rfcxml::V3::Figure.new
-          figure.anchor = to_ncname(figure_node.id) if figure_node.id
+          figure.anchor = to_ncname(anchor_for(figure_node)) if anchor_for(figure_node)
 
           name_node = figure_node.name
           if name_node
@@ -105,7 +105,7 @@ module Metanorma
           end
 
           sourcecode = Rfcxml::V3::Sourcecode.new
-          sourcecode.anchor = to_ncname(figure_node.id) if figure_node.id
+          sourcecode.anchor = to_ncname(anchor_for(figure_node)) if anchor_for(figure_node)
           sourcecode.content = [lines.join("\n")] unless lines.empty?
           sourcecode
         end
@@ -167,7 +167,7 @@ module Metanorma
           artwork = Rfcxml::V3::Artwork.new
           artwork.type = "ascii-art"
 
-          artwork.anchor = to_ncname(pre_node.id) if pre_node.id
+          artwork.anchor = to_ncname(anchor_for(pre_node)) if anchor_for(pre_node)
           artwork.alt = pre_node.alt if pre_node.alt && !pre_node.alt.to_s.empty?
 
           align = pre_node.align

@@ -7,7 +7,7 @@ module Metanorma
 
         def transform_unordered_list(ul_node)
           ul = Rfcxml::V3::Ul.new
-          ul.anchor = to_ncname(ul_node.id) if ul_node.id
+          ul.anchor = to_ncname(anchor_for(ul_node)) if anchor_for(ul_node)
 
           apply_list_attributes(ul, ul_node, %i[empty bare spacing indent])
 
@@ -21,7 +21,7 @@ module Metanorma
 
         def transform_ordered_list(ol_node)
           ol = Rfcxml::V3::Ol.new
-          ol.anchor = to_ncname(ol_node.id) if ol_node.id
+          ol.anchor = to_ncname(anchor_for(ol_node)) if anchor_for(ol_node)
 
           ol_type = ol_node.type
           ol.type = map_ol_type(ol_type) if ol_type
@@ -101,7 +101,7 @@ module Metanorma
 
         def transform_definition_list(dl_node)
           dl = Rfcxml::V3::Dl.new
-          dl.anchor = to_ncname(dl_node.id) if dl_node.id
+          dl.anchor = to_ncname(anchor_for(dl_node)) if anchor_for(dl_node)
 
           dts = dl_node.dt
           dds = dl_node.dd
@@ -127,7 +127,7 @@ module Metanorma
 
         def build_dt(dt)
           dt_elem = Rfcxml::V3::Dt.new
-          dt_elem.anchor = to_ncname(dt.id) if dt.id
+          dt_elem.anchor = to_ncname(anchor_for(dt)) if anchor_for(dt)
 
           src_order = dt.element_order
           if src_order && src_order.any?
