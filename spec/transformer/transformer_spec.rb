@@ -226,6 +226,21 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
   end
 
+  describe "sourcecode body wrapper (current Semantic XML schema)" do
+    # current standoc nests the code text in sourcecode/body
+    # (metanorma-standoc#966); content then parses as an empty collection
+    let(:input_xml) do
+      File.read("spec/fixtures/transformer/input/example.xml")
+        .sub(/<sourcecode([^>]*)>/, "<sourcecode\\1><body>")
+        .sub("</sourcecode>", "</body></sourcecode>")
+    end
+    let(:result) { described_class.convert(input_xml) }
+
+    it "reads code text nested in sourcecode/body" do
+      expect(result).to include("prepare_launch")
+    end
+  end
+
   describe "cleanup transformer unit tests" do
     let(:transformer) { Metanorma::Ietf::Transformer::IetfToRfcV3.allocate }
 
