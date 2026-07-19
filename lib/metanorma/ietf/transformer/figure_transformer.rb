@@ -117,8 +117,9 @@ module Metanorma
         def transform_image_to_artwork(img_node)
           artwork = Rfcxml::V3::Artwork.new
 
-          src = img_node.src
-          src = img_node.target unless src
+          # the model maps the src XML attribute to :source (Media superclass)
+          src = img_node.respond_to?(:source) ? img_node.source : nil
+          src ||= img_node.target if img_node.respond_to?(:target)
 
           if src
             # Handle SVG data URIs - decode base64 to inline SVG
