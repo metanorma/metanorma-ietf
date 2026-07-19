@@ -486,7 +486,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <front>
         <title>Cereals and cereal products</title>
         <author>
-          <organization ascii="International Organization for Standardization" abbrev="ISO">International Organization for Standardization</organization>
+          <organization abbrev="ISO">International Organization for Standardization</organization>
         </author>
       </front>
       <refcontent>ISO&#xa0;712</refcontent>
@@ -577,7 +577,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <front>
         <title>Cereals and cereal products</title>
         <author>
-          <organization ascii="International Organization for Standardization" abbrev="ISO">International Organization for Standardization</organization>
+          <organization abbrev="ISO">International Organization for Standardization</organization>
         </author>
       </front>
       <refcontent>ISO&#xa0;712</refcontent>
@@ -835,7 +835,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                    <front>
                       <title>Cereals and cereal products</title>
                       <author>
-                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                         <organization>International Organization for Standardization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 712</refcontent>

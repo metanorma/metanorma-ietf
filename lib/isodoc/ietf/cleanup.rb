@@ -19,18 +19,7 @@ module IsoDoc
         biblio_cleanup(docxml) # feeds aside
         abstract_cleanup(docxml) # bleeds aside
         aside_cleanup(docxml)
-        redundant_ascii_cleanup(docxml)
         docxml
-      end
-
-      # The bibrenderer emits ascii= on reference organizations
-      # unconditionally; xml2rfc strips those that match the element text,
-      # with a warning per instance (#269). Scrub them here, wherever they
-      # were emitted.
-      def redundant_ascii_cleanup(xmldoc)
-        xmldoc.xpath("//organization[@ascii]").each do |o|
-          o["ascii"] == o.text and o.delete("ascii")
-        end
       end
 
       def abstract_cleanup(docxml)

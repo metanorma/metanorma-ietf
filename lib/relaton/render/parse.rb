@@ -60,7 +60,9 @@ module Relaton
           org = contributor.organization
           person = contributor.person
           if org
-            return { nonpersonal: extract_orgname(org),
+            name = extract_orgname(org)
+            return { nonpersonal: name,
+                     nonpersonalascii: ascii_or_nil(name),
                      nonpersonalabbrev: extract_orgabbrev(org) }
           end
           return extract_personname(person) if person
@@ -72,15 +74,26 @@ module Relaton
           content(org.abbreviation)
         end
 
+        # The ascii attributes are computed here, nil when the
+        # transliteration is redundant, so the nametemplates emit them
+        # through a bare presence check, and downstream consumers (incl.
+        # the presentation XML transformer) inherit already-clean output:
+        # xml2rfc strips self-equal ascii attributes with a warning (#269)
+        def ascii_or_nil(str)
+          str.nil? and return nil
+          a = str.transliterate
+          a == str ? nil : a
+        end
+
         def extract_personname(person)
-          surname = person.name.surname
-          completename = person.name.completename
+          sn = content(person.name.surname)
+          cn = content(person.name.completename)
           given, middle, initials = given_and_middle_name(person)
-          { surname: content(surname),
-            completename: content(completename),
-            given: given,
-            middle: middle,
-            initials: initials }.compact
+          { surname: sn, completename: cn,
+            given: given, middle: middle, initials: initials,
+            surnameascii: ascii_or_nil(sn),
+            completenameascii: ascii_or_nil(cn),
+            initialsascii: ascii_or_nil(Array(initials).join) }.compact
         end
 
         # not just year-only

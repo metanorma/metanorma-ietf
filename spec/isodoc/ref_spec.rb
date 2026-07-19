@@ -311,7 +311,7 @@ RSpec.describe IsoDoc::Ietf do
                    <stream>IETF</stream>
                    <front>
                       <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-                      <author fullname="S. Bradner" asciiFullname="S. Bradner"/>
+                      <author fullname="S. Bradner"/>
                       <date month="March" year="1997"/>
                       <keyword>Standards</keyword>
                       <keyword>Track</keyword>
@@ -327,7 +327,7 @@ RSpec.describe IsoDoc::Ietf do
                 <reference target="https://www.rfc-editor.org/info/rfc2397" anchor="RFC2397">
             <front>
                <title>The "data" URL scheme</title>
-               <author fullname="L. Masinter" asciiFullname="L. Masinter"/>
+               <author fullname="L. Masinter"/>
                <date month="August" year="1998"/>
                <keyword>DATA-URL</keyword>
                <keyword>uniform resource locator</keyword>
@@ -368,7 +368,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and pulses</title>
                       <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <author surname="Citizen" initials="A.B."/>
                       <date year="2013"/>
                       <abstract>
                          <t>This is an abstract</t>
@@ -380,8 +380,8 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and pulses II</title>
                       <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
-                      <author surname="Third" asciiSurname="Third" initials="Th." asciiInitials="Th."/>
+                      <author surname="Citizen" initials="A.B."/>
+                      <author surname="Third" initials="Th."/>
                       <date year="2013"/>
                       <abstract>
                          <t>This is an abstract</t>
@@ -441,7 +441,7 @@ RSpec.describe IsoDoc::Ietf do
                 <reference anchor="I-D.aboba-context-802">
                    <front>
                       <title>A Model for Context Transfer in IEEE 802</title>
-                      <author fullname="Bernard Aboba" asciiFullname="Bernard Aboba"/>
+                      <author fullname="Bernard Aboba"/>
                       <date month="October" year="2003"/>
                    </front>
                    <seriesInfo value="aboba-context-802" name="Internet-Draft"/>
@@ -684,7 +684,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and pulses</title>
                       <author surname="Nürk" asciiSurname="Nurk" initials="Ö." asciiInitials="O."/>
-                      <author surname="Citizen" asciiSurname="Citizen" initials="A.B." asciiInitials="A.B."/>
+                      <author surname="Citizen" initials="A.B."/>
                       <date year="2013"/>
                       <abstract>
                          <t>This is an abstract</t>
@@ -991,7 +991,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP)</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>shared framework mapping</keyword>
                             <abstract>
@@ -1005,7 +1005,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Domain Name Mapping</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1023,7 +1023,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Host Mapping</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1040,7 +1040,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Contact Mapping</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
@@ -1058,7 +1058,7 @@ RSpec.describe IsoDoc::Ietf do
                          <stream>IETF</stream>
                          <front>
                             <title>Extensible Provisioning Protocol (EPP) Transport over TCP</title>
-                            <author fullname="S. Hollenbeck" asciiFullname="S. Hollenbeck"/>
+                            <author fullname="S. Hollenbeck"/>
                             <date month="August" year="2009"/>
                             <keyword>EPP</keyword>
                             <keyword>Extensible Provisioning Protocol</keyword>
