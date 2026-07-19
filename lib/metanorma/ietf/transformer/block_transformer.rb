@@ -36,7 +36,7 @@ module Metanorma
 
         def transform_paragraph(p_node)
           t = Rfcxml::V3::Text.new
-          t.anchor = to_ncname(p_node.id) if p_node.id
+          t.anchor = to_ncname(anchor_for(p_node)) if anchor_for(p_node)
 
           if p_node.keep_with_next == "true"
             t.keep_with_next = "true"
@@ -173,7 +173,7 @@ module Metanorma
 
         def transform_note(note_node, container, note_counter: nil)
           aside = Rfcxml::V3::Aside.new
-          aside.anchor = to_ncname(note_node.id) if note_node.id
+          aside.anchor = to_ncname(anchor_for(note_node)) if anchor_for(note_node)
 
           first = true
           get_paragraphs(note_node).each do |p|
@@ -216,7 +216,7 @@ module Metanorma
 
         def transform_sourcecode(sc_node)
           sourcecode = Rfcxml::V3::Sourcecode.new
-          sourcecode.anchor = to_ncname(sc_node.id) if sc_node.id
+          sourcecode.anchor = to_ncname(anchor_for(sc_node)) if anchor_for(sc_node)
 
           lang = sc_node.lang
           sourcecode.type = lang if lang && !lang.to_s.empty?
@@ -271,7 +271,7 @@ module Metanorma
 
         def transform_admonition(admon_node)
           aside = Rfcxml::V3::Aside.new
-          aside.anchor = to_ncname(admon_node.id) if admon_node.id
+          aside.anchor = to_ncname(anchor_for(admon_node)) if anchor_for(admon_node)
 
           type_text = nil
           admon_type = admon_node.type
@@ -298,7 +298,7 @@ module Metanorma
           results = []
 
           t = Rfcxml::V3::Text.new
-          t.anchor = to_ncname(formula_node.id) if formula_node.id
+          t.anchor = to_ncname(anchor_for(formula_node)) if anchor_for(formula_node)
 
           stem = formula_node.stem
           stem_text = nil
@@ -405,7 +405,7 @@ module Metanorma
 
         def build_inline_note_aside(note_node)
           aside = Rfcxml::V3::Aside.new
-          aside.anchor = to_ncname(note_node.id) if note_node.id
+          aside.anchor = to_ncname(anchor_for(note_node)) if anchor_for(note_node)
 
           get_paragraphs(note_node).each do |p|
             t = transform_paragraph(p)

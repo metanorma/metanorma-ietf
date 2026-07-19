@@ -7,7 +7,7 @@ module Metanorma
 
         def transform_table(table_node)
           table = Rfcxml::V3::Table.new
-          table.anchor = to_ncname(table_node.id) if table_node.id
+          table.anchor = to_ncname(anchor_for(table_node)) if anchor_for(table_node)
 
           # Handle unnumbered tables
           if table_node.unnumbered == "true"
