@@ -408,6 +408,28 @@ while the new path's are *systemic content loss and structural failure*
 and on antioch no output whatsoever). On current-schema inputs, zero of
 three documents tested produce usable RFC XML through the new path.
 
+[[ws-r-progress]]
+==== WS-R progress log
+
+* 2026-07-19/20 session 1: *N1 fixed* (`674ee05`: sourcecode/body read;
+  truthiness guard); *N12 fixed* (`9e07281`: `Image#src` → model's
+  `:source`); *N13 fixed* (`a4ac499`: three stacked defects — blanket
+  xmlns strip scoped to the Metanorma namespace; `build_stem_text`
+  if-expression fall-through discarding its result; untracked `content=`
+  → `OrderTracker.set_text_ordered`); *N2 mapping half fixed*
+  (`9accd86`: the pre-existing but never-called `anchor_for` helper
+  hardened and wired into all 16 anchor-emission sites — TRANSITIONAL:
+  collapses to plain id once the pipeline rebases onto presentation-XML
+  input; the anchor *management* half stays with the layer). Supporting
+  infrastructure: truthy-collection audit (17 sites,
+  `docs/truthy-collection-audit.md`), content-conservation invariant
+  spec with pending-ratchets (N2 ratchet already flipped and cleared),
+  first current-schema fixture (`rfc3339-current.xml`). Suite 140/0
+  (3 pending). Old-path O1 fix in PR #271 (sibling); O2 likewise
+  handled. *State of rfc-3339 through the new path: renders through
+  xml2rfc up to a single remaining blocker — the author-less reference
+  `<front>` (N3), which is presentation-layer work by decision.*
+
 [[ws1b-restructure]]
 ==== Programme restructure (2026-07-17)
 
