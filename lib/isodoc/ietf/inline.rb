@@ -142,18 +142,22 @@ module IsoDoc
         end
       end
 
+      # Empty localities are omitted, not emitted as section=""
+      # relative="" junk attributes (#269): attr_code drops nil, not ""
       def eref_relative(node)
-        node["relative"] ||
-          node.at(ns(".//locality[@type = 'anchor']/referenceFrom"))&.text || ""
+        ret = node["relative"] ||
+          node.at(ns(".//locality[@type = 'anchor']/referenceFrom"))&.text
+        ret.nil? || ret.empty? ? nil : ret
       end
 
       def eref_section(node)
         ret = @isodoc.eref_localities(
           node.xpath(ns("./locality | ./localityStack")), nil, node
-        ) or return ""
-        ret.gsub(%r{</?span[^>]*>}, "").sub(/^,/, "")
+        ) or return nil
+        ret = ret.gsub(%r{</?span[^>]*>}, "").sub(/^,/, "")
           .sub(/^\s*(Sections?|Clauses?)/, "").strip.sub(/,$/, "")
           .gsub(/\s+/, " ")
+        ret.empty? ? nil : ret
       end
 
       def semx_origin_parse(node, out)

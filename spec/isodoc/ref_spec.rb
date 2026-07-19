@@ -292,11 +292,11 @@ RSpec.describe IsoDoc::Ietf do
       <section anchor="B">
          <name>Introduction</name>
                 <t anchor="_">
-                   <xref target="ISO712" section="" relative=""/>
-                   <xref target="ISBN" section="" relative=""/>
-                   <xref target="ISSN" section="" relative=""/>
-                   <xref target="ISO16634" section="" relative=""/>
-                   <xref target="ref11" section="" relative=""/>
+                   <xref target="ISO712"/>
+                   <xref target="ISBN"/>
+                   <xref target="ISSN"/>
+                   <xref target="ISO16634"/>
+                   <xref target="ref11"/>
                 </t>
              </section>
              <section anchor="A">
@@ -344,7 +344,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and cereal products</title>
                       <author>
-                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                         <organization>International Organization for Standardization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 712</refcontent>
@@ -353,7 +353,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
                       <author>
-                         <organization ascii="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                         <organization abbrev="ISO1">International Supporters of Odium</organization>
                       </author>
                       <keyword>keyword1</keyword>
                       <keyword>keyword2</keyword>
@@ -402,7 +402,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Chemicals for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
+                         <organization abbrev="ISBN">International SBN</organization>
                       </author>
                    </front>
                 </reference>
@@ -410,7 +410,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Instruments for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
+                         <organization abbrev="ISSN">International SSN</organization>
                       </author>
                    </front>
                    <annotation>
@@ -424,7 +424,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Water for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International Standards Organization" abbrev="ISO">International Standards Organization</organization>
+                         <organization abbrev="ISO">International Standards Organization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 3696</refcontent>
@@ -433,7 +433,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                       <author>
-                         <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+                         <organization abbrev="IETF">Internet Engineering Task Force</organization>
                       </author>
                    </front>
                    <seriesInfo value="10" name="RFC"/>
@@ -641,11 +641,11 @@ RSpec.describe IsoDoc::Ietf do
       <section anchor="B">
          <name>Introduction</name>
                 <t anchor="_">
-                   <xref target="ISO712" section="" relative=""/>
-                   <xref target="ISBN" section="" relative=""/>
-                   <xref target="ISSN" section="" relative=""/>
-                   <xref target="ISO16634" section="" relative=""/>
-                   <xref target="ref11" section="" relative=""/>
+                   <xref target="ISO712"/>
+                   <xref target="ISBN"/>
+                   <xref target="ISSN"/>
+                   <xref target="ISO16634"/>
+                   <xref target="ref11"/>
                 </t>
                 </section>
              <section anchor="A">
@@ -660,7 +660,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals and cereal products</title>
                       <author>
-                         <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                         <organization>International Organization for Standardization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 712</refcontent>
@@ -669,7 +669,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
                       <author>
-                         <organization ascii="International Supporters of Odium" abbrev="ISO1">International Supporters of Odium</organization>
+                         <organization abbrev="ISO1">International Supporters of Odium</organization>
                       </author>
                       <keyword>keyword1</keyword>
                       <keyword>keyword2</keyword>
@@ -699,7 +699,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Chemicals for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SBN" abbrev="ISBN">International SBN</organization>
+                         <organization abbrev="ISBN">International SBN</organization>
                       </author>
                    </front>
                 </reference>
@@ -707,7 +707,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Instruments for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International SSN" abbrev="ISSN">International SSN</organization>
+                         <organization abbrev="ISSN">International SSN</organization>
                       </author>
                    </front>
                    <annotation>
@@ -721,7 +721,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Water for analytical laboratory use</title>
                       <author>
-                         <organization ascii="International Standards Organization" abbrev="ISO">International Standards Organization</organization>
+                         <organization abbrev="ISO">International Standards Organization</organization>
                       </author>
                    </front>
                    <refcontent>ISO 3696</refcontent>
@@ -730,7 +730,7 @@ RSpec.describe IsoDoc::Ietf do
                    <front>
                       <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                       <author>
-                         <organization ascii="Internet Engineering Task Force" abbrev="IETF">Internet Engineering Task Force</organization>
+                         <organization abbrev="IETF">Internet Engineering Task Force</organization>
                       </author>
                    </front>
                    <seriesInfo value="10" name="RFC"/>

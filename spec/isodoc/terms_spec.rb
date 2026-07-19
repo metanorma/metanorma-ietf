@@ -72,7 +72,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                      <ul>
                        <li>A</li>
                      </ul>
-                     <t>[SOURCE: <xref target="ISO7301" section="3.1" relative=""/>, modified &#x2014;
+                     <t>[SOURCE: <xref target="ISO7301" section="3.1"/>, modified &#x2014;
                     The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</t>
                    </section>
                    <section anchor='paddy'>
@@ -102,7 +102,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
                          kernels have a tendency to stick together after cooking.
                        </t>
                      </aside>
-                      <t>[SOURCE: <xref target="ISO7301" section="3.1" relative=""/>]</t>
+                      <t>[SOURCE: <xref target="ISO7301" section="3.1"/>]</t>
                    </section>
                  </section>
                </middle>

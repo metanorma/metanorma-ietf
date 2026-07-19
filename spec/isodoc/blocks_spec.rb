@@ -267,7 +267,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
             <figure anchor='figure-C'>
               <artwork type='ascii-art'><![CDATA[A <
       B]]></artwork>
-            <t>[SOURCE: <xref target="ISO2191" section="1" relative=""/> &#x2014;
+            <t>[SOURCE: <xref target="ISO2191" section="1"/> &#x2014;
         with adjustments]</t>
             </figure>
       </abstract>
@@ -481,8 +481,8 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
        #{XML_HDR}
                 <sourcecode anchor="_" type="ruby" name="sourcecode1.rb" markers="true">
                    puts "Hello, world." %w{a b c}.each do |x| puts x end
-                   <xref target="RFC4918" section="14.24" relative=""/>
-                   <xref target="RFC4918" section="14.24" relative="">
+                   <xref target="RFC4918" section="14.24"/>
+                   <xref target="RFC4918" section="14.24">
 
                          Hello
                       </xref>
