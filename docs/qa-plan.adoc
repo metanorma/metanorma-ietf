@@ -1,0 +1,611 @@
+= QA & integration plan: model-driven RFC XML transformer (PR #257)
+:toc: macro
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 2
+
+Issue: https://github.com/metanorma/metanorma-ietf/issues/233[#233] +
+PR: https://github.com/metanorma/metanorma-ietf/pull/257[#257]
+(branch `feat/model-driven-transformer`)
+
+This is the living tracking document for QA-ing and integrating PR #257. Its
+companion is xref:architecture.adoc[`architecture.adoc`], which describes what
+the code *is*; this document tracks what we are *doing to it*.
+
+toc::[]
+
+== Context
+
+PR #257 rearchitects how `metanorma-ietf` generates RFC XML v3. It *deletes the
+entire `IsoDoc::Ietf` layer* (22 files, Nokogiri/string-based) and the *11
+`spec/isodoc/{asterisk}_spec.rb` files* (≈87 examples, ≈6,800 lines of
+feature-by-feature tests), replacing them with a *model-driven `Transformer`*
+built on `metanorma-document` + `rfcxml` + `lutaml-model`, tested only against
+*two fixture documents* (`example` = RFC 1149; `antioch` = an Internet-Draft).
+
+The PR was written by the project owner and handed to the maintainer to QA and
+integrate. Four concrete objections drive this plan:
+
+1. *No navigable overview* of the new architecture. (Addressed by
+   xref:architecture.adoc[`architecture.adoc`].)
+2. *Epic methods* — single methods of 50–187 lines.
+3. *Discarded tests* — the feature-level `spec/isodoc/` suite was dropped for
+   two whole-document fixtures; the diffs were called "minor" without evidence.
+4. *Unverified output parity* — no systematic comparison of old vs new RFC XML.
+
+Intended outcome: a trusted, readable, well-tested, well-documented transformer
+producing correct RFC XML, with the maintainer's feature tests restored as the
+regression safety net.
+
+=== Agreed sequencing
+
+Decided 2026-06-04, amended 2026-06-05:
+
+*WS1 architecture doc → WS1b enrichment-architecture spike + build → WS2
+old-vs-new comparison (two fixtures) → WS3 fold `spec/isodoc` tests back → WS4
+refactor → WS5 `mn-samples-ietf` full-corpus QA.*
+
+WS1b is the *central architectural decision* (see <<inherited-enrichment>>): the
+new transformer drops the autonumbering/xref/reference-label/footnote enrichment
+the old path inherited from `IsoDoc::Convert`, and we reinstate it as a
+pared-down `PresentationXMLConvert` preprocessing stage. It runs *before* WS2 so
+the comparison and re-folded tests measure the *intended* pipeline, not the PR's
+stripped one. Comparison precedes test-folding to establish ground truth on the
+"diffs are minor" claim early. Refactoring is gated on a green restored suite.
+The `mn-samples-ietf` sweep runs last, on code that is both trusted and readable.
+
+== Status
+
+[cols="1,3,1", options="header"]
+|===
+| WS | Description | State
+| 0   | Worktree, deps, green baseline | *done*
+| 1   | `architecture.adoc` + `qa-plan.adoc` | *in progress*
+| 1b  | Enrichment preprocessing stage (KEEP/SUPPRESS) | pending
+| 2   | Old-vs-new comparison harness + nits + discrepancy log | pending
+| 3   | Fold `spec/isodoc` feature tests back | pending
+| 4   | Refactor epic methods (40→30→20→10) | pending
+| 5   | `mn-samples-ietf` full-corpus QA | pending
+|===
+
+[[inherited-enrichment]]
+== Key finding: inherited enrichment (corrected)
+
+An early read mischaracterised the old `PresentationXMLConvert` usage as "purely
+a helper." That was wrong. The old `IsoDoc::Ietf::RfcConvert < IsoDoc::Convert`
+runs a *full enrichment pipeline* inherited from the base class: `Xref#parse`
+(before `convert1`) computes section/note/example/figure/table/formula labels,
+ordered-list values and footnote numbering; `document_preprocess` adds
+`reference_names` (`[RFC2119]`-style labels) and requirement rendering. These
+feed the RFC XML output.
+
+The new transformer initialises `@xrefs = {}` and never populates it, so it
+*drops or defers wholesale to xml2rfc* the xref/eref text, eref locality
+formatting, figure/table/note numbering, formula labels, concept resolution and
+annotations; footnotes are reimplemented but *restructured* into back-matter
+endnotes. These are prime candidates for the "minor" discrepancies.
+
+*RFC-specific nuance.* RFC XML legitimately defers section/figure/table
+numbering and internal xref text to `xml2rfc` at render time (bare
+`<xref target="..."/>`, no `<num>`). So we must *not* inject the full numbering
+pipeline. The subset RFC XML needs *pre-resolved* is what xml2rfc won't compute:
+reference labels, formula/note/example literal-text labels, eref localities.
+This is the design basis for WS1b. Full detail in
+xref:architecture.adoc#inherited-enrichment[`architecture.adoc`].
+
+== Refactor targets (epic methods)
+
+[cols="2,2,1", options="header"]
+|===
+| File | Method | ~Lines
+| `section_transformer.rb`   | `parse_ordered_children`      | ~187
+| `section_transformer.rb`   | `parse_unordered_children`    | ~92
+| `block_transformer.rb`     | `build_inline_element`        | ~62
+| `block_transformer.rb`     | `build_interleaved_content`   | ~50
+| `block_transformer.rb`     | `transform_sourcecode`        | ~50
+| `cleanup_transformer.rb`   | `wrap_unicode_in_text`        | ~50
+| `cleanup_transformer.rb`   | `unwrap_single_t_in_li`       | ~45
+| `cleanup_transformer.rb`   | `convert_strong_to_bcp14`     | ~35
+| `front_transformer.rb`     | `build_postal_from_structured`| ~50
+| `reference_transformer.rb` | `transform_bibitem`           | ~50
+|===
+
+Most are giant `case`/`when` dispatchers on element tag — the natural refactor
+is a dispatch table mapping tag → small handler method.
+
+== xml2rfc nits (QA yardstick)
+
+"Nits" is IETF jargon for the warnings/errors from the IETF's own tooling. Two
+layers, both installed locally (`xml2rfc 3.25.0`, `idnits`):
+
+* *xml2rfc* validates well-formedness + the RFC 7991 v3 schema and warns while
+  rendering; `<?rfc strict="yes"?>` enforces I-D nits and DTD validity. Flags:
+  `--warn-bare-unicode`, `--strict`, `-v`, `-s PREFIX`.
+* *idnits* checks IETF *submission* requirements on the text output (boilerplate,
+  reference categorisation, line length, …).
+
+Both are distinct from the transformer's internal `validation_transformer`.
+
+*Why it matters:* nits are an objective compliance yardstick. A difference is
+not automatically a regression — if the new code emits *fewer* nits it is *more*
+compliant. Nits feed triage two ways: as a comparison surface, and as the
+*severity axis* (deltas that introduce/remove nits outrank cosmetic ones).
+
+== Workstreams
+
+=== WS0 — Working environment
+
+* Work on `qa/transformer-integration`, branched off
+  `feat/model-driven-transformer`, in a git *worktree* (sibling
+  `../metanorma-ietf-transformer`) so `main` stays available for the old-vs-new
+  comparison (the old `lib/isodoc/ietf/{asterisk}` only exists on `main`).
+* `bundle install`: `metanorma-document` resolves (0.2.9), pulling
+  `rfcxml`/`lutaml-model`/`sterile` transitively. `xml2rfc`/`idnits` on PATH.
+* Green baseline confirmed.
+
+[NOTE]
+.Environment gotchas (recorded WS0)
+====
+* Bundler's git caches are blocked by the global git `safe.bareRepository =
+  explicit`; install with `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.bareRepository
+  GIT_CONFIG_VALUE_0=all bundle install` (injects the setting only into Bundler's
+  git subprocesses; does not touch global config).
+* The shell default encoding is US-ASCII; run every spec command with
+  `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 RUBYOPT="-EUTF-8"` or two
+  `spec/metanorma/validate_spec.rb` examples fail spuriously with
+  `Encoding::CompatibilityError`. Under UTF-8 the suite is fully green
+  (`spec/transformer` 129/129; full suite 199 examples).
+====
+
+=== WS1 — Architecture documentation
+
+* `docs/architecture.adoc` — overview, old/new pipeline, the 13 forward
+  modules, the `element_order` mechanism, the inherited-enrichment finding,
+  reverse transformer, support layer, validation, glossary. *(done)*
+* `docs/qa-plan.adoc` — this document. *(this file)*
+
+[[ws1b]]
+=== WS1b — Enrichment architecture: the overlap test (evidence-gated)
+
+Goal: establish *by testing against real documents* which of the enrichments
+the old path inherited from `IsoDoc::Convert` the new transformer (a) already
+replicates, (b) drops with a functional consequence xml2rfc cannot recover, or
+(c) correctly defers to xml2rfc — and only then decide whether any pared-down
+presentation stage is warranted. Agreed with the PR author 2026-06-07:
+*default is no presentation layer*; a pared-down stage returns only for
+enrichment proven both dropped and xml2rfc-unrecoverable. The KEEP/SUPPRESS
+table below is the *instrument* of that test (the hypothesis list to check),
+not a pre-decided build list. *(This supersedes the earlier revision of this
+section, which framed WS1b as a decided build.)*
+
+[cols="1,3", options="header"]
+|===
+| Hypothesis | Passes
+| *KEEP-candidates* | reference labels (`reference_names`), formula labels,
+note/example literal-text labels, eref locality formatting (`eref_localities`),
+footnote numbering/de-dup, requirement/recommendation/permission rendering
+| *SUPPRESS (xml2rfc's job)* | section/figure/table numbering, internal xref
+display text
+|===
+
+[[ws1b-run1]]
+==== Run 1 — `rfc-3339` (mn-samples-ietf), 2026-07-17
+
+Method: compile `sources/rfc-3339` once to Semantic XML (worktree, with the
+metanorma-core `document_transformers` mechanism); produce RFC XML through both
+paths from the *identical* Semantic XML — OLD = `IsoDoc::Ietf::RfcConvert`
+(main checkout), NEW = `Metanorma::Ietf::Transformer` via the processor;
+render both with `xml2rfc 3.25.0 --v3 --text`; diff (a) RFC XML
+element/attribute inventories, (b) rendered text, (c) xml2rfc warning sets.
+Fatal render-blockers were patched *in the comparison artefacts only* (never
+in code) so the second-tier differences could surface.
+
+*Headline: both paths emit xml2rfc-fatal RFC XML on this document, and the
+new path's defect surface is broad — "diffs are minor" is refuted on the
+first real corpus document tested.* Most new-path defects are input-mapping
+bugs (the data is present in Semantic XML and lost in model space), *not*
+missing enrichment.
+
+New path — fatal (xml2rfc refuses the document):
+
+[cols="1,10,2,4", options="header"]
+|===
+| # | Finding | Class | Enrichment axis
+| N1 | *All 12 `<sourcecode>` blocks emitted empty* (`<sourcecode/>`): the
+transformer ignores the Semantic `<sourcecode><body>` wrapper. The entire ABNF
+grammar and every example timestamp silently vanish. xml2rfc preptool crashes
+on the empty element. | A | No — data in input
+| N2 | *User-authored anchors dropped*: Semantic carries them as `anchor=`
+alongside GUID `id=` (`restrictions`, `annexA`–`annexD`,
+`date-time-examples`); the transformer emits only GUID anchors yet passes the
+named xref `target=`s through → 7 broken IDREFs. | A | Xref integrity: the
+datum is in the input, but the anchor↔target coherence *function*
+(`@anchors`/`Xref#parse` bookkeeping) is the shared layer's remit; the
+transformer has no equivalent, hence dangling IDREFs
+| N3 | *Author-less references*: the schema-required fallback
+`<author surname="Unknown"/>` is applied to `[IERS]` but not `[ITU-R-TF]` →
+invalid `<front>`. Inconsistent partial replication of the shared reference
+machinery's fallback. | A | Design-strand: partial replication
+|===
+
+New path — reader-visible in rendered text (after instrument patches):
+
+[cols="1,10,2,4", options="header"]
+|===
+| # | Finding | Class | Enrichment axis
+| N4 | `formattedref` embedded `<link>` dropped: `[IERS]` renders
+`<>.` — the URL is silently deleted. (The old path mishandles the same
+construct differently; see O1.) | A | No
+| N5 | Publisher IETF injected as an *author*: stray masthead line, authors
+column corrupt, `"Resnick, P. and IETF"` in references, trailing
+`Internet Engineering Task Force` line at document end. | A | No
+| N6 | *NOTE numbering lost*: two notes in one clause render as
+unlabelled/`NOTE:` where the old path renders `NOTE 1:` / `NOTE 2:`. xml2rfc
+does not number notes → unrecoverable downstream. | A | *Yes — first
+confirmed KEEP: note labels (`Xref#parse`)*
+| N7 | Inline citation mis-rendered: `Use Network Time Protocol [] … .[NTP]`
+— empty brackets, label displaced past the sentence punctuation
+(element-order handling). | A | No
+| N8 | `<keyword>` (14) and `<workgroup>` dropped from `<front>`. | A | No
+| N9 | Reference `seriesInfo`: `BCP` series entries dropped (BCP 3, 11, 14);
+a redundant `IETF RFC n` series added; series ordering diverges from RFC
+style. | A | Design-strand: shared relaton-render vs hand-rolled
+| N10 | ISO reference titles truncated to the main title ("Data elements and
+interchange formats", losing "— Information interchange — Representation of
+dates and times"). | A | No
+| N11 | `<u>` bare-unicode element dropped: old renders
+`"©" (COPYRIGHT SIGN, U+00A9)`, new a bare `©`. | A | No
+|===
+
+Old path — its own bugs surfaced by the same run (C/D-class):
+
+[cols="1,10,2", options="header"]
+|===
+| # | Finding | Class
+| O1 | `[IERS]` literal `<URL>` inside `formattedref` emitted as a malformed
+`<http:>` element → QName parse failure; *the old RFC XML is equally
+unrenderable on this document*. | C
+| O2 | The document's own RFC-number `seriesInfo` is missing → xml2rfc
+warning; the old masthead never prints "Request for Comments: 3339". The new
+path gets this right. | C
+| O3 | Junk empty `section=""`/`relative=""` on 20 xrefs (an
+`eref_localities` artefact when no locality exists) and 4 redundant `ascii=`
+attributes. The new path omits both — cleaner. | C/D
+|===
+
+New-path improvements (B-class): document `seriesInfo` present (masthead RFC
+number); `[ITU-R-TF]` target URL preserved; no junk locality/ascii
+attributes. Warning sets are otherwise near-identical, including a shared
+`Unused reference: [ISO8601-2000]` (a sample-authoring artefact, present in
+both paths).
+
+==== Coverage gaps after run 1
+
+`rfc-3339` exercises notes (3) but contains *no* footnotes, formulas,
+requirements, examples, term notes, or locality-bearing erefs (every old
+`section=` attribute is empty on this document). Verdicts on those
+KEEP-candidates require the `example`/`antioch` fixtures (WS2) or further
+corpus documents. The old-vs-new footnote restructure (inline `<fn>` vs
+back-matter endnotes) therefore also remains untested.
+
+==== Interim reading (after run 1)
+
+* *Scoped decision (maintainer, 2026-07-17): xref-integrity and
+  reference-machinery work stays with the shared isodoc presentation
+  machinery and will not be reimplemented in model space.* Grounds: N2 is an
+  xml2rfc-fatal failure of exactly the anchor↔target coherence function that
+  machinery provides, and N3 a partial reimplementation of its reference
+  fallbacks; the shared code is mature, calibrated, and — being a core
+  component of presentation-XML processing used by every flavour — *will
+  continue to be maintained regardless of this PR*, so relying on it costs
+  the IETF flavour nothing marginally. Re-deriving the same function inside
+  the transformer both reproduces the failure mode under audit and creates a
+  new, IETF-only maintenance liability for code no other flavour exercises.
+  The pared preprocessing stage (below) therefore owns xrefs and
+  reference enrichment; remaining KEEP-candidates stay subject to the
+  overlap test as coverage completes.
+* This decision does *not* absorb the pure input-mapping defects (N1, N4,
+  N5, N7, N8, N10, N11): those are transformer-side fixes owed regardless of
+  any presentation stage.
+* One enrichment loss confirmed xml2rfc-unrecoverable so far: *note
+  numbering* (N6).
+* Every other fatal or major delta on this testbed is an input-mapping defect
+  — the data exists in Semantic XML and is lost in model space (N1, N2, N3,
+  N5, N8–N10). For those the open question is *design placement* (shared
+  machinery vs per-transformer reimplementation), not raw capability; N3 and
+  N9 are direct instances of the transformer partially reimplementing shared
+  behaviour.
+* The A-class findings feed the WS2 discrepancy log as fix tasks; run 1 also
+  validates the WS2 harness shape (same-input dual-path, three diff
+  surfaces) on a real corpus document.
+
+[[ws1b-run2]]
+==== Run 2 — `antioch` (2026-07-17)
+
+Two inputs were exercised: a *fresh compile* of `spec/examples/antioch.adoc`
+with the current toolchain, and the PR's *checked-in fixture input*
+`spec/fixtures/transformer/input/antioch.xml`.
+
+* *N12 (fatal, new class): the transformer crashes outright on the fresh
+  compile* — `NoMethodError: undefined method 'src'` on the
+  metanorma-document `Image` model (`figure_transformer.rb:120`,
+  `transform_image_to_artwork`). No RFC XML is produced at all. The
+  document's 15 user-authored anchors, its 12 front keywords, and its heavy
+  bare-unicode content (the old path emits *99* `<u>` elements) never get
+  the chance to exhibit N2/N8/N11.
+* *O4 (old-path bug, new class): the old path emits `<stream>` elements with
+  non-enumerated text content* (5 instances) → xml2rfc-fatal; after patching
+  the streams in the comparison artefact, xml2rfc still crashes on a further
+  construct, so the old path is also unrenderable on this document.
+* *F1 (fixture staleness):* the PR's checked-in transformer input fixtures
+  (committed at the PR head, 2026-05-22) are in the *pre-`<body>`*
+  `sourcecode` schema, and the antioch fixture contains *no* `<image>`
+  element although `antioch.adoc` has an `image::` directive; the example
+  fixture has *zero* user-authored anchors; neither fixture has footnotes.
+  The transformer succeeds on both fixture inputs (which is why the
+  129/129 suite is green), i.e. *the suite exercises neither the current
+  semantic schema nor the constructs that fail on freshly compiled
+  documents*. Per the maintainer's recollection, `example.xml` was sourced
+  from a Metanorma XML document several years old (~4y), which accounts for
+  the fixture's schema vintage. Fixture inputs need regeneration with the
+  current toolchain as part of any repair.
+
+[[ws1b-run3]]
+==== Run 3 — `example` (fixture-vintage input, control column)
+
+Both paths run and render on this input. Findings:
+
+* *N13 (new class): the document's formula is dropped entirely* — the
+  MathML `<stem>` has no counterpart in the new output, where the old path
+  renders both the equation (`$$ y^(2) = x^(3) + a x + b $$`) *and* its
+  `(1)` label (the formula-label enrichment, a KEEP-candidate surface: both
+  content and label lost).
+* N9 reproduces (redundant `IETF RFC n` series); N10 reproduces (ISO/IEC
+  title truncated); the masthead author-block malformation reproduces
+  (stray line) — masthead corruption correlates with the RFC-number
+  `seriesInfo` path (the Internet-Draft fixture-antioch masthead is clean).
+* Front-metadata loss is *bidirectional and document-dependent*: here the
+  old path drops `<workgroup>` and the new path keeps it (inverse of N8 on
+  rfc-3339); the old path also emits an empty DOI (`"DOI ,"` in text).
+* B-class (new-path improvements): the Ruby `sourcecode` renders inline
+  where the old path substitutes an `(Artwork only available as RUBY)`
+  placeholder; the masthead carries the RFC number the old path omits (O2).
+
+[[ws1b-matrix]]
+==== Breakage matrix (three documents)
+
+Legend: ✓ = exhibited · — = tested, not exhibited · n/a = construct absent
+from input · *blk* = untestable, transformer crashed first (N12).
+
+[cols="4,10,3,3,3,3", options="header"]
+|===
+| # | Finding (short) | rfc-3339 (fresh) | antioch (fresh) | antioch (fixture) | example (fixture)
+| N1 | sourcecode emptied (`<body>` ignored) | ✓ 12/12 | *blk* (input body-wrapped) | — (pre-body input) | — (pre-body input)
+| N2 | user anchors dropped → broken IDREFs | ✓ 6 anchors | *blk* (15 anchors at risk) | — (1 ref anchor kept) | n/a
+| N3 | authorless-ref fallback inconsistent | ✓ | *blk* | n/a | n/a
+| N4 | `formattedref` `<link>` URL deleted | ✓ | n/a | n/a | n/a
+| N5 | IETF-as-author / masthead corruption | ✓ both | *blk* | — (I-D masthead clean) | ✓ masthead
+| N6 | NOTE numbering lost | ✓ | *blk* | not comparable (no old output) | — (single notes)
+| N7 | inline citation displaced/empty | ✓ | *blk* | not assessed | —
+| N8 | front keyword/workgroup loss | ✓ new drops 14 kw | old itself drops 12 kw | — | inverse: old drops wg, new keeps
+| N9 | seriesInfo: BCP dropped / IETF-series added | ✓ both | *blk* (old keeps 2 BCP) | ✓ 4 IETF-series | ✓ IETF-series
+| N10 | ISO titles truncated | ✓ | n/a | n/a | ✓
+| N11 | `<u>` bare-unicode dropped | ✓ (1) | *blk* (old emits 99) | n/a | n/a
+| N12 | transformer crash on `Image#src` | n/a (no images) | ✓ *no output at all* | n/a (fixture has no image) | n/a
+| N13 | formula content + label dropped | n/a | n/a | n/a | ✓
+| O1 | old: malformed `<http:>` QName (fatal) | ✓ | n/a | n/a | n/a
+| O2 | old: doc RFC-number seriesInfo missing | ✓ | n/a (I-D) | n/a (I-D) | ✓
+| O3 | old: junk `section=""`/`ascii=` attrs | ✓ | ✓ (ascii) | n/a | —
+| O4 | old: invalid `<stream>` content (fatal) | n/a | ✓ (5) | n/a | n/a
+|===
+
+*Asymmetry summary.* Both paths have defects, but they are not of the same
+kind: the old path's are *localised bugs in a maintained codepath*
+(a malformed element on an unusual authoring construct, an enum violation,
+junk attributes, a missing masthead line — each a small fix in place),
+while the new path's are *systemic content loss and structural failure*
+(entire sourcecode corpus, formulas, user anchors, publisher-as-author,
+and on antioch no output whatsoever). On current-schema inputs, zero of
+three documents tested produce usable RFC XML through the new path.
+
+[[ws1b-restructure]]
+==== Programme restructure (2026-07-17)
+
+The WS1b/WS2 evidence gates WS3: folding the `spec/isodoc` regression suite
+back in against the transformer in its current state would enshrine
+defective output as test expectations. A *repair programme* (WS-R: debug,
+refactor, re-baseline fixtures against the current semantic schema) is
+therefore a prerequisite for WS3, running alongside the QA workstreams. Its
+opening backlog is the A-class findings above plus N12, N13 and F1.
+
+*If the overlap test ends up mandating a layer*, the build shape remains as
+previously sketched: an IETF-pared `PresentationXMLConvert` subclass running
+only the proven-needed passes, emitting *enriched Metanorma XML* (so
+`from_xml` still consumes it and the transformer is unchanged), wired into
+`transformer.rb#convert_forward` and the processor `:rfc` path; the
+transformer's redundant half-reimplementations are then removed or pointed at
+the enriched input.
+
+*Watch-points:*
+
+* isodoc subclassing is fragile (depends on `Xref#parse`, `reference_names`,
+  `eref_localities`, `@anchors`). Pin/track the isodoc version, isolate behind a
+  narrow interface, cover with the WS3 feature tests. Expect this to be the
+  ugliest code in the effort.
+* footnotes: old = inline `<fn>`; new = back-matter endnotes. Which is correct
+  for RFC XML v3 (and what does xml2rfc do)? A substantive output decision —
+  record it in the discrepancy log.
+* confirm enriched XML round-trips `from_xml`/`to_xml` without losing injected
+  labels.
+
+Deliverable: `lib/metanorma/ietf/presentation/ietf_presentation.rb` (or similar)
++ a section in `architecture.adoc`.
+
+=== WS2 — Old-vs-new comparison harness + discrepancy log (two fixtures)
+
+A *committed, repeatable* tool proving/refuting "diffs are minor" on the two PR
+fixtures (`example.xml`, `antioch.xml`); the large `mn-samples-ietf` sweep is
+deferred to WS5. Harness written corpus-agnostic so WS5 reuses it.
+
+* `spec/support/compare_old_new.rb` (or `rake compare:rfc`):
+  ** takes Semantic-XML inputs,
+  ** runs the *OLD* converter from a `main` checkout
+     (`IsoDoc::Ietf::RfcConvert.new({}).convert(name, sx, nil, out)`),
+  ** runs the *NEW* converter *including the WS1b enrichment stage*
+     (`Semantic XML → [pared PresentationXMLConvert] → Transformer.convert(...)`),
+     so the comparison measures the intended pipeline,
+  ** normalises both (`strip_guid` + canon `:metanorma` profile).
+* Three diff surfaces: (a) *canonical RFC XML* (canon tree-diff), (b) *`.rfc.txt`*
+  via xml2rfc (truest "same document?" surface), (c) *nits* (xml2rfc stderr +
+  idnits on each `.rfc.txt`; diff the nit sets).
+* `docs/discrepancy-log.adoc`: one entry per difference, two tags — a
+  *classification* (A new-transformer bug / B legitimate improvement / C old-code
+  bug fixed / D cosmetic) and a *nit-derived severity* (breaks RFC XML or adds an
+  xml2rfc/idnits error > adds a warning > removes a nit > cosmetic). A-class
+  entries become fix tasks ordered by severity.
+* Do not accept "minor" until each delta is classified *and* its nit impact
+  recorded.
+
+=== WS3 — Fold `spec/isodoc` tests back in
+
+Restore the feature-by-feature regression suite against the new (enriched)
+pipeline. The core safety net.
+
+*Pipeline note (corrected 2026-06-05).* There is no separate
+semantic→presentation→RFC document stage for IETF
+(`Processor.use_presentation_xml` is `false`), but the old path *does* enrich via
+inherited machinery — and WS1b reinstates that. So the test harness routes the
+old Semantic-XML inputs through the WS1b stage before the transformer, making the
+ported assertions compare against the enriched pipeline.
+
+* Recreate under `spec/transformer/feature/` (or restore `spec/isodoc/` paths):
+  `blocks`, `inline`, `lists`, `table`, `metadata`, `ref`, `section`, `terms`,
+  `footnotes`, `cleanup`, `validate`.
+* *Mechanical port:* replace the old
+  `IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)` call with a
+  spec helper running the full WS1b-enriched forward pipeline; keep the *same*
+  Semantic-XML input and expected RFC XML; preserve `strip_guid` and the canon
+  `:metanorma` matcher.
+* *Incremental, triaged:* one file at a time; for each failure either fix the
+  transformer or update the expected output (only when demonstrably correct per
+  WS2). Never blanket-update expectations.
+* Edge cases: `cleanup_spec.rb` drove cleanup on RFC XML input directly — port to
+  build the model, run the new cleanup, serialise, compare; `validate_spec.rb`
+  asserted Jing/stderr — map to `validate_rfc_xml`.
+* Most-likely divergence: references/requirements and label-bearing text — exactly
+  what WS1b restores. Cross-check against nits.
+
+=== WS4 — Refactor the epic methods (test-gated)
+
+Drive the worst offenders toward ~10-line methods *without changing behaviour*,
+with the WS3 suite green as the gate.
+
+* *Iterative, descending-threshold passes* (each a full pass, suite green at the
+  end of each):
+  ** Pass 1 — break the > 40-line monsters (`parse_ordered_children` first).
+  ** Pass 2 — > 30 lines.
+  ** Pass 3 — > 20 lines.
+  ** Pass 4 — > 10 lines, where practical.
+* A method that genuinely reads best slightly over a threshold may stay with a
+  one-line justification — the target is readability, not a line count.
+* Pattern: `case tag` dispatchers → dispatch tables of ~10-line handlers; factor
+  shared logic out of `parse_ordered_children`/`parse_unordered_children`; split
+  `build_postal_from_structured` per field.
+* Discipline: one method (or small group) per commit, full suite after each, never
+  combine refactor with behaviour change. Re-run the WS2 comparison at each pass
+  boundary to confirm no nit delta.
+
+=== WS5 — `mn-samples-ietf` full-corpus QA
+
+Validate the trusted, refactored transformer against the real-world sample
+corpus. `mn-samples-ietf` (source AsciiDoc samples) + `metanorma site generate`
+with the *existing* code yields, per sample, the OLD Semantic XML + OLD RFC XML
+baseline for free.
+
+Precondition: WS3 green and WS4 complete.
+
+* Clone `metanorma/mn-samples-ietf` as a sibling.
+* `metanorma site generate` there → per-sample Semantic XML + OLD RFC XML.
+* Feed each generated Semantic XML through the NEW (enriched) pipeline, reusing
+  the WS2 harness (all three surfaces).
+* Diff across the corpus; append to `discrepancy-log.adoc` with the same
+  classification + nit-severity scheme; aggregate a corpus-wide old-vs-new
+  nit-count table as the headline compliance metric.
+* A-class findings loop back to a focused regression test (WS3 idiom) + fix.
+* Confirm xml2rfc accepts every NEW `.rfc.xml`; record samples where new emits
+  *fewer* nits than old as documented wins.
+
+=== WS6 — Ongoing handholding (cross-cutting)
+
+A standing mode, not a phase: narrate what the code does in plain terms, explain
+the `lutaml-model`/`metanorma-document` idioms as they arise, surface surprises.
+`architecture.adoc` is the durable form.
+
+== Critical files
+
+New:
+
+* `lib/metanorma/ietf/transformer.rb` — façade
+* `lib/metanorma/ietf/transformer/ietf_to_rfc_v3.rb` — orchestrator
+* `transformer/{section,block,cleanup,front,reference}_transformer.rb` — refactor targets
+* `transformer/{base,order_tracker,null_objects}.rb` — support
+* `lib/metanorma/ietf/processor.rb`, `converter.rb` — pipeline wiring
+* `spec/transformer/{asterisk}.rb`, `spec/fixtures/transformer/{asterisk}{asterisk}` — new tests/fixtures
+
+Old (on `main`):
+
+* `lib/isodoc/ietf/{asterisk}.rb` — deleted converter (comparison + porting
+  reference; `rfc_convert.rb#document_preprocess` is the enrichment map for WS1b)
+* `spec/isodoc/{asterisk}_spec.rb` — the 11 deleted spec files (WS3 source)
+* `spec/spec_helper.rb` — `strip_guid`, `RFC_HDR`, canon profile, Timecop
+
+isodoc gem source (for WS1b override; locate via `bundle show isodoc`, currently
+isodoc-3.6.0): `convert.rb` (`convert`/`convert_init`/`convert_xref_init`),
+`xref/{asterisk}.rb` (`Xref#parse`), `presentation_function/section_refs.rb`
+(`reference_names`).
+
+External corpus (WS5): a sibling clone of `metanorma/mn-samples-ietf`.
+
+New deliverables:
+
+* `docs/architecture.adoc`, `docs/qa-plan.adoc`, `docs/discrepancy-log.adoc`
+* WS1b: `lib/metanorma/ietf/presentation/ietf_presentation.rb` (or similar)
+* `spec/support/compare_old_new.rb` (corpus-agnostic; all three surfaces)
+* restored `spec/transformer/feature/{asterisk}_spec.rb`
+
+== Verification
+
+* *WS1* — doc reviewed; every module and `element_order` covered.
+* *WS1b* — spike validates the KEEP/SUPPRESS split on both fixtures; override
+  wired in; redundant transformer code removed or consuming enriched input; split
+  documented.
+* *WS2* — `rake compare:rfc` clean; complete triaged `discrepancy-log.adoc`; zero
+  unclassified deltas, each with nit impact recorded.
+* *WS3* — `bundle exec rspec spec/transformer` green incl. ported feature specs;
+  coverage matches the old `spec/isodoc` suite.
+* *WS4* — full suite green after every commit; no behaviour change (WS2 output
+  unchanged); descending-threshold passes complete.
+* *WS5* — corpus sweep complete; every delta triaged; A-class fixed with a test;
+  xml2rfc accepts every NEW `.rfc.xml`.
+* *End-to-end* — `metanorma -t ietf -x rfc .../example.adoc` produces valid RFC
+  XML that xml2rfc accepts, for both fixtures.
+
+== Risks / open items
+
+* `metanorma-document` is young (0.2.x). Some transformer bugs may be
+  deserialisation gaps upstream — track separately, push fixes upstream rather
+  than working around them.
+* *No releases* during this work; reference upstream branches via `Gemfile.devel`
+  if a `metanorma-document` fix is needed mid-flight.
+* The reverse transformer (RFC→MN) is new scope with thin tests; decide whether
+  it is in QA scope now or deferred (no old-code counterpart).
+* *WS1b overrides the PR's "no presentation step" constraint* on the maintainer's
+  call — a deliberate disagreement that must be surfaced to the PR author.
+* *isodoc subclassing fragility* — pin/track the isodoc version, isolate behind a
+  narrow interface, cover with WS3 tests.
+* *Footnote model decision* (inline `<fn>` vs back-matter endnotes) is a genuine
+  RFC XML v3 correctness question — resolve explicitly against xml2rfc behaviour.
+
+'''
+
+🤖
