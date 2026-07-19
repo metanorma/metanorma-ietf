@@ -326,6 +326,28 @@ module Metanorma
             end
           end
 
+          # Relaton 2.0: the workgroup arrives as an organization
+          # subdivision of type "workgroup" on a contributor
+          if wgs.empty? && bibdata.respond_to?(:contributor)
+            to_array(bibdata.contributor).compact.each do |c|
+              org = c.respond_to?(:organization) ? c.organization : nil
+              next unless org && org.respond_to?(:subdivision)
+
+              to_array(org.subdivision).compact.each do |sub|
+                next unless sub.respond_to?(:type) && sub.type == "workgroup"
+
+                name = to_array(sub.name).compact
+                  .map { |n| ls_text(n) }.compact
+                  .reject(&:empty?).first
+                next unless name
+
+                wg = Rfcxml::V3::Workgroup.new
+                wg.content = [name]
+                wgs << wg
+              end
+            end
+          end
+
           wgs
         end
 
@@ -333,7 +355,13 @@ module Metanorma
           kws = []
           to_array(bibdata.keyword).compact.each do |k|
             text = ls_text(k)
-            next unless text
+            # Relaton 2.0: keyword text nests in keyword/vocab
+            if (text.nil? || text.to_s.empty?) &&
+                k.respond_to?(:vocab) && k.vocab
+              text = ls_text(k.vocab)
+            end
+            next if text.nil? || text.to_s.empty?
+
             kw = Rfcxml::V3::Keyword.new
             kw.content = [text]
             kws << kw
