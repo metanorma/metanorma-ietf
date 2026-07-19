@@ -35,7 +35,9 @@ module Metanorma
 
       # Forward: Metanorma XML → RFC XML v3
       def self.convert_forward(xml_string, options = {})
-        stripped = xml_string.gsub(/\sxmlns="[^"]*"/, "")
+        # strip only the Metanorma default namespace: a blanket strip also
+        # denamespaces embedded MathML/SVG, whose models then parse empty
+        stripped = xml_string.gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"}, "")
         doc = Metanorma::IetfDocument::Root.from_xml(stripped)
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform

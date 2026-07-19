@@ -226,6 +226,23 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
   end
 
+  describe "formula transformation" do
+    let(:input_xml) { File.read("spec/fixtures/transformer/input/example.xml") }
+    let(:result) { described_class.convert(input_xml) }
+
+    # N13 was a three-layer loss: blanket xmlns strip denamespacing MathML,
+    # build_stem_text discarding its result by if-expression fall-through,
+    # and untracked content= serializing as an empty <t/>
+    it "renders MathML formula content as delimited asciimath" do
+      expect(result).to include("$$ y^(2) = x^(3) + a x + b $$")
+    end
+
+    it "preserves the MathML namespace when stripping the Metanorma one" do
+      expect(input_xml).to include('xmlns="http://www.w3.org/1998/Math/MathML"')
+      expect(result).not_to include('anchor="_59f339b5-dc37-4d63-847c-dfcb22c4e27b"/>')
+    end
+  end
+
   describe "sourcecode body wrapper (current Semantic XML schema)" do
     # current standoc nests the code text in sourcecode/body
     # (metanorma-standoc#966); content then parses as an empty collection
