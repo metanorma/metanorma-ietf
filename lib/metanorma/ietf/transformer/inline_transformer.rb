@@ -174,7 +174,9 @@ module Metanorma
 
             return nil unless content
             delim = stem_delimiter(content)
-            "#{delim} #{content} #{delim}"
+            # explicit return: without it the if-expression value is
+            # discarded and the trailing nil is what the method returns
+            return "#{delim} #{content} #{delim}"
           end
 
           nil
