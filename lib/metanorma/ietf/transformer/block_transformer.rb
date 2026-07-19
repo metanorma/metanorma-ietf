@@ -314,22 +314,27 @@ module Metanorma
             label = num_str.match?(/\A\(.*\)\z/) ? num_str : "(#{num_str})"
           end
 
+          content = nil
           if stem_text
             content = if label
                         "#{stem_text}    #{label}"
                       else
                         stem_text
                       end
-            t.content = [content]
           end
 
           src_order = formula_node.element_order
           if src_order
             text_parts = src_order.select(&:text?).map(&:text_content).map(&:strip).reject(&:empty?)
             if text_parts.any? && label.nil?
-              existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-              t.content = ["#{existing}    #{text_parts.first}"]
+              content = "#{content}    #{text_parts.first}"
             end
+          end
+
+          # ordered serialization emits only element_order-registered
+          # content; a bare content= assignment serializes as an empty <t/>
+          if content && !content.strip.empty?
+            OrderTracker.set_text_ordered(t, content)
           end
 
           results << t
