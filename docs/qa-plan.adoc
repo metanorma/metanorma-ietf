@@ -418,13 +418,18 @@ refactor, re-baseline fixtures against the current semantic schema) is
 therefore a prerequisite for WS3, running alongside the QA workstreams. Its
 opening backlog is the A-class findings above plus N12, N13 and F1.
 
-*If the overlap test ends up mandating a layer*, the build shape remains as
-previously sketched: an IETF-pared `PresentationXMLConvert` subclass running
-only the proven-needed passes, emitting *enriched Metanorma XML* (so
-`from_xml` still consumes it and the transformer is unchanged), wired into
+*Build shape for the decided layer* (updated 2026-07-19): an
+**extraction refactor, not new construction**. The selective use of the
+shared presentation infrastructure that IETF needs — references, xrefs,
+captions, a limited fmt-* exposure — is *already encoded* in the released
+`lib/isodoc/ietf` code via its `IsoDoc::Convert` inheritance; the released
+path has always run exactly this constrained subset implicitly. The work
+is to extract that selection formally into a standalone presentation-XML
+generator stage, emitting *enriched Metanorma XML* (so `from_xml` still
+consumes it and the transformer is unchanged), wired into
 `transformer.rb#convert_forward` and the processor `:rfc` path; the
-transformer's redundant half-reimplementations are then removed or pointed at
-the enriched input.
+transformer's redundant half-reimplementations are then removed or pointed
+at the enriched input.
 
 *Watch-points:*
 
