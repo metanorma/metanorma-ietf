@@ -1,1 +1,0 @@
-gem "metanorma-plugin-lutaml", git: "https://github.com/metanorma/metanorma-plugin-lutaml.git", branch: "main"
