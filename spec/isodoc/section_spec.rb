@@ -278,5 +278,35 @@ INPUT
 OUTPUT
         end
 
+  it "suppresses consensus for the independent submission stream" do
+    input = <<~INPUT
+      <ietf-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <series type="stream"><title>independent</title></series>
+      <ext><consensus>false</consensus></ext>
+      </bibdata>
+      <sections/>
+      </ietf-standard>
+    INPUT
+    out = IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
+    rfc = Nokogiri::XML(out).at("//rfc")
+    expect(rfc["submissionType"]).to eq "independent"
+    expect(rfc["consensus"]).to be_nil
+  end
+
+  it "retains consensus for the IETF submission stream" do
+    input = <<~INPUT
+      <ietf-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <series type="stream"><title>IETF</title></series>
+      <ext><consensus>false</consensus></ext>
+      </bibdata>
+      <sections/>
+      </ietf-standard>
+    INPUT
+    out = IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, true)
+    rfc = Nokogiri::XML(out).at("//rfc")
+    expect(rfc["consensus"]).to eq "false"
+  end
 
 end

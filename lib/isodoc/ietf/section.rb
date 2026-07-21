@@ -58,6 +58,9 @@ module IsoDoc
           .xpath(ns("//bibdata/relation[@type = 'obsoletes']/bibitem/docidentifier[not(@scope)]")))
         upd = xpath_comma(docxml
           .xpath(ns("//bibdata/relation[@type = 'updates']/bibitem/docidentifier[not(@scope)]")))
+        stream = docxml.at(ns(
+                             "//bibdata/series[@type = 'stream']/title",
+                           ))&.text || "IETF"
         {
           docName: @meta.get[:doctype] == "Internet Draft" ? @meta.get[:docnumber] : nil,
           number: @meta.get[:doctype].casecmp?("rfc") ? @meta.get[:docnumber] : nil,
@@ -65,7 +68,10 @@ module IsoDoc
             docxml.at(ns("//bibdata/series[@type = 'intended']/title"))&.text,
           ),
           ipr: docxml.at(ns("//bibdata/ext/ipr"))&.text,
-          consensus: docxml.at(ns("//bibdata/ext/consensus"))&.text,
+          # RFC 7991 2.45.2: consensus applies to the IETF/IAB/IRTF/editorial
+          # streams only; xml2rfc refuses output if it is set for the
+          # independent stream
+          consensus: stream.casecmp?("independent") ? nil : docxml.at(ns("//bibdata/ext/consensus"))&.text,
           obsoletes: obs,
           updates: upd,
           indexInclude: docxml.at(ns("//bibdata/ext/indexInclude"))&.text,
@@ -74,9 +80,7 @@ module IsoDoc
           symRefs: docxml.at(ns("//bibdata/ext/symRefs"))&.text,
           tocInclude: docxml.at(ns("//bibdata/ext/tocInclude"))&.text,
           tocDepth: docxml.at(ns("//bibdata/ext/tocDepth"))&.text,
-          submissionType: docxml.at(ns(
-                                      "//bibdata/series[@type = 'stream']/title",
-                                    ))&.text || "IETF",
+          submissionType: stream,
           "xml:lang": docxml.at(ns("//bibdata/language"))&.text,
           version: "3",
           "xmlns:xi": "http://www.w3.org/2001/XInclude",
