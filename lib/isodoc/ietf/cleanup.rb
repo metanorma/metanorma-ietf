@@ -109,7 +109,8 @@ module IsoDoc
         xmldoc.xpath("//title").each { |s| title_flatten(s, xmldoc) }
         xmldoc.xpath("//reference/front[not(author)]").each do |f|
           insert = f.at("./seriesInfo[last()]") || f.at("./title")
-          insert.next = "<author surname='Unknown'/>"
+          author = "<author surname='Unknown'/>"
+          insert ? insert.next = author : f.prepend_child(author)
         end
       end
 

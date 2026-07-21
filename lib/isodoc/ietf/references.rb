@@ -72,10 +72,25 @@ module IsoDoc
 
       def bibitem_render(ref, bib)
         bib1 = bibitem_render_prep(bib)
-        if (f = bib1.at(ns("./formattedref"))) && !bib1.at(ns("./title"))
+        f = bib1.at(ns("./formattedref"))
+        # Ported from the presentation-XML layer
+        # (IsoDoc::PresentationXMLConvert#bibrender_relaton,
+        # isodoc/lib/isodoc/presentation_function/refs.rb). RfcConvert runs on
+        # semantic XML (use_presentation_xml == false) and skips presentation,
+        # so a bibitem with neither a title nor a formattedref -- e.g. a
+        # reference whose relaton fetch transiently failed
+        # (metanorma/metanorma-standoc#1216) -- would otherwise emit an empty,
+        # invalid RFC <front>. Fall back to the docidentifier as display text.
+        # REFACTOR (metanorma-ietf#272): duplicates presentation-layer logic;
+        # unify with the shared bibrender path when refactoring the reference
+        # pipeline.
+        did = bib1.at(ns("./docidentifier"))
+        if !bib1.at(ns("./title")) && (f || did)
           ref.front do |front|
             front.title do |t|
-              children_parse(f, t)
+              if f then children_parse(f, t)
+              else t << did.text
+              end
             end
           end
         else
