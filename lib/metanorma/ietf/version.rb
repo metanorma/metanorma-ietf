@@ -1,5 +1,5 @@
 module Metanorma
   module Ietf
-    VERSION = "3.7.8".freeze
+    VERSION = "3.7.9".freeze
   end
 end
