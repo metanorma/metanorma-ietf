@@ -417,6 +417,36 @@ while the new path's are *systemic content loss and structural failure*
 and on antioch no output whatsoever). On current-schema inputs, zero of
 three documents tested produce usable RFC XML through the new path.
 
+[[ws1b-run4]]
+==== Run 4 — post-release old-path baseline regeneration (2026-07-21)
+
+The fortnightly release (metanorma-ietf 3.7.9 = main @ `7cb5b31`,
+carrying O1–O4 and the #272/`81f7bc1` fallback) invalidated the run-1–3
+old-path captures; regenerated all three from fresh compiles with the
+released stack (session scratchpad `ws1b-postrelease/`).
+
+* *rfc-3339*: old path now renders through xml2rfc *unpatched*, exit 0
+  (766-line text; warnings only). It was xml2rfc-fatal in run 1 — the
+  O-fixes + #272 cured it, so text-level dual-path diffs are now
+  possible on this document without artefact patching.
+* *example* (PR semantic fixture as-is): old path renders exit 0
+  (217-line text, 2 warnings).
+* *antioch* (fresh compile, image-bearing): old path *still fatal*, two
+  NEW old-path defect candidates surfaced:
+** *O5 candidate — SVG-profile passthrough*: the old path emits
+   `artwork/@src` pointing at the remote image URL; xml2rfc preptool
+   fetches it (403s under its default user-agent on Wikimedia; with the
+   fetch patched to a local copy, the raw Inkscape SVG then fails
+   RFC 7996 SVG-1.2-RFC validation — `inkscape:path-effect`, `fill`
+   attributes, `x` on `svg`). No profile conversion/sanitisation occurs.
+** *O6 candidate — consensus vs independent stream*: `consensus="false"`
+   is emitted alongside the independent submission stream; xml2rfc
+   reports "Expected no consensus setting for independent stream" and
+   refuses output.
+** With both patched *in the comparison artefact only* (artwork elided,
+   consensus attribute dropped: `old.patched.rfc.xml`), antioch renders
+   exit 0 (840-line text) — second-tier diffs available.
+
 [[ws-r-progress]]
 ==== WS-R progress log
 
@@ -638,7 +668,9 @@ New deliverables:
 
 == Risks / open items
 
-* `metanorma-document` is young (0.2.x). Some transformer bugs may be
+* `metanorma-document` is young (0.4.x as of 2026-07-20; the QA bundle
+  deliberately holds 0.2.9 during WS-R to keep the repair ground stable).
+  Some transformer bugs may be
   deserialisation gaps upstream — track separately, push fixes upstream rather
   than working around them.
 * *No releases* during this work; reference upstream branches via `Gemfile.devel`
@@ -646,7 +678,15 @@ New deliverables:
 * The reverse transformer (RFC→MN) is new scope with thin tests; decide whether
   it is in QA scope now or deferred (no old-code counterpart).
 * *WS1b overrides the PR's "no presentation step" constraint* on the maintainer's
-  call — a deliberate disagreement that must be surfaced to the PR author.
+  call. Status 2026-07-21: the disagreement HAS been surfaced (findings +
+  decision posted to #233, 2026-07-19) and the PR author continues to contest
+  it (#233 comment, 2026-07-20: "why we need PXML instead of Semantic XML …
+  all presentational concerns … handled by xml2rfc"). The decision stands on
+  the WS1b evidence ledger — the "all handled by xml2rfc" premise is
+  factually incorrect (NOTE numbering is ledger-confirmed
+  xml2rfc-unrecoverable; requirements are Metanorma element types with no
+  native RFC XML support, converted into numbered forms) — and on the
+  maintainer's completeness requirement for the maintainer's own gem.
 * *isodoc subclassing fragility* — pin/track the isodoc version, isolate behind a
   narrow interface, cover with WS3 tests.
 * *Footnote model decision* (inline `<fn>` vs back-matter endnotes) is a genuine
