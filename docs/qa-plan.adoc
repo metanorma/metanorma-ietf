@@ -462,6 +462,16 @@ consumes it and the transformer is unchanged), wired into
 transformer's redundant half-reimplementations are then removed or pointed
 at the enriched input.
 
+*Scope constraint (maintainer, 2026-07-21): the extracted stage is
+deliberately thin.* It owns the xref machinery, the relaton-render
+reference rendering — including the no-title/no-formattedref fallback
+ported to the released path in `metanorma-ietf@81f7bc1` (#272), whose
+in-code REFACTOR marker anticipates exactly this unification — and not
+much else. The released `lib/isodoc/ietf` code, which already takes its
+reference/xref logic from the isodoc presentation-XML converter, is the
+*normative definition* of the subset: nothing goes into the extracted
+stage that the released path does not already exercise.
+
 *Watch-points:*
 
 * isodoc subclassing is fragile (depends on `Xref#parse`, `reference_names`,
