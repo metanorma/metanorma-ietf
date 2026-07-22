@@ -633,6 +633,34 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       OUTPUT
   end
 
+  it "processes format-gated passthrough with comma-separated formats" do
+    FileUtils.rm_f "test.rfc.xml"
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false)
+      #{BLANK_HDR}
+      <preface><foreword>
+      <p>
+      <passthrough formats="rfc,html">&lt;abc&gt;X&lt;/abc&gt;</passthrough>
+      </p>
+      </preface>
+      </iso-standard>
+    INPUT
+    expect(File.read("test.rfc.xml")).to include "<abc>X</abc>"
+  end
+
+  it "drops format-gated passthrough for non-matching formats" do
+    FileUtils.rm_f "test.rfc.xml"
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", <<~"INPUT", false)
+      #{BLANK_HDR}
+      <preface><foreword>
+      <p>
+      <passthrough formats="html,doc">&lt;abc&gt;X&lt;/abc&gt;</passthrough>
+      </p>
+      </preface>
+      </iso-standard>
+    INPUT
+    expect(File.read("test.rfc.xml")).not_to include "<abc>"
+  end
+
   it "processes concept markup" do
     input = <<~INPUT
              <iso-standard xmlns="http://riboseinc.com/isoxml">
