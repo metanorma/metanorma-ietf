@@ -1,6 +1,19 @@
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
+      # The presentation layer normalises comma-separated passthrough
+      # formats to space-separated (PresentationXMLConvert#passthrough1);
+      # RfcConvert runs on semantic XML and skips that layer, so
+      # formats="rfc,html" never matched the base class's whitespace
+      # split and the content was silently dropped (#275). Split on
+      # commas as well.
+      def passthrough_parse(node, out)
+        node["formats"] &&
+          !node["formats"].split(/[,[:space:]]+/).include?(@format.to_s) and
+          return
+        out.passthrough node.text
+      end
+
       def para_attrs(node)
         { keepWithNext: node["keep-with-next"],
           keepWithPrevious: node["keep-with-previous"],
