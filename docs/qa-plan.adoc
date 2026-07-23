@@ -502,6 +502,135 @@ reference/xref logic from the isodoc presentation-XML converter, is the
 *normative definition* of the subset: nothing goes into the extracted
 stage that the released path does not already exercise.
 
+*Architecture ruling (maintainer, 2026-07-22 23:47): the stage RUNS the
+shared converter; it does not port its functions.* A first spike built
+"enriched semantic XML" by porting `populate_id` and the formattedref
+fallback into a bespoke enrich harness — rejected: two of its three
+operations were second implementations, self-refuting for a layer whose
+stated justification is DRY ("I cannot argue the layer is needed for
+DRY and then reimplement it"). The build shape is therefore a genuine
+`IsoDoc::Ietf::PresentationXMLConvert <
+::IsoDoc::PresentationXMLConvert` subclass as the pipeline's first
+stage — Semantic XML → pared presentation XML → `Root.from_xml` →
+transformer → RFC XML — with:
+
+* *most passes switched off* (the `conversions` fan-out —
+  `metadata/bibdata/section/block/terms/inline` and their
+  sub-passes — is overridable per method; the keep/kill list is decided
+  by the WS1b overlap-test method, evidence per pass, not a priori);
+* the *transformer taught* the presentation idioms it must read —
+  under the governing criterion (maintainer, 2026-07-22 23:59): *a
+  pass survives only if the transformer needs its decision, decisions
+  are preferred in attribute form, and `fmt-*`/`semx` are consumed
+  only where a needed decision has no other carrier*. Proven
+  attribute-carried already: anchor→`id`, note/formula `autonum`.
+  Suspected no-other-carrier case: reference rendering (maintainer's
+  stated concern that avoidance may be impossible there); fallback
+  that stays DRY: *invoke* the shared bibrenderer from the transform
+  side with IETF configuration, as released `references.rb` does —
+  calling shared code is not porting it;
+* verified empirically (2026-07-22 probe, base PXC on fresh rfc-3339):
+  the shared converter already does anchor→`id` promotion (17/17) and
+  `autonum` stamping on notes — confirming both ported functions were
+  redundant duplicates.
+
+Survivors from the first spike: the *consumption-side* transformer
+changes (reading `autonum` in preference to local counters —
+`block_transformer.rb`) and the spec corpus; the enrich-harness
+operations are superseded and slated for removal when the subclass
+lands.
+
+[[b-catalogue]]
+==== B-catalogue — defects surfaced by the B pipeline (all
+transformer-side repairs)
+
+Opened 2026-07-23 from the first B-pipeline runs (fresh rfc-3339 and
+antioch through `IsoDoc::Ietf::PresentationXMLConvert` → `from_xml` →
+transformer). Headline first: the pipeline *works* — rfc-3339 converts
+with 12/12 sourcecode, anchors kept, 11 references with zero empty
+fronts (N3 resolved: relaton-render output arrives as plain
+`formattedref`), and zero `fmt-*`/`semx` leakage (the total-by-default
+models drop all 187 silently). The residue:
+
+[cols="1,8,4", options="header"]
+|===
+| # | Defect | Resolution (2026-07-23 evening)
+| B-1 | A note whose first paragraph begins with mixed content (eref +
+text) loses its `NOTE: ` prefix. | *FIXED*: content fragments are
+synced to ordered-serialization entries (the `set_text_ordered`
+contract), so replacing the content array desynced it; the prefix now
+mutates the first text fragment *in place*
+(`block_transformer.rb#prefix_first_text`).
+| B-2 | erefs from presentation XML appeared to render with empty
+citation text ("Per [] and ISO8601…"). | *NON-BUG*: the "[]" was the
+XML text-node view of an empty `<xref>` element; xml2rfc renders it as
+the citation label. Old and new paths render the identical
+`[[ABNF]]` (outer brackets are source-authored). Full parity.
+| B-3 | Locality-bearing erefs lose their section reference. | *FIXED*:
+`extract_eref_locality` only emitted sections when an anchor-type
+locality accompanied them (abduction artefact); sections now emit
+whenever present, as `<xref section= sectionFormat=>` (the released
+shape — `<relref>`, which current xml2rfc rejects, is retired), and
+junk `relative=` values are gone (cf. O3).
+| B-4 | RFC7253 reference dropped, phantom "IETF" reference emitted in
+its place (example): the presentation layer rewrites docidentifier
+CONTENT into display forms — once the semx wrapping is model-dropped,
+the content collapses to the bare type name ("IETF", "rfc-anchor",
+"DOI") — and `bibitem_anchor` preferred the IETF docidentifier over
+the id. | *FIXED*: under the layer's id provision the bibitem id IS
+the canonical anchor; `bibitem_anchor` now prefers a non-GUID id,
+keeping the docidentifier fallbacks only for un-enriched semantic
+input.
+| B-5 | Presentation display identifiers leak into `<refcontent>`
+("[10]", "[2]" from `metanorma-ordinal`; bare type names from
+rewritten docidentifiers). | *FIXED*: refcontent extraction skips
+`metanorma-ordinal` and `biblio-tag`-scoped identifiers, and rejects
+content that collapsed to its own type name.
+|===
+
+Chased consequences fixed the same evening:
+
+* *N9 structural half FIXED*: reference `seriesInfo` was inferred from
+  docidentifiers (junk `IETF RFC n`, BCP/FYI dropped); now a pure data
+  mapping from `bibitem.series` (title→name, number→value; DOI from
+  the DOI docidentifier). Without `seriesInfo name="RFC"`, xml2rfc
+  cannot build hrefs for sectioned xrefs and refuses output — the
+  cosmetic finding was load-bearing after all.
+* *N3 FIXED at build time*: RFC XML requires ≥1 author per reference
+  front; author-less bibitems now get the released path's placeholder
+  (`author surname="Unknown"`) when the typed reference is built.
+
+*Milestone (2026-07-23 evening): the full B pipeline —
+`IsoDoc::Ietf::PresentationXMLConvert` → `from_xml` → transformer —
+renders fresh rfc-3339 through xml2rfc EXIT 0, zero errors (770-line
+text vs the old path's 766). First complete new-path render of a
+current-schema document.* Suite 150/0 (3 pending) throughout.
+
+*Three-document B verdict (2026-07-23 midnight) + first pass kill:*
+
+* *First evidence-based pass kill*: `move_norm_ref_to_sections` no-op'd
+  in the subclass — the shared layer relocates the normative references
+  section into `//sections` (rendered-document convention); the
+  transformer collects references from `//bibliography`, so the
+  relocation orphaned every normative reference on antioch and example
+  (dangling IDREFs, fatal). The decision is not needed downstream.
+* *rfc-3339*: exit 0, zero errors (the milestone above stands).
+* *antioch*: structurally CLEAN after the pass kill — sole residue is
+  the environmental remote-SVG fetch (this semantic predates
+  mn-samples#57's local-SVG change; the O5 resolution addresses it at
+  source).
+* *example*: was blocked by B-4 — mechanism pinned and fixed the same
+  night (see the catalogue rows above: not a model-parse failure but
+  an anchor-derivation failure over display-rewritten
+  docidentifiers), with B-5 riding along.
+
+*FULL-CORPUS B VERDICT (2026-07-24 00:50): THREE FOR THREE.*
+rfc-3339 exit 0 / 0 errors / 770 lines; example exit 0 / 0 errors /
+225 lines; antioch exit 0 / 0 errors / 784 lines (sole patch: the
+environmental remote-SVG localisation that mn-samples#57 fixes at
+source). Suite 150/0 (3 pending) throughout. Every document in the
+campaign corpus now renders end-to-end through the B pipeline.
+
 *Watch-points:*
 
 * isodoc subclassing is fragile (depends on `Xref#parse`, `reference_names`,
@@ -617,6 +746,30 @@ A standing mode, not a phase: narrate what the code does in plain terms, explain
 the `lutaml-model`/`metanorma-document` idioms as they arise, surface surprises.
 `architecture.adoc` is the durable form.
 
+=== WS7 — relaton-render → model-to-model Relaton→RFC-XML converter
+(deferred, end of campaign)
+
+Explore replacing the relaton-render templating path (Relaton fields →
+per-flavour YAML → RFC XML tags) for IETF reference rendering with a
+model-to-model transform (Relaton class → RFC XML/bibxml reference
+model, lutaml-model idiom). Positioned deliberately at the end of the
+campaign: reference rendering stays on relaton-render — the working,
+shared implementation — until the pipeline is otherwise trusted
+(WS2–WS5 green).
+
+* Scope questions to settle first: whether Relaton 2.0 retains a
+  maintained RFC-XML/bibxml export (Relaton 1.0 had a hand-written
+  one; ownership would be the relaton maintainer's, and that has not
+  been agreed); how much of relaton-render's field *preprocessing*
+  (date shaping, contributor normalisation, series handling) the
+  transform would have to reproduce — that hidden layer, not the
+  final tag emission, is the bulk of the work.
+* Whatever the outcome, the converter slots into the presentation-XML
+  harness as an override — the harness is how relaton bib entries are
+  transformed; only the rendering engine behind it would change.
+* Until then: relaton-render is the working implementation, not a
+  design commitment (recorded in #233).
+
 == Critical files
 
 New:
@@ -678,15 +831,15 @@ New deliverables:
 * The reverse transformer (RFC→MN) is new scope with thin tests; decide whether
   it is in QA scope now or deferred (no old-code counterpart).
 * *WS1b overrides the PR's "no presentation step" constraint* on the maintainer's
-  call. Status 2026-07-21: the disagreement HAS been surfaced (findings +
-  decision posted to #233, 2026-07-19) and the PR author continues to contest
-  it (#233 comment, 2026-07-20: "why we need PXML instead of Semantic XML …
-  all presentational concerns … handled by xml2rfc"). The decision stands on
-  the WS1b evidence ledger — the "all handled by xml2rfc" premise is
-  factually incorrect (NOTE numbering is ledger-confirmed
-  xml2rfc-unrecoverable; requirements are Metanorma element types with no
-  native RFC XML support, converted into numbered forms) — and on the
-  maintainer's completeness requirement for the maintainer's own gem.
+  call. **Status 2026-07-23: SETTLED BY AGREEMENT.** Trajectory: findings +
+  decision posted to #233 (2026-07-19); contested by the PR author
+  (2026-07-20/22/23 comments); existence-vs-extent case posted
+  (issuecomment-5058194963); then a direct call (2026-07-23 evening) in
+  which the author **accepted the anchor and formula arguments once
+  presented concretely, accepted the DRY objection to a semantic-XML
+  preprocessor, and gave the go-ahead**. The layer stands, kept
+  deliberately thin; remaining discussion is extent calibration
+  per-construct, on the evidence, not existence.
 * *isodoc subclassing fragility* — pin/track the isodoc version, isolate behind a
   narrow interface, cover with WS3 tests.
 * *Footnote model decision* (inline `<fn>` vs back-matter endnotes) is a genuine

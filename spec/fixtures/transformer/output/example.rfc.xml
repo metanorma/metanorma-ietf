@@ -218,8 +218,8 @@ are used in a tactical environment.<xref target="RFC7253"/>, <xref target="ISO.I
           </abstract>
         </front>
         <refcontent>RFC 7253</refcontent>
-        <seriesInfo name="IETF" value="RFC 7253"/>
         <seriesInfo name="DOI" value="10.17487/RFC7253"/>
+        <seriesInfo name="RFC" value="7253"/>
       </reference>
     </references>
   </back>
