@@ -33,8 +33,18 @@ module Metanorma
         end
       end
 
-      # Forward: Metanorma XML → RFC XML v3
+      # Forward: Metanorma XML → RFC XML v3. The pipeline's intended
+      # first stage is the genuine shared presentation converter
+      # (architecture B, #233): Semantic XML →
+      # IsoDoc::Ietf::PresentationXMLConvert → from_xml → transform.
+      # Currently OPT-IN (presentation: true); the default flip rides
+      # the pending expectation migration and the round-trip design
+      # question (whether reverse-produced MN XML re-presents on the
+      # forward leg) — see qa-plan.
       def self.convert_forward(xml_string, options = {})
+        if options[:presentation]
+          xml_string = presentation(xml_string, options)
+        end
         # strip only the Metanorma default namespace: a blanket strip also
         # denamespaces embedded MathML/SVG, whose models then parse empty
         stripped = xml_string.gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"}, "")
@@ -49,6 +59,16 @@ module Metanorma
         end
 
         xml
+      end
+
+      # Semantic XML → presentation XML via the shared converter
+      # (lazy-required: the reverse path does not need isodoc)
+      def self.presentation(xml_string, options = {})
+        require "isodoc/ietf/presentation_xml_convert"
+        IsoDoc::Ietf::PresentationXMLConvert
+          .new(language: options[:language] || "en",
+               script: options[:script] || "Latn")
+          .convert("presentation", xml_string, true)
       end
 
       # Reverse: RFC XML v3 → Metanorma XML
