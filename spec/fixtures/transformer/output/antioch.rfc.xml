@@ -40,7 +40,7 @@ as well as "Spamalot", the musical inspired by the movie.</t>
       <name>Spamalot</name>
       <t anchor="_93d90836-cf54-4843-905f-dd1b81c2fb8c">The relevance of the musical "Spamalot" to Internet lore should be
 obvious to the reader; but in case of doubt, see also
-<relref target="RFC2635" displayFormat="of" section="1" relative="section-1"></relref>.</t>
+<xref target="RFC2635" sectionFormat="of" section="1" relative="section-1"/>.</t>
     </note>
   </front>
   <middle>
@@ -54,7 +54,7 @@ when, and only when, they appear in all capitals, as shown here.</t>
     </section>
     <section anchor="_introduction">
       <name>Introduction</name>
-      <t anchor="_258efc3d-273f-40be-9b27-f8f5e3d9029f"><xref target="RFC8140"/> refers to the intended move of RFC formatting to
+      <t anchor="_258efc3d-273f-40be-9b27-f8f5e3d9029f"><xref target="RFC8140" sectionFormat="of" section="1"/> refers to the intended move of RFC formatting to
 XML2RFC v3 <xref target="RFC7990"/>, in the following terms:</t>
       <blockquote quotedFrom="A. Farrel">
         <t anchor="_bfb95d1d-292e-46dd-91fa-9d5374ed72a9">Although the RFC Editor has recently dragged the IETF kicking and
@@ -198,7 +198,7 @@ recount here through monospace font and multiple spaces.</t>
         <t anchor="_3f01afab-7c2c-4c61-b7ea-ec20704cc532">The <strong>Killer Rabbit of Caerbannog</strong>, that most formidable foe of
 the Knights and of all that is holy or carrot-like, has been
 depicted diversely in lay and in song. We venture to say,
-<em>contra</em> the claim made in <relref target="RFC8140" displayFormat="of" section="4.1" relative="section"></relref>,
+<em>contra</em> the claim made in <xref target="RFC8140" sectionFormat="of" section="4.1"/>,
 that the Killer Rabbit of Caerbannog truly is the most afeared
 of all the creatures. Short of sanctified ordnance such as
 <xref target="holy_hand_grenade" format="title"/>, there are few remedies
@@ -528,8 +528,9 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
           </abstract>
         </front>
         <refcontent>RFC 2119</refcontent>
-        <seriesInfo name="IETF" value="RFC 2119"/>
         <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+        <seriesInfo name="BCP" value="14"/>
+        <seriesInfo name="RFC" value="2119"/>
       </reference>
     </references>
     <references anchor="_informative_references">
@@ -545,8 +546,9 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
           </abstract>
         </front>
         <refcontent>RFC 2635</refcontent>
-        <seriesInfo name="IETF" value="RFC 2635"/>
         <seriesInfo name="DOI" value="10.17487/RFC2635"/>
+        <seriesInfo name="FYI" value="35"/>
+        <seriesInfo name="RFC" value="2635"/>
       </reference>
       <reference anchor="RFC8140" target="https://www.rfc-editor.org/info/rfc8140">
         <front>
@@ -558,8 +560,8 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
           </abstract>
         </front>
         <refcontent>RFC 8140</refcontent>
-        <seriesInfo name="IETF" value="RFC 8140"/>
         <seriesInfo name="DOI" value="10.17487/RFC8140"/>
+        <seriesInfo name="RFC" value="8140"/>
       </reference>
       <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174">
         <front>
@@ -571,8 +573,9 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
           </abstract>
         </front>
         <refcontent>RFC 8174</refcontent>
-        <seriesInfo name="IETF" value="RFC 8174"/>
         <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+        <seriesInfo name="BCP" value="14"/>
+        <seriesInfo name="RFC" value="8174"/>
       </reference>
       <reference target="https://www.rfc-editor.org/info/rfc7990" anchor="RFC7990">
         <front>

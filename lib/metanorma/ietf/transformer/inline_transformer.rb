@@ -23,12 +23,15 @@ module Metanorma
           section, relative = extract_eref_locality(elem)
 
           if section && !section.to_s.empty?
-            xref = Rfcxml::V3::Relref.new
+            # B-3: the released path (and current xml2rfc, which dropped
+            # <relref>) express section references as <xref section=
+            # sectionFormat=>
+            xref = Rfcxml::V3::Xref.new
             xref.target = bibitem_id.to_s
             xref.section = section
             xref.relative = relative unless relative.to_s.empty?
-            xref.display_format = elem.display_format if elem.display_format
-            xref.content = [link_text.to_s]
+            elem.display_format and xref.section_format = elem.display_format
+            xref.content = [link_text.to_s] unless link_text.to_s.empty?
             xref
           else
             # No section info — use <xref> (bibitem IDREF cross-reference)
@@ -60,14 +63,11 @@ module Metanorma
 
           # Collect all section localities with connectives
           sections = []
-          anchor_found = false
 
           stacks.each_with_index do |stack, i|
             to_array(stack.bib_locality).each do |loc|
               if loc.type == "section" && loc.reference_from
                 sections << loc.reference_from.to_s
-              elsif loc.type == "anchor"
-                anchor_found = true
               end
             end
 
@@ -86,12 +86,13 @@ module Metanorma
             end
           end
 
-          if anchor_found
-            section_val = sections.join(", ")
-            [section_val, "section"]
-          else
-            ["", ""]
-          end
+          # B-3: section localities emit whenever present — the released
+          # path always maps a section locality to section=; an
+          # anchor-type locality is not a precondition. relative= comes
+          # only from the relative attribute (handled above); emitting
+          # "section" as a relative value was junk the released path
+          # never produced (cf. O3).
+          [sections.join(", "), ""]
         end
 
         def extract_eref_text(elem)

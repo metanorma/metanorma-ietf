@@ -171,6 +171,10 @@ module Metanorma
           end
         end
 
+        # Notes render UNNUMBERED in RFC output (maintainer concession,
+        # #233, 2026-07-23: RFC XML has no accommodation for numbered
+        # notes). The shared presentation layer still stamps autonum for
+        # all flavours; this flavour simply does not render it for notes.
         def transform_note(note_node, container, note_counter: nil)
           aside = Rfcxml::V3::Aside.new
           aside.anchor = to_ncname(anchor_for(note_node)) if anchor_for(note_node)
@@ -181,11 +185,7 @@ module Metanorma
             next unless t
 
             if first
-              existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-              unless existing.start_with?("NOTE: ", "NOTE ")
-                prefix = note_counter ? "NOTE #{note_counter}: " : "NOTE: "
-                t.content = ["#{prefix}#{existing}"]
-              end
+              prefix_first_text(t, "NOTE: ")
               first = false
             end
 
@@ -195,7 +195,35 @@ module Metanorma
           aside
         end
 
+        # B-1: content fragments are synced to ordered-serialization
+        # entries (the set_text_ordered contract), so REPLACING the
+        # content array desyncs it and the new value never serializes.
+        # Prefix the first text fragment IN PLACE instead, preserving
+        # array identity and order. A paragraph that starts with an
+        # inline element (no leading text fragment) is left unprefixed
+        # rather than desynced.
+        def prefix_first_text(text_elem, prefix)
+          content = text_elem.content
+          if content.is_a?(Array)
+            idx = content.index { |part| part.is_a?(String) }
+            return if idx.nil? || idx > 0
+            return if content[idx].start_with?("NOTE: ", "NOTE ")
+
+            content[idx] = "#{prefix}#{content[idx]}"
+          elsif content.is_a?(String)
+            content.start_with?("NOTE: ", "NOTE ") and return
+            text_elem.content = "#{prefix}#{content}"
+          end
+        end
+
+        def block_autonum(node)
+          node.respond_to?(:autonum) or return nil
+          num = node.autonum.to_s.strip
+          num.empty? ? nil : num
+        end
+
         def transform_example(example_node, example_counter: nil)
+          counter = block_autonum(example_node) || example_counter
           results = []
           first = true
           get_paragraphs(example_node).each do |p|
@@ -203,7 +231,7 @@ module Metanorma
             next unless t
 
             if first
-              prefix = example_counter ? "EXAMPLE #{example_counter}: " : "EXAMPLE: "
+              prefix = counter ? "EXAMPLE #{counter}: " : "EXAMPLE: "
               existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
               t.content = ["#{prefix}#{existing}"]
               first = false
