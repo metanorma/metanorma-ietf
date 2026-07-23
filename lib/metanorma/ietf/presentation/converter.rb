@@ -43,11 +43,33 @@ module Metanorma
           docxml = Nokogiri::XML(xml_string, &:huge)
           populate_id(docxml)
           render_orphan_references(docxml)
-          # TODO(spike): xref bookkeeping — run Xref#parse and inject the
-          # xml2rfc-unrecoverable labels (NOTE numbering) as element text,
-          # nothing more. Autonumbering of sections/figures/tables stays
-          # with xml2rfc.
+          stamp_autonums(docxml)
           docxml.to_xml
+        end
+
+        # The xml2rfc-unrecoverable numbering: notes/termnotes, formulas
+        # and examples have no native RFC XML counterpart, so xml2rfc
+        # cannot number them. The shared IsoDoc::Xref machinery computes
+        # the numbers once (same semantics as every flavour: a solo note
+        # is unnumbered, siblings count up); we stamp its results as
+        # autonum attributes, which the metanorma-document models already
+        # parse as a standard block attribute. The transformer does no
+        # counting of its own. Section/figure/table autonumbering and
+        # internal xref text remain xml2rfc's job and are NOT stamped.
+        def stamp_autonums(docxml)
+          anchors = xref_anchors(docxml)
+          ns = { "m" => docxml.root.namespace&.href }.compact
+          xpath = if ns.empty?
+                    "//note | //termnote | //formula | //example"
+                  else
+                    "//m:note | //m:termnote | //m:formula | //m:example"
+                  end
+          docxml.xpath(xpath, ns).each do |elem|
+            info = anchors[elem["id"]] or next
+            label = info[:label].to_s.strip
+            label.empty? and next
+            elem["autonum"] = label
+          end
         end
 
         # Ported from RfcConvert#populate_id: user-authored anchors become
@@ -90,6 +112,28 @@ module Metanorma
         end
 
         private
+
+        # Xref#parse operates on the namespaced document (isodoc's own
+        # xpaths bind the xmlns: prefix); parse a fresh copy so the
+        # bookkeeping never mutates our tree. Keyed by the post-
+        # populate_id effective ids, since enrich runs populate_id first.
+        def xref_anchors(docxml)
+          xrefs = Xref.new(@lang, @script, presentation_klass, i18n,
+                           locale: @locale)
+          xrefs.parse(Nokogiri::XML(docxml.to_xml, &:huge))
+          xrefs.get
+        end
+
+        # A real PresentationXMLConvert instance is the narrowest object
+        # satisfying Xref's klass interface (bibrender=, i18n=, doctype=,
+        # …) without reimplementing it — the fragility watch-point from
+        # the qa-plan lives here, deliberately in one place.
+        def presentation_klass
+          @presentation_klass ||=
+            ::IsoDoc::PresentationXMLConvert
+              .new(language: @lang, script: @script)
+              .tap { |k| k.i18n = i18n }
+        end
 
         def bib_has_title_or_formattedref?(bib, ns)
           if ns.empty?

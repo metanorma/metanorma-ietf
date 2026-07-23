@@ -103,6 +103,15 @@ module Metanorma
           end
 
           authors = extract_bibitem_authors(bibitem)
+          # RFC XML requires at least one author per reference front; the
+          # released path completes author-less references with a
+          # placeholder in front_cleanup (campaign finding N3, the
+          # schema-required fallback). Same completion at build time here.
+          if authors.nil? || authors.empty?
+            placeholder = Rfcxml::V3::Author.new
+            placeholder.surname = "Unknown"
+            authors = [placeholder]
+          end
           front.author = authors
 
           date = extract_bibitem_date(bibitem)
@@ -177,12 +186,8 @@ module Metanorma
             end
           end
 
-          to_array(constituent.docidentifier).each do |d|
-            next unless d.type == "IETF" || d.type == "DOI"
-            si = Rfcxml::V3::SeriesInfo.new
-            si.name = d.type
-            si.value = id_content(d)
-            safe_append(ref, :series_info, si) if si.value && !si.value.empty?
+          extract_bibitem_series_info(constituent).each do |si|
+            safe_append(ref, :series_info, si)
           end
 
           ref
@@ -249,6 +254,16 @@ module Metanorma
 
           return bibitem.anchor if bibitem.anchor && !bibitem.anchor.to_s.empty?
 
+          # B-4: the presentation layer's id provision makes the bibitem
+          # id the canonical anchor, while it rewrites docidentifier
+          # CONTENT into display forms (a bare type name once the semx
+          # wrapping is dropped) — so a non-GUID id outranks the
+          # docidentifier fallbacks, which remain only for un-enriched
+          # semantic input whose ids are GUIDs.
+          id = bibitem.id
+          return to_ncname(id) if id && !id.to_s.empty? &&
+            !id.to_s.start_with?("_")
+
           ids = to_array(bibitem.docidentifier)
           ietf_id = ids.find { |d| d.type == "IETF" }
           if ietf_id
@@ -259,7 +274,7 @@ module Metanorma
           rfc_anchor = ids.find { |d| d.type == "rfc-anchor" }
           return id_content(rfc_anchor) if rfc_anchor
 
-          to_ncname(bibitem.id) if bibitem.id
+          to_ncname(id) if id
         end
 
         def extract_bibitem_target(bibitem)
@@ -364,24 +379,67 @@ module Metanorma
 
           id = ids.find { |d| d.type == "IETF" }
           id ||= ids.find { |d| d.type == "ISO" }
-          id ||= ids.first
+          # B-5: presentation adds metanorma-ordinal ("[n]") and
+          # biblio-tag-scoped identifiers — display artefacts, never
+          # refcontent
+          id ||= ids.find do |d|
+            d.type != "metanorma-ordinal" &&
+              (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
+          end
 
           return nil unless id
-          id_content(id)
+          text = id_content(id)
+          # a display-rewritten identifier whose content collapsed to its
+          # own type name carries no information
+          return nil if text.nil? || text.empty? || text == id.type
+          text
         end
 
+        # A pure data mapping: DOI rides a docidentifier; the structural
+        # series entries (RFC, BCP, STD, Internet-Draft, …) map series
+        # title → name and series number → value. The previous
+        # IETF-docidentifier inference emitted a junk "IETF" series and
+        # dropped BCP entirely (campaign finding N9, structural half) —
+        # and without seriesInfo name="RFC", xml2rfc cannot build hrefs
+        # for sectioned xrefs and refuses output.
         def extract_bibitem_series_info(bibitem)
           infos = []
 
           to_array(bibitem.docidentifier).each do |d|
-            next unless d.type == "IETF" || d.type == "DOI"
+            next unless d.type == "DOI"
             si = Rfcxml::V3::SeriesInfo.new
-            si.name = d.type
+            si.name = "DOI"
             si.value = id_content(d)
             infos << si if si.value && !si.value.empty?
           end
 
+          to_array(bibitem.series).each do |s|
+            type = s.respond_to?(:type) ? s.type.to_s : ""
+            next if %w[stream intended].include?(type)
+
+            number = s.respond_to?(:number) ? s.number : nil
+            next if number.nil? || number.to_s.empty?
+
+            name = series_title_text(s)
+            next if name.empty?
+
+            si = Rfcxml::V3::SeriesInfo.new
+            si.name = name
+            si.value = number.to_s
+            infos << si
+          end
+
           infos
+        end
+
+        def series_title_text(series)
+          title = series.respond_to?(:title) ? series.title : nil
+          return "" unless title
+
+          content = title.respond_to?(:content) ? title.content : title
+          content = content.join if content.is_a?(Array)
+          content = ls_text(title) if content.nil? || content.to_s.empty?
+          content.to_s.strip
         end
 
         def extract_bibitem_annotation(bibitem)
