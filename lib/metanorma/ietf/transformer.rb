@@ -44,10 +44,7 @@ module Metanorma
         if options.fetch(:presentation, true)
           xml_string = presentation(xml_string, options)
         end
-        # strip only the Metanorma default namespace: a blanket strip also
-        # denamespaces embedded MathML/SVG, whose models then parse empty
-        stripped = xml_string.gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"}, "")
-        doc = Metanorma::IetfDocument::Root.from_xml(stripped)
+        doc = parse_semantic(xml_string)
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
@@ -68,6 +65,28 @@ module Metanorma
           .new(language: options[:language] || "en",
                script: options[:script] || "Latn")
           .convert("presentation", xml_string, true)
+      end
+
+      # Metanorma XML string → document model. Strips only the
+      # Metanorma default namespace: a blanket strip also denamespaces
+      # embedded MathML/SVG, whose models then parse empty (campaign
+      # finding N13).
+      def self.parse_semantic(xml_string)
+        stripped = xml_string
+          .gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"}, "")
+        Metanorma::IetfDocument::Root.from_xml(stripped)
+      end
+
+      # Reader for the processor's document-model output leg (#233
+      # architecture B): the presentation stage runs first, then the
+      # model parse with the narrow namespace strip. Declared as the
+      # :rfc reader in Processor#document_transformers with
+      # strip_default_namespace left OFF — metanorma-core's own strip
+      # is blanket and would reintroduce N13 on this path.
+      module PresentationReader
+        def self.from_xml(xml_string)
+          Transformer.parse_semantic(Transformer.presentation(xml_string))
+        end
       end
 
       # Reverse: RFC XML v3 → Metanorma XML

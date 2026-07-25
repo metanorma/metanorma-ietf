@@ -686,6 +686,29 @@ re-present with type prefixes (`refcontent` "IETF RFC 7990",
 `seriesInfo` value "DOI 10.17487/…") — reverse-conformance items for
 the WS-R tail.*
 
+*PROCESSOR WIRING + A RETIREMENT (2026-07-25 23:15, suite 219/0):*
+
+* The processor's `:rfc` document-model leg now runs architecture B:
+  `document_transformers` declares `Transformer::PresentationReader`
+  (presentation stage → narrow namespace strip → `Root.from_xml`) as
+  its reader, with metanorma-core's `strip_default_namespace` left
+  OFF — core's strip is *blanket* and denamespaces embedded
+  MathML/SVG (a latent N13 regression on this path, now avoided).
+  First real processor `:rfc` spec added: the full stem text proves
+  MathML survived, the "(1)" proves presentation ran.
+* A-architecture remnants RETIRED: the enrich harness
+  (`lib/metanorma/ietf/presentation.rb` + `presentation/converter.rb`
+  — populate_id port, orphan-formattedref port, stamp_autonums + its
+  Xref subclass) is deleted; its spec is rewritten
+  behaviour-for-behaviour against the real presentation stage
+  (`spec/presentation/presentation_stage_spec.rb`: anchor→id
+  promotion, orphan-formattedref parity via the full pipeline, note
+  autonum stamping, unnumbered-note rendering, pipeline consumption).
+  The transformer's transitional `anchor_for` preference chain
+  (anchor → id → semx-id, for un-presented input) collapses to plain
+  id; the dead `note_counter:` parameter and its term-transformer
+  call site are gone.
+
 *Watch-points:*
 
 * isodoc subclassing is fragile (depends on `Xref#parse`, `reference_names`,
@@ -698,8 +721,9 @@ the WS-R tail.*
 * confirm enriched XML round-trips `from_xml`/`to_xml` without losing injected
   labels.
 
-Deliverable: `lib/metanorma/ietf/presentation/ietf_presentation.rb` (or similar)
-+ a section in `architecture.adoc`.
+Deliverable (DONE, superseding the A-era filename): the B subclass at
+`lib/isodoc/ietf/presentation_xml_convert.rb`, wired as the default
+forward leg and the processor's `:rfc` reader.
 
 === WS2 — Old-vs-new comparison harness + discrepancy log (two fixtures)
 
