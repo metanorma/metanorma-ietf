@@ -450,6 +450,19 @@ released stack (session scratchpad `ws1b-postrelease/`).
 [[ws-r-progress]]
 ==== WS-R progress log
 
+* 2026-07-26 session (WS-R close-out): *N8 confirmed fixed* (the
+  builders landed with `cd9674c`, Relaton 2.0 + classic shapes; the
+  current fixture has no document-level keywords — its 14 keywords
+  sit on bibliography bibitems, which RFC XML has no slot for — so
+  the pending conservation specs never bit). The two `pending`
+  markers are lifted and a synthetic-document spec asserts keywords +
+  workgroup through the full default pipeline. *Both round-trip nits
+  RESOLVED as side effects*: re-probed post-`docid_prefixes`-kill and
+  post-N7, leg 2 with and without re-presentation is byte-identical
+  for both example and antioch (the docid type-prefix delta and the
+  eaten inter-xref space are gone). WS-R findings ledger now closed
+  except design-deferred items (N6 note-numbering: conceded
+  unnumbered; N9 design strand: WS7).
 * 2026-07-26 session (WS-R tail): *N4 fixed* (`mixed_text`: formattedref
   extraction now walks mixed content in order; bare links render as
   their target URL — the IERS `<>.` regains its address). *N10 fixed*
@@ -705,7 +718,9 @@ inter-word space between adjacent xrefs is eaten on re-presentation
 ("BCP 14 [RFC2119][RFC8174]"); reverse-produced reference docids
 re-present with type prefixes (`refcontent` "IETF RFC 7990",
 `seriesInfo` value "DOI 10.17487/…") — reverse-conformance items for
-the WS-R tail.*
+the WS-R tail. [RESOLVED 2026-07-26: both nits vanished with the
+`docid_prefixes` kill and the N7 replay — re-probed, leg 2 with and
+without re-presentation is byte-identical on both documents.]*
 
 *PROCESSOR WIRING + A RETIREMENT (2026-07-25 23:15, suite 219/0):*
 
