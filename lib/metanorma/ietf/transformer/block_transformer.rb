@@ -175,7 +175,7 @@ module Metanorma
         # #233, 2026-07-23: RFC XML has no accommodation for numbered
         # notes). The shared presentation layer still stamps autonum for
         # all flavours; this flavour simply does not render it for notes.
-        def transform_note(note_node, container, note_counter: nil)
+        def transform_note(note_node, container)
           aside = Rfcxml::V3::Aside.new
           aside.anchor = to_ncname(anchor_for(note_node)) if anchor_for(note_node)
 

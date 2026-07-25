@@ -155,9 +155,8 @@ module Metanorma
             end
           end
 
-          # Term notes with numbering
-          to_array(term_node.notes).each_with_index do |note, idx|
-            aside = transform_note(note, section, note_counter: idx + 1)
+          to_array(term_node.notes).each do |note|
+            aside = transform_note(note, section)
             safe_append(section, :aside, aside) if aside
           end
 
