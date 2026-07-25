@@ -55,12 +55,16 @@ module Metanorma
         end
       end
 
+      # The :rfc leg runs architecture B (#233): presentation stage,
+      # then model parse, via Transformer::PresentationReader. Core's
+      # strip_default_namespace stays OFF: its strip is blanket and
+      # denamespaces embedded MathML/SVG (campaign finding N13); the
+      # reader applies the narrow Metanorma-namespace strip itself.
       def document_transformers
         {
           rfc: {
-            reader: Metanorma::IetfDocument::Root,
+            reader: Transformer::PresentationReader,
             transformer: Transformer::IetfToRfcV3,
-            strip_default_namespace: true,
             to_xml_options: { pretty: true, declaration: true,
                               encoding: "utf-8" },
             post_process: method(:warn_rfc_xml_validation),

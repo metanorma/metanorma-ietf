@@ -104,6 +104,18 @@ RSpec.describe Metanorma::Ietf::Processor do
     </sections>
   INPUT
 
+  it "renders the :rfc leg through the presentation stage" do
+    semantic = File.read("spec/fixtures/transformer/input/example.xml")
+    FileUtils.rm_f "test.rfc.xml"
+    processor.output(semantic, "test.xml", "test.rfc.xml", :rfc)
+    expect(File.exist?("test.rfc.xml")).to be true
+    # the full stem text proves embedded MathML survived the narrow
+    # namespace strip (N13); the "(1)" proves the presentation stage
+    # ran (formula autonumber)
+    expect(File.read("test.rfc.xml"))
+      .to include("$$ y^(2) = x^(3) + a x + b $$    (1)")
+  end
+
   it "does not find xml2rfc" do
     FileUtils.rm_f "test.xml"
     FileUtils.rm_f "test.html"
