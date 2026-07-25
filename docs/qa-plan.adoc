@@ -586,6 +586,21 @@ input.
 rewritten docidentifiers). | *FIXED*: refcontent extraction skips
 `metanorma-ordinal` and `biblio-tag`-scoped identifiers, and rejects
 content that collapsed to its own type name.
+| B-6 | Re-presenting reverse-produced MN XML crashed in isodoc's
+`ol_label_format` (`nil.sub`): the reverse transformer emitted
+RFC-side ol type values (`loweralpha`, `lowerroman`…) instead of
+canonical Metanorma types (`alphabet`, `roman`…) — and the forward
+map didn't accept those aliases either, so round-tripped lettered
+lists silently degraded to `type="1"` (a fidelity bug no spec
+caught). | *FIXED (2026-07-24)*: `ol_type_to_mn` emits canonical
+Metanorma values; `map_ol_type` tolerates the RFC-side aliases.
+| B-7 | `obsoletes`/`updates` docidentifier dump doubled under
+presentation: the layer adds `scope="biblio-tag"` display forms to
+relation bibitems (one degenerating to bare "RFC" post-semx-drop) and
+`extract_relation_ids` took every docid. | *FIXED (2026-07-24)*:
+scoped docidentifiers are skipped — the released path's
+`docidentifier[not(@scope)]` rule. Output now byte-matches the
+fixture.
 |===
 
 Chased consequences fixed the same evening:
@@ -640,6 +655,36 @@ examples (reverse-produced MN XML being re-presented on the forward
 leg: a DESIGN QUESTION to settle — should the round-trip's forward leg
 present at all?), 2 document fixtures + 1 bibliography example
 (expectation migration). The default flip rides those two work items.*
+
+*DEFAULT FLIP DONE (2026-07-24 02:00): presentation is ON by default*
+(`presentation: false` opts out). *Suite 220/0 (3 pending).* The
+round-trip design question was settled by probe evidence, not fiat:
+after B-6, re-presenting reverse-produced MN XML *works* — example's
+leg-2 output is byte-identical with and without re-presentation, and
+antioch's renders through xml2rfc exit 0 — so reverse output
+re-presents like any other semantic input, no special-casing. Two
+further evidence-based pass kills rode the flip (see the subclass):
+
+* `docid_prefixes` — rewrites reference docidentifier content to
+  display form (type prefix + esc/semx wrapping); the model-side
+  unknown-element drop reduced them to bare type names, destroying raw
+  values (`seriesInfo name="DOI" value="DOI"`). Every transformer
+  consumer of docidentifiers needs the raw value; none needs display.
+* `index` — harvests inline `<index>` terms into an indexsect,
+  removing them from the running text; the transformer maps `<index>`
+  → `<iref>` in place, so the harvest destroyed antioch's index terms.
+
+Fixture migration after the kills was minimal and fully legitimate:
+antioch byte-identical (trailing newline only); example's sole delta
+is the formula autonumber (`$$ … $$    (1)`) — the presentation
+feature the layer was defended for, now live on the default path.
+
+Known residual nits (round-trip only, logged not blocking): an
+inter-word space between adjacent xrefs is eaten on re-presentation
+("BCP 14 [RFC2119][RFC8174]"); reverse-produced reference docids
+re-present with type prefixes (`refcontent` "IETF RFC 7990",
+`seriesInfo` value "DOI 10.17487/…") — reverse-conformance items for
+the WS-R tail.*
 
 *Watch-points:*
 
