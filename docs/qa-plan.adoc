@@ -763,6 +763,17 @@ forward leg and the processor's `:rfc` reader.
 
 === WS2 — Old-vs-new comparison harness + discrepancy log (two fixtures)
 
+*STATUS (2026-07-26): BUILT AND RUN.* `tools/compare_old_new.rb` +
+`rake compare:rfc` over the three baseline documents (not two — the
+post-release baselines cover rfc-3339 as well). All three render on
+both legs; nit balance +1/−1/±0; deltas classified in
+`docs/discrepancy-log.adoc` — verdict: same documents; two A-class
+fix tasks (sourcecode ampersand double-escape; N5 masthead residue)
+plus one cosmetic-noise item (refcontent anchor self-reference), the
+rest B/C/D. The old leg reads the durable baselines; antioch is
+compared under the symmetric remote-SVG elision (old.patched + the
+same patch applied to the new leg).
+
 A *committed, repeatable* tool proving/refuting "diffs are minor" on the two PR
 fixtures (`example.xml`, `antioch.xml`); the large `mn-samples-ietf` sweep is
 deferred to WS5. Harness written corpus-agnostic so WS5 reuses it.
