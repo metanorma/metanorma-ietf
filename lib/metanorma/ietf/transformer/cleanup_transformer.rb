@@ -104,6 +104,19 @@ module Metanorma
           return if has_other_children
 
           t = li.t.first
+
+          if t.element_order.is_a?(Array) &&
+              t.element_order.any? { |e| e.node_type == :element }
+            # N7: the t carries interleaved inline elements. Flattening
+            # its text and migrating the inline collections separately
+            # displaced every xref/eref to the end of the item; replay
+            # the t's fragments onto the li in order instead.
+            li.t = []
+            li.element_order = nil
+            replay_mixed_content(t, li)
+            return
+          end
+
           t_content = extract_text_content(t)
           li_content = li.content
 
@@ -121,6 +134,30 @@ module Metanorma
 
           li.t = []
           li.element_order = nil
+        end
+
+        # Replay a mixed-content source model's ordered fragments onto
+        # a target model: text fragments and inline elements re-track
+        # in source order under the OrderTracker contract.
+        def replay_mixed_content(source, target)
+          content = []
+          counters = Hash.new(0)
+          source.element_order.each do |entry|
+            if entry.node_type == :text
+              content << entry.text_content
+              OrderTracker.track_text(target, entry.text_content)
+            else
+              attr = entry.name.to_sym
+              idx = counters[entry.name]
+              counters[entry.name] += 1
+              coll = source.respond_to?(attr) && source.public_send(attr)
+              obj = coll.is_a?(Array) ? coll[idx] : nil
+              next unless obj
+
+              OrderTracker.append_ordered(target, attr, obj)
+            end
+          end
+          target.content = content
         end
 
         def extract_text_content(text_elem)

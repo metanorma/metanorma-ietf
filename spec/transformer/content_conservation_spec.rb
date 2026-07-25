@@ -59,6 +59,38 @@ RSpec.describe Metanorma::Ietf::Transformer do
       expect(out_wg).not_to be_empty
     end
 
+    it "conserves link URLs in formattedrefs" do
+      # N4: the URL was silently deleted, rendering "<>."
+      in_links = input.xpath("//references//bibitem//formattedref//link")
+        .map { |n| n["target"] }.compact.reject(&:empty?)
+      skip "no formattedref links in fixture" if in_links.empty?
+      text = output.to_xml
+      in_links.each { |url| expect(text).to include(url) }
+    end
+
+    it "renders the compound main title for multi-part references" do
+      # N10: the first title (the intro part) truncated ISO-style titles
+      expect(output.to_xml).to include(
+        "Data elements and interchange formats - Information " \
+        "interchange - Representation of dates and times",
+      )
+    end
+
+    it "declares non-ASCII text with <u>" do
+      # N11: parity with the released path's u_cleanup
+      expect(output.xpath("//u").map(&:text)).to include("©")
+    end
+
+    it "keeps inline citations interleaved in list items" do
+      # N7: flattening a list item's single t displaced its xrefs to
+      # the end of the item, leaving "[] ... .[NTP]"
+      li = output.xpath("//li").find do |l|
+        l.text.include?("Network Time Protocol")
+      end
+      expect(li).not_to be_nil
+      expect(li.to_xml).to include('[<xref target="NTP"/>]')
+    end
+
     it "conserves user-authored anchors" do
       # N2 mapping half fixed (anchor_for sweep); management half is the
       # presentation layer's per the architecture decision

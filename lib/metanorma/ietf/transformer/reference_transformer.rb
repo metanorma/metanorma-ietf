@@ -210,7 +210,7 @@ module Metanorma
 
           formatted = bibitem.formatted_ref
           if formatted
-            title_text = ls_text(formatted)
+            title_text = mixed_text(formatted)
             if title_text && !title_text.empty?
               t = Rfcxml::V3::Title.new
               t.content = [title_text]
@@ -289,13 +289,16 @@ module Metanorma
           u_content(uris.first) if uris.first
         end
 
+        # Prefer the compound type="main" title (N10: taking the first
+        # title truncated ISO-style multi-part titles to their intro
+        # part); fall back to the first title present.
         def extract_bibitem_title(bibitem)
           titles = to_array(bibitem.title)
-
-          first = titles.first
-          return ls_text(first) if first
-
-          nil
+          main = titles.find do |t|
+            t.respond_to?(:type) && t.type == "main"
+          end
+          title = main || titles.first
+          title ? ls_text(title) : nil
         end
 
         def extract_bibitem_authors(bibitem)

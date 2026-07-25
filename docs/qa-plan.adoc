@@ -450,6 +450,27 @@ released stack (session scratchpad `ws1b-postrelease/`).
 [[ws-r-progress]]
 ==== WS-R progress log
 
+* 2026-07-26 session (WS-R tail): *N4 fixed* (`mixed_text`: formattedref
+  extraction now walks mixed content in order; bare links render as
+  their target URL — the IERS `<>.` regains its address). *N10 fixed*
+  (`extract_bibitem_title` prefers the compound `type="main"` title;
+  the first-title pick truncated ISO-style titles to their intro
+  part). *N11 fixed* (`Transformer.u_cleanup`, mirroring the released
+  `RfcConvert#u_cleanup`: U+0080–FFFF wrapped in `<u>` in the same
+  text-run parents, applied post-serialisation in `convert_forward`
+  and chained into the processor's `post_process`; xml2rfc renders
+  `"©" (COPYRIGHT SIGN, U+00A9)` — exact old-path parity). *N7 fixed*
+  (the li single-`t` unwrap flattened text and migrated inline
+  collections separately, displacing every xref/eref/strong/bcp14 to
+  the item's end; `replay_mixed_content` now replays the `t`'s
+  ordered fragments onto the `li` under the OrderTracker contract —
+  antioch's `LORD's`/`SHALL` also snapped back into place). Guards
+  for all four in `content_conservation_spec`; fixtures re-migrated;
+  corpus renders 3/3 exit 0 / 0 errors. Suite 223/0 (3 pending).
+  Note: the committed antioch/example fixtures do not render through
+  xml2rfc AS FILES because the Timecop spec date (2000-01-01)
+  predates TLP2.0 copyright — date artefact, not markup; fresh-dated
+  renders are clean.
 * 2026-07-19/20 session 1: *N1 fixed* (`674ee05`: sourcecode/body read;
   truthiness guard); *N12 fixed* (`9e07281`: `Image#src` → model's
   `:source`); *N13 fixed* (`a4ac499`: three stacked defects — blanket

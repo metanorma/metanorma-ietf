@@ -67,12 +67,15 @@ module Metanorma
             transformer: Transformer::IetfToRfcV3,
             to_xml_options: { pretty: true, declaration: true,
                               encoding: "utf-8" },
-            post_process: method(:warn_rfc_xml_validation),
+            post_process: method(:rfc_post_process),
           },
         }
       end
 
-      def warn_rfc_xml_validation(xml, transformer, options)
+      # Mirror convert_forward's serialisation tail: non-ASCII <u>
+      # wrapping (N11), then validation warnings
+      def rfc_post_process(xml, transformer, options)
+        xml = Transformer.u_cleanup(xml)
         options[:validate] and
           transformer.validate_rfc_xml(xml)
             .each { |e| warn "RFC XML: #{e}" }

@@ -48,6 +48,7 @@ module Metanorma
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
+        xml = u_cleanup(xml)
 
         if options[:validate]
           errors = transformer.validate_rfc_xml(xml)
@@ -55,6 +56,27 @@ module Metanorma
         end
 
         xml
+      end
+
+      # Text-run parents whose non-ASCII content the released path
+      # wraps in <u> (RfcConvert#u_cleanup)
+      UNICODE_WRAP_PARENTS = %w(t blockquote li dd preamble td th
+                                annotation).freeze
+
+      # RFC XML declares non-ASCII characters with <u>, which xml2rfc
+      # renders as "x (NAME, U+XXXX)"; the released path wraps
+      # U+0080..U+FFFF in the same text-run parents (N11).
+      def self.u_cleanup(xml)
+        doc = Nokogiri::XML(xml)
+        coder = HTMLEntities.new
+        doc.traverse do |n|
+          n.text? or next
+          UNICODE_WRAP_PARENTS.include?(n.parent&.name) or next
+          /[\u0080-\uffff]/.match?(n.text) or next
+          n.replace(coder.encode(n.text, :basic)
+            .gsub(/[\u0080-\uffff]/, "<u>\\0</u>"))
+        end
+        doc.to_xml(encoding: "utf-8")
       end
 
       # Semantic XML → presentation XML via the shared converter
