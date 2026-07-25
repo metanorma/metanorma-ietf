@@ -39,6 +39,29 @@ module Metanorma
           Metanorma::Document::Components::Inline::VariantTitleElement,
         ].freeze
 
+        # Render a mixed-content value to plain text in fragment order.
+        # Unlike ls_text (which reads only the string fragments), this
+        # walks each_mixed_content, so element fragments contribute:
+        # links render as their text, or as their target URL when bare
+        # (N4 — the URL was silently deleted); other elements fall back
+        # to ls_text.
+        def mixed_text(obj)
+          return ls_text(obj) unless obj.respond_to?(:each_mixed_content)
+
+          out = +""
+          obj.each_mixed_content do |frag|
+            out << if frag.is_a?(String)
+                     frag
+                   elsif frag.is_a?(Metanorma::Document::Components::Inline::LinkElement)
+                     text = frag.respond_to?(:value) && ls_text(frag.value)
+                     text && !text.strip.empty? ? text : frag.target.to_s
+                   else
+                     ls_text(frag).to_s
+                   end
+          end
+          out
+        end
+
         # Extract plain text from a metanorma-document value.
         # Handles LocalizedString, FormattedString, inline elements, arrays.
         def ls_text(obj)
