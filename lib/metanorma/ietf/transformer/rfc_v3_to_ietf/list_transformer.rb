@@ -250,13 +250,15 @@ module Metanorma
             Metanorma::Document::Components::Paragraphs::ParagraphBlock.new(text: [text.strip])
           end
 
+          # Canonical Metanorma ol types (the vocabulary standoc emits and
+          # the presentation layer's ol_label_template keys on)
           def ol_type_to_mn(type)
             case type.to_s
             when "1", "arabic" then "arabic"
-            when "a", "loweralpha" then "loweralpha"
-            when "A", "upperalpha" then "upperalpha"
-            when "i", "lowerroman" then "lowerroman"
-            when "I", "upperroman" then "upperroman"
+            when "a", "loweralpha" then "alphabet"
+            when "A", "upperalpha" then "alphabet_upper"
+            when "i", "lowerroman" then "roman"
+            when "I", "upperroman" then "roman_upper"
             else type.to_s
             end
           end

@@ -110,6 +110,10 @@ module Metanorma
             next unless rel.type == relation_type
             next unless rel.bibitem
             to_array(rel.bibitem.docidentifier).each do |di|
+              # presentation adds scoped display forms (scope="biblio-tag");
+              # the rendered attribute takes unscoped docids only, as the
+              # released path does (docidentifier[not(@scope)])
+              next if di.respond_to?(:scope) && di.scope
               text = ls_text(di)
               ids << text if text && !text.empty?
             end

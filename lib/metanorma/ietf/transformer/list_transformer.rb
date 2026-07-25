@@ -324,9 +324,9 @@ module Metanorma
         def map_ol_type(type)
           case type.to_s
           when "arabic" then "1"
-          when "roman" then "i"
-          when "alphabet" then "a"
-          when "upperroman" then "I"
+          when "roman", "lowerroman" then "i"
+          when "alphabet", "loweralpha" then "a"
+          when "upperroman", "roman_upper" then "I"
           when "upperalphabet", "upperalpha", "alphabet_upper" then "A"
           else "1"
           end

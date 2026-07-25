@@ -118,7 +118,7 @@ as follows:</t>
         </dl>
         <section anchor="_elliptic_curve_formula">
           <name>Elliptic Curve Formula</name>
-          <t anchor="_59f339b5-dc37-4d63-847c-dfcb22c4e27b">$$ y^(2) = x^(3) + a x + b $$</t>
+          <t anchor="_59f339b5-dc37-4d63-847c-dfcb22c4e27b">$$ y^(2) = x^(3) + a x + b $$    (1)</t>
         </section>
         <section anchor="_curve_parameters">
           <name>Curve Parameters</name>
