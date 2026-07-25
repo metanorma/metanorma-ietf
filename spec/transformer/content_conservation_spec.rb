@@ -41,8 +41,10 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
 
     it "conserves document keywords" do
-      pending "N8: front keywords dropped"
-      in_kw = input.xpath("//bibdata//keyword").map { |n| n.text.strip }
+      # N8 fixed (cd9674c): document-level bibdata keywords only —
+      # bibliography bibitems carry their own relaton keywords, which
+      # RFC XML has no slot for
+      in_kw = input.xpath("//bibdata/keyword").map { |n| n.text.strip }
         .reject(&:empty?)
       skip "no keywords in fixture" if in_kw.empty?
       out_kw = output.xpath("//front/keyword").map { |n| n.text.strip }
@@ -50,13 +52,41 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
 
     it "conserves the workgroup" do
-      pending "N8: workgroup dropped"
+      # N8 fixed (cd9674c)
       in_wg = input.xpath("//bibdata//editorialgroup//name |
                            //bibdata//workgroup").map { |n| n.text.strip }
         .reject(&:empty?)
       skip "no workgroup in fixture" if in_wg.empty?
       out_wg = output.xpath("//front/workgroup").map { |n| n.text.strip }
       expect(out_wg).not_to be_empty
+    end
+
+    it "emits front keywords and workgroup (N8, synthetic)" do
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <bibdata type="standard">
+            <title language="en" format="text/plain" type="main">K</title>
+            <docidentifier>9999</docidentifier><docnumber>9999</docnumber>
+            <language>en</language><script>Latn</script>
+            <status><stage>published</stage></status>
+            <keyword>timestamps</keyword>
+            <keyword>calendars</keyword>
+            <ext>
+              <doctype>rfc</doctype>
+              <editorialgroup><workgroup>Network Working Group</workgroup></editorialgroup>
+              <ipr>trust200902</ipr>
+            </ext>
+          </bibdata>
+          <sections>
+            <clause id="c1"><title>One</title><p id="p1">Text.</p></clause>
+          </sections>
+        </metanorma>
+      XML
+      out = Nokogiri::XML(described_class.convert(synthetic))
+      expect(out.xpath("//front/keyword").map(&:text))
+        .to match_array(%w[timestamps calendars])
+      expect(out.xpath("//front/workgroup").map(&:text))
+        .to eq ["Network Working Group"]
     end
 
     it "conserves link URLs in formattedrefs" do
