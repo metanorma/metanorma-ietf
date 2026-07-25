@@ -226,12 +226,12 @@ RSpec.describe Metanorma::Ietf::Transformer, "reverse direction" do
       expect(transformer.resolve_id(node)).to be_nil
     end
 
-    it "maps ol type to MN correctly" do
+    it "maps ol type to canonical MN values" do
       expect(transformer.ol_type_to_mn("1")).to eq("arabic")
-      expect(transformer.ol_type_to_mn("a")).to eq("loweralpha")
-      expect(transformer.ol_type_to_mn("A")).to eq("upperalpha")
-      expect(transformer.ol_type_to_mn("i")).to eq("lowerroman")
-      expect(transformer.ol_type_to_mn("I")).to eq("upperroman")
+      expect(transformer.ol_type_to_mn("a")).to eq("alphabet")
+      expect(transformer.ol_type_to_mn("A")).to eq("alphabet_upper")
+      expect(transformer.ol_type_to_mn("i")).to eq("roman")
+      expect(transformer.ol_type_to_mn("I")).to eq("roman_upper")
     end
 
     it "maps artwork type to MIME" do

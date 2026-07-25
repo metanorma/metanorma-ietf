@@ -46,6 +46,25 @@ module IsoDoc
       # reference (dangling IDREFs, xml2rfc-fatal). The decision is
       # not needed downstream; the pass is switched off.
       def move_norm_ref_to_sections(docxml); end
+
+      # PASS KILL (evidence: default-ON suite run, 2026-07-24): the
+      # shared layer rewrites reference docidentifier content to
+      # display form (type prefix + esc/semx wrapping); the model-side
+      # unknown-element drop then reduces them to bare type names
+      # ("DOI", "ISO/IEC"), destroying the raw values. Every
+      # transformer consumer of docidentifier (seriesInfo mapping,
+      # refcontent, anchors, obsoletes/updates) needs the raw value;
+      # none needs the display form. The pass is switched off.
+      def docid_prefixes(docxml); end
+
+      # PASS KILL (evidence: antioch fixture spec, default-ON run,
+      # 2026-07-24): the shared layer harvests inline <index> terms
+      # into an indexsect (or strips them), removing them from the
+      # running text. RFC XML has its own index construct — the
+      # transformer maps <index> to <iref> in place — so the harvest
+      # destroys the transformer's source. The pass is switched off;
+      # <index> elements survive to the transformer.
+      def index(docxml); end
     end
   end
 end
