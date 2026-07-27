@@ -88,6 +88,12 @@ module Metanorma
             person = contrib.person
             org = contrib.organization
 
+            # WS2 A-2 (N5): the committee contributor — an organization
+            # carrying a Workgroup subdivision — is the workgroup
+            # carrier, not a front author; the released path skips it
+            # (front.rb#author)
+            next if org && workgroup_carrier?(org)
+
             if person
               authors << build_person_author(person, org, role_type, author_idx)
             elsif org
@@ -96,6 +102,14 @@ module Metanorma
             author_idx += 1
           end
           authors
+        end
+
+        def workgroup_carrier?(org)
+          return false unless org.respond_to?(:subdivision)
+
+          to_array(org.subdivision).compact.any? do |sub|
+            sub.respond_to?(:type) && sub.type.to_s.casecmp?("workgroup")
+          end
         end
 
         def build_person_author(person, org_from_contrib, role, contrib_idx = 0)
@@ -327,14 +341,17 @@ module Metanorma
           end
 
           # Relaton 2.0: the workgroup arrives as an organization
-          # subdivision of type "workgroup" on a contributor
+          # subdivision of type "workgroup" on a contributor (the
+          # committee contributor spells it "Workgroup" — match
+          # case-insensitively, WS2 A-2)
           if wgs.empty? && bibdata.respond_to?(:contributor)
             to_array(bibdata.contributor).compact.each do |c|
               org = c.respond_to?(:organization) ? c.organization : nil
               next unless org && org.respond_to?(:subdivision)
 
               to_array(org.subdivision).compact.each do |sub|
-                next unless sub.respond_to?(:type) && sub.type == "workgroup"
+                next unless sub.respond_to?(:type) &&
+                  sub.type.to_s.casecmp?("workgroup")
 
                 name = to_array(sub.name).compact
                   .map { |n| ls_text(n) }.compact

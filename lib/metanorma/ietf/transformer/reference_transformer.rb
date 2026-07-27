@@ -386,16 +386,44 @@ module Metanorma
           # biblio-tag-scoped identifiers — display artefacts, never
           # refcontent
           id ||= ids.find do |d|
-            d.type != "metanorma-ordinal" &&
+            d.type && d.type != "metanorma-ordinal" &&
               (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
           end
+          # WS2 A-3: a TYPELESS docidentifier is a citation label
+          # ("Grail"), not a citation — the released path renders
+          # refcontent only from authoritative identifiers. It
+          # surfaces only in the 81f7bc1 orphan fallback, where the
+          # reference has no other visible text.
+          id ||= ids.find do |d|
+            d.type != "metanorma-ordinal" &&
+              (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
+          end unless bibitem_has_visible_text?(bibitem)
 
           return nil unless id
           text = id_content(id)
           # a display-rewritten identifier whose content collapsed to its
           # own type name carries no information
           return nil if text.nil? || text.empty? || text == id.type
+          # WS2 A-3: an identifier that merely echoes the reference
+          # anchor ("…, ZELLER." / "…, Grail." for GRAIL) is noise, not
+          # a citation — unless the reference has no other visible text
+          # (the 81f7bc1 orphan fallback, where the identifier is all
+          # there is)
+          if text.casecmp?(bibitem_anchor(bibitem).to_s) &&
+              bibitem_has_visible_text?(bibitem)
+            return nil
+          end
+
           text
+        end
+
+        def bibitem_has_visible_text?(bibitem)
+          return true if to_array(bibitem.title).any? do |t|
+            !ls_text(t).to_s.strip.empty?
+          end
+
+          fr = bibitem.formatted_ref
+          fr && !ls_text(fr).to_s.strip.empty?
         end
 
         # A pure data mapping: DOI rides a docidentifier; the structural

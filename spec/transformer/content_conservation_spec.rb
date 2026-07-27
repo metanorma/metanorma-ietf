@@ -61,6 +61,21 @@ RSpec.describe Metanorma::Ietf::Transformer do
       expect(out_wg).not_to be_empty
     end
 
+    it "renders code text as character data (WS2 A-1, synthetic)" do
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <sections><clause id="c1"><title>C</title>
+            <sourcecode id="s1" lang="c"><body>x = a &amp; b; y = 1 &lt; 2;<br/>z = q &gt;&gt; 3;</body></sourcecode>
+          </clause></sections>
+        </metanorma>
+      XML
+      out = described_class.convert(synthetic)
+      code = out[%r{<sourcecode[^>]*>.*?</sourcecode>}m]
+      # single-escaped entities: no &amp;amp; double escape, no eaten
+      # "<", and <br/> became a newline
+      expect(code).to include("x = a &amp; b; y = 1 &lt; 2;\nz = q &gt;&gt; 3;")
+    end
+
     it "emits front keywords and workgroup (N8, synthetic)" do
       synthetic = <<~XML
         <metanorma xmlns="https://www.metanorma.org/ns/standoc">

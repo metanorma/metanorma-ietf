@@ -450,6 +450,16 @@ released stack (session scratchpad `ws1b-postrelease/`).
 [[ws-r-progress]]
 ==== WS-R progress log
 
+* 2026-07-27 session (WS2 A-list): *A-1, A-2, A-3 all FIXED* — see
+  `docs/discrepancy-log.adoc` §A for mechanisms (code-text
+  normalisation at source + `sourcecode_cleanup` retirement;
+  committee contributor excluded from front authors + case-insensitive
+  workgroup subdivision, restoring rfc-3339's `<workgroup>`;
+  anchor-echo and typeless citation-label docids suppressed from
+  refcontent with the orphan fallback preserved). Suite 225/0;
+  harness nit balance 0 added / 1 removed; fixtures unchanged.
+  *N5 is thereby CLOSED* (its masthead half was A-2; its
+  reference-line half was already fixed, discrepancy log C-4).
 * 2026-07-26 session (WS-R close-out): *N8 confirmed fixed* (the
   builders landed with `cd9674c`, Relaton 2.0 + classic shapes; the
   current fixture has no document-level keywords — its 14 keywords

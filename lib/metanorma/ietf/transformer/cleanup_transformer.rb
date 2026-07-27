@@ -40,7 +40,6 @@ module Metanorma
 
         def cleanup(rfc)
           li_cleanup(rfc)
-          sourcecode_cleanup(rfc)
           deflist_cleanup(rfc)
           bcp14_cleanup(rfc)
           front_cleanup(rfc)
@@ -230,40 +229,9 @@ module Metanorma
 
         # ── Sourcecode Cleanup ──────────────────────────────────
 
-        def sourcecode_cleanup(rfc)
-          walk_all_sections(rfc) do |section|
-            cleanup_sourcecodes(section.sourcecode) if section.sourcecode.is_a?(Array)
-            cleanup_sourcecodes_in_text(section.t) if section.t.is_a?(Array)
-          end
-        end
-
-        def cleanup_sourcecodes(sourcecodes)
-          return unless sourcecodes.is_a?(Array)
-          sourcecodes.each { |sc| cleanup_single_sourcecode(sc) }
-        end
-
-        def cleanup_sourcecodes_in_text(texts)
-          return unless texts.is_a?(Array)
-          texts.each { |t| cleanup_single_sourcecode(t) if t.is_a?(Rfcxml::V3::Sourcecode) }
-        end
-
-        # Sourcecode content can contain XML artifacts from the
-        # metanorma-document model's serialization of inline elements
-        # within sourcecode blocks. The model library does not separate
-        # these, so we strip them here.
-        def cleanup_single_sourcecode(sc)
-          return unless sc
-          content = sc.content
-          return unless content.is_a?(Array)
-          cleaned = content.map do |c|
-            next c unless c.is_a?(String)
-            c.gsub("<br/>", "\n")
-              .gsub(%r{\s+<t[ >]}, "<t>")
-              .gsub("</t>", "")
-              .then { |s| strip_xml_tags(s) }
-          end
-          sc.content = cleaned
-        end
+        # (sourcecode_cleanup retired, WS2 A-1: code text is normalised
+        # to character data at construction in transform_sourcecode;
+        # the character-level tag stripper here ate genuine "<".)
 
         # ── BCP14 from Strong ───────────────────────────────────
 

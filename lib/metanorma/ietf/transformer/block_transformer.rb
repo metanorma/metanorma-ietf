@@ -267,6 +267,20 @@ module Metanorma
             content = bc.is_a?(Array) ? bc.join : bc.to_s
           end
 
+          # WS2 A-1: the code text arrives from raw-mapped attributes —
+          # escaped markup on the current-schema body path (&amp;,
+          # &lt;, embedded <br/>), once-decoded text on the old-vintage
+          # content path (literal &) — and serialising escaped text
+          # re-escapes it (&amp;amp;). Normalise conservatively:
+          # <br/> becomes a newline, recognisable tags drop, and only
+          # well-formed entities decode (CGI.unescapeHTML leaves a
+          # bare "&caerbannog" alone, where a fragment parse ate it).
+          # The former post-hoc sourcecode_cleanup pass is retired —
+          # its character-level tag stripper ate genuine "<".
+          content = content.gsub(%r{<br\s*/?>}, "\n")
+            .gsub(%r{</?[a-zA-Z][a-zA-Z0-9:-]*(?:\s[^>]*)?/?>}, "")
+          content = CGI.unescapeHTML(content)
+
           sourcecode.content = [content] unless content.empty?
 
           sourcecode
