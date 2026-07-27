@@ -84,11 +84,22 @@ module Metanorma
             return t.is_a?(Array) ? t.join : t.to_s
           end
 
-          c = obj.content
+          # respond_to? guards: model vintages differ in which carrier
+          # they map (WS3 — StandardDocument::Terms elements map .text
+          # only; a bare call to the other raises)
+          c = obj.respond_to?(:content) ? obj.content : nil
           return c.is_a?(Array) ? c.join : c.to_s if c
 
-          t = obj.text
+          t = obj.respond_to?(:text) ? obj.text : nil
           return t.is_a?(Array) ? t.join : t.to_s if t
+
+          if obj.respond_to?(:each_mixed_content)
+            out = +""
+            obj.each_mixed_content do |f|
+              out << (f.is_a?(String) ? f : ls_text(f).to_s)
+            end
+            return out
+          end
 
           obj.to_s
         end
@@ -102,13 +113,18 @@ module Metanorma
         # Get the anchor/id for a node
         # The presentation stage promotes user-authored anchors to id=
         # (GUIDs remain where no anchor was authored), so the effective
-        # anchor IS the id. The former anchor/id/semx_id preference
-        # chain existed only for un-presented semantic input and is
-        # retired with the presentation default.
+        # anchor IS the id; the former anchor-preference is retired
+        # with the presentation default. semx-id stays as fallback:
+        # for some constructs (e.g. verbal-definition paragraphs) the
+        # layer moves the GUID to semx-id and leaves id empty (WS3).
         def anchor_for(node)
-          node.respond_to?(:id) or return nil
-          v = node.id
-          v && !v.to_s.strip.empty? ? v : nil
+          %i[id semx_id].each do |m|
+            next unless node.respond_to?(m)
+
+            v = node.public_send(m)
+            return v if v && !v.to_s.strip.empty?
+          end
+          nil
         end
 
         # Sanitize an id to be a valid NCName (for XML anchors)

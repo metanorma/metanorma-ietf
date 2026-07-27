@@ -26,19 +26,35 @@ module Metanorma
 
           src_order = sections.element_order
           if src_order && src_order.any?
-            clause_idx = 0
+            counters = Hash.new(0)
             clauses = to_array(sections.clause || [])
+            terms = to_array(sections.terms || [])
+            definitions = to_array(sections.definitions || [])
 
             src_order.each do |e|
               next if e.text?
               tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
               case tag
               when "clause"
-                if clauses[clause_idx]
-                  section = transform_clause(clauses[clause_idx])
+                if clauses[idx]
+                  section = transform_clause(clauses[idx])
                   safe_append(middle, :section, section) if section
                 end
-                clause_idx += 1
+              # WS3 (terms_spec port): top-level <sections>/<terms> and
+              # <definitions> were silently skipped — only their nested
+              # (clause-embedded) forms were walked
+              when "terms"
+                if terms[idx]
+                  section = transform_terms_section(terms[idx])
+                  safe_append(middle, :section, section) if section
+                end
+              when "definitions"
+                if definitions[idx]
+                  section = transform_definitions_section(definitions[idx])
+                  safe_append(middle, :section, section) if section
+                end
               when "bibitem"
                 section = transform_loose_bibitem(sections)
                 safe_append(middle, :section, section) if section
@@ -47,6 +63,14 @@ module Metanorma
           else
             to_array(sections.clause || []).each do |clause|
               section = transform_clause(clause)
+              safe_append(middle, :section, section) if section
+            end
+            to_array(sections.terms || []).each do |term_section|
+              section = transform_terms_section(term_section)
+              safe_append(middle, :section, section) if section
+            end
+            to_array(sections.definitions || []).each do |defn|
+              section = transform_definitions_section(defn)
               safe_append(middle, :section, section) if section
             end
           end

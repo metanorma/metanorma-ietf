@@ -50,6 +50,15 @@ def htmlencode(xml)
   end
 end
 
+# WS3: the ported spec/isodoc surface. Runs an old-vintage Semantic-XML
+# input through the full default pipeline (presentation stage included),
+# normalising the legacy namespace the narrow strip rightly ignores.
+def feature_convert(input)
+  input = input.sub('xmlns="http://riboseinc.com/isoxml"',
+                    'xmlns="https://www.metanorma.org/ns/ietf"')
+  Metanorma::Ietf::Transformer.convert(input)
+end
+
 def strip_guid(xml)
   xml.gsub(%r{ id="_[^"]+"}, ' id="_"')
     .gsub(%r{ from="_[^"]+"}, ' from="_"')

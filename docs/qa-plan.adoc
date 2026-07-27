@@ -812,6 +812,41 @@ deferred to WS5. Harness written corpus-agnostic so WS5 reuses it.
 Restore the feature-by-feature regression suite against the new (enriched)
 pipeline. The core safety net.
 
+*STATUS (2026-07-27): STARTED — recipe proven on `terms_spec`.*
+Helper `feature_convert` (spec_helper): legacy-namespace normalisation
++ the full default pipeline; ported files live under `spec/feature/`.
+The pilot port surfaced and fixed four transformer defects:
+
+* top-level `<sections>/<terms>` and `<definitions>` were silently
+  skipped by the middle walk (only clause-nested forms were handled);
+* `anchor_for` regained its `semx-id` fallback — the presentation
+  layer moves the GUID to `semx-id` and leaves `id` empty on some
+  constructs (verbal-definition paragraphs), so the A-retirement's
+  id-only collapse lost those anchors;
+* the model-side unicode-wrapping pass was RETIRED: redundant with
+  the post-serialisation `Transformer.u_cleanup` (N11, exact
+  old-path parity), it spliced `Rfcxml::V3::U` model objects into
+  ordered content arrays (serialising as inspect strings) and
+  emitted `format=`/`ascii=` attributes the released path never had;
+  it was also corpus-inert (zero occurrences in any corpus render).
+  Its unit tests went with it; the N11 conservation guard covers the
+  surviving mechanism;
+* `transform_term_source` emitted empty `section=`/`relative=`
+  attributes and lost the modification text (`mixed_text` now
+  recovers it); vintage accessor hardening across
+  ls_text/get_paragraphs/term walkers (respond_to? guards — the
+  `.p`-vs-Kernel#p trap, `paragraphs` vs `p`, `note`/`example`
+  singulars, `definition→verbalexpression→paragraph`).
+
+*MODEL-GAP FINDING (for the metanorma-document ledger)*: the held
+0.2.9 model COERCES `<termexample>` and `<termnote>` into empty
+paragraphs, DROPS `origin`'s locality stack, and empties
+`<deprecates>` at parse — the transformer cannot recover what the
+parse discards. The terms_spec example covering those constructs is
+`pending` with this rationale; re-test on the 0.4.x upgrade.
+Term-definition `<ol>`s are exempted from the single-`t` li flatten
+(the released path keeps `<t anchor>` there by construction).
+
 *Pipeline note (corrected 2026-06-05).* There is no separate
 semantic→presentation→RFC document stage for IETF
 (`Processor.use_presentation_xml` is `false`), but the old path *does* enrich via
