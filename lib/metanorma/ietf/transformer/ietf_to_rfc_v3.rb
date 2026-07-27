@@ -224,13 +224,14 @@ module Metanorma
             return ps.is_a?(Array) ? ps : []
           end
 
-          paras = node.paragraphs
+          # respond_to? guards (WS3): carrier names vary by model vintage
+          paras = node.respond_to?(:paragraphs) ? node.paragraphs : nil
           return paras if paras.is_a?(Array)
 
-          ps = node.p
+          ps = node.respond_to?(:p) ? node.p : nil
           return ps if ps.is_a?(Array) && !ps.empty?
 
-          c = node.content
+          c = node.respond_to?(:content) ? node.content : nil
           return c.select { |item| item.is_a?(Metanorma::Document::Components::Paragraphs::ParagraphBlock) } if c.is_a?(Array)
 
           []

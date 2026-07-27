@@ -17,7 +17,14 @@ module Metanorma
             section.name = name unless name.content.nil? || name.content.empty?
           end
 
-          ps = terms_node.p
+          # Vintage tolerance (WS3): one model maps <p> to .p and
+          # <term> to .term; another maps paragraphs to .paragraphs
+          # and puts Term entries on .terms itself. respond_to? guards
+          # also avoid Kernel#p (private) where .p is unmapped.
+          ps = if terms_node.respond_to?(:p) then terms_node.p
+               elsif terms_node.respond_to?(:paragraphs)
+                 terms_node.paragraphs
+               end
           if ps
             ps = [ps] unless ps.is_a?(Array)
             ps.each do |p|
@@ -26,17 +33,30 @@ module Metanorma
             end
           end
 
-          to_array(terms_node.term).each do |term|
+          term_entries =
+            terms_node.respond_to?(:term) ? to_array(terms_node.term) : []
+          nested_sections = []
+          terms_children =
+            terms_node.respond_to?(:terms) ? to_array(terms_node.terms) : []
+          terms_children.each do |child|
+            if child.respond_to?(:preferred)
+              term_entries << child
+            else
+              nested_sections << child
+            end
+          end
+
+          term_entries.each do |term|
             term_sec = transform_term(term)
             safe_append(section, :section, term_sec) if term_sec
           end
 
-          to_array(terms_node.terms).each do |ts|
+          nested_sections.each do |ts|
             sec = transform_terms_section(ts)
             safe_append(section, :section, sec) if sec
           end
 
-          clauses = terms_node.clause
+          clauses = terms_node.respond_to?(:clause) ? terms_node.clause : nil
           if clauses
             clauses = [clauses] unless clauses.is_a?(Array)
             clauses.each do |cl|
@@ -89,9 +109,24 @@ module Metanorma
 
           # Definition paragraphs — wrap multiple in ordered list
           definition_paragraphs = get_paragraphs(term_node)
+          if definition_paragraphs.empty? && term_node.respond_to?(:definition)
+            # vintage shape (WS3): <definition><verbal-definition><p>
+            # maps definition[] -> verbalexpression[] -> paragraph[]
+            definition_paragraphs =
+              to_array(term_node.definition).flat_map do |d|
+                verbs = d.respond_to?(:verbalexpression) ? d.verbalexpression : nil
+                to_array(verbs).flat_map do |v|
+                  to_array(v.respond_to?(:paragraph) ? v.paragraph : nil)
+                end
+              end.compact
+          end
           if definition_paragraphs.size > 1
             first_para = true
             ol = Rfcxml::V3::Ol.new
+            # the released path keeps <t anchor> inside term-definition
+            # list items by construction (terms.rb), unlike body lists;
+            # exempt this ol from the single-t li flatten (WS3)
+            (@term_definition_ols ||= []) << ol.object_id
             definition_paragraphs.each_with_index do |p, idx|
               li = Rfcxml::V3::Li.new
               t = transform_paragraph(p)
@@ -103,7 +138,7 @@ module Metanorma
                   domain_text = domain.is_a?(String) ? domain : ls_text(domain)
                   if domain_text && !domain_text.empty?
                     existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-                    t.content = ["&lt;#{domain_text}&gt; #{existing}"]
+                    t.content = ["<#{domain_text}> #{existing}"]
                   end
                 end
                 first_para = false
@@ -125,7 +160,7 @@ module Metanorma
                   domain_text = domain.is_a?(String) ? domain : ls_text(domain)
                   if domain_text && !domain_text.empty?
                     existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-                    t.content = ["&lt;#{domain_text}&gt; #{existing}"]
+                    t.content = ["<#{domain_text}> #{existing}"]
                   end
                 end
                 first_para = false
@@ -145,8 +180,12 @@ module Metanorma
             end
           end
 
-          # Examples within terms
-          examples = term_node.examples if term_node.class.method_defined?(:examples)
+          # Examples within terms (vintage maps the singular :example)
+          examples = if term_node.class.method_defined?(:examples)
+                       term_node.examples
+                     elsif term_node.respond_to?(:example)
+                       term_node.example
+                     end
           if examples
             examples = [examples] unless examples.is_a?(Array)
             examples.each_with_index do |ex, idx|
@@ -155,25 +194,31 @@ module Metanorma
             end
           end
 
-          to_array(term_node.notes).each do |note|
+          notes = if term_node.respond_to?(:notes) then term_node.notes
+                  elsif term_node.respond_to?(:note) then term_node.note
+                  end
+          to_array(notes).each do |note|
             aside = transform_note(note, section)
             safe_append(section, :aside, aside) if aside
           end
 
           # Term sources → <t>[SOURCE: ...]</t>
-          to_array(term_node.source).each do |src|
+          sources = term_node.respond_to?(:source) ? term_node.source : nil
+          to_array(sources).each do |src|
             t = transform_term_source(src)
             safe_append(section, :t, t) if t
           end
 
           # Related terms
-          to_array(term_node.related).each do |rel|
+          related = term_node.respond_to?(:related) ? term_node.related : nil
+          to_array(related).each do |rel|
             t = transform_related_term(rel)
             safe_append(section, :t, t) if t
           end
 
           # Nested terms
-          to_array(term_node.term).each do |t|
+          subterms = term_node.respond_to?(:term) ? term_node.term : nil
+          to_array(subterms).each do |t|
             sec = transform_term(t)
             safe_append(section, :section, sec) if sec
           end
@@ -226,7 +271,11 @@ module Metanorma
           if origin
             target = origin.bibitemid if origin.class.method_defined?(:bibitemid)
             if target
-              text += "<xref target='#{target}' section='' relative=''/>"
+              # WS3: empty section=/relative= attributes dropped; the
+              # origin locality itself is not mapped by the model
+              # (metanorma-document 0.2.9 \u2014 see qa-plan WS3 note), so
+              # no section can be emitted yet
+              text += "<xref target='#{target}'/>"
             else
               text += ls_text(origin).to_s
             end
@@ -239,7 +288,9 @@ module Metanorma
               text += ", modified"
               mod = source.modification
               if mod
-                mod_text = ls_text(mod)
+                # mixed_text: the modification is a mixed-content
+                # paragraph; ls_text saw only its (empty) string runs
+                mod_text = mixed_text(mod)
                 text += " \u2014 #{mod_text}" if mod_text && !mod_text.empty?
               end
             when "adapted"

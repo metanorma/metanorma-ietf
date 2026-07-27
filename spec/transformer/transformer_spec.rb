@@ -374,27 +374,9 @@ RSpec.describe Metanorma::Ietf::Transformer do
       end
     end
 
-    it "wraps unicode characters in u elements" do
-      text = Rfcxml::V3::Text.new
-      unicode_str = "Café"
-      text.content = [unicode_str]
-      transformer = Metanorma::Ietf::Transformer::IetfToRfcV3.allocate
-
-      parts = transformer.split_unicode(unicode_str)
-      expect(parts.size).to eq(2)
-      expect(parts[0]).to eq("Caf")
-      expect(parts[1]).to be_a(Rfcxml::V3::U)
-
-      transformer.wrap_unicode_in_text(text)
-      content = text.content
-
-      if content.none? { |c| c.is_a?(Rfcxml::V3::U) }
-        expect(parts[1].content).to eq("é")
-        expect(parts[1].format).to eq("lit-name-num")
-      else
-        expect(content.any? { |c| c.is_a?(Rfcxml::V3::U) }).to be true
-      end
-    end
+    # (unicode-wrap unit tests retired with the model-side unicode
+    # pass, WS3 — non-ASCII declaration is Transformer.u_cleanup's,
+    # post-serialisation, N11)
 
     it "detects BCP14 keywords" do
       transformer = Metanorma::Ietf::Transformer::IetfToRfcV3.allocate
@@ -402,22 +384,6 @@ RSpec.describe Metanorma::Ietf::Transformer do
       expect(transformer.bcp14_keyword?("SHALL NOT")).to be true
       expect(transformer.bcp14_keyword?("should")).to be true
       expect(transformer.bcp14_keyword?("maybe")).to be false
-    end
-
-    it "detects unicode in text" do
-      transformer = Metanorma::Ietf::Transformer::IetfToRfcV3.allocate
-      expect(transformer.contains_unicode?("hello")).to be false
-      expect(transformer.contains_unicode?("café")).to be true
-      expect(transformer.contains_unicode?("°C")).to be true
-    end
-
-    it "splits unicode text into parts" do
-      transformer = Metanorma::Ietf::Transformer::IetfToRfcV3.allocate
-      parts = transformer.split_unicode("25°C")
-      expect(parts.size).to eq(3)
-      expect(parts[0]).to eq("25")
-      expect(parts[1]).to be_a(Rfcxml::V3::U)
-      expect(parts[2]).to eq("C")
     end
 
     it "converts strong to bcp14 when keyword matches" do

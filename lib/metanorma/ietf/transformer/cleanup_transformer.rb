@@ -45,7 +45,6 @@ module Metanorma
           front_cleanup(rfc)
           biblio_cleanup(rfc)
           aside_cleanup(rfc)
-          unicode_cleanup(rfc)
           image_cleanup(rfc)
           rfc
         end
@@ -83,6 +82,9 @@ module Metanorma
 
         def cleanup_single_li_items(list)
           return unless list && list.li.is_a?(Array)
+          # term-definition ols keep <t anchor> in their items, as the
+          # released path constructs them (WS3)
+          return if @term_definition_ols&.include?(list.object_id)
           list.li.each do |li|
             unwrap_single_t_in_li(li)
             cleanup_list_items(li.ul)
@@ -418,123 +420,13 @@ module Metanorma
 
           moved
         end
-
-        # ── Unicode Wrapping ───────────────────────────────────
-
-        UNICODE_PARENT_TAGS = Set.new(%w[t blockquote li dd preamble td th annotation dt]).freeze
-
-        def unicode_cleanup(rfc)
-          walk_all_text_elements(rfc) do |text_elem|
-            wrap_unicode_in_text(text_elem)
-          end
-
-          # Also walk DD and TD elements
-          walk_all_sections(rfc) do |section|
-            wrap_unicode_in_dd(section.dl) if section.dl.is_a?(Array)
-            wrap_unicode_in_td(section.table) if section.table.is_a?(Array)
-          end
-        end
-
-        def wrap_unicode_in_text(text_elem)
-          content = text_elem.content
-          return unless content.is_a?(Array)
-          return if content.empty?
-
-          new_content = []
-          changed = false
-
-          content.each do |fragment|
-            if fragment.is_a?(String) && contains_unicode?(fragment)
-              parts = split_unicode(fragment)
-              new_content.concat(parts)
-              changed = true
-            else
-              new_content << fragment
-            end
-          end
-
-          return unless changed
-
-          # Build new element_order with <u> elements
-          u_elements = []
-          new_content.each do |part|
-            next if part.is_a?(String)
-            if part.is_a?(Rfcxml::V3::U)
-              u_elements << part
-            end
-          end
-
-          u_elements.each { |u| safe_append(text_elem, :u, u) }
-          text_elem.content = new_content
-        end
-
-        def wrap_unicode_in_dd(dls)
-          return unless dls.is_a?(Array)
-          dls.each do |dl|
-            next unless dl.dd.is_a?(Array)
-            dl.dd.each do |dd|
-              next unless dd.t.is_a?(Array)
-              dd.t.each { |t| wrap_unicode_in_text(t) }
-            end
-          end
-        end
-
-        def wrap_unicode_in_td(tables)
-          return unless tables.is_a?(Array)
-          tables.each do |table|
-            [:thead, :tbody, :tfoot].each do |section|
-              rows = table.public_send(section)
-              next unless rows.is_a?(Rfcxml::V3::Tbody)
-              next unless rows.tr.is_a?(Array)
-              rows.tr.each do |tr|
-                [:th, :td].each do |cell_type|
-                  cells = tr.public_send(cell_type)
-                  next unless cells.is_a?(Array)
-                  cells.each do |cell|
-                    next unless cell.t.is_a?(Array)
-                    cell.t.each { |t| wrap_unicode_in_text(t) }
-                  end
-                end
-              end
-            end
-          end
-        end
-
-        def contains_unicode?(text)
-          text.match?(/[\u0080-\uffff]/)
-        end
-
-        def split_unicode(text)
-          parts = []
-          buffer = ""
-          text.each_char do |ch|
-            if ch.match?(/[\u0080-\uffff]/)
-              unless buffer.empty?
-                parts << buffer
-                buffer = ""
-              end
-              u = Rfcxml::V3::U.new
-              u.format = "lit-name-num"
-              u.content = ch
-              u.ascii = unicode_char_name(ch)
-              parts << u
-            else
-              buffer += ch
-            end
-          end
-          parts << buffer unless buffer.empty?
-          parts
-        end
-
-        def unicode_char_name(ch)
-          begin
-            name = Unicode::Name.of(ch)
-            return name.downcase if name && !name.empty?
-          rescue StandardError
-            nil
-          end
-          "U+#{ch.ord.to_s(16).upcase.rjust(4, '0')}"
-        end
+        # (model-side unicode wrapping retired, WS3: it mixed U model
+        # objects into ordered content arrays — serialising as their
+        # inspect strings — and emitted format/ascii attributes the
+        # released path never had. The post-serialisation
+        # Transformer.u_cleanup, N11, covers non-ASCII declaration with
+        # exact old-path parity.)
+        
 
         # ── Inline Image Cleanup ───────────────────────────────
 
