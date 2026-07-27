@@ -22,6 +22,26 @@ path fixes · *D* cosmetic. Severity is nit-derived per the WS2 rules.
 
 == A — new-transformer bugs (fix tasks, by severity)
 
+*ALL THREE FIXED 2026-07-27* (suite 225/0; harness re-run: nit
+balance 0 added / 1 removed corpus-wide; document fixtures unchanged
+byte-for-byte):
+
+* A-1: code text is normalised to character data at construction
+  (`transform_sourcecode`: `<br/>` → newline, recognisable tags drop,
+  `CGI.unescapeHTML` decodes only well-formed entities so a literal
+  `&caerbannog` survives both schema vintages). The post-hoc
+  `sourcecode_cleanup` pass — whose character-level tag stripper ate
+  genuine `<` — is retired.
+* A-2: the committee contributor (an organization carrying a
+  Workgroup subdivision) is excluded from front authors, mirroring
+  the released `front.rb#author`; the subdivision match in
+  `build_workgroups` is now case-insensitive, which also restored
+  the missing `<workgroup>` on rfc-3339.
+* A-3: refcontent suppresses identifiers that echo the reference
+  anchor (case-insensitively) and typeless citation-label
+  docidentifiers ("Grail"), keeping both only in the 81f7bc1 orphan
+  fallback where the reference has no other visible text.
+
 [cols="1,3,8", options="header"]
 |===
 | # | Where | Finding
