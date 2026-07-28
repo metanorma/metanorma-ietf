@@ -847,6 +847,21 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*lists_spec PORTED (2026-07-28, suite 231/0, 5 pending; harness
+unchanged).* The paragraph-only abstract walk dropped foreword lists
+entirely; `build_abstract` now carries the full RFC 7991-legal
+content model — `(dl|ol|t|ul)+` in source order — and leaves illegal
+content out. Fixes: `nobullet` renders as `empty` (released
+behaviour); dl attributes (`newline`/`spacing`/`indent`) pass
+through; dl-attached notes render as unnumbered NOTE paragraphs
+after the list (an `<aside>` is not admissible in `<abstract>`);
+front-note collection prefers whichever of `:notes`/`:note` is
+populated. One input ADAPTED: the ordered-lists example nested `<ol>`
+directly inside `<ol>` — a shape no toolchain emits and RFC 7991
+forbids (`ol := li+`) — restructured to standoc's li-nesting. The
+second `<dt>`'s AsciiMath stem hits the known 0.2.9 parse ghost
+(ledger).
+
 *table_spec PORTED (2026-07-28, suite 227/0, 5 pending; harness
 unchanged).* Adapted: the original placed tables in preface/foreword —
 RFC 7991 forbids tables in `<abstract>`, the old expectation was

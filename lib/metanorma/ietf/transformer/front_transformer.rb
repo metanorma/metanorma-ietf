@@ -396,9 +396,51 @@ module Metanorma
           abstract = Rfcxml::V3::Abstract.new
           abstract.anchor = to_ncname(abstract_node.id) if abstract_node.id
 
-          get_paragraphs(abstract_node).each do |p|
-            t = transform_paragraph(p)
-            safe_append(abstract, :t, t) if t
+          # RFC 7991 abstract content model is (dl|ol|t|ul)+ — carry
+          # that legal subset in source order (WS3, lists_spec: the
+          # paragraph-only walk dropped foreword lists). Illegal
+          # content (tables, notes, sourcecode) has no representable
+          # home here and is left out; see the qa-plan model-gap and
+          # table_spec notes.
+          src_order = abstract_node.respond_to?(:element_order) ? abstract_node.element_order : nil
+          carriers = {
+            "p" => [:paragraphs, method(:transform_paragraph), :t],
+            "ul" => [:unordered_lists, method(:transform_unordered_list), :ul],
+            "ol" => [:ordered_lists, method(:transform_ordered_list), :ol],
+            "dl" => [:definition_lists, method(:transform_definition_list), :dl],
+          }
+          if src_order && src_order.any? { |e| !e.text? && carriers.key?(e.element_tag) }
+            counters = Hash.new(0)
+            src_order.each do |e|
+              next if e.text?
+              spec = carriers[e.element_tag] or next
+              accessor, xform, target = spec
+              idx = counters[e.element_tag]
+              counters[e.element_tag] += 1
+              next unless abstract_node.respond_to?(accessor)
+              node = to_array(abstract_node.public_send(accessor))[idx] or next
+              built = xform.call(node)
+              safe_append(abstract, target, built) if built
+              # a dl-attached note cannot become an <aside> here
+              # (abstract admits (dl|ol|t|ul)+ only); render it as an
+              # unnumbered NOTE paragraph after the list
+              next unless e.element_tag == "dl"
+
+              dl_notes = to_array(node.respond_to?(:notes) ? node.notes : nil)
+              if dl_notes.empty? && node.respond_to?(:note)
+                dl_notes = to_array(node.note)
+              end
+              dl_notes.each do |nt|
+                aside = transform_note(nt, nil)
+                next unless aside
+                to_array(aside.t).each { |t| safe_append(abstract, :t, t) }
+              end
+            end
+          else
+            get_paragraphs(abstract_node).each do |p|
+              t = transform_paragraph(p)
+              safe_append(abstract, :t, t) if t
+            end
           end
 
           abstract
@@ -409,10 +451,15 @@ module Metanorma
           preface = doc.preface
           return notes unless preface
 
-          # Collect notes from abstract/foreword
+          # Collect notes from abstract/foreword (vintages carry them
+          # on the singular :note — prefer whichever is populated)
           container = preface.abstract || preface.foreword
           if container
-            to_array(container.notes).each do |note_node|
+            container_notes = to_array(container.respond_to?(:notes) ? container.notes : nil)
+            if container_notes.empty? && container.respond_to?(:note)
+              container_notes = to_array(container.note)
+            end
+            container_notes.each do |note_node|
               note = build_front_note(note_node)
               notes << note if note
             end
