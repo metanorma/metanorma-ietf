@@ -10,6 +10,12 @@ module Metanorma
           ul.anchor = to_ncname(anchor_for(ul_node)) if anchor_for(ul_node)
 
           apply_list_attributes(ul, ul_node, %i[empty bare spacing indent])
+          # the semantic carries bullet suppression as nobullet; the
+          # released path renders it as empty (WS3, lists_spec)
+          if ul.empty.nil? && ul_node.respond_to?(:nobullet) &&
+              ul_node.nobullet.to_s == "true"
+            ul.empty = "true"
+          end
 
           to_array(ul_node.listitem || []).each do |item|
             li = transform_list_item(item)
@@ -102,6 +108,8 @@ module Metanorma
         def transform_definition_list(dl_node)
           dl = Rfcxml::V3::Dl.new
           dl.anchor = to_ncname(anchor_for(dl_node)) if anchor_for(dl_node)
+
+          apply_list_attributes(dl, dl_node, %i[newline spacing indent])
 
           dts = dl_node.dt
           dds = dl_node.dd
