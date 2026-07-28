@@ -24,8 +24,12 @@ module Metanorma
           mt = main_title
           title.content = [mt]
           title.abbrev = abbrev_title if abbrev_title
-          ascii = Sterile.transliterate(mt)
-          title.ascii = ascii unless ascii == mt
+          if ascii_title
+            title.ascii = ascii_title
+          else
+            ascii = Sterile.transliterate(mt)
+            title.ascii = ascii unless ascii == mt
+          end
           title
         end
 
@@ -36,7 +40,16 @@ module Metanorma
             si.name = "RFC"
             si.value = docnumber.to_s
             si.ascii_name = "RFC"
-            si.status = "Published"
+            # the released path passes the metadata stage through
+            # (capitalised text; numeric stages stay as-is), defaulting
+            # to Published (WS3, metadata_spec)
+            stage = model_attr(bibdata, :status)
+            stage_text = stage && ls_text(model_attr(stage, :stage) || stage)
+            si.status = if stage_text && !stage_text.strip.empty?
+                          stage_text.strip.capitalize
+                        else
+                          "Published"
+                        end
             si.stream = extract_submission_type
             infos << si
           else
@@ -45,9 +58,15 @@ module Metanorma
             si.value = extract_doc_name.to_s
             si.ascii_name = "Internet-Draft"
             si.stream = extract_submission_type
-            series_list = bibdata.series
-            if series_list
-              series_list = [series_list] unless series_list.is_a?(Array)
+            # status = metadata stage, as on the RFC branch (the
+            # released path uses the stage for both); intended-series
+            # title only as fallback (WS3, metadata_spec)
+            stage = model_attr(bibdata, :status)
+            stage_text = stage && ls_text(model_attr(stage, :stage) || stage)
+            if stage_text && !stage_text.strip.empty?
+              si.status = stage_text.strip.capitalize
+            else
+              series_list = to_array(bibdata.series)
               series_list.each do |s|
                 next unless s.type == "intended"
                 title = ls_text(s.title)
@@ -141,15 +160,16 @@ module Metanorma
             address.postal = postal if postal
           end
 
+          # voice phone → <phone>; fax phones are DROPPED — RFC 7991
+          # removed <facsimile> from the v3 vocabulary (the old spec
+          # expectation carrying it was DEBUG-only output). WS3,
+          # metadata_spec.
           phones = to_array(person.phone)
-          if phones.any?
-            phone_obj = phones.first
-            phone_text = phone_obj.content
-            if phone_text && !phone_text.strip.empty?
-              phone = Rfcxml::V3::Phone.new
-              phone.content = phone_text.strip
-              address.phone = phone
-            end
+          voice = phones.find { |ph| !ph.respond_to?(:type) || ph.type.to_s != "fax" }
+          if voice && voice.content && !voice.content.strip.empty?
+            phone = Rfcxml::V3::Phone.new
+            phone.content = voice.content.strip
+            address.phone = phone
           end
 
           to_array(person.email).each do |email_text|
@@ -169,8 +189,8 @@ module Metanorma
             end
           end
 
-          address.uri = Rfcxml::V3::Uri.new unless address.uri
-
+          # no empty <uri/> placeholder — the released path emits uri
+          # only when present (WS3, metadata_spec)
           address
         end
 
