@@ -73,7 +73,7 @@ module Metanorma
         end
 
         def rfc?
-          doctype == "rfc"
+          doctype.to_s.casecmp?("rfc")
         end
 
         def internet_draft?
@@ -108,6 +108,14 @@ module Metanorma
           abbr = titles.find { |t| t.type == "abbrev" }
           return nil unless abbr
           ls_text(abbr)
+        end
+
+        # explicitly authored ascii title (title type="ascii"),
+        # preferred over transliteration (WS3, metadata_spec)
+        def ascii_title
+          titles = to_array(bibdata.title).compact
+          asc = titles.find { |t| t.type == "ascii" }
+          asc && ls_text(asc)
         end
 
         def docnumber

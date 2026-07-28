@@ -847,6 +847,39 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*metadata_spec PORTED (2026-07-29, suite 239/0, 5 pending; harness at
+the blessed state — the consensus rule below was corrected BY the
+harness catching an antioch regression).* Fixed so far: rfc
+attributes (verbatim `consensus` incl. "false"; `number` for
+case-insensitive doctype RFC; category lookup downcased — intended
+FYI → info); the full relation→`<link>` mapping (released
+`rel2iana`: item/describedby/convertedfrom/alternate, raw
+first-docidentifier href — replacing the derivedFrom-only
+datatracker-prefixed form that emitted one link per docid form);
+explicit `title type="ascii"` preferred over transliteration;
+`seriesInfo/@status` passes the metadata stage through (capitalised;
+numeric stages as-is) instead of hardcoding Published, on both the
+RFC and Internet-Draft branches. Consensus: verbatim (incl. "false")
+EXCEPT the independent stream, where xml2rfc rejects any consensus
+setting — the released path emits it there and collects the error
+(the WS2 antioch old-path nit); the harness caught the regression
+when verbatim-always was tried. Fax phones DROPPED (RFC 7991 removed
+`facsimile` from v3); the empty-`<uri/>` placeholder retired (one
+fixture line migrated); abstract notes (removeInRFC) render as front
+`<note>`, their v3 home; postalLine is the FINAL released form (the
+presentation stage itself collapses structured addresses to
+formattedAddress — the old structured street/city expectation was
+DEBUG-only). MODEL GAPS
+added to the 0.2.9 ledger: `ext` maps only
+area/consensus/doctype/ipr — indexInclude, iprExtract, sortRefs,
+symRefs, tocInclude, tocDepth are parse-ghosted (the released path
+emits them as rfc attributes); `pi` maps only 8 legacy keys
+(comments/compact/notedraftinprogress/sortrefs/strict/subcompact/
+symrefs/tocdepth) — the remaining RFC 7749 legacy PIs are dropped at
+parse; the explicit `<initial>` on person names is parse-ghosted
+(initials are computed from the forename); `formatted_address` on
+the vintage Address model HANGS on access (do not call it).
+
 *section_spec PORTED (2026-07-28, suite 236/0, 5 pending; harness
 unchanged).* Transformer work surfaced: clause children mapped as
 `:subsection` (introduction) now walk; clauses carrying
