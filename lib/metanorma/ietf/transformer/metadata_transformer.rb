@@ -19,8 +19,15 @@ module Metanorma
         def set_rfc_attributes(rfc)
           rfc.version = "3"
           rfc.submission_type = extract_submission_type
-          consensus = extract_consensus
-          rfc.consensus = consensus unless consensus == "false"
+          # emitted verbatim, including "false" (WS3, metadata_spec) —
+          # EXCEPT for the independent stream, where xml2rfc rejects
+          # any consensus setting ("Expected no consensus setting for
+          # independent stream"); the released path emits it there too
+          # and collects the error (WS2 antioch old-path nit)
+          if ietf_ext.consensus &&
+              !extract_submission_type.to_s.casecmp?("independent")
+            rfc.consensus = ietf_ext.consensus
+          end
           rfc.category = extract_category
           rfc.ipr = ietf_ext.ipr || "trust200902"
           rfc.number = docnumber if rfc?
@@ -91,7 +98,7 @@ module Metanorma
             series_list.each do |s|
               next unless s.type == "intended"
               title = ls_text(s.title)
-              return SERIES2CATEGORY.fetch(title, "std") if title
+              return SERIES2CATEGORY.fetch(title.downcase, "std") if title
             end
           end
           "std"
@@ -122,22 +129,38 @@ module Metanorma
           ids.join(", ")
         end
 
+        # the released path's relation → <link> mapping
+        # (section.rb#make_link/rel2iana): raw first-docidentifier
+        # href, IANA rel values (WS3, metadata_spec — the previous
+        # derivedFrom-only datatracker-prefixed form emitted one link
+        # per docidentifier form)
+        REL2IANA = {
+          "includedIn" => "item",
+          "included-in" => "item",
+          "describedBy" => "describedby",
+          "described-by" => "describedby",
+          "derivedFrom" => "convertedfrom",
+          "derived-from" => "convertedfrom",
+          "instanceOf" => "alternate",
+          "instance-of" => "alternate",
+        }.freeze
+
         def build_links
           links = []
-          relations = bibdata.relation
-          return links unless relations
-          relations = [relations] unless relations.is_a?(Array)
-          relations.each do |rel|
-            next unless rel.type == "derivedFrom"
+          to_array(bibdata.relation).each do |rel|
+            iana = REL2IANA[rel.type] or next
             next unless rel.bibitem
-            to_array(rel.bibitem.docidentifier).each do |di|
-              target = ls_text(di)
-              next if target.nil? || target.empty?
-              link = Rfcxml::V3::Link.new
-              link.href = "https://datatracker.ietf.org/doc/draft-#{target.sub(/\Adraft-/, '')}"
-              link.rel = "convertedFrom"
-              links << link
+
+            di = to_array(rel.bibitem.docidentifier).find do |d|
+              !d.respond_to?(:scope) || d.scope.to_s != "biblio-tag"
             end
+            target = di && ls_text(di)
+            next if target.nil? || target.empty?
+
+            link = Rfcxml::V3::Link.new
+            link.href = target
+            link.rel = iana
+            links << link
           end
           links
         end
