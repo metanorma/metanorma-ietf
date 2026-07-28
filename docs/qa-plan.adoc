@@ -847,6 +847,17 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*section_spec PORTED (2026-07-28, suite 236/0, 5 pending; harness
+unchanged).* Transformer work surfaced: clause children mapped as
+`:subsection` (introduction) now walk; clauses carrying
+`<references>` and the bibliography's clause-wrapped references
+render as back-matter `<references>` TREES (nested groups with
+names) in the released path's order — v3 admits references only in
+`<back>`; the section walker's clause reads go through the guarded
+`model_attr` helper (vintage accessor tolerance). Expectations
+regenerated (old ones were DEBUG-only); a title-less `<definitions>`
+takes the presentation layer's "Symbols" caption.
+
 *lists_spec PORTED (2026-07-28, suite 231/0, 5 pending; harness
 unchanged).* The paragraph-only abstract walk dropped foreword lists
 entirely; `build_abstract` now carries the full RFC 7991-legal

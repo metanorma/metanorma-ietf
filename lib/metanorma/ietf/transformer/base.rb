@@ -127,6 +127,12 @@ module Metanorma
           nil
         end
 
+        # respond_to?-guarded model read: vintages differ in which
+        # collections they map, and an unmapped accessor raises (WS3)
+        def model_attr(node, name)
+          node.respond_to?(name) ? node.public_send(name) : nil
+        end
+
         # Sanitize an id to be a valid NCName (for XML anchors)
         def to_ncname(id)
           return nil unless id
