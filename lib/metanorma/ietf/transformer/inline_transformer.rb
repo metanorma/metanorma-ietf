@@ -180,7 +180,14 @@ module Metanorma
             return "#{delim} #{content} #{delim}"
           end
 
-          nil
+          # AsciiMath / LaTeX stems carry their source text directly
+          # (WS3, table_spec: the MathML-only branch dropped them)
+          content = ls_text(elem)
+          content = content&.strip
+          return nil if content.nil? || content.empty?
+
+          delim = stem_delimiter(content)
+          "#{delim} #{content} #{delim}"
         end
 
         def stem_delimiter(content)
