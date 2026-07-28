@@ -517,9 +517,10 @@ module Metanorma
           return nil unless fn_elem
           reference = fn_elem.reference
           if reference && !reference.empty?
-            @footnote_counter += 1
-            @seen_footnotes[reference] ||= @footnote_counter
-            num = @seen_footnotes[reference]
+            # WS3 (footnotes_spec): increment only on first sight — the
+            # unconditional bump consumed a number on every reuse,
+            # producing [1],[1],[3]
+            num = @seen_footnotes[reference] ||= (@footnote_counter += 1)
             collect_footnote_content(num, fn_elem)
             "[#{num}]"
           else

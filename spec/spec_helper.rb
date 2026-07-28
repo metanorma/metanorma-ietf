@@ -156,6 +156,24 @@ BLANK_HDR = <<~"HDR".freeze
           </metanorma-extension>
 HDR
 
+# WS3: the default pipeline's skeleton-document header, for ported
+# spec/isodoc expectations (the old XML_HDR reflects the released
+# path's skeleton defaults)
+FEATURE_HDR = <<~HDR.freeze
+  <?rfc strict="yes"?>
+  <?rfc compact="yes"?>
+  <?rfc subcompact="no"?>
+  <?rfc tocdepth="4"?>
+  <?rfc symrefs="yes"?>
+  <?rfc sortrefs="yes"?>
+  <rfc category='std' ipr='trust200902' submissionType='IETF' version='3' xml:lang='en'>
+    <front>
+      <title/>
+      <seriesInfo value='' name='Internet-Draft' asciiName='Internet-Draft' status='Informational' stream='IETF'/>
+      <date day="1" year="2000" month="January"/>
+      <abstract anchor="_">
+HDR
+
 XML_HDR = <<~HDR.freeze
   <?rfc strict="yes"?>
   <?rfc compact="yes"?>
