@@ -39,8 +39,16 @@ module Metanorma
               case tag
               when "clause"
                 if clauses[idx]
-                  section = transform_clause(clauses[idx])
-                  safe_append(middle, :section, section) if section
+                  # a clause carrying <references> relocates to back
+                  # as a references group (v3 admits references only
+                  # in <back>; the released path does the same)
+                  if clause_has_references?(clauses[idx])
+                    (@deferred_reference_groups ||= []) <<
+                      transform_references_group(clauses[idx])
+                  else
+                    section = transform_clause(clauses[idx])
+                    safe_append(middle, :section, section) if section
+                  end
                 end
               # WS3 (terms_spec port): top-level <sections>/<terms> and
               # <definitions> were silently skipped — only their nested
@@ -62,6 +70,11 @@ module Metanorma
             end
           else
             to_array(sections.clause || []).each do |clause|
+              if clause_has_references?(clause)
+                (@deferred_reference_groups ||= []) <<
+                  transform_references_group(clause)
+                next
+              end
               section = transform_clause(clause)
               safe_append(middle, :section, section) if section
             end
@@ -110,12 +123,47 @@ module Metanorma
         def build_back
           back = Rfcxml::V3::Back.new
 
+          # references groups deferred from the middle walk (clauses
+          # carrying <references>) come first, as the released path
+          # orders them
+          to_array(@deferred_reference_groups).each do |group|
+            safe_append(back, :references, group)
+          end
+
           bib = doc.bibliography
           if bib
-            refs_sections = bib.references || []
-            refs_sections.each do |refs|
-              references = transform_references_section(refs)
-              safe_append(back, :references, references) if references
+            # walk the bibliography in source order: bare <references>
+            # render flat; clause-wrapped ones render as nested groups
+            src_order = bib.respond_to?(:element_order) ? bib.element_order : nil
+            refs_sections = to_array(bib.references)
+            bib_clauses = to_array(model_attr(bib, :clause))
+            if src_order && src_order.any?
+              counters = Hash.new(0)
+              src_order.each do |e|
+                next if e.text?
+                tag = e.element_tag
+                idx = counters[tag]
+                counters[tag] += 1
+                case tag
+                when "references"
+                  references = transform_references_section(refs_sections[idx])
+                  safe_append(back, :references, references) if references
+                when "clause"
+                  next unless bib_clauses[idx]
+
+                  group = transform_references_group(bib_clauses[idx])
+                  safe_append(back, :references, group) if group
+                end
+              end
+            else
+              refs_sections.each do |refs|
+                references = transform_references_section(refs)
+                safe_append(back, :references, references) if references
+              end
+              bib_clauses.each do |c|
+                group = transform_references_group(c)
+                safe_append(back, :references, group) if group
+              end
             end
           end
 
@@ -260,7 +308,7 @@ module Metanorma
                 append_ordered(section, :dl, list) if list
               end
             when "table"
-              tables = to_array(clause.tables)
+              tables = to_array(model_attr(clause, :tables))
               if tables[idx]
                 table = transform_table(tables[idx])
                 append_ordered(section, :table, table) if table
@@ -275,7 +323,7 @@ module Metanorma
                 end
               end
             when "figure"
-              figures = to_array(clause.figures)
+              figures = to_array(model_attr(clause, :figures))
               if figures[idx]
                 f = transform_figure(figures[idx])
                 if f.is_a?(Rfcxml::V3::Figure)
@@ -288,7 +336,7 @@ module Metanorma
                 end
               end
             when "sourcecode"
-              sourcecodes = to_array(clause.sourcecode_blocks)
+              sourcecodes = to_array(model_attr(clause, :sourcecode_blocks))
               if sourcecodes[idx]
                 src = transform_sourcecode(sourcecodes[idx])
                 if src
@@ -299,13 +347,13 @@ module Metanorma
                 end
               end
             when "clause"
-              sub_clauses = to_array(clause.clause)
+              sub_clauses = to_array(model_attr(clause, :clause) || model_attr(clause, :subsection))
               if sub_clauses[idx]
                 sec = transform_clause(sub_clauses[idx])
                 append_ordered(section, :section, sec) if sec
               end
             when "formula"
-              formulas = to_array(clause.formulas)
+              formulas = to_array(model_attr(clause, :formulas))
               if formulas[idx]
                 elements = transform_formula(formulas[idx])
                 elements.each do |elem|
@@ -317,31 +365,31 @@ module Metanorma
                 end
               end
             when "note"
-              notes = to_array(clause.notes)
+              notes = to_array(model_attr(clause, :notes))
               if notes[idx]
                 aside = transform_note(notes[idx], section)
                 append_ordered(section, :aside, aside) if aside
               end
             when "quote"
-              quotes = to_array(clause.quote_blocks)
+              quotes = to_array(model_attr(clause, :quote_blocks))
               if quotes[idx]
                 bq = transform_quote(quotes[idx])
                 append_ordered(section, :blockquote, bq) if bq
               end
             when "example"
-              examples = to_array(clause.examples)
+              examples = to_array(model_attr(clause, :examples))
               if examples[idx]
                 ts = transform_example(examples[idx])
                 ts.each { |_t| append_ordered(section, :t, _t) }
               end
             when "terms"
-              terms = to_array(clause.terms)
+              terms = to_array(model_attr(clause, :terms))
               if terms[idx]
                 sec = transform_terms_section(terms[idx])
                 append_ordered(section, :section, sec) if sec
               end
             when "definitions"
-              defs = to_array(clause.definitions)
+              defs = to_array(model_attr(clause, :definitions))
               if defs[idx]
                 sec = transform_definitions_section(defs[idx])
                 append_ordered(section, :section, sec) if sec
@@ -371,17 +419,17 @@ module Metanorma
             end
           end
 
-          to_array(clause.notes).each do |note|
+          to_array(model_attr(clause, :notes)).each do |note|
             aside = transform_note(note, section)
             append_ordered(section, :aside, aside) if aside
           end
 
-          to_array(clause.examples).each do |ex|
+          to_array(model_attr(clause, :examples)).each do |ex|
             ts = transform_example(ex)
             ts.each { |_t| append_ordered(section, :t, _t) }
           end
 
-          to_array(clause.sourcecode_blocks).each do |sc|
+          to_array(model_attr(clause, :sourcecode_blocks)).each do |sc|
             src = transform_sourcecode(sc)
             if src
               append_ordered(section, :sourcecode, src)
@@ -391,7 +439,7 @@ module Metanorma
             end
           end
 
-          to_array(clause.quote_blocks).each do |q|
+          to_array(model_attr(clause, :quote_blocks)).each do |q|
             bq = transform_quote(q)
             append_ordered(section, :blockquote, bq) if bq
           end
@@ -401,7 +449,7 @@ module Metanorma
             append_ordered(section, :aside, aside) if aside
           end
 
-          to_array(clause.formulas).each do |f|
+          to_array(model_attr(clause, :formulas)).each do |f|
             elements = transform_formula(f)
             elements.each do |elem|
               if elem.is_a?(Rfcxml::V3::Text)
@@ -427,7 +475,7 @@ module Metanorma
             append_ordered(section, :dl, list) if list
           end
 
-          to_array(clause.tables).each do |tbl|
+          to_array(model_attr(clause, :tables)).each do |tbl|
             table = transform_table(tbl)
             if table
               append_ordered(section, :table, table)
@@ -443,7 +491,7 @@ module Metanorma
             end
           end
 
-          to_array(clause.figures).each do |fig|
+          to_array(model_attr(clause, :figures)).each do |fig|
             f = transform_figure(fig)
             if f.is_a?(Rfcxml::V3::Figure)
               append_ordered(section, :figure, f)
@@ -455,17 +503,17 @@ module Metanorma
             end
           end
 
-          to_array(clause.clause).each do |sub|
+          to_array(model_attr(clause, :clause) || model_attr(clause, :subsection)).each do |sub|
             sec = transform_clause(sub)
             append_ordered(section, :section, sec) if sec
           end
 
-          to_array(clause.terms).each do |term_section|
+          to_array(model_attr(clause, :terms)).each do |term_section|
             sec = transform_terms_section(term_section)
             append_ordered(section, :section, sec) if sec
           end
 
-          to_array(clause.definitions).each do |defn|
+          to_array(model_attr(clause, :definitions)).each do |defn|
             sec = transform_definitions_section(defn)
             append_ordered(section, :section, sec) if sec
           end

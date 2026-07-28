@@ -7,6 +7,46 @@ module Metanorma
     module Transformer
       module ReferenceTransformer
 
+        # A clause that carries <references> children renders as a
+        # back-matter references GROUP — <references> with a name and
+        # nested <references> — since RFC XML v3 admits references
+        # only in <back> (WS3, section_spec; the released path makes
+        # the same relocation)
+        def transform_references_group(clause_node)
+          group = Rfcxml::V3::References.new
+          group.anchor = to_ncname(anchor_for(clause_node)) if anchor_for(clause_node)
+
+          title = model_attr(clause_node, :title)
+          if title
+            name = Rfcxml::V3::Name.new
+            name_text = ls_text(title)
+            name.content = [name_text] if name_text && !name_text.empty?
+            group.name = name unless name.content.nil? || name.content.empty?
+          end
+
+          to_array(model_attr(clause_node, :references)).each do |refs|
+            child = transform_references_section(refs)
+            safe_append(group, :references, child) if child
+          end
+
+          sub = model_attr(clause_node, :clause) || model_attr(clause_node, :subsection)
+          to_array(sub).each do |c|
+            next unless clause_has_references?(c)
+
+            child = transform_references_group(c)
+            safe_append(group, :references, child) if child
+          end
+
+          group
+        end
+
+        def clause_has_references?(clause_node)
+          !to_array(model_attr(clause_node, :references)).empty? ||
+            to_array(model_attr(clause_node, :clause) ||
+                     model_attr(clause_node, :subsection))
+              .any? { |c| clause_has_references?(c) }
+        end
+
         def transform_references_section(refs_node)
           references = Rfcxml::V3::References.new
           references.anchor = to_ncname(anchor_for(refs_node)) if anchor_for(refs_node)
