@@ -847,6 +847,27 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*inline_spec PORTED (2026-07-30, suite 281/0, 11 pending; harness
+blessed).* Transformer fixes: `iref` item/subitem map from
+`<primary>`/`<secondary>`; an interim eref locality-label grammar
+(per-locality "<Type> <from>[–<to>]", "whole" → "Whole of text",
+stack connectives, leading Section/Clause label stripped) for
+STACK-borne localities — the released path derives this from shared
+isodoc `eref_localities`, whose carrier (fmt-eref) is model-ghosted;
+consuming fmt-eref is the DRY-clean future (0.4.x ledger);
+attribute-borne `relative`/`sectionFormat` pass through on
+section-less xrefs; eref text/alt arrays join (array-inspect strings
+leaked into output); stem accessor hardening (latexmath/math
+guarded, array-valued math, element-object asciimath coerced).
+PENDING ×3 with receipts: rich eref localities (direct `<locality>`
+children parse-ghosted — only localityStack maps); both passthrough
+forms (`<passthrough>` parse-ghosted; presentation's format gating
+demonstrably works — formats normalise comma→space — but content
+cannot reach the transformer). Ledger also: `<bookmark>`
+parse-ghosted; markup-bearing index primaries ghost entirely; the
+index primary="true" ATTRIBUTE is shadowed by the `:primary` element
+accessor.
+
 *blocks_spec PORTED (2026-07-29, suite 263/0, 8 pending; harness
 blessed).* Inputs relocated foreword → body clause (table_spec
 rationale). Transformer fixes: non-paragraph note bodies (dl/ul/ol
