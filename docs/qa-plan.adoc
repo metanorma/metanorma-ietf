@@ -847,6 +847,26 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*blocks_spec PORTED (2026-07-29, suite 263/0, 8 pending; harness
+blessed).* Inputs relocated foreword → body clause (table_spec
+rationale). Transformer fixes: non-paragraph note bodies (dl/ul/ol
+carried into the aside with a bare NOTE: label); admonition authored
+`<name>` takes precedence over the type label; the example label is
+a standalone paragraph carrying anchor/keepWithNext/autonumber and
+the authored name (the folded form lost all three); paragraph
+`indent` is the numeric indent (alignment has no v3 `<t>` home) and
+boolean `keep_with_next` is honoured; contentless artwork is
+suppressed; two latent crashes fixed (`Artwork#title=` unmapped;
+`Blockquote#citation=` → `quotedFrom`/`cite`, the v3 carriers).
+PENDING ×3 with receipt: the requirement family — `RequirementModel`
+maps ONLY `:description`; `fmt-provision`/`fmt-name` (the
+presentation layer's rendered requirement, demonstrably present in
+the presented XML — a #233-relevant receipt) and the semantic
+identifier/title/subject/inherit are parse-ghosted, so the labelled
+form cannot be rendered; partial description-only rendering declined
+as misleading. MODEL GAPS also: raw inline `<svg>` parses to an
+empty image entry (data-URI SVG works — the corpus form).
+
 *metadata_spec PORTED (2026-07-29, suite 239/0, 5 pending; harness at
 the blessed state — the consensus rule below was corrected BY the
 harness catching an antioch regression).* Fixed so far: rfc
