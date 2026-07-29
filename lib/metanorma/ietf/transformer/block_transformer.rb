@@ -38,13 +38,14 @@ module Metanorma
           t = Rfcxml::V3::Text.new
           t.anchor = to_ncname(anchor_for(p_node)) if anchor_for(p_node)
 
-          if p_node.keep_with_next == "true"
-            t.keep_with_next = "true"
-          end
+          # keep_with_next arrives as boolean true on some vintages
+          # (WS3, blocks_spec); indent is the numeric indent attribute —
+          # alignment has no v3 <t> counterpart and is dropped
+          kwn = p_node.keep_with_next
+          t.keep_with_next = "true" if kwn == "true" || kwn == true
 
-          if p_node.alignment
-            t.indent = p_node.alignment
-          end
+          indent = model_attr(p_node, :indent)
+          t.indent = indent.to_s if indent && !indent.to_s.empty?
 
           src_order = p_node.element_order
 
@@ -192,6 +193,32 @@ module Metanorma
             safe_append(aside, :t, t)
           end
 
+          # non-paragraph note bodies (WS3, blocks_spec: an aside came
+          # out empty): carry dl/ul/ol, with a bare label paragraph
+          # when no paragraph carried the NOTE: prefix
+          blocks = {
+            dl: to_array(model_attr(note_node, :dl)),
+            ul: to_array(model_attr(note_node, :ul)),
+            ol: to_array(model_attr(note_node, :ol)),
+          }
+          if blocks.values.any? { |a| !a.empty? } && first
+            label = Rfcxml::V3::Text.new
+            label.content = ["NOTE: "]
+            safe_append(aside, :t, label)
+          end
+          blocks[:dl].each do |dl|
+            list = transform_definition_list(dl)
+            safe_append(aside, :dl, list) if list
+          end
+          blocks[:ul].each do |ul|
+            list = transform_unordered_list(ul)
+            safe_append(aside, :ul, list) if list
+          end
+          blocks[:ol].each do |ol|
+            list = transform_ordered_list(ol)
+            safe_append(aside, :ol, list) if list
+          end
+
           aside
         end
 
@@ -222,22 +249,28 @@ module Metanorma
           num.empty? ? nil : num
         end
 
+        # The released shape (WS3, blocks_spec): a standalone label
+        # paragraph — carrying the example's anchor, keepWithNext, the
+        # autonumber, and an authored <name> — followed by the body
+        # paragraphs. (The previous form folded the label into the
+        # first body paragraph, losing anchor, name and keepWithNext.)
         def transform_example(example_node, example_counter: nil)
           counter = block_autonum(example_node) || example_counter
           results = []
-          first = true
+
+          label = Rfcxml::V3::Text.new
+          label.anchor = to_ncname(anchor_for(example_node)) if anchor_for(example_node)
+          label.keep_with_next = "true"
+          label_text = counter ? "EXAMPLE #{counter}" : "EXAMPLE"
+          name_node = model_attr(example_node, :name)
+          name_text = name_node && ls_text(name_node)
+          label_text += ": #{name_text.strip}" if name_text && !name_text.strip.empty?
+          label.content = [label_text]
+          results << label
+
           get_paragraphs(example_node).each do |p|
             t = transform_paragraph(p)
-            next unless t
-
-            if first
-              prefix = counter ? "EXAMPLE #{counter}: " : "EXAMPLE: "
-              existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-              t.content = ["#{prefix}#{existing}"]
-              first = false
-            end
-
-            results << t
+            results << t if t
           end
           results
         end
@@ -295,11 +328,16 @@ module Metanorma
             blockquote.quoted_from = author_text.to_s if author_text && !author_text.to_s.strip.empty?
           end
 
+          # v3 blockquote carries cite (URI) and quotedFrom only; the
+          # citeas display goes to quotedFrom when no author claimed it
+          # (WS3, blocks_spec latent crash: no citation= on the model)
           source = quote_node.source
           if source && !source.to_s.strip.empty?
-            citation = source.citeas
-            blockquote.citation = citation.to_s if citation
-            cite_uri = source.uri
+            citation = model_attr(source, :citeas)
+            if citation && !citation.to_s.strip.empty? && blockquote.quoted_from.nil?
+              blockquote.quoted_from = citation.to_s
+            end
+            cite_uri = model_attr(source, :uri)
             blockquote.cite = cite_uri.to_s if cite_uri && !cite_uri.to_s.empty?
           end
 
@@ -315,10 +353,18 @@ module Metanorma
           aside = Rfcxml::V3::Aside.new
           aside.anchor = to_ncname(anchor_for(admon_node)) if anchor_for(admon_node)
 
+          # an authored <name> takes precedence over the type label,
+          # as the released path renders it (WS3, blocks_spec)
           type_text = nil
-          admon_type = admon_node.type
-          if admon_type && !admon_type.to_s.empty?
-            type_text = ADMONITION_TYPES[admon_type.to_s.downcase] || admon_type.to_s.upcase
+          name_node = model_attr(admon_node, :name)
+          name_text = name_node && ls_text(name_node)
+          if name_text && !name_text.strip.empty?
+            type_text = name_text.strip
+          else
+            admon_type = admon_node.type
+            if admon_type && !admon_type.to_s.empty?
+              type_text = ADMONITION_TYPES[admon_type.to_s.downcase] || admon_type.to_s.upcase
+            end
           end
 
           if type_text

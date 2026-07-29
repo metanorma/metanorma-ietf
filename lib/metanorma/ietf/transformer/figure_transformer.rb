@@ -156,9 +156,20 @@ module Metanorma
           alt = img_node.alt
           artwork.alt = alt.to_s if alt && !alt.to_s.empty?
 
-          # Title
+          # Title (v3 artwork has no title attribute; keep only where
+          # the model supports it — WS3, blocks_spec latent crash)
           title = img_node.title
-          artwork.title = title.to_s if title && !title.to_s.empty?
+          if title && !title.to_s.empty? && artwork.respond_to?(:title=)
+            artwork.title = title.to_s
+          end
+
+          # a contentless, sourceless artwork is noise (WS3,
+          # blocks_spec: raw inline <svg> parses to an empty image
+          # entry — 0.2.9 model gap — and emitted a bare <artwork/>)
+          if artwork.src.nil? &&
+              (artwork.content.nil? || artwork.content.to_s.strip.empty?)
+            return nil
+          end
 
           artwork
         end
