@@ -847,6 +847,30 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*validate_spec PORTED (2026-07-30, suite 300/0, 11 pending — none
+new; harness unchanged).* The old examples drove the released
+`RfcConvert#postprocess` on hand-authored RFC XML and asserted
+stderr; the port maps them onto the transformer's
+`ValidationTransformer`, which was REWRITTEN as a transplant of the
+released `validation.rb` — content rules and message strings
+verbatim (numbered-section, toc, references/TOC-entry, the full
+xref/relref rule set incl. format=counter/title, relative/section,
+RFC-or-I-D and explicit-target rules, link convertedFrom,
+number-vs-seriesInfo mismatch, RFC-number-must-be-numeric, ipr
+presence/enumeration) — replacing the pre-existing sketch (5 partial
+checks, different messages, and an ipr rule that would have flagged
+`ipr="none"` differently from released; released semantics
+retained). Schema validation FIXED: the sketch fed the RELAX NG
+v3.rng to `Nokogiri::XML::Schema` (the XSD parser), so every call
+returned "Schema validation failed" — now `Nokogiri::XML::RelaxNG`
+via the IO form (the schema's relative SVG-1.2-RFC.rng include only
+resolves when the path rides the handle). Mappings recorded in the
+spec header: abort/no-abort examples → content errors
+present/absent (the `.err` file management is the caller's
+concern); Jing's named-element schema message ("missing required
+element 'middle'") → libxml's unnamed "Expecting an element, got
+nothing". No pendings: this file exercises no model parsing at all.
+
 *ref_spec PORTED (2026-07-30, suite 287/0, 11 pending — no new
 pendings; harness at the blessed state, nits +0/−1; the
 example/antioch fixtures migrated by −5 lines, the duplicated
