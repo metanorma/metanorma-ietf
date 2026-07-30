@@ -216,7 +216,6 @@ are used in a tactical environment.<xref target="RFC7253"/>, <xref target="ISO.I
             <t>This document specifies OCB, a shared-key blockcipher-based encryption scheme that provides confidentiality and authenticity for plaintexts and authenticity for associated data.  This document is a product of the Crypto Forum Research Group (CFRG).</t>
           </abstract>
         </front>
-        <refcontent>RFC 7253</refcontent>
         <seriesInfo name="DOI" value="10.17487/RFC7253"/>
         <seriesInfo name="RFC" value="7253"/>
       </reference>

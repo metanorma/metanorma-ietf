@@ -847,6 +847,60 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*ref_spec PORTED (2026-07-30, suite 287/0, 11 pending — no new
+pendings; harness at the blessed state, nits +0/−1; the
+example/antioch fixtures migrated by −5 lines, the duplicated
+`<refcontent>RFC nnnn</refcontent>` on RFC references).* Transformer
+fixes: referencegroups — the model has no `constituent` accessor;
+`<relation type="includes">` DOES parse (nested full bibitems), so
+`reference_group?`/`transform_referencegroup` now walk
+relation-includes and render each constituent through the complete
+reference pipeline (deterministic anchors from the IETF-docid
+fallback; the released path used GUIDs); a group appended under
+`:reference` crashed at serialisation (Reference rules applied to a
+Referencegroup) — groups now ride the `:referencegroup` collection;
+`<stream>` emission (#270 parity): series type="stream" normalised
+to the IAB/IETF/IRTF/independent enumeration, unknown streams
+omitted; front keywords from `keyword/vocab`; structured abstracts
+(`FormattedString#p`) rendered per-paragraph — ls_text on the
+container saw only whitespace; IETF-family docids ("RFC 2119",
+"BCP 14", "STD 69") derive `seriesInfo` (deduped against explicit
+series) and are EXCLUDED from refcontent along with
+DOI/Internet-Draft/rfc-anchor/metanorma (released parity: RFC
+references carry no refcontent — this also removed the refcontent
+duplication from the blessed fixtures); from/to date ranges render
+the start year; unparseable dates ("--") suppress the empty
+`<date/>`; reference targets come from `uri[@type="src"]` ONLY
+(untyped/RDF/xml URIs are metadata, not targets — released parity
+for ISO712/ref11). Input adaptations with rationale in the spec:
+`<introduction>` → `<clause>` (see ledger); accidental fixture
+corruption repaired (mismatched `</ompletename>` ×3, unterminated
+`</title`, stray title in `<references>`, stray ">" before a vocab);
+the xinclude variant ports as a plain-bibliography example (the
+released `use_xinclude` serialisation option has no model-driven
+equivalent, and the old DEBUG expectation contained no xi:include
+anyway). Documented deviations: constituent STD/RFC series render as
+proper seriesInfo (the released path collapsed them into a
+refcontent mislabelled "BCP 69" — classified old-path bug, WS2 log);
+the I-D seriesInfo carries the full draft name (the released path
+stripped it to "aboba-context-802"); a bibitem-borne `<note>`
+renders as `<annotation>` (the released path dropped it). MODEL GAPS
+added to the 0.2.9 ledger: `<introduction>` inside `<sections>` is
+parse-ghosted at the Sections level (present in element_order, no
+accessor); loose `<note>` elements inside a `<references>` section
+are fully ghosted (accessor empty AND absent from element_order —
+the released path attached them to the preceding reference as
+annotations); `<formatted-initials>` is unmapped on FullName (only
+`<initial>` maps; `initials` parses empty, so those authors lose
+initials). LEDGER CORRECTION (hang family): `KeywordType#vocab`,
+`FullName#surname` and `BibliographicDate#from/#to` all APPEAR to
+hang but the hang is in `#inspect` (pathological deep traversal of
+lazy raw-content models) — plain accessor reads + `ls_text` return
+instantly and are safe; probe with class/ls_text, never inspect.
+The `formatted_address` HANG entry (metadata_spec) is likely the
+same artifact but remains unverified — keep avoiding it until
+re-probed.
+
 *inline_spec PORTED (2026-07-30, suite 281/0, 11 pending; harness
 blessed).* Transformer fixes: `iref` item/subitem map from
 `<primary>`/`<secondary>`; an interim eref locality-label grammar
@@ -920,6 +974,9 @@ symrefs/tocdepth) — the remaining RFC 7749 legacy PIs are dropped at
 parse; the explicit `<initial>` on person names is parse-ghosted
 (initials are computed from the forename); `formatted_address` on
 the vintage Address model HANGS on access (do not call it).
+[Correction 2026-07-30, ref_spec: the "hang" family is `#inspect`'s
+deep traversal, not plain access — see the ref_spec entry; this
+specific accessor is unverified, keep avoiding it.]
 
 *section_spec PORTED (2026-07-28, suite 236/0, 5 pending; harness
 unchanged).* Transformer work surfaced: clause children mapped as

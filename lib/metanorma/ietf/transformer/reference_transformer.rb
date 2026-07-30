@@ -75,8 +75,7 @@ module Metanorma
                 raw_ref = extract_passthrough_reference(pass_model) if pass_model
                 safe_append(references, :reference, raw_ref) if raw_ref
               when "bibitem"
-                ref = transform_bibitem(bibitem_queue.shift)
-                safe_append(references, :reference, ref) if ref
+                append_reference(references, transform_bibitem(bibitem_queue.shift))
               end
             end
           else
@@ -87,12 +86,21 @@ module Metanorma
             bibitem_queue.each do |bibitem|
               next unless bibitem
               next if hidden_bibitem?(bibitem)
-              ref = transform_bibitem(bibitem)
-              safe_append(references, :reference, ref) if ref
+              append_reference(references, transform_bibitem(bibitem))
             end
           end
 
           references
+        end
+
+        # a group bibitem transforms to Referencegroup, which must
+        # ride its own collection — appended under :reference, the
+        # Reference serialisation rules get applied to it and crash
+        def append_reference(references, ref)
+          return unless ref
+
+          attr = ref.is_a?(Rfcxml::V3::Referencegroup) ? :referencegroup : :reference
+          safe_append(references, attr, ref)
         end
 
         def hidden_bibitem?(bibitem)
@@ -157,10 +165,16 @@ module Metanorma
           date = extract_bibitem_date(bibitem)
           front.date = date if date
 
+          keywords = extract_bibitem_keywords(bibitem)
+          front.keyword = keywords unless keywords.empty?
+
           abstract = extract_bibitem_abstract(bibitem)
           front.abstract = abstract if abstract
 
           ref.front = front
+
+          stream = extract_bibitem_stream(bibitem)
+          ref.stream = stream if stream
 
           refcontent_text = extract_bibitem_refcontent(bibitem)
           if refcontent_text && !refcontent_text.empty?
@@ -184,12 +198,24 @@ module Metanorma
 
         def reference_group?(bibitem)
           return false unless bibitem
+          return true if included_bibitems(bibitem).any?
           return false unless bibitem.class.method_defined?(:constituent)
 
           constituents = bibitem.constituent
           return false unless constituents
           consts = [constituents].flatten
           consts.any? { |c| c && !c.to_s.strip.empty? }
+        end
+
+        # <relation type="includes"> is how a referencegroup carries
+        # its constituents (STD umbrella + member RFCs); the model
+        # parses each as a full nested bibitem (WS3 ref_spec — the
+        # constituent-accessor branch below never fires on this
+        # vintage)
+        def included_bibitems(bibitem)
+          to_array(model_attr(bibitem, :relation))
+            .select { |r| r && r.type == "includes" }
+            .filter_map { |r| model_attr(r, :bibitem) }
         end
 
         def transform_referencegroup(bibitem)
@@ -199,10 +225,23 @@ module Metanorma
           target = extract_bibitem_target(bibitem)
           group.target = target if target && !target.empty?
 
-          to_array(bibitem.constituent).each do |constituent|
-            next unless constituent
-            ref = transform_constituent(constituent)
-            safe_append(group, :reference, ref) if ref
+          included = included_bibitems(bibitem)
+          if included.any?
+            # constituents are complete bibitems: render each through
+            # the full reference pipeline (front, date, abstract,
+            # keywords, seriesInfo, stream), as the released path does;
+            # their anchors fall out of bibitem_anchor's IETF-docid
+            # fallback ("RFC 5730" -> RFC5730)
+            included.each do |constituent|
+              ref = transform_bibitem(constituent)
+              safe_append(group, :reference, ref) if ref
+            end
+          else
+            to_array(bibitem.constituent).each do |constituent|
+              next unless constituent
+              ref = transform_constituent(constituent)
+              safe_append(group, :reference, ref) if ref
+            end
           end
 
           group
@@ -317,16 +356,18 @@ module Metanorma
           to_ncname(id) if id
         end
 
+        # Only uri[@type="src"] becomes the reference target
+        # (released-path parity, WS3 ref: untyped/RDF/xml URIs are
+        # bibliographic metadata, not citation targets — the old path
+        # emits no target for ISO712/ref11)
         def extract_bibitem_target(bibitem)
           uris = to_array(bibitem.link)
 
           src = uris.find { |u| u.type == "src" }
-          if src
-            text = u_content(src)
-            return text if text && !text.empty?
-          end
+          return nil unless src
 
-          u_content(uris.first) if uris.first
+          text = u_content(src)
+          text && !text.empty? ? text : nil
         end
 
         # Prefer the compound type="main" title (N10: taking the first
@@ -380,12 +421,22 @@ module Metanorma
 
           date = Rfcxml::V3::Date.new
           on = pub.on
+          from = pub.respond_to?(:from) ? pub.from : nil
           if on
             on_str = date_value_to_str(on, bibitem)
             parse_date_into(date, on_str)
+          elsif from
+            # a from/to range renders its start year, as the released
+            # path does (WS3 ref: <from>2013</from><to>2014</to> →
+            # year="2013")
+            parse_date_into(date, ls_text(from).to_s)
           elsif pub.text && !pub.text.empty?
             parse_date_into(date, pub.text)
           end
+          # an unparseable value ("--", under-preparation dates) sets
+          # no fields; suppress the empty <date/> rather than emit it
+          return nil unless date.year || date.month || date.day
+
           date
         end
 
@@ -406,27 +457,45 @@ module Metanorma
           abstracts = to_array(bibitem.abstract)
           return nil if abstracts.empty?
 
-          abs_text = abstracts.first
-          text = ls_text(abs_text)
-          return nil if text.nil? || text.empty?
+          abs = abstracts.first
+          # a structured abstract carries p children
+          # (FormattedString#p) — ls_text on the container sees only
+          # inter-element whitespace (WS3 ref: RFC2119/RFC2397
+          # abstracts rendered as empty t); bare-text abstracts fall
+          # through to ls_text
+          paras = abs.respond_to?(:p) ? to_array(abs.p) : []
+          texts = paras.filter_map { |p| ls_text(p) }
+            .reject { |t| t.strip.empty? }
+          if texts.empty?
+            text = ls_text(abs)
+            texts = [text] unless text.nil? || text.strip.empty?
+          end
+          return nil if texts.empty?
 
           abstract = Rfcxml::V3::Abstract.new
-          t = Rfcxml::V3::Text.new
-          t.content = [text]
-          safe_append(abstract, :t, t)
+          texts.each do |text|
+            t = Rfcxml::V3::Text.new
+            t.content = [text]
+            safe_append(abstract, :t, t)
+          end
           abstract
         end
+
+        # Identifier types that never render as refcontent: the
+        # IETF family rides seriesInfo and the anchor, DOI rides
+        # seriesInfo, metanorma/metanorma-ordinal are display
+        # artefacts (B-5). Released-path parity (WS3 ref): RFC
+        # references carry no refcontent at all.
+        NON_REFCONTENT_TYPES =
+          %w[IETF Internet-Draft rfc-anchor DOI
+             metanorma metanorma-ordinal].freeze
 
         def extract_bibitem_refcontent(bibitem)
           ids = to_array(bibitem.docidentifier)
 
-          id = ids.find { |d| d.type == "IETF" }
-          id ||= ids.find { |d| d.type == "ISO" }
-          # B-5: presentation adds metanorma-ordinal ("[n]") and
-          # biblio-tag-scoped identifiers — display artefacts, never
-          # refcontent
+          id = ids.find { |d| d.type == "ISO" }
           id ||= ids.find do |d|
-            d.type && d.type != "metanorma-ordinal" &&
+            d.type && !NON_REFCONTENT_TYPES.include?(d.type) &&
               (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
           end
           # WS2 A-3: a TYPELESS docidentifier is a citation label
@@ -500,7 +569,53 @@ module Metanorma
             infos << si
           end
 
+          # an IETF-family identifier ("RFC 2119", "BCP 14", "STD 69")
+          # is a series entry, not refcontent: the released path
+          # derives seriesInfo from it when no explicit series carries
+          # the same name (WS3 ref, ref11: docid-only "RFC 10" →
+          # seriesInfo RFC 10) — and without name="RFC", xml2rfc
+          # cannot build hrefs for sectioned xrefs (N9)
+          to_array(bibitem.docidentifier).each do |d|
+            next unless d.type == "IETF"
+
+            m = id_content(d).to_s.match(/\A(RFC|BCP|STD|FYI)\s+(\S+)\z/i)
+            next unless m
+            name = m[1].upcase
+            next if infos.any? { |si| si.name == name }
+
+            si = Rfcxml::V3::SeriesInfo.new
+            si.name = name
+            si.value = m[2]
+            infos << si
+          end
+
           infos
+        end
+
+        # series type="stream" → <stream>, normalised to the xml2rfc
+        # enumeration; unknown streams are omitted rather than emitted
+        # verbatim, which was xml2rfc-fatal (#270)
+        STREAMS = { "ietf" => "IETF", "iab" => "IAB", "irtf" => "IRTF",
+                    "independent" => "independent" }.freeze
+
+        def extract_bibitem_stream(bibitem)
+          s = to_array(model_attr(bibitem, :series))
+            .find { |x| x.respond_to?(:type) && x.type == "stream" }
+          return nil unless s
+
+          STREAMS[series_title_text(s).downcase]
+        end
+
+        def extract_bibitem_keywords(bibitem)
+          to_array(model_attr(bibitem, :keyword)).filter_map do |k|
+            text = ls_text(model_attr(k, :vocab))
+            text = ls_text(k) if text.nil? || text.empty?
+            next if text.nil? || text.empty?
+
+            kw = Rfcxml::V3::Keyword.new
+            kw.content = text
+            kw
+          end
         end
 
         def series_title_text(series)
