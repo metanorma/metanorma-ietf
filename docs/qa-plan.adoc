@@ -847,6 +847,31 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*UPSTREAM LEDGER TICKETS FILED (2026-08-01; user approved all).*
+The model-gap ledger was re-tested against metanorma-document
+0.5.1 in an isolated bundle (upstream target is now 0.5.x, not the
+"0.4.x" this document's earlier entries name — same milestone).
+FIXED in 0.5.1, no ticket: formatted-initials; reviewer-note
+annotations (container `.annotations`, full content — the
+footnotes_spec pending unblocks on upgrade); terms reachability
+(the suspected 0.5.x regression was a probe artifact — accessor
+names differ from tag names; every remaining claim was
+source-verified against the 0.5.1 mappings). STILL OPEN, filed on
+metanorma/metanorma-document (maintainer @ronaldtse; all on org
+project 15): #37 RequirementModel identifier/title/fmt-provision
+(blocks_spec pendings ×3); #38 direct locality on eref AND
+origin/Citation (inline eref pending; term origin); #39
+passthrough on paragraph carriers (inline pendings ×2 — mapped
+upstream only on references sections); #40 bibliographic note
+p-children (ref_spec annotations ledger — presentation relocates
+loose references notes INTO the preceding bibitem as display
+notes, which parse hollow); #41 introduction-in-sections for
+standard/IETF classes (ref_spec input adaptation); #42
+termexample/termnote block content + deprecates (terms_spec
+pending). The pending receipts in the specs still say "re-test on
+0.4.x"; they migrate to these ticket references with the 0.5.x
+upgrade batch.
+
 *cleanup_spec PORTED (2026-07-30, suite 302/0, 11 pending — none
 new; harness unchanged). WS3 COMPLETE: all 11 spec/isodoc files
 ported.* Twelve of the fourteen old examples unit-tested the
