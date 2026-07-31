@@ -43,22 +43,42 @@ RSpec.describe Metanorma::Ietf::Transformer do
     it "conserves document keywords" do
       # N8 fixed (cd9674c): document-level bibdata keywords only —
       # bibliography bibitems carry their own relaton keywords, which
-      # RFC XML has no slot for
-      in_kw = input.xpath("//bibdata/keyword").map { |n| n.text.strip }
-        .reject(&:empty?)
-      skip "no keywords in fixture" if in_kw.empty?
-      out_kw = output.xpath("//front/keyword").map { |n| n.text.strip }
-      expect(out_kw).to match_array(in_kw)
+      # RFC XML has no slot for. The corpus fixture has no
+      # document-level keywords (RFC 3339 predates them), so this
+      # guard runs on a synthetic document (always-on per user
+      # directive 2026-08-01; the A-1 synthetic guard is the
+      # precedent).
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <bibdata>
+            <title language="en" format="text/plain" type="main">T</title>
+            <docidentifier>draft-t-01</docidentifier>
+            <keyword>alpha</keyword>
+            <keyword>bravo</keyword>
+            <ext><ipr>trust200902</ipr></ext>
+          </bibdata>
+          <sections><clause id="c1"><title>C</title><p>A</p></clause></sections>
+        </metanorma>
+      XML
+      out = Nokogiri::XML(described_class.convert(synthetic))
+      out_kw = out.xpath("//front/keyword").map { |n| n.text.strip }
+      expect(out_kw).to match_array(%w[alpha bravo])
     end
 
     it "conserves the workgroup" do
-      # N8 fixed (cd9674c)
-      in_wg = input.xpath("//bibdata//editorialgroup//name |
-                           //bibdata//workgroup").map { |n| n.text.strip }
-        .reject(&:empty?)
-      skip "no workgroup in fixture" if in_wg.empty?
+      # N8 fixed (cd9674c). The fixture carries the workgroup in the
+      # committee-contributor shape (A-2: organization with a
+      # Workgroup subdivision), which the previous editorialgroup
+      # XPath missed — the guard self-skipped although the construct
+      # was present (always-on per user directive 2026-08-01)
+      in_wg = input.xpath("//bibdata//subdivision[@type='Workgroup' " \
+                          "or @type='workgroup']/name | " \
+                          "//bibdata//editorialgroup//name | " \
+                          "//bibdata//workgroup")
+        .map { |n| n.text.strip }.reject(&:empty?)
+      expect(in_wg).not_to be_empty
       out_wg = output.xpath("//front/workgroup").map { |n| n.text.strip }
-      expect(out_wg).not_to be_empty
+      expect(out_wg).to include(in_wg.first)
     end
 
     it "renders code text as character data (WS2 A-1, synthetic)" do
@@ -147,12 +167,28 @@ RSpec.describe Metanorma::Ietf::Transformer do
     end
 
     it "conserves formulas" do
-      in_stems = input.xpath("//formula//stem")
-      skip "no formulas in fixture" if in_stems.empty?
-      # N13: activates when a formula-bearing current-schema fixture lands
-      out_text = output.text
-      expect(in_stems.size).to be > 0
-      expect(out_text).not_to be_empty
+      # the corpus fixture carries no formulas (N13 waited for a
+      # formula-bearing fixture); synthetic instead, always-on per
+      # user directive 2026-08-01. Conservation-level assertion: the
+      # formula's MathML content must surface in the output text.
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <bibdata>
+            <title language="en" format="text/plain" type="main">T</title>
+            <docidentifier>draft-t-01</docidentifier>
+            <ext><ipr>trust200902</ipr></ext>
+          </bibdata>
+          <sections><clause id="c1"><title>C</title>
+            <formula id="f1"><stem type="MathML" block="true">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>y</mi><mo>=</mo><mn>42</mn>
+              </math>
+            </stem></formula>
+          </clause></sections>
+        </metanorma>
+      XML
+      out = described_class.convert(synthetic)
+      expect(Nokogiri::XML(out).text).to include("42")
     end
 
     it "emits a non-blank abstract" do
