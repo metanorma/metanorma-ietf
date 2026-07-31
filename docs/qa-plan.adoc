@@ -879,7 +879,21 @@ missing from flattened renderings — the old path kept both). NOTED
 for 0.4.x: semx/fmt survival on inline models opens the
 fmt-consumption path the eref-locality interim grammar was written
 around — re-test whether fmt-eref/fmt-xref consumption can replace
-it.
+it. POLICY (user-ratified 2026-07-31): the GENERAL RULE stands — the
+transformer ignores fmt-/semx and works from semantic data. The
+abstract-flatten fmt-xref read is an EXPLICIT EXCEPTION to that
+rule, granted because xref smoothing (rendering a cross-reference
+as its citation text) is a core presentation-XML function: xref
+processing in general is deliberately entrusted to the
+presentation layer ("for cause" — that is where the shared,
+flavour-aware citation grammar lives), so its wording is
+authoritative, and re-deriving it locally is the reimplementation
+the DRY criterion forbids. Any
+exception site must be text-only (never structure), carry a
+semantic fallback, and be annotated as an exception in code.
+(Content recovery where the semantic carrier is parse-ghosted —
+the tt/fmt-link case — is a separate class: a vintage-gap
+workaround that self-retires when the semantic accessor appears.)
 
 *validate_spec PORTED (2026-07-30, suite 300/0, 11 pending — none
 new; harness unchanged).* The old examples drove the released
