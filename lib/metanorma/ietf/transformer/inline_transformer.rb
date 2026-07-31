@@ -25,10 +25,13 @@ module Metanorma
           # WS3 (cleanup_spec): the RFC XML abstract is standalone
           # metadata (reused outside the document), so the released
           # path flattens its cross-references to text — display-text
-          # if authored, else citeas + locality label. Nested
-          # display-text markup flattens to plain text here (the old
-          # path kept <tt>; a string is what the mixed-content walk
-          # can carry).
+          # if authored, else citeas + locality label. This is the
+          # SEMANTIC FALLBACK of the fmt-consumption exception (see
+          # abstract_semx_rendering): the preferred wording is the
+          # presentation rendering; this branch serves when no semx
+          # rendering is reachable. Nested display-text markup
+          # flattens to plain text here (the old path kept <tt>; a
+          # string is what the mixed-content walk can carry).
           if @abstract_flatten
             text = inline_flat_text(elem, link_text)
             if text.empty?
@@ -143,15 +146,25 @@ module Metanorma
           ""
         end
 
-        # The abstract flatten prefers the presentation layer's own
-        # rendering: the paragraph carries a semx sibling per
-        # cross-reference (matched by source id) whose fmt-xref text
-        # is the full rendered label incl. locality ("ISO 712,
-        # Section 3.1") — the DRY source (WS3, cleanup_spec; first
-        # fmt consumption, semx survives on this vintage's paragraph
-        # model). Nested markup inside the fmt-xref text is still
-        # ghosted. Falls back to nil so the builders' local flatten
-        # (display-text / citeas) applies.
+        # EXCEPTION to the general fmt-/semx avoidance rule
+        # (user-ratified 2026-07-31, see qa-plan): the transformer
+        # otherwise ignores fmt-/semx and works from semantic data,
+        # but xref smoothing — rendering a cross-reference as its
+        # citation text — is a core presentation-XML function, and
+        # xref processing in general is deliberately entrusted to
+        # the presentation layer (the shared, flavour-aware citation
+        # grammar lives there). So the abstract flatten prefers the
+        # presentation layer's own rendering: the paragraph carries
+        # a semx sibling per cross-reference (matched by source id)
+        # whose fmt-xref text is the full rendered label incl.
+        # locality ("ISO 712, Section 3.1") — re-deriving that
+        # wording locally is the reimplementation the DRY criterion
+        # forbids. Exception constraints: text-only (never
+        # structure), with the semantic fallback below (falls back
+        # to nil so the builders' local flatten — display-text /
+        # citeas — applies). Nested markup inside the fmt-xref text
+        # is still ghosted (WS3, cleanup_spec; semx survives on this
+        # vintage's paragraph model).
         def abstract_semx_rendering(p_node, elem)
           sid = model_attr(elem, :id).to_s
           return nil if sid.empty? || !p_node.respond_to?(:semx)
