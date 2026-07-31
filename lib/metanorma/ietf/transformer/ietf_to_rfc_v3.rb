@@ -219,7 +219,12 @@ module Metanorma
           # the rendering of a nested link survives on the semx
           # accessor of this vintage's inline models (fmt-link) —
           # consume it where the semantic link itself is ghosted
-          # (WS3, cleanup_spec: <tt><link target="B"/></tt>)
+          # (WS3, cleanup_spec: <tt><link target="B"/></tt>). This
+          # is NOT the xref-smoothing fmt exception but the other
+          # sanctioned class (qa-plan policy 2026-07-31): content
+          # recovery for a parse ghost, self-retiring — the
+          # semantic links branch above takes over the moment the
+          # model maps them
           if links.empty? && model.respond_to?(:semx)
             to_array(model.semx).each do |s|
               links += to_array(model_attr(s, :fmt_link))
