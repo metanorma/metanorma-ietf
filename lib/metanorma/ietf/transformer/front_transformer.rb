@@ -416,6 +416,11 @@ module Metanorma
           abstract = Rfcxml::V3::Abstract.new
           abstract.anchor = to_ncname(abstract_node.id) if abstract_node.id
 
+          # cross-references flatten to text inside the abstract
+          # (standalone metadata — see build_eref_xref); the flag
+          # scopes that behaviour to this walk
+          @abstract_flatten = true
+
           # RFC 7991 abstract content model is (dl|ol|t|ul)+ — carry
           # that legal subset in source order (WS3, lists_spec: the
           # paragraph-only walk dropped foreword lists). Illegal
@@ -431,8 +436,16 @@ module Metanorma
           }
           if src_order && src_order.any? { |e| !e.text? && carriers.key?(e.element_tag) }
             counters = Hash.new(0)
+            example_counter = 0
             src_order.each do |e|
               next if e.text?
+              if e.element_tag == "example"
+                exs = to_array(model_attr(abstract_node, :examples) ||
+                               model_attr(abstract_node, :example))
+                append_abstract_example(abstract, exs[example_counter])
+                example_counter += 1
+                next
+              end
               spec = carriers[e.element_tag] or next
               accessor, xform, target = spec
               idx = counters[e.element_tag]
@@ -464,6 +477,25 @@ module Metanorma
           end
 
           abstract
+        ensure
+          @abstract_flatten = false
+        end
+
+        # an example in the abstract renders as a keepWithNext EXAMPLE
+        # label paragraph followed by its content paragraphs (the
+        # blocks_spec label pattern; asides are not admitted in the
+        # abstract)
+        def append_abstract_example(abstract, example)
+          return unless example
+
+          label = Rfcxml::V3::Text.new
+          label.keep_with_next = "true"
+          label.content = ["EXAMPLE"]
+          safe_append(abstract, :t, label)
+          get_paragraphs(example).each do |p|
+            t = transform_paragraph(p)
+            safe_append(abstract, :t, t) if t
+          end
         end
 
         def build_front_notes
