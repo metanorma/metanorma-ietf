@@ -115,10 +115,18 @@ module Metanorma
           when "eref"
             coll = p_node.eref
             return nil unless coll.is_a?(Array) && coll[idx]
+            if @abstract_flatten
+              flat = abstract_semx_rendering(p_node, coll[idx])
+              return flat if flat
+            end
             build_eref_xref(coll[idx])
           when "xref"
             coll = p_node.xref
             return nil unless coll.is_a?(Array) && coll[idx]
+            if @abstract_flatten
+              flat = abstract_semx_rendering(p_node, coll[idx])
+              return flat if flat
+            end
             build_xref(coll[idx])
           when "link"
             coll = p_node.link
@@ -310,6 +318,16 @@ module Metanorma
           # bare "&caerbannog" alone, where a fragment parse ate it).
           # The former post-hoc sourcecode_cleanup pass is retired —
           # its character-level tag stripper ate genuine "<".
+          # WS3 (cleanup_spec): the presentation layer leaves each
+          # inline element in code text TWICE — the semantic original
+          # immediately followed by its semx-wrapped rendering. Drop
+          # originals that have a rendering, and render a bare
+          # fmt-link as its target text (N4), before the generic
+          # tag strip keeps the rendered text.
+          content = content
+            .gsub(%r{<(eref|xref|link)\b[^>]*/>\s*(?=<semx )}, "")
+            .gsub(%r{<(eref|xref|link)\b[^>]*>.*?</\1>\s*(?=<semx )}m, "")
+            .gsub(%r{<fmt-link\b[^>]*\btarget="([^"]+)"[^>]*/>}, '\1')
           content = content.gsub(%r{<br\s*/?>}, "\n")
             .gsub(%r{</?[a-zA-Z][a-zA-Z0-9:-]*(?:\s[^>]*)?/?>}, "")
           content = CGI.unescapeHTML(content)

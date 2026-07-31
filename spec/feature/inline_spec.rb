@@ -92,6 +92,12 @@ RSpec.describe "IETF inline rendering (WS3)" do
   end
 
   it "processes embedded inline formatting" do
+    # nested-inline ghosts and recoveries (WS3, cleanup_spec):
+    # <em><strong>...</strong></em> — EmRawElement drops the nested
+    # strong and its text, so the empty em is suppressed (0.2.9
+    # ledger); <tt><link target="B"/></tt> is recovered via the semx
+    # fmt-link surviving on TtElement (bare link -> target text, N4);
+    # the <tt> inside display-texts stays ghosted
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <sections><clause id="inlineclause"><title>Inline</title>
@@ -120,7 +126,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
           <section anchor="inlineclause">
             <name>Inline</name>
             <t>
-      <em/> <tt/> <xref target="http_1_1" format="title">Requirement</xref> <xref target="ISO712">Requirement </xref> <xref target="ISO712" sectionFormat="of" relative="xyz"/>
+       <tt>B</tt> <xref target="http_1_1" format="title">Requirement</xref> <xref target="ISO712">Requirement </xref> <xref target="ISO712" sectionFormat="of" relative="xyz"/>
       </t>
           </section>
         </middle>
