@@ -847,6 +847,40 @@ parse discards. The terms_spec example covering those constructs is
 Term-definition `<ol>`s are exempted from the single-`t` li flatten
 (the released path keeps `<t anchor>` there by construction).
 
+*cleanup_spec PORTED (2026-07-30, suite 302/0, 11 pending — none
+new; harness unchanged). WS3 COMPLETE: all 11 spec/isodoc files
+ported.* Twelve of the fourteen old examples unit-tested the
+released converter's internal `cleanup()` post-pass on its private
+DEBUG intermediate vocabulary, which the model-driven pipeline
+neither consumes nor produces — their behaviours are covered by the
+earlier ports or rest on ledgered ghosts (coverage map in the spec
+header). The two full-conversion examples ported, surfacing four
+fixes: (1) abstract cross-references FLATTEN to text (released
+parity — the RFC XML abstract is standalone metadata), preferring
+the presentation layer's own rendering: the paragraph model carries
+a semx sibling per reference whose fmt-xref text is the full label
+incl. locality ("ISO 712, Section 3.1") — the FIRST genuine fmt
+consumption (semx survives on ParagraphBlock/TtElement on this
+vintage; NBSP/space-join artifacts normalised), with
+display-text/citeas fallback; (2) an example in the abstract renders
+as an EXAMPLE label t (keepWithNext) + content paragraphs; (3)
+nested inline content: build_simple_inline now recurses (em > strong
+etc.), recovers a nested bare link via the semx fmt-link (target
+text, N4), and SUPPRESSES inline elements left empty by parse
+ghosts (they emitted noise `<em/>`); (4) sourcecode code text
+arrives with each inline element TWICE (semantic original + semx
+rendering) — the originals are dropped and the rendered text kept,
+so erefs carry citation labels and bare fmt-links their target URL
+(extends WS2 A-1). One inline_spec expectation refreshed for
+(3)-recoveries. MODEL GAPS added to the 0.2.9 ledger:
+`EmRawElement` drops a nested `<strong>` and its text outright; the
+`<tt>` inside display-texts is dropped by the model (its text is
+missing from flattened renderings — the old path kept both). NOTED
+for 0.4.x: semx/fmt survival on inline models opens the
+fmt-consumption path the eref-locality interim grammar was written
+around — re-test whether fmt-eref/fmt-xref consumption can replace
+it.
+
 *validate_spec PORTED (2026-07-30, suite 300/0, 11 pending — none
 new; harness unchanged).* The old examples drove the released
 `RfcConvert#postprocess` on hand-authored RFC XML and asserted

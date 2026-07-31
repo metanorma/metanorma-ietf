@@ -170,17 +170,73 @@ module Metanorma
           coll = node.public_send(tag)
           return nil unless coll.is_a?(Array) && coll[idx]
 
-          klass = case tag
-                  when "em" then Rfcxml::V3::Em
-                  when "strong" then Rfcxml::V3::Strong
-                  when "tt" then Rfcxml::V3::Tt
-                  when "sub" then Rfcxml::V3::Sub
-                  when "sup" then Rfcxml::V3::Sup
-                  end
-          elem = klass.new
-          val = ls_text(coll[idx])
-          elem.content = [val] if val && !val.empty?
+          build_simple_inline_model(coll[idx], tag)
+        end
+
+        SIMPLE_INLINE_CLASSES = {
+          "em" => "Em", "strong" => "Strong", "tt" => "Tt",
+          "sub" => "Sub", "sup" => "Sup"
+        }.freeze
+
+        def build_simple_inline_model(model, tag)
+          elem = Rfcxml::V3.const_get(SIMPLE_INLINE_CLASSES[tag]).new
+          val = ls_text(model)
+          if val && !val.empty?
+            elem.content = [val]
+          elsif !build_nested_inline(elem, model)
+            # nested inline (em > strong, tt > link): the own-text is
+            # empty and the content lives in child elements. What the
+            # nested walk cannot recover is parse-ghosted on this
+            # vintage's inline element models (EmRawElement drops a
+            # nested <strong> outright — 0.2.9 ledger); an empty
+            # element is noise, so it is suppressed (WS3, cleanup_spec)
+            return nil
+          end
           elem
+        end
+
+        # returns true if any nested content was recovered
+        def build_nested_inline(elem, model)
+          added = false
+          SIMPLE_INLINE_TAGS.each do |t|
+            next unless model.respond_to?(t)
+
+            to_array(model.public_send(t)).each do |child|
+              built = build_simple_inline_model(child, t)
+              next unless built
+
+              safe_append(elem, t.to_sym, built)
+              added = true
+            end
+          end
+          added |= append_nested_link_text(elem, model)
+          added
+        end
+
+        def append_nested_link_text(elem, model)
+          added = false
+          links = model.respond_to?(:link) ? to_array(model.link) : []
+          # the rendering of a nested link survives on the semx
+          # accessor of this vintage's inline models (fmt-link) —
+          # consume it where the semantic link itself is ghosted
+          # (WS3, cleanup_spec: <tt><link target="B"/></tt>)
+          if links.empty? && model.respond_to?(:semx)
+            to_array(model.semx).each do |s|
+              links += to_array(model_attr(s, :fmt_link))
+            end
+          end
+          links.each do |l|
+            # a bare link renders as its target text (N4)
+            text = ls_text(l)
+            if (text.nil? || text.empty?) && l.respond_to?(:target)
+              text = l.target.to_s
+            end
+            next if text.nil? || text.empty?
+
+            elem.content = to_array(elem.content) + [text]
+            added = true
+          end
+          added
         end
 
         def populate_author_name(author, person_name)

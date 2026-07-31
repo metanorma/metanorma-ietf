@@ -22,6 +22,24 @@ module Metanorma
 
           section, relative = extract_eref_locality(elem)
 
+          # WS3 (cleanup_spec): the RFC XML abstract is standalone
+          # metadata (reused outside the document), so the released
+          # path flattens its cross-references to text — display-text
+          # if authored, else citeas + locality label. Nested
+          # display-text markup flattens to plain text here (the old
+          # path kept <tt>; a string is what the mixed-content walk
+          # can carry).
+          if @abstract_flatten
+            text = inline_flat_text(elem, link_text)
+            if text.empty?
+              citeas = model_attr(elem, :citeas)
+              citeas = citeas.join if citeas.is_a?(Array)
+              text = citeas.to_s
+              text += ", Section #{section}" unless section.to_s.empty?
+            end
+            return text.empty? ? nil : text
+          end
+
           if section && !section.to_s.empty?
             # B-3: the released path (and current xml2rfc, which dropped
             # <relref>) express section references as <xref section=
@@ -125,9 +143,54 @@ module Metanorma
           ""
         end
 
+        # The abstract flatten prefers the presentation layer's own
+        # rendering: the paragraph carries a semx sibling per
+        # cross-reference (matched by source id) whose fmt-xref text
+        # is the full rendered label incl. locality ("ISO 712,
+        # Section 3.1") — the DRY source (WS3, cleanup_spec; first
+        # fmt consumption, semx survives on this vintage's paragraph
+        # model). Nested markup inside the fmt-xref text is still
+        # ghosted. Falls back to nil so the builders' local flatten
+        # (display-text / citeas) applies.
+        def abstract_semx_rendering(p_node, elem)
+          sid = model_attr(elem, :id).to_s
+          return nil if sid.empty? || !p_node.respond_to?(:semx)
+
+          to_array(p_node.semx).each do |s|
+            next unless model_attr(s, :source).to_s == sid
+
+            to_array(model_attr(s, :fmt_xref)).each do |fx|
+              t = fx.respond_to?(:text) ? [fx.text].flatten.compact.join : ""
+              # rendering artifacts have no place in flattened text:
+              # the label's NBSP would end up u-wrapped (N11), and the
+              # locality join doubles a space
+              t = t.tr("\u{00A0}", " ").squeeze(" ")
+              return t unless t.strip.empty?
+            end
+          end
+          nil
+        end
+
+        # display-text (own text) plus the texts of nested simple
+        # inline children, in that order — for the abstract flatten
+        def inline_flat_text(elem, own_text)
+          parts = [own_text.to_s]
+          %w[em strong tt sub sup].each do |t|
+            next unless elem.respond_to?(t)
+
+            to_array(elem.public_send(t)).each { |c| parts << ls_text(c).to_s }
+          end
+          parts.reject(&:empty?).join
+        end
+
         def build_xref(elem)
           target = elem.target
           return nil unless target
+
+          if @abstract_flatten
+            text = inline_flat_text(elem, extract_xref_text(elem))
+            return text.empty? ? nil : text
+          end
 
           xref = Rfcxml::V3::Xref.new
           xref.target = target.to_s
