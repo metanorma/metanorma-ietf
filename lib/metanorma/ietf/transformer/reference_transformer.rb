@@ -288,13 +288,19 @@ module Metanorma
           front = Rfcxml::V3::Front.new
 
           formatted = bibitem.formatted_ref
-          if formatted
-            title_text = mixed_text(formatted)
-            if title_text && !title_text.empty?
-              t = Rfcxml::V3::Title.new
-              t.content = [title_text]
-              front.title = t
-            end
+          title_text = formatted ? mixed_text(formatted) : nil
+          title_text = nil if title_text&.strip&.empty?
+          # No formattedref either: fall back to the authoritative
+          # docidentifier. RFC XML requires front/title, and leaving
+          # it unset serialises the model's DEFAULT empty element as
+          # `<title> </title>` — rendered by xml2rfc as a bare `""`
+          # (F9). The released leg renders the docid as the quoted
+          # title; the refcontent emission below suppresses the echo.
+          title_text ||= extract_bibitem_refcontent(bibitem)
+          if title_text && !title_text.empty?
+            t = Rfcxml::V3::Title.new
+            t.content = [title_text]
+            front.title = t
           end
 
           authors = extract_bibitem_authors(bibitem)
@@ -312,7 +318,10 @@ module Metanorma
           series_infos.each { |si| safe_append(ref, :series_info, si) }
 
           refcontent_text = extract_bibitem_refcontent(bibitem)
-          if refcontent_text && !refcontent_text.empty?
+          # suppressed when it merely echoes the docid-derived title
+          # fallback above (F9)
+          if refcontent_text && !refcontent_text.empty? &&
+              refcontent_text != title_text
             rc = Rfcxml::V3::Refcontent.new
             rc.content = [refcontent_text]
             safe_append(ref, :refcontent, rc)
@@ -379,7 +388,13 @@ module Metanorma
             t.respond_to?(:type) && t.type == "main"
           end
           title = main || titles.first
-          title ? ls_text(title) : nil
+          text = title ? ls_text(title) : nil
+          # a whitespace-only title (relaton fetch with no title data)
+          # must count as absent: it defeated formattedref_only? and
+          # rendered as an empty quoted title `""` (F9) — blanking it
+          # routes the bibitem to the docid/formattedref fallback
+          text = text&.strip
+          text&.empty? ? nil : text
         end
 
         def extract_bibitem_authors(bibitem)
