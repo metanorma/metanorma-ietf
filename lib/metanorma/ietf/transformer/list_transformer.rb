@@ -247,6 +247,12 @@ module Metanorma
           "table"       => [:table,       :table],
         }.freeze
 
+        # WS5 (rfc6350): appends must be ORDER-TRACKED — safe_append
+        # puts children into separate per-tag collections and
+        # serialisation then follows the model's schema order, which
+        # displaced a dd's leading paragraph after its nested dl (the
+        # "Special notes" entries). Same OrderTracker treatment as
+        # table rows (th/td interleave).
         def build_dd_ordered(dd_elem, dd, src_order)
           counters = Hash.new(0)
 
@@ -256,6 +262,7 @@ module Metanorma
               next if text.nil? || text.strip.empty?
               dd_elem.content = to_array(dd_elem.content)
               dd_elem.content << text
+              track_text_order(dd_elem, text)
               next
             end
 
@@ -264,10 +271,10 @@ module Metanorma
             counters[tag] += 1
 
             if tag == "figure"
-              build_dd_figure_at(dd_elem, dd, idx)
+              build_dd_figure_at(dd_elem, dd, idx, ordered: true)
             else
               mapping = DD_CHILD_MAP[tag]
-              build_dd_child(dd_elem, dd, idx, *mapping) if mapping
+              build_dd_child(dd_elem, dd, idx, *mapping, ordered: true) if mapping
             end
           end
         end
@@ -298,12 +305,19 @@ module Metanorma
           end
         end
 
-        def build_dd_child(dd_elem, dd, idx, src_attr, target_attr)
+        def build_dd_child(dd_elem, dd, idx, src_attr, target_attr,
+                           ordered: false)
           items = to_array(dd.public_send(src_attr))
           return unless items[idx]
 
           result = dispatch_dd_child_transform(src_attr, items[idx])
-          safe_append(dd_elem, target_attr, result) if result
+          return unless result
+
+          if ordered
+            append_ordered(dd_elem, target_attr, result)
+          else
+            safe_append(dd_elem, target_attr, result)
+          end
         end
 
         def dispatch_dd_child_transform(src_attr, child)
@@ -317,15 +331,20 @@ module Metanorma
           end
         end
 
-        def build_dd_figure_at(dd_elem, dd, idx)
+        def build_dd_figure_at(dd_elem, dd, idx, ordered: false)
           figs = to_array(dd.figure)
           return unless figs[idx]
 
           f = transform_figure(figs[idx])
-          if f.is_a?(Rfcxml::V3::Figure)
-            safe_append(dd_elem, :figure, f)
-          elsif f.is_a?(Rfcxml::V3::Sourcecode)
-            safe_append(dd_elem, :sourcecode, f)
+          attr = if f.is_a?(Rfcxml::V3::Figure) then :figure
+                 elsif f.is_a?(Rfcxml::V3::Sourcecode) then :sourcecode
+                 end
+          return unless attr
+
+          if ordered
+            append_ordered(dd_elem, attr, f)
+          else
+            safe_append(dd_elem, attr, f)
           end
         end
 

@@ -233,4 +233,35 @@ RSpec.describe "IETF list rendering (WS3)" do
       .to be_xml_equivalent_to strip_guid(output)
   end
 
+  it "keeps dd children in source order (paragraphs around a nested dl)" do
+    # WS5 regression (rfc6350, the "Special notes" entries): the dd
+    # builder appended per-tag with safe_append, so serialisation fell
+    # back to the model's schema order and the leading paragraph
+    # rendered AFTER the nested dl; appends are now order-tracked
+    # (the table-row th/td treatment)
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <sections><clause id="c1"><title>C</title>
+      <dl id="d1">
+      <dt>Special notes:</dt>
+      <dd id="dd1">
+      <p id="p1">The components correspond in sequence.</p>
+      <dl id="d2">
+      <dt>Sex component:</dt>
+      <dd id="dd2"><p id="p2">A single letter.</p></dd>
+      </dl>
+      <p id="p3">Trailing remark.</p>
+      </dd>
+      </dl>
+      </clause></sections>
+      </iso-standard>
+    INPUT
+    out = Nokogiri::XML(feature_convert(input))
+    dd = out.at("//section/dl/dd")
+    tags = dd.element_children.map(&:name)
+    expect(tags).to eq(%w[t dl t])
+    expect(dd.element_children[0].text).to include("components correspond")
+    expect(dd.element_children[2].text).to include("Trailing remark")
+  end
+
 end
