@@ -36,6 +36,19 @@ module Metanorma
           rfc.updates = extract_relation_ids("updates")
           rfc.lang = lang
           rfc.pi_settings = extract_pi_settings
+          set_rfc_attribute_channel(rfc)
+        end
+
+        # The v3 root-attribute channel (F5): values recovered from
+        # bibdata/ext by Transformer.recover_rfc_attributes — the
+        # model ghosts them. Emitted only when the author set them,
+        # like the released section.rb.
+        def set_rfc_attribute_channel(rfc)
+          doc.respond_to?(:recovered_rfc_attributes) or return
+          vals = doc.recovered_rfc_attributes
+          rfc.sym_refs = vals["symRefs"] if vals["symRefs"]
+          rfc.toc_include = vals["tocInclude"] if vals["tocInclude"]
+          rfc.sort_refs = vals["sortRefs"] if vals["sortRefs"]
         end
 
         PI_ORDER = %w[sortrefs symrefs tocdepth subcompact compact strict
