@@ -96,7 +96,27 @@ module Metanorma
       def self.parse_semantic(xml_string)
         stripped = xml_string
           .gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"}, "")
-        Metanorma::IetfDocument::Root.from_xml(stripped)
+        root = Metanorma::IetfDocument::Root.from_xml(stripped)
+        recover_rfc_attributes(root, stripped)
+        root
+      end
+
+      # bibdata/ext symRefs|tocInclude|sortRefs — the v3 <rfc> ROOT
+      # ATTRIBUTE channel the released path reads (section.rb) — are
+      # parse ghosts on the model (0.2.9 and 0.5.1 alike; upstream
+      # ticket). xml2rfc v3 ignores the <?rfc?> PI channel, so without
+      # the root attributes the author's toc/symrefs settings are
+      # silently overridden by xml2rfc defaults (F5). Recovered here
+      # from the raw XML as a side-channel on the root object;
+      # self-retiring — remove once the model maps them.
+      def self.recover_rfc_attributes(root, stripped_xml)
+        doc = Nokogiri::XML(stripped_xml)
+        vals = {}
+        %w[symRefs tocInclude sortRefs].each do |k|
+          v = doc.at("//bibdata/ext/#{k}")&.text
+          vals[k] = v if v && !v.empty?
+        end
+        root.define_singleton_method(:recovered_rfc_attributes) { vals }
       end
 
       # Reader for the processor's document-model output leg (#233
