@@ -163,7 +163,10 @@ module Metanorma
           # voice phone → <phone>; fax phones are DROPPED — RFC 7991
           # removed <facsimile> from the v3 vocabulary (the old spec
           # expectation carrying it was DEBUG-only output). WS3,
-          # metadata_spec.
+          # metadata_spec. RATIFIED as intended behaviour at the WS5
+          # adjudication (F6, ruled B): the released leg still emits
+          # the deprecated element and collects an xml2rfc warning;
+          # this omission is the correction, not a defect.
           phones = to_array(person.phone)
           voice = phones.find { |ph| !ph.respond_to?(:type) || ph.type.to_s != "fax" }
           if voice && voice.content && !voice.content.strip.empty?
