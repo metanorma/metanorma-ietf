@@ -267,6 +267,19 @@ module Metanorma
               end
             else
               initials_raw = to_array(person_name.initials).map { |i| ls_text(i).to_s.strip }.reject(&:empty?)
+              # <formatted-initials> is a parse ghost on the pinned
+              # model (fixed upstream in metanorma-document 0.5.1);
+              # derive initials from the completename meanwhile —
+              # without an initials attribute xml2rfc re-parses the
+              # fullname and breaks particle surnames:
+              # "D. van Gulik" -> "Gulik, D. V." (F10)
+              if initials_raw.empty? && complete && !complete.empty?
+                given = complete.sub(/\s*#{Regexp.escape(surname)}\s*\z/, "").strip
+                unless given.empty? || given == complete
+                  initials_raw = given.split(/\s+/)
+                    .map { |w| w.end_with?(".") ? w : "#{w.chars.first}." }
+                end
+              end
               author.initials = initials_raw.join(" ") if initials_raw.any?
               author.fullname = complete if complete && !complete.empty?
             end
