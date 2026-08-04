@@ -45,7 +45,11 @@ RSpec.describe "IETF presentation stage" do
       rfc = Nokogiri::XML(Metanorma::Ietf::Transformer.convert(orphaned_input))
       ref = rfc.at(%{//reference[@anchor="ZELLER"]})
       expect(ref).not_to be_nil
-      expect(ref.at("./refcontent")&.text).to eq "ZELLER"
+      # F9: the identifier surfaces as the (schema-required) title —
+      # the released leg renders it as the quoted title too; the
+      # refcontent echo of the same identifier is suppressed
+      expect(ref.at("./front/title")&.text).to eq "ZELLER"
+      expect(ref.at("./refcontent")).to be_nil
     end
   end
 
