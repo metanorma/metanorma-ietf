@@ -547,4 +547,18 @@ RSpec.describe "IETF RFC XML validation (WS3)" do
     expect(content_errors(rfc))
       .to match(%r{Unknown ipr attribute on <rfc> element \(:ipr:\): trust2009021})
   end
+
+  it "accepts every RFC 7991 ipr value (released-parity fix, metanorma-ietf#280)" do
+    # the transplanted /trust200902$/ test rejected every capital-T
+    # variant and the 200811 family
+    %w(pre5378Trust200902 noModificationTrust200902
+       noDerivativesTrust200902 trust200811 noModificationTrust200811
+       noDerivativesTrust200811 none).each do |ipr|
+      rfc = %(<rfc ipr="#{ipr}" category="info" submissionType="IETF"
+        docName="draft-x-00" version="3"><front>
+        <title>X</title></front><middle/></rfc>)
+      expect(content_errors(rfc))
+        .not_to match(%r{Unknown ipr attribute})
+    end
+  end
 end
