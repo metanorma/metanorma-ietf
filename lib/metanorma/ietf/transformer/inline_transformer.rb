@@ -238,23 +238,12 @@ module Metanorma
           stem_type = elem.stem_type || "MathML"
 
           if stem_type == "MathML"
-            content = nil
-
-            ascii = model_attr(elem, :asciimath)
-            if ascii.is_a?(String) && !ascii.empty?
-              content = ascii
-            elsif ascii.is_a?(Array) && !ascii.empty?
-              content = ascii.first
-            end
-
-            if content.nil?
-              latex = model_attr(elem, :latexmath)
-              if latex.is_a?(String) && !latex.empty?
-                content = latex
-              elsif latex.is_a?(Array) && !latex.empty?
-                content = latex.first
-              end
-            end
+            # The source notation carriers (Asciiml/Latexml) are model
+            # objects exposing only :value — not Strings — so they must
+            # be unwrapped here, not just type-checked (F8: falling
+            # through to the MathML re-serialisation altered notation)
+            content = stem_source_text(model_attr(elem, :asciimath))
+            content ||= stem_source_text(model_attr(elem, :latexmath))
 
             if content.nil?
               math = model_attr(elem, :math)
@@ -287,6 +276,22 @@ module Metanorma
 
           delim = stem_delimiter(content)
           "#{delim} #{content} #{delim}"
+        end
+
+        def stem_source_text(carrier)
+          carrier = carrier.first if carrier.is_a?(Array)
+          return nil unless carrier
+
+          text = if carrier.is_a?(String)
+                   carrier
+                 elsif carrier.respond_to?(:value)
+                   v = carrier.value
+                   v.is_a?(Array) ? v.join : v
+                 else
+                   ls_text(carrier)
+                 end
+          text = text.to_s
+          text.empty? ? nil : text
         end
 
         def stem_delimiter(content)
