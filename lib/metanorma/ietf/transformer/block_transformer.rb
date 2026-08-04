@@ -276,11 +276,80 @@ module Metanorma
           label.content = [label_text]
           results << label
 
-          get_paragraphs(example_node).each do |p|
-            t = transform_paragraph(p)
-            results << t if t
+          # An example is not only paragraphs: sourcecode, figures,
+          # lists and tables nest inside it too, and the
+          # paragraphs-only walk silently dropped them all (F7 — seven
+          # sourcecode blocks lost in one WS5 document). Walk the
+          # source order; fall back to typed collections without it.
+          src_order = example_node.respond_to?(:element_order) &&
+            example_node.element_order
+          if src_order.is_a?(Array) && src_order.any?
+            counters = Hash.new(0)
+            src_order.each do |e|
+              next if e.text?
+              tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
+              child = example_child_result(example_node, tag, idx)
+              results << child if child
+            end
+          else
+            get_paragraphs(example_node).each do |p|
+              t = transform_paragraph(p)
+              results << t if t
+            end
+            EXAMPLE_CHILD_ATTRS.each_value do |attr|
+              next if attr == :paragraphs
+              to_array(model_attr(example_node, attr)).each do |c|
+                child = example_child_transform(attr, c)
+                results << child if child
+              end
+            end
           end
           results
+        end
+
+        EXAMPLE_CHILD_ATTRS = {
+          "p" => :paragraphs,
+          "sourcecode" => :sourcecode,
+          "figure" => :figure,
+          "ul" => :ul,
+          "ol" => :ol,
+          "dl" => :dl,
+          "table" => :table,
+        }.freeze
+
+        def example_child_result(example_node, tag, idx)
+          attr = EXAMPLE_CHILD_ATTRS[tag] or return nil
+          child = to_array(model_attr(example_node, attr))[idx] or return nil
+          example_child_transform(attr, child)
+        end
+
+        def example_child_transform(attr, child)
+          case attr
+          when :paragraphs then transform_paragraph(child)
+          when :sourcecode then transform_sourcecode(child)
+          when :figure then transform_figure(child)
+          when :ul then transform_unordered_list(child)
+          when :ol then transform_ordered_list(child)
+          when :dl then transform_definition_list(child)
+          when :table then transform_table(child)
+          end
+        end
+
+        # RFC XML collection slot for a transform_example result — the
+        # example container is flattened, so each child must land in
+        # its own typed collection on the enclosing section (F7)
+        def example_result_tag(node)
+          case node
+          when Rfcxml::V3::Sourcecode then :sourcecode
+          when Rfcxml::V3::Figure then :figure
+          when Rfcxml::V3::Ul then :ul
+          when Rfcxml::V3::Ol then :ol
+          when Rfcxml::V3::Dl then :dl
+          when Rfcxml::V3::Table then :table
+          else :t
+          end
         end
 
         def transform_sourcecode(sc_node)

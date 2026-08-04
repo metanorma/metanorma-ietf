@@ -380,7 +380,9 @@ module Metanorma
               examples = to_array(model_attr(clause, :examples))
               if examples[idx]
                 ts = transform_example(examples[idx])
-                ts.each { |_t| append_ordered(section, :t, _t) }
+                # mixed results since F7: each child lands in its own
+                # typed collection, not blanket :t
+                ts.each { |n| append_ordered(section, example_result_tag(n), n) }
               end
             when "terms"
               terms = to_array(model_attr(clause, :terms))
@@ -426,7 +428,9 @@ module Metanorma
 
           to_array(model_attr(clause, :examples)).each do |ex|
             ts = transform_example(ex)
-            ts.each { |_t| append_ordered(section, :t, _t) }
+            # mixed results since F7: each child lands in its own
+            # typed collection, not blanket :t
+            ts.each { |n| append_ordered(section, example_result_tag(n), n) }
           end
 
           to_array(model_attr(clause, :sourcecode_blocks)).each do |sc|
