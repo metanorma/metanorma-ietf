@@ -1271,4 +1271,32 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       .cleanup(Nokogiri::XML(input)).to_s)
       .to be_xml_equivalent_to output
   end
+  it "degrades an unresolvable xref in an abstract instead of " \
+     "crashing (#278)" do
+    # an empty xref with a target the xref table does not know made
+    # sourcecode_xref replace with nil (ArgumentError in
+    # abstract_cleanup); trigger observed on a literal block inside
+    # an abstract (MIB Doctor template)
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-abstract-xref-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <preface><abstract id="_abs">
+      <p id="_p1">See <xref target="TEMPLATE-TODO"/>.</p>
+      </abstract></preface>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      </iso-standard>
+    INPUT
+    expect do
+      IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    end.not_to raise_error
+    out = File.read("test.rfc.xml")
+    expect(out).to include "TEMPLATE-TODO"
+  end
 end

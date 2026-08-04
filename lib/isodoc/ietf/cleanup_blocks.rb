@@ -146,6 +146,11 @@ module IsoDoc
 
       def sourcecode_xref(node)
         ret = @xrefs.anchor(node["target"], :xref, false)&.gsub(%r{<[^>]+>}, "")
+        # an unresolved target yields nil: degrade to the raw target
+        # text instead of crashing Node#replace (#278; trigger: xref
+        # inside a literal block in an abstract, whose anchors the
+        # xref table does not know)
+        ret ||= node["target"].to_s
         s = node["section"] and ret += ", Section #{s}"
         node.replace(ret)
       end
