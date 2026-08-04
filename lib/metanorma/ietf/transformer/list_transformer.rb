@@ -355,6 +355,11 @@ module Metanorma
           when "alphabet", "loweralpha" then "a"
           when "upperroman", "roman_upper" then "I"
           when "upperalphabet", "upperalpha", "alphabet_upper" then "A"
+          # xml2rfc-v2 heritage format strings ("R%d", "--%d--") are
+          # legal v3 ol/@type values expanded by xml2rfc itself;
+          # collapsing them to "1" destroyed the author's numbering
+          # (F3 companion — the released leg preserves them)
+          when /%/ then type.to_s
           else "1"
           end
         end
