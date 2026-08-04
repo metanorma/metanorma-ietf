@@ -188,11 +188,21 @@ module IsoDoc
         ret
       end
 
+      # RFC 7991 s2.45.5: the legal ipr values. The old
+      # /trust200902$/ test matched only the bare lowercase value --
+      # every capital-T variant (pre5378Trust200902,
+      # noModificationTrust200902, ...) and the 200811 family were
+      # rejected as unknown (#280).
+      IPR_VALUES = %w(trust200902 noModificationTrust200902
+                      noDerivativesTrust200902 pre5378Trust200902
+                      trust200811 noModificationTrust200811
+                      noDerivativesTrust200811 none).freeze
+
       # 5.4.2.3.  "Copyright Notice" Insertion
       def ipr_check(xml)
         xml.root["ipr"] or
           return ["Missing ipr attribute on <rfc> element (:ipr:)"]
-        /trust200902$/.match(xml.root["ipr"]) or
+        IPR_VALUES.include?(xml.root["ipr"]) or
           return ["Unknown ipr attribute on <rfc> element (:ipr:): " \
                   "#{xml.root['ipr']}"]
         []
