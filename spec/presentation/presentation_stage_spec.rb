@@ -53,6 +53,35 @@ RSpec.describe "IETF presentation stage" do
     end
   end
 
+  describe "unresolved references as concept/errormsg (model-iso#144)" do
+    let(:errormsg_input) do
+      <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <sections>
+            <clause id="c1"><title>One</title>
+              <p id="p1">Before <concept><errormsg>term <tt>X</tt> not resolved via ID <tt>Y</tt></errormsg></concept> after.</p>
+            </clause>
+          </sections>
+        </metanorma>
+      XML
+    end
+
+    it "resolves errormsg to a bold message at the presentation stage" do
+      pres = Nokogiri::XML(Metanorma::Ietf::Transformer.presentation(errormsg_input))
+      expect(pres.at("//*[local-name()='concept']")).to be_nil
+      strong = pres.at("//*[local-name()='p']/*[local-name()='strong']")
+      expect(strong).not_to be_nil
+      expect(strong.text).to eq "term X not resolved via ID Y"
+    end
+
+    it "carries the message bold into RFC XML end to end" do
+      rfc = Nokogiri::XML(Metanorma::Ietf::Transformer.convert(errormsg_input))
+      strong = rfc.at("//t//strong")
+      expect(strong).not_to be_nil
+      expect(strong.text).to include "not resolved via ID"
+    end
+  end
+
   describe "note/formula autonumbering via the shared Xref" do
     let(:synthetic) do
       <<~XML
