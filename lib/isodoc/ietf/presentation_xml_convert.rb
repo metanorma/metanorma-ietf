@@ -66,6 +66,27 @@ module IsoDoc
       # <index> elements survive to the transformer.
       def index(docxml); end
 
+      # Grammar epic (metanorma-model-iso#144, standoc#1229, unreleased
+      # emitter): unresolved term/symbol references arrive as
+      # <concept><errormsg>…</errormsg></concept> instead of the old
+      # renamed <strong>. errormsg is a generator-only element with no
+      # document-model mapping, so it must be resolved HERE, before
+      # from_xml would silently drop the message: the released
+      # RfcConvert#concept_parse renders it bold on an early return —
+      # the same <strong> substitution keeps the output byte-identical.
+      # related/errormsg is left alone: the IETF renderer has never
+      # rendered <related> (pre-existing gap, kept deliberately).
+      def concept1(node)
+        if (err = node.at(ns("./errormsg")))
+          strong = Nokogiri::XML::Node.new("strong", node.document)
+          strong.namespace = node.namespace
+          err.children.each { |c| strong << c }
+          node.replace(strong)
+          return
+        end
+        super
+      end
+
       # xml2rfc-v2 heritage documents carry format strings as ol/@type
       # ("R%d", "--%d--") — legal v3 values that xml2rfc expands
       # itself. The shared label-template table only knows the named
