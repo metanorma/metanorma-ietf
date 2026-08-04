@@ -736,7 +736,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
               <renderterm>word</renderterm>
               <termref base='IEV' target='135-13-13'>The IEV database</termref>
             </concept></li>
-            <li><concept><strong>term <tt>participant's</tt> not resolved via ID <tt>participant__x2019_s</tt></strong></concept></li>
+            <li><concept><errormsg>term <tt>participant's</tt> not resolved via ID <tt>participant__x2019_s</tt></errormsg></concept></li>
             </ul>
           </p>
           </foreword></preface>

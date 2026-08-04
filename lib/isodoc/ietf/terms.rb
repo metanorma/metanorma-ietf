@@ -86,6 +86,10 @@ module IsoDoc
       def termdocsource_parse(_node, _out); end
 
       def concept_parse(node, out)
+        # generator-emitted term-resolution failure reports
+        # (metanorma-model-iso#144) render in boldface
+        err = node.at(ns("./errormsg")) and
+          return out.strong { |s| err.children.each { |n| parse(n, s) } }
         ref = node.at(ns("./xref | ./eref | ./termref"))
         render = node.at(ns("./renderterm"))
         !ref && !render and return node.children.each { |n| parse(n, out) }
