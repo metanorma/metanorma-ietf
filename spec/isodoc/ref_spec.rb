@@ -1125,6 +1125,44 @@ RSpec.describe IsoDoc::Ietf do
     OUTPUT
   end
 
+  it "renders a formattedref bibitem that also carries a title " \
+     "as front/title, not loose text (#279)" do
+    # relaton BCP collection items (citing "BCP 14") carry BOTH a
+    # formattedref and a title; the render path for titled bibitems
+    # hands them to relaton-render, which honours the formattedref by
+    # returning bare text -- emitted as loose text inside <reference>,
+    # which the RFC XML grammar rejects
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-bcp14-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      <bibliography><references id="_normative" obligation="informative" normative="true">
+      <title>Normative References</title>
+      <bibitem anchor="BCP14" id="_bcp14001" type="standard">
+        <formattedref>BCP14</formattedref>
+        <title language="en" script="Latn">Best Current Practice 14</title>
+        <uri type="src">https://www.rfc-editor.org/info/bcp14</uri>
+        <docidentifier type="IETF" primary="true">BCP 14</docidentifier>
+      </bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    out = Nokogiri::XML(File.read("test.rfc.xml"))
+    ref = out.at("//reference[@anchor='BCP14']")
+    expect(ref).not_to be_nil
+    expect(ref.at("./front/title")&.text).to eq "BCP14"
+    loose = ref.children.select { |c| c.text? && !c.text.strip.empty? }
+    expect(loose).to be_empty
+  end
+
   it "normalises reference stream to the xml2rfc enumeration (#270)" do
     # relaton stream values arrive in arbitrary case (INDEPENDENT), but
     # <stream> admits only IAB/IETF/IRTF/independent; unknown streams

@@ -85,7 +85,12 @@ module IsoDoc
         # unify with the shared bibrender path when refactoring the reference
         # pipeline.
         did = bib1.at(ns("./docidentifier"))
-        if !bib1.at(ns("./title")) && (f || did)
+        # A formattedref takes this path even when a title is also
+        # present: relaton-render honours the formattedref by returning
+        # it as BARE TEXT, which then lands as loose text inside
+        # <reference> -- invalid RFC XML (#279; trigger: relaton BCP
+        # collection items, e.g. citing "BCP 14").
+        if f || (!bib1.at(ns("./title")) && did)
           ref.front do |front|
             front.title do |t|
               if f then children_parse(f, t)
