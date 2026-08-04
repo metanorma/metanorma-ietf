@@ -48,6 +48,7 @@ module Metanorma
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
+        xml = escape_bare_ampersands(xml)
         xml = u_cleanup(xml)
 
         if options[:validate]
@@ -56,6 +57,21 @@ module Metanorma
         end
 
         xml
+      end
+
+      # Text carrying literal HTML entity references ("&para;",
+      # "&mdash;") is serialised with the ampersand UNESCAPED,
+      # producing unparseable RFC XML (F2; the model stack emits some
+      # mixed-content text raw). Escapes every "&" that does not
+      # already start a predefined XML entity or a character
+      # reference, leaving CDATA sections untouched. Must run before
+      # u_cleanup, whose Nokogiri parse chokes on the bare entities.
+      def self.escape_bare_ampersands(xml)
+        xml.split(/(<!\[CDATA\[.*?\]\]>)/m).map do |part|
+          next part if part.start_with?("<![CDATA[")
+
+          part.gsub(/&(?!(?:amp|lt|gt|apos|quot|#\d+|#x\h+);)/, "&amp;")
+        end.join
       end
 
       # Text-run parents whose non-ASCII content the released path
