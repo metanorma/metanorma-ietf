@@ -65,6 +65,19 @@ module IsoDoc
       # destroys the transformer's source. The pass is switched off;
       # <index> elements survive to the transformer.
       def index(docxml); end
+
+      # xml2rfc-v2 heritage documents carry format strings as ol/@type
+      # ("R%d", "--%d--") — legal v3 values that xml2rfc expands
+      # itself. The shared label-template table only knows the named
+      # types and crashed on the nil lookup (F3, held finding; nil
+      # robustness also reported upstream on isodoc). The transformer
+      # drops fmt-name labels anyway, so the bare numeral suffices as
+      # the label here.
+      def ol_label_format(semx, elem)
+        template = ol_label_template(elem)[elem.parent["type"].to_sym]
+        template or return semx
+        template.sub("%", semx)
+      end
     end
   end
 end
