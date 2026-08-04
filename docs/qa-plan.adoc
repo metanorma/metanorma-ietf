@@ -1197,6 +1197,81 @@ Precondition: WS3 green and WS4 complete.
 * Confirm xml2rfc accepts every NEW `.rfc.xml`; record samples where new emits
   *fewer* nits than old as documented wins.
 
+==== WS5 heritage battery — findings ledger (adjudicated 2026-08-04)
+
+The 21-document heritage battery (sources modernised into
+`mn-samples-ietf` branch `feature/heritage-corpus`; `spec/examples`
+frozen as the heritage record) surfaced findings F1–F10, adjudicated
+per-finding by the maintainer on 2026-08-04. Battery report:
+metanorma-ietf#233, comment 5179845607.
+
+*Transformer defects, ruled A and fixed:*
+
+* F1 — `dl` definition descriptions re-ordered around nested lists
+  (rfc6350). Fix: `build_dd_ordered` tracks source order.
+* F2 — literal HTML entity references in text serialised with the
+  ampersand unescaped → unparseable output (draft-iab-html-rfc-bis).
+  Fix: `Transformer.escape_bare_ampersands`, CDATA-aware, ahead of
+  `u_cleanup`.
+* F5 — `bibdata/ext` `symRefs`/`tocInclude`/`sortRefs` (the v3
+  `<rfc>` root-attribute channel; xml2rfc v3 ignores the `<?rfc?>` PI
+  channel) are parse ghosts on the model (0.2.9 AND 0.5.1 — upstream
+  ticket pending). Fix: `Transformer.recover_rfc_attributes`
+  side-channel, self-retiring.
+* F7 — `sourcecode`/`figure`/list/table children nested inside
+  `example` blocks were dropped by the paragraphs-only walk (7 code
+  blocks lost in stupid-s alone). Fix: ordered child walk +
+  type-dispatched appends.
+* F8 — AsciiMath re-serialised from MathML with altered notation.
+  The source notation rides the semantic `<asciimath>` carrier — a
+  model OBJECT (`Asciiml#value`), which the String/Array type checks
+  rejected. Fix: `stem_source_text` unwraps carriers.
+* F9 — a reference with no title and no formattedref serialised the
+  model's DEFAULT empty `<title> </title>` (rendered `""`). Fix:
+  whitespace titles count as absent; the docid becomes the
+  (schema-required) title, released-parity, refcontent echo
+  suppressed.
+* F10 — reference-author `initials` omitted when the model ghosts
+  `<formatted-initials>` (fixed upstream in 0.5.1); xml2rfc's
+  fullname fallback mangles particle surnames ("D. van Gulik" →
+  "Gulik, D. V."). Fix: initials derived from completename − surname,
+  self-retiring on the 0.5.x upgrade.
+* F3 — xml2rfc-v2 format strings as `ol/@type` ("R%d", "--%d--")
+  crashed the shared `ol_label_format` (nil template) via the
+  presentation subclass; `map_ol_type` also collapsed them to "1".
+  Fix: subclass nil-template fallback + format strings passed through
+  (legal v3 values); isodoc robustness ticket pending.
+
+*Ruled B (legitimate improvement, documented):*
+
+* F6 — `<phone type="fax">` deliberately not emitted: RFC 7991
+  deprecates `<facsimile>`; the released leg emits it and collects an
+  xml2rfc warning. Ratified as intended behaviour (front_transformer
+  comment).
+
+*Ruled superseded:*
+
+* F4 — passthrough-bibliography loss: dissolved by the corpus source
+  modernisation; residual model gap tracked as metanorma-document#39.
+
+*C-class (released-leg defects, transformer correct — scorecard
+"more correct" instances):* STD series rendered as BCP (6 instances,
+3 documents); blank line inside literal artwork dropped; second
+abstract NOTE deleted; "Work in Progress, Internet-Draft, draft-name"
+omitted from Internet-Draft references; RFC 5234 author order
+scrambled; literal "&" dropped from an IANA contact line.
+
+*Released-stack robustness bugs surfaced (tickets pending sighted
+approval):* `abstract_cleanup` ArgumentError crash on a literal block
+inside an abstract (cleanup_blocks.rb:150, mib-doc template);
+free-text bibitems rendered as loose text inside `<reference>`
+(invalid per xml2rfc); legal ipr value `pre5378Trust200902` fatally
+rejected.
+
+*Upstream model gaps found by the battery (tickets pending):*
+`bibdata/ext` `symRefs`/`tocInclude`/`sortRefs` unmapped (0.2.9 and
+0.5.1); `pi/tocinclude` unmapped (PiSettings maps `toc` only).
+
 === WS6 — Ongoing handholding (cross-cutting)
 
 A standing mode, not a phase: narrate what the code does in plain terms, explain
