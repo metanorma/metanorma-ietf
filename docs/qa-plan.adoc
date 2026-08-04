@@ -1272,6 +1272,21 @@ rejected.
 `bibdata/ext` `symRefs`/`tocInclude`/`sortRefs` unmapped (0.2.9 and
 0.5.1); `pi/tocinclude` unmapped (PiSettings maps `toc` only).
 
+==== Incoming grammar change: concept/errormsg (actioned ahead of release)
+
+Per the grammar epic (metanorma-model-iso#144; emitter
+metanorma-standoc#1229, unreleased): unresolved term/symbol
+references become `<concept><errormsg>…</errormsg></concept>` (and an
+`errormsg` branch in `related`) instead of the old renamed `<strong>`.
+`errormsg` is generator-only and has no document-model mapping, so it
+would be silently ghosted at `from_xml`. Actioned proactively in the
+presentation subclass: `concept1` resolves `concept/errormsg` to a
+`<strong>` carrying the message — byte-identical to the released
+`RfcConvert#concept_parse` early return — before the model parse.
+`related/errormsg` deliberately not rendered: the IETF renderer has
+never rendered `<related>` (pre-existing gap, kept for parity).
+Synthetic coverage in `spec/presentation/presentation_stage_spec.rb`.
+
 === WS6 — Ongoing handholding (cross-cutting)
 
 A standing mode, not a phase: narrate what the code does in plain terms, explain
