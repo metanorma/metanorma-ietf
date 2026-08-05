@@ -1261,16 +1261,34 @@ abstract NOTE deleted; "Work in Progress, Internet-Draft, draft-name"
 omitted from Internet-Draft references; RFC 5234 author order
 scrambled; literal "&" dropped from an IANA contact line.
 
-*Released-stack robustness bugs surfaced (tickets pending sighted
-approval):* `abstract_cleanup` ArgumentError crash on a literal block
-inside an abstract (cleanup_blocks.rb:150, mib-doc template);
-free-text bibitems rendered as loose text inside `<reference>`
-(invalid per xml2rfc); legal ipr value `pre5378Trust200902` fatally
-rejected.
+*Released-stack robustness bugs surfaced — FILED AND FIXED
+(2026-08-05, PR metanorma-ietf#281, branch
+`fix/ws5-battery-robustness`):* metanorma-ietf#278 `abstract_cleanup`
+ArgumentError crash on a literal block inside an abstract
+(cleanup_blocks.rb:150, mib-doc template; fixed by a nil-guard in
+`sourcecode_xref`); #279 loose text inside `<reference>` — diagnosis
+sharpened during the fix: the trigger is relaton BCP collection items
+(citing "BCP 14"), which carry BOTH a formattedref and a title and
+whose relaton-render output is bare text, not the free-text manual
+bibitems originally named (fixed by routing any formattedref through
+the 81f7bc1 front/title path); #280 legal ipr value
+`pre5378Trust200902` fatally rejected — actually broader: the old
+`/trust200902$/` test rejected every capital-T variant, the 200811
+family and "none" (fixed with the explicit RFC 7991 allow-list; the
+same defect existed verbatim in this repo's transplanted
+`validation_transformer` and is fixed as its mirror, commit 29fc625).
 
-*Upstream model gaps found by the battery (tickets pending):*
-`bibdata/ext` `symRefs`/`tocInclude`/`sortRefs` unmapped (0.2.9 and
-0.5.1); `pi/tocinclude` unmapped (PiSettings maps `toc` only).
+*Shared-isodoc finding:* filed as isodoc#832, fixed by Keiko in
+isodoc#833 (merged 2026-08-05) — identical semantics to our aa03c93
+subclass override, which therefore DROPS at the next isodoc release +
+env upgrade with zero behaviour change.
+
+*Upstream model gaps found by the battery — FILED:*
+metanorma-document#43 — `bibdata/ext` `symRefs`/`tocInclude`/
+`sortRefs` unmapped (0.2.9 and 0.5.1) and `pi/tocinclude` unmapped
+(PiSettings maps `toc` only); metanorma-document#44 — forward mapping
+request for the generator-only `errormsg` element (grammar epic).
+Upstream ledger now spans metanorma-document#37–#44.
 
 ==== Incoming grammar change: concept/errormsg (actioned ahead of release)
 
