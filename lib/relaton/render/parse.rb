@@ -14,11 +14,18 @@ module Relaton
                     abstract: abstract(doc))
         end
 
-        def home_standard(_doc, pubs)
+        def home_standard(doc, pubs)
           pubs&.any? do |r|
             ["Internet Engineering Task Force", "IETF", "RFC Publisher"]
               .include?(r[:nonpersonal])
-          end
+          end ||
+            # an Internet-Draft is an IETF-stream document even though
+            # its relaton record carries no publisher contributor;
+            # without this, draft references fell to the refcontent
+            # branch and never got the seriesInfo that makes xml2rfc
+            # render "Work in Progress, Internet-Draft, ..." (#283)
+            Array(doc.docidentifier)
+              .any? { |i| i.type == "Internet-Draft" }
         end
 
         # allow publisher for standards
@@ -72,7 +79,9 @@ module Relaton
           org = contributor.organization
           person = contributor.person
           if org
-            return { nonpersonal: extract_orgname(org),
+            name = extract_orgname(org)
+            return { nonpersonal: name,
+                     nonpersonalascii: ascii_or_nil(name),
                      nonpersonalabbrev: extract_orgabbrev(org) }
           end
           return extract_personname(person) if person
@@ -84,15 +93,26 @@ module Relaton
           content(org.abbreviation)
         end
 
+        # The ascii attributes are computed here, nil when the
+        # transliteration is redundant, so the nametemplates emit them
+        # through a bare presence check, and downstream consumers (incl.
+        # the presentation XML transformer) inherit already-clean output:
+        # xml2rfc strips self-equal ascii attributes with a warning (#269)
+        def ascii_or_nil(str)
+          str.nil? and return nil
+          a = str.transliterate
+          a == str ? nil : a
+        end
+
         def extract_personname(person)
-          surname = person.name.surname
-          completename = person.name.completename
+          sn = content(person.name.surname)
+          cn = content(person.name.completename)
           given, middle, initials = given_and_middle_name(person)
-          { surname: content(surname),
-            completename: content(completename),
-            given: given,
-            middle: middle,
-            initials: initials }.compact
+          { surname: sn, completename: cn,
+            given: given, middle: middle, initials: initials,
+            surnameascii: ascii_or_nil(sn),
+            completenameascii: ascii_or_nil(cn),
+            initialsascii: ascii_or_nil(Array(initials).join) }.compact
         end
 
         # not just year-only
@@ -102,13 +122,17 @@ module Relaton
           datepick(ret)
         end
 
-        # return authors and editors together
+        # return authors and editors together, in DOCUMENT order:
+        # concatenating all authors then all editors re-ordered mixed
+        # lists — RFC 5234 (data order Crocker (ed.), Overell)
+        # rendered as "Overell, P. and D. Crocker", and organisational
+        # authors were hoisted over persons (#284)
         def creatornames1(doc)
           return [] if doc.nil?
 
-          add1 = pick_contributor(doc, "author") || []
-          add2 = pick_contributor(doc, "editor") || []
-          cr = add1 + add2
+          cr = Array(doc.contributor).select do |c|
+            Array(c.role).any? { |r| %w(author editor).include?(r.type) }
+          end
           cr.empty? or return cr
           super
         end
@@ -118,8 +142,26 @@ module Relaton
           bcp = Array(doc.series).detect do |s|
             %w(BCP STD).include?(Array(s.title).first&.content)
           end
-          bcp and ret.unshift("BCP\u00A0#{bcp.number}")
-          ret.reject { |x| /(rfc-anchor|Internet-Draft)/.match?(x) }
+          # label the sub-series by its own title: the unconditional
+          # "BCP" prefix rendered every STD-series RFC as BCP
+          # (STD 63 -> "BCP 63", #282)
+          bcp and ret.unshift(
+            "#{Array(bcp.title).first&.content}\u00A0#{bcp.number}",
+          )
+          # Internet-Draft identifiers stay: rejecting them (as the
+          # rfc-anchor internals rightly are) left draft references
+          # with NO seriesInfo, so xml2rfc never rendered "Work in
+          # Progress, Internet-Draft, draft-name" (#283). Only the
+          # unversioned duplicate of the primary id is dropped.
+          primary = ret.grep(/Internet-Draft/).max_by(&:length)
+          ret.reject do |x|
+            /rfc-anchor/.match?(x) ||
+              (/Internet-Draft/.match?(x) && x != primary) ||
+              # the I-D. anchor form duplicates the real draft name
+              # with an unprefixed, unversioned value — drop it when
+              # a proper Internet-Draft identifier is present
+              (primary && /I-D\./.match?(x))
+          end
             .map { |x| x.gsub(/<\/?esc>/, "").tr(" ", "\u00A0") }
         end
 
@@ -134,10 +176,21 @@ module Relaton
             a.detect { |s| s.type.nil? } || a.first
         end
 
+        # the enumeration <stream> admits per v3.rng, keyed by downcased
+        # relaton stream title
+        XML2RFC_STREAMS = {
+          "iab" => "IAB", "ietf" => "IETF", "irtf" => "IRTF",
+          "independent" => "independent",
+          "independent submission" => "independent"
+        }.freeze
+
+        # Normalise the stream to the xml2rfc enumeration; values outside
+        # it (Legacy et al.) are omitted rather than emitted verbatim,
+        # which was fatal to xml2rfc (INDEPENDENT, #270)
         def stream(doc)
           a = Array(doc.series).detect { |s| s.type == "stream" } or return nil
-          Array(a.title).first&.content == "Legacy" and return nil
-          series_title(a, doc)
+          t = Array(a.title).first&.content or return nil
+          XML2RFC_STREAMS[t.downcase]
         end
 
         def extract(doc)

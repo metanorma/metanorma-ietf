@@ -5,7 +5,9 @@ module Relaton
         def nameformat(names, hash)
           names.nil? and return names
           parts = %i(surname initials given middle nonpersonal
-                     nonpersonalabbrev completename)
+                     nonpersonalabbrev completename
+                     surnameascii initialsascii completenameascii
+                     nonpersonalascii)
           names_out = names.each_with_object({}) do |n, m|
             parts.each do |i|
               m[i] ||= []

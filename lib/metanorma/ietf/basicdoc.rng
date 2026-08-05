@@ -188,6 +188,15 @@ Applicable to modify and delete</a:documentation>
       </attribute>
     </optional>
     <optional>
+      <attribute name="position">
+        <a:documentation>For an "add" change, whether the change is added before or after the location</a:documentation>
+        <choice>
+          <value>before</value>
+          <value>after</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
       <element name="location">
         <a:documentation>The location(s) in the original document which have undergone the change described in this block</a:documentation>
         <zeroOrMore>
@@ -1518,12 +1527,16 @@ to indicate that the index range covers a range of locations between the current
       <ref name="index-primary">
         <a:documentation>Primary index term to be recorded at the current location</a:documentation>
       </ref>
-      <ref name="index-secondary">
-        <a:documentation>Secondary index term to be recorded at the current location</a:documentation>
-      </ref>
-      <ref name="index-tertiary">
-        <a:documentation>Tertiary index term to be recorded at the current </a:documentation>
-      </ref>
+      <optional>
+        <ref name="index-secondary">
+          <a:documentation>Secondary index term to be recorded at the current location</a:documentation>
+        </ref>
+      </optional>
+      <optional>
+        <ref name="index-tertiary">
+          <a:documentation>Tertiary index term to be recorded at the current </a:documentation>
+        </ref>
+      </optional>
     </element>
   </define>
   <define name="index-xref">
@@ -1538,12 +1551,16 @@ The text in the inline element is the primary index term to be be cross-referenc
       <ref name="index-primary">
         <a:documentation>The primary index term to be cross-referenced</a:documentation>
       </ref>
-      <ref name="index-secondary">
-        <a:documentation>The secondary index term to be cross-referenced</a:documentation>
-      </ref>
-      <ref name="index-tertiary">
-        <a:documentation>The tertiary index term to be cross-referenced</a:documentation>
-      </ref>
+      <optional>
+        <ref name="index-secondary">
+          <a:documentation>The secondary index term to be cross-referenced</a:documentation>
+        </ref>
+      </optional>
+      <optional>
+        <ref name="index-tertiary">
+          <a:documentation>The tertiary index term to be cross-referenced</a:documentation>
+        </ref>
+      </optional>
       <element name="target">
         <a:documentation>The index term to be cross-referenced to</a:documentation>
         <oneOrMore>
@@ -1893,14 +1910,40 @@ or as the string "auto"</a:documentation>
     <a:documentation>Mathematically formatted text</a:documentation>
     <element name="stem">
       <ref name="StemAttributes"/>
-      <oneOrMore>
-        <choice>
+      <optional>
+        <text>
           <a:documentation>The content of the mathematically formatted text</a:documentation>
-          <text/>
-          <ref name="AnyElement"/>
-        </choice>
-      </oneOrMore>
+        </text>
+      </optional>
+      <optional>
+        <ref name="mathml"/>
+      </optional>
+      <optional>
+        <ref name="asciimath"/>
+      </optional>
+      <optional>
+        <ref name="latexmath"/>
+      </optional>
     </element>
+  </define>
+  <define name="latexmath">
+    <a:documentation>Encoding of LatexMath</a:documentation>
+    <element name="latexmath">
+      <text/>
+    </element>
+  </define>
+  <define name="asciimath">
+    <a:documentation>Encoding of AsciiMath</a:documentation>
+    <element name="asciimath">
+      <text/>
+    </element>
+  </define>
+  <define name="mathml">
+    <a:documentation>Encoding of MathML: the official W3C MathML 4 grammar (namespace
+http://www.w3.org/1998/Math/MathML), via the metanorma wrapper in
+grammars/mathml/. See grammars/mathml/README.adoc, basicdoc-models#35,
+and the MathML 3 -&gt; 4 migration: basicdoc-models#39 / metanorma#585.</a:documentation>
+    <externalRef href="metanorma-mathml.rng"/>
   </define>
   <define name="StemAttributes">
     <attribute name="type">
