@@ -444,7 +444,7 @@ RSpec.describe IsoDoc::Ietf do
                       <author fullname="Bernard Aboba"/>
                       <date month="October" year="2003"/>
                    </front>
-                   <seriesInfo value="aboba-context-802" name="Internet-Draft"/>
+                   <seriesInfo value="draft-aboba-context-802-00" name="Internet-Draft"/>
                 </reference>
              </references>
           </back>
@@ -999,7 +999,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5730" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5730</refcontent>
+                         <refcontent>STD 69, RFC 5730</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5731" anchor="_">
                          <stream>IETF</stream>
@@ -1017,7 +1017,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5731" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5731</refcontent>
+                         <refcontent>STD 69, RFC 5731</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5732" anchor="_">
                          <stream>IETF</stream>
@@ -1034,7 +1034,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5732" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5732</refcontent>
+                         <refcontent>STD 69, RFC 5732</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5733" anchor="_">
                          <stream>IETF</stream>
@@ -1052,7 +1052,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5733" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5733</refcontent>
+                         <refcontent>STD 69, RFC 5733</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5734" anchor="_">
                          <stream>IETF</stream>
@@ -1070,7 +1070,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5734" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5734</refcontent>
+                         <refcontent>STD 69, RFC 5734</refcontent>
                       </reference>
                    </referencegroup>
                 </references>
@@ -1123,6 +1123,44 @@ RSpec.describe IsoDoc::Ietf do
         </front>
       </reference>
     OUTPUT
+  end
+
+  it "renders a formattedref bibitem that also carries a title " \
+     "as front/title, not loose text (#279)" do
+    # relaton BCP collection items (citing "BCP 14") carry BOTH a
+    # formattedref and a title; the render path for titled bibitems
+    # hands them to relaton-render, which honours the formattedref by
+    # returning bare text -- emitted as loose text inside <reference>,
+    # which the RFC XML grammar rejects
+    FileUtils.rm_f "test.rfc.xml"
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+      <title language="en" format="text/plain" type="main">Test</title>
+      <docidentifier>draft-test-bcp14-01</docidentifier><docnumber>10</docnumber>
+      <contributor><role type="author"/><person>
+      <name><completename>Arthur son of Uther Pendragon</completename></name></person></contributor>
+      <ext><ipr>trust200902</ipr></ext>
+      </bibdata>
+      <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
+      <bibliography><references id="_normative" obligation="informative" normative="true">
+      <title>Normative References</title>
+      <bibitem anchor="BCP14" id="_bcp14001" type="standard">
+        <formattedref>BCP14</formattedref>
+        <title language="en" script="Latn">Best Current Practice 14</title>
+        <uri type="src">https://www.rfc-editor.org/info/bcp14</uri>
+        <docidentifier type="IETF" primary="true">BCP 14</docidentifier>
+      </bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    IsoDoc::Ietf::RfcConvert.new({}).convert("test", input, false)
+    out = Nokogiri::XML(File.read("test.rfc.xml"))
+    ref = out.at("//reference[@anchor='BCP14']")
+    expect(ref).not_to be_nil
+    expect(ref.at("./front/title")&.text).to eq "BCP14"
+    loose = ref.children.select { |c| c.text? && !c.text.strip.empty? }
+    expect(loose).to be_empty
   end
 
   it "normalises reference stream to the xml2rfc enumeration (#270)" do

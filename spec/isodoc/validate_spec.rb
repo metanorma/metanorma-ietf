@@ -816,4 +816,42 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
       .to output(%r{RFC XML: Unknown ipr attribute on <rfc> element \(:ipr:\): trust2009021})
       .to_stderr
   end
+
+  it "accepts every RFC 7991 ipr value" do
+    template = <<~INPUT
+          <rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-camelot-holy-grenade-01" ipr="IPRVALUE" category="info" sortRefs="true" tocInclude="true" submissionType="independent" xml:lang="en" version="3" >
+        <front>
+          <title abbrev="Hand Grenade of Antioch">The Holy Hand Grenade of Antioch</title>
+          <seriesInfo value="draft-camelot-holy-grenade-01" status="Informational" stream="independent" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
+          <author fullname="Arthur son of Uther Pendragon">
+            <address>
+              <postal></postal>
+              <email>arthur.pendragon@ribose.com</email>
+            </address>
+          </author>
+          <abstract anchor="_absttacr">
+      <t anchor="_2cf15089-1c6a-4156-a904-94376faa6cd1">Abc
+      Def</t>
+      </abstract>
+        </front>
+        <middle>
+        <section anchor="A" numbered="true" toc="exclude">
+        <name>Clause</name>
+        </section>
+        </middle>
+        </rfc>
+    INPUT
+    # the old /trust200902$/ test rejected every capital-T variant
+    # and the 200811 family (#280)
+    %w(pre5378Trust200902 noModificationTrust200902
+       noDerivativesTrust200902 trust200811 noModificationTrust200811
+       noDerivativesTrust200811 none).each do |ipr|
+      expect do
+        IsoDoc::Ietf::RfcConvert.new({})
+          .postprocess(template.sub("IPRVALUE", ipr), "test.rfc.xml", nil)
+      end
+        .not_to output(%r{RFC XML: Unknown ipr attribute})
+        .to_stderr
+    end
+  end
 end

@@ -228,16 +228,19 @@ module IsoDoc
       end
 
       def note(isoxml, front)
-        a = isoxml.at(ns("//preface/abstract/note | //preface/foreword/note")) or
-          return
-        front.note **attr_code(removeInRFC: a["removeInRFC"]) do |n|
-          title = a.at(ns("./name")) and n.name do |t|
-            title.children.each { |tt| parse(tt, t) }
+        # every abstract note, not just the first: the .at singleton
+        # silently deleted any further notes (#285)
+        isoxml.xpath(ns("//preface/abstract/note | //preface/foreword/note"))
+          .each do |a|
+          front.note **attr_code(removeInRFC: a["removeInRFC"]) do |n|
+            title = a.at(ns("./name")) and n.name do |t|
+              title.children.each { |tt| parse(tt, t) }
+            end
+            a.children.reject { |c1| c1.name == "name" }.each do |c1|
+              parse(c1, n)
+            end
+            a.remove
           end
-          a.children.reject { |c1| c1.name == "name" }.each do |c1|
-            parse(c1, n)
-          end
-          a.remove
         end
       end
 
