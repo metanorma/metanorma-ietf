@@ -111,4 +111,27 @@ RSpec.describe IsoDoc::Ietf do
     expect(si).not_to be_nil
     expect(si["value"]).to eq "draft-abarth-cake-01"
   end
+
+  it "keeps reference authors in document order (#284)" do
+    out = ws5_convert(<<~BODY, bibliography: <<~BIB)
+      <sections><clause id="A"><title>C</title><p id="P">See <eref bibitemid="RFC5234"/>.</p></clause></sections>
+    BODY
+      <bibliography><references id="_n" normative="true"><title>Normative References</title>
+      <bibitem id="RFC5234" anchor="RFC5234" type="standard">
+      <title type="main">Augmented BNF for Syntax Specifications: ABNF</title>
+      <uri type="src">https://www.rfc-editor.org/info/rfc5234</uri>
+      <docidentifier type="IETF" primary="true">RFC 5234</docidentifier>
+      <date type="published"><on>2008-01</on></date>
+      <contributor><role type="editor"/><person><name><completename>D. Crocker</completename></name></person></contributor>
+      <contributor><role type="author"/><person><name><completename>P. Overell</completename></name></person></contributor>
+      <contributor><role type="publisher"/><organization><name>RFC Publisher</name></organization></contributor>
+      <series><title>STD</title><number>68</number></series>
+      </bibitem>
+      </references></bibliography>
+    BIB
+    ref = Nokogiri::XML(out).at("//reference[@anchor='RFC5234']")
+    authors = ref.xpath(".//author").map { |a| a["fullname"] || a["surname"] }
+    expect(authors.first).to include "Crocker"
+    expect(authors[1]).to include "Overell"
+  end
 end

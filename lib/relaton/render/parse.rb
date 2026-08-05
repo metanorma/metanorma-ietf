@@ -110,7 +110,11 @@ module Relaton
           datepick(ret)
         end
 
-        # return authors and editors together
+        # return authors and editors together, in DOCUMENT order:
+        # concatenating all authors then all editors re-ordered mixed
+        # lists — RFC 5234 (data order Crocker (ed.), Overell)
+        # rendered as "Overell, P. and D. Crocker", and organisational
+        # authors were hoisted over persons (#284)
         def creatornames1(doc)
           return [] if doc.nil?
 
