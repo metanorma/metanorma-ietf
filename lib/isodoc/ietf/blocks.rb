@@ -90,7 +90,10 @@ module IsoDoc
       def pre_parse(node, out)
         out.artwork **attr_code(anchor: node["id"], align: node["align"],
                                 alt: node["alt"], type: "ascii-art") do |s|
-          s.cdata node.text.sub(/^\n/, "").gsub(/\t/, "    ")
+          # \A, not ^: ^ anchors at every line start, so /^\n/ deleted
+          # the first BLANK LINE inside the artwork instead of a
+          # leading newline (#286)
+          s.cdata node.text.sub(/\A\n/, "").gsub(/\t/, "    ")
         end
       end
 

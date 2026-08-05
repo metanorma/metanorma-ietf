@@ -40,4 +40,17 @@ RSpec.describe IsoDoc::Ietf do
     expect(notes.size).to eq 2
     expect(notes[1].text).to include "Second note."
   end
+
+  it "keeps a blank line inside a literal block's artwork (#286)" do
+    out = ws5_convert(<<~BODY)
+      <sections><clause id="A"><title>C</title>
+      <figure id="F"><pre>    LINE ONE
+
+    LINE TWO</pre></figure>
+      </clause></sections>
+    BODY
+    # the squiggly heredoc strips the lines' common indent;
+    # the blank line inside the artwork is the point
+    expect(out).to include "LINE ONE\n\nLINE TWO"
+  end
 end
