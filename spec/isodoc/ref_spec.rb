@@ -444,7 +444,7 @@ RSpec.describe IsoDoc::Ietf do
                       <author fullname="Bernard Aboba"/>
                       <date month="October" year="2003"/>
                    </front>
-                   <seriesInfo value="aboba-context-802" name="Internet-Draft"/>
+                   <seriesInfo value="draft-aboba-context-802-00" name="Internet-Draft"/>
                 </reference>
              </references>
           </back>
@@ -999,7 +999,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5730" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5730</refcontent>
+                         <refcontent>STD 69, RFC 5730</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5731" anchor="_">
                          <stream>IETF</stream>
@@ -1017,7 +1017,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5731" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5731</refcontent>
+                         <refcontent>STD 69, RFC 5731</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5732" anchor="_">
                          <stream>IETF</stream>
@@ -1034,7 +1034,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5732" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5732</refcontent>
+                         <refcontent>STD 69, RFC 5732</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5733" anchor="_">
                          <stream>IETF</stream>
@@ -1052,7 +1052,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5733" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5733</refcontent>
+                         <refcontent>STD 69, RFC 5733</refcontent>
                       </reference>
                       <reference target="https://www.rfc-editor.org/info/rfc5734" anchor="_">
                          <stream>IETF</stream>
@@ -1070,7 +1070,7 @@ RSpec.describe IsoDoc::Ietf do
                             </abstract>
                          </front>
                          <seriesInfo value="10.17487/RFC5734" name="DOI"/>
-                         <refcontent>BCP 69, RFC 5734</refcontent>
+                         <refcontent>STD 69, RFC 5734</refcontent>
                       </reference>
                    </referencegroup>
                 </references>
