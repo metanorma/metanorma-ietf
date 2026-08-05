@@ -94,7 +94,9 @@ module IsoDoc
           ref.front do |front|
             front.title do |t|
               if f then children_parse(f, t)
-              else t << did.text
+              # text, not <<: raw-fragment insert silently drops a
+              # bare "&" in the identifier (#287 sibling)
+              else t.text did.text
               end
             end
           end

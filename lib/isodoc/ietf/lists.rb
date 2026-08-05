@@ -54,7 +54,10 @@ module IsoDoc
       end
 
       def dt_parse(dterm, term)
-        if dterm.elements.empty? then term << dterm.text
+        # text, not <<: the raw-fragment insert parses the string as
+        # markup, so a bare "&" (or "<") in the term is invalid there
+        # and libxml2 drops it silently (#287; same class as #267)
+        if dterm.elements.empty? then term.text dterm.text
         else dterm.children.each { |n| parse(n, term) }
         end
       end

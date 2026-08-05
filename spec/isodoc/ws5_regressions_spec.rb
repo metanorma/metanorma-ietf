@@ -53,4 +53,15 @@ RSpec.describe IsoDoc::Ietf do
     # the blank line inside the artwork is the point
     expect(out).to include "LINE ONE\n\nLINE TWO"
   end
+
+  it "keeps a literal ampersand in a definition-list term (#287)" do
+    out = ws5_convert(<<~BODY)
+      <sections><clause id="A"><title>C</title>
+      <dl id="D1"><dt>Person &amp; email address: </dt>
+      <dd id="DD1"><p id="P2">list</p></dd></dl>
+      </clause></sections>
+    BODY
+    dt = Nokogiri::XML(out).at("//dt")
+    expect(dt.text).to eq "Person & email address: "
+  end
 end
