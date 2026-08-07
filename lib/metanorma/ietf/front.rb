@@ -65,6 +65,7 @@ module Metanorma
         end
         add_noko_elem(xml, "ipr", node.attr("ipr") || "trust200902")
         # xml.ipr (node.attr("ipr") || "trust200902")
+        xml.pi { |pi| set_pi(node, pi) }
         x = node.attr("consensus") and xml.consensus (x != "false")
         x = node.attr("index-include") and xml.indexInclude (x != "false")
         add_noko_elem(xml, "iprExtract", node.attr("ipr-extract"))
@@ -75,7 +76,6 @@ module Metanorma
         add_noko_elem(xml, "tocDepth", node.attr("toc-depth"))
         # x = node.attr("toc-depth") and xml.tocDepth x
         x = node.attr("show-on-front-page") and xml.showOnFrontPage (x != "false")
-        xml.pi { |pi| set_pi(node, pi) }
       end
 
       def set_pi(node, pi)
