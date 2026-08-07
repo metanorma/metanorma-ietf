@@ -252,7 +252,28 @@ RSpec.describe Metanorma::Ietf do
       #{BLANK_HDR}
        <sections>
            <figure id="_" anchor="lit">
-        <pre align='left' alt='hello'>&lt;LITERAL&gt;</pre>
+        <pre id="_" align='left' alt='hello'>&lt;LITERAL&gt;</pre>
+        </figure>
+       </sections>
+       </metanorma>
+
+    OUTPUT
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
+  end
+
+  it "stamps an id on the pre of an unanchored literal" do
+    input = <<~INPUT
+      #{ASCIIDOC_BLANK_HDR}
+      ....
+      <LITERAL>
+      ....
+    INPUT
+    output = <<~OUTPUT
+      #{BLANK_HDR}
+       <sections>
+           <figure id="_">
+        <pre id="_">&lt;LITERAL&gt;</pre>
         </figure>
        </sections>
        </metanorma>

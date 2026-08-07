@@ -416,14 +416,6 @@ RSpec.describe Metanorma::Ietf do
              <area>B</area>
              <area>C</area>
              <ipr>noModificationTrust200902,pre5378Trust200902</ipr>
-             <consensus>false</consensus>
-             <indexInclude>false</indexInclude>
-             <iprExtract>Section 3</iprExtract>
-             <sortRefs>false</sortRefs>
-             <symRefs>false</symRefs>
-             <tocInclude>false</tocInclude>
-             <tocDepth>9</tocDepth>
-             <showOnFrontPage>false</showOnFrontPage>
              <pi>
                <artworkdelimiter>1</artworkdelimiter>
                <artworklines>2</artworklines>
@@ -461,6 +453,14 @@ RSpec.describe Metanorma::Ietf do
                <symrefs>false</symrefs>
                <sortrefs>false</sortrefs>
              </pi>
+             <consensus>false</consensus>
+             <indexInclude>false</indexInclude>
+             <iprExtract>Section 3</iprExtract>
+             <sortRefs>false</sortRefs>
+             <symRefs>false</symRefs>
+             <tocInclude>false</tocInclude>
+             <tocDepth>9</tocDepth>
+             <showOnFrontPage>false</showOnFrontPage>
            </ext>
          </bibdata>
          <metanorma-extension>
