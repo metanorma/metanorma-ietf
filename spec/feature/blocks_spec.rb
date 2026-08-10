@@ -162,7 +162,7 @@ RSpec.describe "IETF block rendering (WS3)" do
               </dl>
               <t>NOTE: </t>
               <ul>
-                <li>C</li>
+                <li anchor="_">C</li>
               </ul>
             </aside>
           </section>
