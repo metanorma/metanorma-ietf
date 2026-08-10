@@ -337,12 +337,12 @@ RSpec.describe "IETF section rendering (WS3)" do
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
-          <section anchor="_" toc="true">
+          <section anchor="_" toc="true" numbered="true" removeInRFC="true">
             <name>Clause</name>
           </section>
         </middle>
         <back>
-          <section anchor="_" toc="true">
+          <section anchor="_" toc="true" numbered="true" removeInRFC="true">
             <name>Appendix</name>
           </section>
         </back>

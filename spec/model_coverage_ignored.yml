@@ -564,8 +564,6 @@ Metanorma::StandardDocument::Sections::Introduction:
   inline_header: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   obligation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   variant_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
-Metanorma::StandardDocument::Sections::Preface:
-  executivesummary: "OPEN metanorma-ietf#299: preface executivesummary"
 Metanorma::StandardDocument::Sections::StandardReferencesSection:
   amend: "adjudicated N-A: amend family (WS5c row 12)"
   blocks: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
