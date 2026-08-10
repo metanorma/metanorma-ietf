@@ -218,9 +218,11 @@ annotation), reference groups, formattedref-only fallback. *Refactor target:*
 `AnnotationTransformer` (`annotation_transformer.rb`, ~25 lines):: *Stub.*
 `render_annotations?` checks the `notedraftinprogress` PI; `build_annotations`
 currently returns `[]` unconditionally — editor annotations → `cref` is *not
-implemented*. Candidate discrepancy source.
+implemented*. Adjudicated as a known model-vintage deferral (the annotation
+container parses to zero annotations on the pinned `metanorma-document`);
+resolves with the model upgrade — see the QA plan's ledger.
 
-`CleanupTransformer` (`cleanup_transformer.rb`, ~578 lines):: post-build fixes
+`CleanupTransformer` (`cleanup_transformer.rb`, ~475 lines):: post-build fixes
 on the `rfcxml` graph, run as a pipeline by `cleanup(rfc)`: `li_cleanup`
 (unwrap single `<t>` in `<li>`), `sourcecode_cleanup`, `deflist_cleanup`,
 `bcp14_cleanup` (strong → `bcp14` for MUST/SHOULD/…), `front_cleanup`,
@@ -229,7 +231,7 @@ on the `rfcxml` graph, run as a pipeline by `cleanup(rfc)`: `li_cleanup`
 `walk_all_text_elements` tree-walkers. *Refactor targets:* `wrap_unicode_in_text`
 (~50), `unwrap_single_t_in_li` (~45), `convert_strong_to_bcp14` (~35).
 
-`ValidationTransformer` (`validation_transformer.rb`, ~125 lines):: see
+`ValidationTransformer` (`validation_transformer.rb`, ~248 lines):: see
 <<validation>>.
 
 [[element-order]]
@@ -365,6 +367,44 @@ The full plan, watch-points (isodoc-subclassing fragility, the footnote
 inline-vs-endnote decision, `metanorma-document` round-trip of injected labels)
 and the deliberate departure from the PR author's design constraint are recorded
 in xref:qa-plan.adoc[the QA plan].
+
+=== Campaign-era additions (WS3–WS5c retrofits)
+
+Four mechanisms were retrofitted during the QA campaign and sit slightly
+outside the layer picture above; a maintainer will meet them in the code:
+
+`concept1` errormsg intercept (presentation subclass)::
+The grammar epic replaces unresolved term/symbol references with
+`concept/errormsg`; `errormsg` is generator-only with no document-model
+mapping, so it would be silently ghosted at `from_xml`. The presentation
+subclass resolves it to a `<strong>` carrying the message *before* the model
+parse — byte-identical to the released renderer's early return.
+
+`escape_bare_ampersands` (`transformer.rb`)::
+The model stack can emit literal entity references (`&para;`) in mixed
+content; this pass escapes bare ampersands during `convert_forward`'s
+serialisation tail, ahead of `u_cleanup`, whose reparse would otherwise choke.
+Known asymmetry: the processor leg's `rfc_post_process` does not yet run it
+(ticketed).
+
+`recover_rfc_attributes` (`transformer.rb`)::
+The pinned `metanorma-document` vintage parse-ghosts several `bibdata/ext`
+scalars (`symRefs`, `tocInclude`, `sortRefs`). This side-channel reads them
+from the raw presentation XML and attaches them to the parsed root via
+`define_singleton_method`, for `metadata_transformer` to consume. It is the
+pattern to extend when further ghosted ext attributes are recovered — and it
+retires wholesale when the model upgrade lands.
+
+`u_cleanup` placement::
+Non-ASCII wrapping in `<u>` runs *post-serialisation*, as a string-level pass
+over the emitted XML (same parents and character range as the released
+`u_cleanup`), not as a graph cleanup.
+
+The systematic record of what the transformer does *not* yet cover — and what
+was adjudicated as deliberately dropped — lives in the QA plan's WS5b/WS5c
+sections and the ticket set filed from them (metanorma-ietf#291–#308,
+metanorma-document#46); this document deliberately does not duplicate that
+ledger.
 
 [[reverse]]
 == The reverse transformer (RFC → Metanorma)
