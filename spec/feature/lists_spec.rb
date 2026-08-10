@@ -36,10 +36,10 @@ RSpec.describe "IETF list rendering (WS3)" do
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_ed83a3a2-f474-f409-00f5-da0bf4778879">
             <ul anchor="_61961034-0fb1-436b-b281-828857a59ddb" spacing="compact" bare="true" indent="5">
-              <li>
+              <li anchor="_">
                 <t anchor="_cb370dd3-8463-4ec7-aa1a-96f644e2e9a2">updated normative references;</t>
               </li>
-              <li>
+              <li anchor="_">
                 <t anchor="_60eb765c-1f6c-418a-8016-29efa06bf4f9">deletion of 4.3.</t>
               </li>
             </ul>
@@ -94,13 +94,13 @@ RSpec.describe "IETF list rendering (WS3)" do
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_e248a5b0-6f07-cd90-9d9f-538bc3e4cc59">
             <ol anchor="_ae34a226-aab4-496d-987b-1aa7b6314026" type="a" start="7" group="X" spacing="compact" indent="5">
-              <li>
+              <li anchor="_">
                 <t anchor="_0091a277-fb0e-424a-aea8-f0001303fe78">all information necessary for the complete identification of the sample;</t>
                 <ol type="1">
-                  <li>
+                  <li anchor="_">
                     <t anchor="_8a7b6299-db05-4ff8-9de7-ff019b9017b2">a reference to this document (i.e. ISO 17301-1);</t>
                     <ol type="i">
-                      <li>
+                      <li anchor="_">
                         <t anchor="_ea248b7f-839f-460f-a173-a58a830b2abe">the sampling method used;</t>
                       </li>
                     </ol>
@@ -152,13 +152,13 @@ RSpec.describe "IETF list rendering (WS3)" do
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_697ec077-372f-95fa-cbaa-008711519010">
             <ol anchor="_ae34a226-aab4-496d-987b-1aa7b6314026" type="I">
-              <li>
+              <li anchor="_">
                 <t anchor="_0091a277-fb0e-424a-aea8-f0001303fe78">all information necessary for the complete identification of the sample;</t>
               </li>
-              <li>
+              <li anchor="_">
                 <t anchor="_8a7b6299-db05-4ff8-9de7-ff019b9017b2">a reference to this document (i.e. ISO 17301-1);</t>
               </li>
-              <li>
+              <li anchor="_">
                 <t anchor="_ea248b7f-839f-460f-a173-a58a830b2abe">the sampling method used;</t>
               </li>
             </ol>
