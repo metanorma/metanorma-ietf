@@ -399,9 +399,15 @@ RSpec.describe Metanorma::Ietf do
            <series type="intended">
              <title>BCP</title>
            </series>
-           <keyword>a</keyword>
-           <keyword>b</keyword>
-           <keyword>c</keyword>
+           <keyword>
+             <vocab>a</vocab>
+           </keyword>
+           <keyword>
+             <vocab>b</vocab>
+           </keyword>
+           <keyword>
+             <vocab>c</vocab>
+           </keyword>
            <ext>
              <doctype>rfc</doctype>
              <flavor>ietf</flavor>
