@@ -1157,7 +1157,7 @@ ported assertions compare against the enriched pipeline.
 * Most-likely divergence: references/requirements and label-bearing text — exactly
   what WS1b restores. Cross-check against nits.
 
-=== WS4 — Refactor the epic methods (test-gated)
+=== WS4 — Refactor the epic methods (test-gated) [DEFERRED 2026-08-08 — parked by ticket]
 
 Drive the worst offenders toward ~10-line methods *without changing behaviour*,
 with the WS3 suite green as the gate.
@@ -1305,14 +1305,215 @@ presentation subclass: `concept1` resolves `concept/errormsg` to a
 never rendered `<related>` (pre-existing gap, kept for parity).
 Synthetic coverage in `spec/presentation/presentation_stage_spec.rb`.
 
-=== WS6 — Ongoing handholding (cross-cutting)
+=== WS5b — Static port audit: code-level functionality comparison
+
+_Interpolated 2026-08-06 at user direction; intended as a template for
+future port QA._ WS2/WS5 established *behavioural* parity (output
+comparison on fixtures, then the full corpus). WS5b closes the
+complementary gap: a *static* comparison of the retired renderer code
+against the transformer, to catch functionality the port dropped that
+the corpus happens not to exercise. Output comparison proves "same
+answer on these inputs"; code comparison proves (impressionistically)
+"same capabilities on inputs we haven't got".
+
+==== Method (the template)
+
+1. *Inventory both sides.* Old leg: `lib/isodoc/ietf/*.rb` at the last
+   released state (`origin/main`), ~1,750 lines of logic excluding RNG
+   schemas. New leg: `lib/metanorma/ietf/transformer{,.rb}/*` plus the
+   presentation subclass, ~6,100 lines.
+2. *Partition into functional areas* pairing old files with their new
+   counterparts (front-matter, blocks, inline, lists/tables,
+   references, sections/terms, entry/validation/cleanup).
+3. *Per area, walk every old-leg method* and ask: what observable
+   output behaviour does it implement? Locate the new-leg equivalent.
+   Classify:
+   * `PORTED` — equivalent behaviour present;
+   * `PARTIAL` — equivalent exists but a named case is unhandled;
+   * `RELOCATED` — behaviour now produced upstream (presentation
+     layer) or downstream (xml2rfc natively);
+   * `DROPPED-BY-DESIGN` — the WS1b enrichment-skip decision or an
+     adjudicated omission (e.g. F6);
+   * `MISSING` — no equivalent, not by design: a candidate finding.
+4. *Adversarial stance*: the reviewer's job is to find dropped
+   functionality, not to certify the port.
+5. *Synthesis + corpus cross-check*: each `MISSING`/`PARTIAL` is
+   checked against the WS5 corpus evidence — if the corpus exercised
+   the construct and reached parity, the reading is downgraded or
+   discarded; if the corpus never exercises it, it is a latent gap.
+6. *Adjudication*: surviving findings enter the standard A/B/C/D
+   ledger and are held for the maintainer's ruling before any fix —
+   same discipline as WS5.
+
+==== Status
+
+COMPLETE (2026-08-06). Seven area audits (front matter; blocks; inline/
+footnotes; lists/tables; references; sections/terms; entry/validation/
+cleanup) produced 86 raw findings. After cross-area dedupe and removal
+of already-ledgered items (0.2.9 model ghosts, adjudicated
+concessions), the significant candidates went through an empirical
+verification wave: minimal probe documents through the full new
+pipeline (presentation stage + transformer). Verification outcome:
+**~41 findings empirically confirmed, 1 pure false alarm** (iref
+raw-accessor serialisation — model child objects serialize to their
+text), 1 reclassified (figure `[SOURCE:]` is dropped outright, not
+emitted as `<postamble>` — the postamble branch reads the model's
+`source=` *attribute*, dead code against real input), 1 narrowed
+(NCName asymmetry bites `#`-anchors only; space-anchors are
+pre-normalised consistently by the presentation stage).
+
+==== Findings ledger (by theme; verdicts EMPIRICAL unless noted)
+
+1. *Reviewer annotations (cref) are a stub* — `build_annotations`
+   returns `[]` unconditionally; the ported `render_annotations?` gate
+   is dead code. Four independent audits converged on this.
+   **Correction on review: KNOWN WS3-era model-vintage deferral** —
+   the folded reviewer-notes spec is pending with an explicit 0.2.9
+   parse-ghost note; fix routes through the model upgrade batch.
+2. *Body/inline passthrough dropped* — presentation retains
+   `<passthrough formats=" rfc ">`; the 0.2.9 model parse-ghosts the
+   element, so only the references-side raw-XML consumer works.
+   **Correction on review: KNOWN WS3-era model-vintage deferral** —
+   two pending spec examples document it; fix routes through the
+   model upgrade batch.
+3. *ls_text flattening family* — inline markup content is LOST (not
+   flattened) in section/annex titles, figure/example captions, front
+   note names, mixed text+element inline content, strike/smallcap
+   children, dt inline coverage (link/stem/br).
+4. *Footnotes* — bodies flattened to text (inline elements vanish
+   including their text); non-paragraph footnote bodies dropped
+   wholesale; table-footnote dedup keyed globally (second table's
+   distinct content lost); leading space before markers gone; endnote
+   paragraph anchors gone.
+5. *Lists* — li anchors never emitted (dangling xrefs); nested dl in
+   li dead guard (`:definition_lists` vs `:dl`); li block children
+   (figure/table/note/quote) dropped; li child order grouped by type,
+   not source order.
+6. *Tables* — block content in cells dropped (probe: an `a|` cell with
+   paragraph + list serialises as an ENTIRELY EMPTY cell); table
+   `@align` never copied (semantic carries it); mixed th/td header
+   rows drop the td cells (code-read).
+7. *Figures/images* — nested figures dropped entirely (model parses
+   them; no transform branch); figure key `<dl>` and intra-figure
+   paragraphs dropped; figure `[SOURCE:]` attribution dropped;
+   sourcecode `src=` never wired; clause-level `pre` dropped
+   (code-read); inline-image artwork loses align/name/anchor
+   (code-read); `image_cleanup` sweeps only direct section
+   paragraphs — `[IMAGE n]` markers orphaned in li/td, and the probe
+   showed even the plain-paragraph recovery failing to serialise its
+   figure.
+8. *Containers* — quote/admonition/note/example lose non-paragraph
+   children (lists, sourcecode, nested notes); only skeletons/labels
+   survive.
+9. *Front matter* — `showOnFrontPage` unreachable end-to-end;
+   org-only authors lose `<address>`; intended-series seriesInfo
+   hardcodes `value=""` (BCP/STD number lost); authored initials
+   overridden by forename-derived; `rfc-` docnumber prefix passed
+   through raw into `rfc/@number`; foreword notes lost when an
+   abstract coexists (`abstract || foreword`); ascii* attribute family
+   partial; unparseable dates fabricate garbage `year` instead of
+   omission (code-reads for the last two).
+10. *Sections/root attributes* — `numbered=` lost (model maps only
+    `unnumbered` as boolean; comparison against `"true"` string is
+    dead); `removeInRFC` lost (model ghost, no recovery channel);
+    `tocDepth`/`indexInclude`/`iprExtract` never reach the root
+    (parallel to the fixed symRefs/tocInclude/sortRefs trio); generic
+    preface clauses and executivesummary dropped from `<middle>`.
+11. *Terms* — `[SOURCE:]` xref emitted as ESCAPED literal markup
+    (`&lt;xref…&gt;` visible in output; locality and citeas gone);
+    modification text lost unless status="modified"; consecutive
+    sources no longer merged; multi-paragraph single definition
+    renders as a spurious `<ol>`; origin-with-termref unhandled.
+12. *References* — hidden bibitems emitted (the `element_order` branch
+    misses the `hidden_bibitem?` check); HTML-typed URI no longer
+    becomes `target=`; date cascade lost (published only —
+    issued/circulated dropped); refcontent reduced to one identifier
+    (and over-emits ISBN/URN types the old path excluded);
+    translator-only contributors render as `Unknown`;
+    formattedref-vs-title precedence FLIPPED vs #279 — **held for
+    adjudication** (the presentation stage's own bibrender enrichment
+    may make the old precedence unportable).
+13. *Pipeline robustness* — validation quarantine gone (invalid output
+    no longer moved to `.rfc.xml.err`, no "Cannot continue processing"
+    sentinel; xml2rfc runs on broken files); bare-ampersand escaping
+    (F2) runs on the library API path but NOT the processor/CLI path —
+    probe showed the CLI leg writing **unparseable** RFC XML for input
+    that the API leg handles; NCName sanitisation asymmetry for
+    `#`-anchors (element sanitised, xref target raw → invalid IDREF);
+    refcontent each-with-delete iteration bug; unknown elements now
+    dropped silently where the old leg emitted loud escaped text
+    (accepted architectural trade, recorded as a design note).
+
+Raw area reports, consolidated ledger, verdicts, and probe scripts are
+preserved in the session workspace; the operative summary is this
+section plus the ticket batch filed against the themes above.
+
+=== WS5c — Grammar-conjunction completeness audit
+
+_Interpolated 2026-08-07 at user direction; part of the reusable
+port-QA template alongside WS5b._ WS5b (code comparison + probes) is
+the *fidelity* instrument; WS5c is the *completeness* instrument: the
+transformer is schema-driven at the type level (lutaml-model classes
+mirror the grammars) but not at the traversal level (hand-written
+per-tag dispatch), so the grammar anticipates constructs that the walk
+silently drops. WS5c mechanically diffs the three joints of the
+pipeline:
+
+1. *Grammar → model*: isodoc/basicdoc grammar element+attribute
+   inventory vs metanorma-document's mappings → the parse-ghost
+   ledger, derived rather than stumbled on. Re-runs cheaply as the
+   regression harness for each model upgrade.
+2. *Model → transformer* (highest yield; needs no grammar at all):
+   reflect every model class's accessors, diff against the
+   transformer's read sites → unread accessors = candidate silent
+   drops.
+3. *Transformer → RFC XML v3*: v3 grammar vocabulary vs the
+   transformer's rfcxml set-sites → never-emitted output vocabulary.
+
+Each diff is classified KNOWN (already in the WS5b ledger / tickets
+#291–#302 / ghost ledgers), NOVEL (new candidate, needs adjudication),
+or N/A (legitimately unused for metanorma input, with one-line
+rationale). WS5c cannot see behavioral bugs (ordering, dedup keying,
+precedence, escaping, value transforms, pipeline conduct) — that
+remains WS5b's territory; the two instruments cross-validate on their
+overlap.
+
+*Durable deliverable*: joint 2 frozen into the suite as an
+**exhaustiveness spec** — reflect over each model class's attributes
+and assert the transformer handles or explicitly ignore-lists each —
+so every future silent drop is a CI failure, not an audit finding.
+
+==== Status
+
+COMPLETE (2026-08-08). Three joint audits ran (grammar→model 171
+elements vs 200 classes; model→transformer 2,089 attributes, 806
+definite-unread triaged; transformer→v3 85 elements/~168 attribute
+slots). Cross-validation: the mechanical diffs re-derived essentially
+the entire WS5b never-emit/coverage ledger, confirming both
+instruments. NOVEL residue: 12 adjudication rows (see
+docs/ws5c/synthesis.md), presented adjudication-first per the user's
+ruling — headline items: the pseudocode dispatch dead guard
+(`:class_attr` vs `:figure_class`, unreachable branch, suite spec
+blesses the empty output), display-text total parse loss under
+semantic xref/eref, termnote/termexample block-content loss, and the
+structurally dead `hidden_bibitem?` guard (escalates #301: fix is
+model-blocked). Two rows pre-ruled by the user: non-verbal term
+definitions HELD as possibly-deliberate; bibdata version/draft +
+date-range ends treated as deliberately dodged. Durable deliverable:
+the model-coverage exhaustiveness spec prototype (coverage assertion +
+dead-guard detector) in docs/ws5c/, proposed to land with the fix
+wave. Review tree: docs/ws5c/{c1,c2,c3,synthesis}.md.
+
+=== WS6 — Ongoing handholding (cross-cutting) [RETIRED 2026-08-08]
 
 A standing mode, not a phase: narrate what the code does in plain terms, explain
 the `lutaml-model`/`metanorma-document` idioms as they arise, surface surprises.
-`architecture.adoc` is the durable form.
+`architecture.adoc` is the durable form. Retired with the campaign close
+2026-08-08; the durable artefacts (architecture.adoc, this plan, the audit
+trees) carry the knowledge forward.
 
 === WS7 — relaton-render → model-to-model Relaton→RFC-XML converter
-(deferred, end of campaign)
+(DEFERRED 2026-08-08 given pressure to complete — parked by ticket)
 
 Explore replacing the relaton-render templating path (Relaton fields →
 per-flavour YAML → RFC XML tags) for IETF reference rendering with a
