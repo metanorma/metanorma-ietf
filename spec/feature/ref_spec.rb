@@ -377,7 +377,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ISO20483">
               <front>
                 <title>Cereals and pulses</title>
-                <author initials="Ö." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
+                <author initials="Ö." asciiInitials="O." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
                 <author surname="Citizen"/>
                 <date year="2013"/>
                 <abstract>
@@ -389,7 +389,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ISO20484">
               <front>
                 <title>Cereals and pulses II</title>
-                <author initials="Ö." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
+                <author initials="Ö." asciiInitials="O." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
                 <author surname="Citizen"/>
                 <author surname="Third"/>
                 <date year="2013"/>
@@ -673,7 +673,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ISO20483">
               <front>
                 <title>Cereals and pulses</title>
-                <author initials="Ö." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
+                <author initials="Ö." asciiInitials="O." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
                 <author surname="Citizen"/>
                 <date year="2013"/>
                 <abstract>

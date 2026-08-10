@@ -120,7 +120,10 @@ module Metanorma
 
         def docnumber
           dn = bibdata.docnumber
-          return dn if dn && !dn.to_s.empty?
+          if dn && !dn.to_s.empty?
+            # legacy/mmark docnumbers: rfc-8341 / rfc-2313.md (#298)
+            return dn.to_s.strip.sub(/^rfc-/, "").sub(/\.[a-z0-9]+$/i, "")
+          end
 
           ids = bibdata.docidentifier
           return nil unless ids
@@ -264,7 +267,17 @@ module Metanorma
             if forenames.is_a?(Array) && !forenames.empty?
               parts = forenames.map { |f| ls_text(f).to_s.strip }.reject(&:empty?)
               if parts.any?
-                author.initials = parts.map { |p| "#{p.chars.first}." }.join(" ")
+                # authored initials win over forename-derived ("B. X."
+                # must not collapse to "B.", #298)
+                authored = to_array(person_name.initials)
+                  .map { |i| ls_text(i).to_s.strip }.reject(&:empty?)
+                author.initials = if authored.any?
+                                    authored.join(" ")
+                                  else
+                                    parts.map { |p| "#{p.chars.first}." }.join(" ")
+                                  end
+                ascii_init = Sterile.transliterate(author.initials)
+                author.ascii_initials = ascii_init unless ascii_init == author.initials
                 first_name = parts.first
                 author.fullname = complete || "#{first_name} #{surname}"
                 ascii_full = "#{Sterile.transliterate(first_name)} #{ascii_surname}"
@@ -285,8 +298,16 @@ module Metanorma
                     .map { |w| w.end_with?(".") ? w : "#{w.chars.first}." }
                 end
               end
-              author.initials = initials_raw.join(" ") if initials_raw.any?
-              author.fullname = complete if complete && !complete.empty?
+              if initials_raw.any?
+                author.initials = initials_raw.join(" ")
+                ascii_init = Sterile.transliterate(author.initials)
+                author.ascii_initials = ascii_init unless ascii_init == author.initials
+              end
+              if complete && !complete.empty?
+                author.fullname = complete
+                ascii_full = Sterile.transliterate(complete)
+                author.ascii_fullname = ascii_full unless ascii_full == complete
+              end
             end
           elsif complete
             author.fullname = complete

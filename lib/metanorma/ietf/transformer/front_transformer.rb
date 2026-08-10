@@ -39,6 +39,8 @@ module Metanorma
             si = Rfcxml::V3::SeriesInfo.new
             si.name = "RFC"
             si.value = docnumber.to_s
+            ascii_val = Sterile.transliterate(si.value)
+            si.ascii_value = ascii_val unless ascii_val == si.value
             si.ascii_name = "RFC"
             # the released path passes the metadata stage through
             # (capitalised text; numeric stages stay as-is), defaulting
@@ -85,7 +87,9 @@ module Metanorma
               next unless s.type == "intended"
               si = Rfcxml::V3::SeriesInfo.new
               si.name = ""
-              si.value = ""
+              # the intended-series number ("BCP 14" -> value=14, #298)
+              num = s.respond_to?(:number) ? ls_text(s.number) : nil
+              si.value = num && !num.to_s.strip.empty? ? num.to_s.strip : ""
               si.status = ls_text(s.title)
               infos << si
             end
@@ -123,6 +127,16 @@ module Metanorma
           authors
         end
 
+        # #298: bibdata/ext/showOnFrontPage stamps every author org,
+        # as the released front.rb did; the ext element is a model
+        # ghost, recovered via the F5 side-channel
+        def apply_show_on_front_page(org)
+          return unless org && doc.respond_to?(:recovered_rfc_attributes)
+
+          val = doc.recovered_rfc_attributes["showOnFrontPage"]
+          org.show_on_front_page = val if val
+        end
+
         def workgroup_carrier?(org)
           return false unless org.respond_to?(:subdivision)
 
@@ -138,7 +152,10 @@ module Metanorma
           populate_author_name(author, person.name) if person.name
 
           aff_org = person.affiliation&.first&.organization || org_from_contrib
-          author.organization = build_organization(aff_org) if aff_org
+          if aff_org
+            author.organization = build_organization(aff_org)
+            apply_show_on_front_page(author.organization)
+          end
           author.address = build_address(person, contrib_idx)
 
           author
@@ -147,7 +164,55 @@ module Metanorma
         def build_org_author(org_node, _role)
           author = Rfcxml::V3::Author.new
           author.organization = build_organization(org_node)
+          apply_show_on_front_page(author.organization)
+          address = build_org_address(org_node)
+          author.address = address if address
           author
+        end
+
+        # #298: organizational authors carry their contact data (the
+        # released org_author emitted an <address>); postal comes from
+        # the org's own address, phone/email/uri from its relaton
+        # contact methods
+        def build_org_address(org_node)
+          address = Rfcxml::V3::Address.new
+          any = false
+
+          postal = build_postal(org_node)
+          if postal
+            address.postal = postal
+            any = true
+          end
+
+          to_array(model_attr(org_node, :contact)).each do |contact|
+            to_array(contact.phone).each do |ph|
+              next if ph.respond_to?(:type) && ph.type.to_s == "fax"
+              val = ph.respond_to?(:content) ? ph.content.to_s.strip : ph.to_s.strip
+              next if val.empty?
+              phone = Rfcxml::V3::Phone.new
+              phone.content = val
+              address.phone = phone
+              any = true
+            end
+            email_val = contact.email.to_s.strip
+            unless email_val.empty?
+              email = Rfcxml::V3::Email.new
+              email.content = email_val
+              safe_append(address, :email, email)
+              any = true
+            end
+            if contact.uri
+              uri_val = ls_text(contact.uri).to_s.strip
+              unless uri_val.empty?
+                uri = Rfcxml::V3::Uri.new
+                uri.content = uri_val
+                address.uri = uri
+                any = true
+              end
+            end
+          end
+
+          any ? address : nil
         end
 
         def build_address(person, _contrib_idx = 0)
@@ -308,6 +373,10 @@ module Metanorma
         end
 
         def parse_date_into(date, date_str)
+          # timestamps normalise to the date part; free-text dates set
+          # nothing rather than fabricating a year (#298, and the
+          # references-side A7.7 garbage-year probe)
+          date_str = date_str.to_s.sub(/T.*$/, "")
           case date_str
           when /^\d{4}$/
             date.year = date_str
@@ -319,7 +388,7 @@ module Metanorma
             date.month = month_name($2.to_i)
             date.day = $3.to_i.to_s
           else
-            date.year = date_str[0, 4] if date_str.length >= 4
+            date.year = $1 if date_str.match(/\A(\d{4})\b/)
           end
         end
 
@@ -508,8 +577,7 @@ module Metanorma
 
           # Collect notes from abstract/foreword (vintages carry them
           # on the singular :note — prefer whichever is populated)
-          container = preface.abstract || preface.foreword
-          if container
+          [preface.abstract, preface.foreword].compact.each do |container|
             container_notes = to_array(container.respond_to?(:notes) ? container.notes : nil)
             if container_notes.empty? && container.respond_to?(:note)
               container_notes = to_array(container.note)
