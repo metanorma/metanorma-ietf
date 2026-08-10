@@ -9,7 +9,8 @@ module Metanorma
 
         def transform_figure(figure_node)
           if pseudocode_figure?(figure_node)
-            return transform_pseudocode(figure_node)
+            pseudo = transform_pseudocode(figure_node)
+            return pseudo if pseudo
           end
 
           figure = Rfcxml::V3::Figure.new
@@ -91,27 +92,40 @@ module Metanorma
         end
 
         def transform_pseudocode(figure_node)
-          sourcecodes = to_array(figure_node.sourcecode_blocks || [])
-          sc = sourcecodes.first
-          if sc
-            return transform_sourcecode(sc)
-          end
+          sc = pseudocode_sourcecodes(figure_node).first
+          return transform_sourcecode(sc) if sc
 
-          # Collect text content from paragraphs
-          lines = []
-          get_paragraphs(figure_node).each do |p|
-            text = extract_paragraph_text(p)
-            lines << "  #{text}" if text && !text.strip.empty?
-          end
+          lines = pseudocode_lines(figure_node)
+          # MODEL GAP (metanorma-document 0.2.9): FigureBlock maps
+          # neither p nor sourcecode, so pseudocode content is
+          # unreachable; nil falls back to the generic figure path,
+          # which at least preserves the caption (metanorma-ietf#303)
+          return nil if lines.empty?
 
           sourcecode = Rfcxml::V3::Sourcecode.new
-          sourcecode.anchor = to_ncname(anchor_for(figure_node)) if anchor_for(figure_node)
-          sourcecode.content = [lines.join("\n")] unless lines.empty?
+          anchor_for(figure_node) and
+            sourcecode.anchor = to_ncname(anchor_for(figure_node))
+          sourcecode.content = [lines.join("\n")]
           sourcecode
         end
 
+        def pseudocode_sourcecodes(figure_node)
+          figure_node.respond_to?(:sourcecode) or return []
+          to_array(figure_node.sourcecode || [])
+        end
+
+        def pseudocode_lines(figure_node)
+          get_paragraphs(figure_node).each_with_object([]) do |p, lines|
+            text = extract_paragraph_text(p)
+            lines << "  #{text}" if text && !text.strip.empty?
+          end
+        end
+
+        # NB the model maps the class XML attribute to :figure_class
+        # (metanorma-ietf#303: probing :class_attr made this dead code)
         def pseudocode_figure?(figure_node)
-          figure_node.class.method_defined?(:class_attr) && figure_node.class_attr == "pseudocode"
+          figure_node.respond_to?(:figure_class) &&
+            figure_node.figure_class == "pseudocode"
         end
 
         def transform_image_to_artwork(img_node)
