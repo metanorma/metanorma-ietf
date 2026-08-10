@@ -14,6 +14,10 @@ module Metanorma
             table.anchor = nil
           end
 
+          # #295: table-level @align (cell-level was already carried)
+          talign = model_attr(table_node, :align)
+          table.align = talign.to_s if talign && !talign.to_s.empty?
+
           name_node = table_node.name
           if name_node
             name = Rfcxml::V3::Name.new
@@ -68,50 +72,43 @@ module Metanorma
 
           tr = Rfcxml::V3::Tr.new
 
-          if role == :header
-            to_array(tr_node.th).each do |cell|
+          # Mixed th/td rows keep cell order in EVERY section (WS3 for
+          # body rows; #295 extended it to header rows, which used to
+          # drop td cells whenever th cells were present). A td-only
+          # header row still promotes its cells to th.
+          src_order = tr_node.respond_to?(:element_order) ? tr_node.element_order : nil
+          ths = to_array(tr_node.th)
+          tds = to_array(tr_node.td)
+
+          if role == :header && ths.empty?
+            tds.each do |cell|
               tc = transform_table_cell(cell)
               safe_append(tr, :th, tc) if tc
             end
-            # Also check for td cells in header rows (fallback)
-            if tr.th.nil? || !tr.th.is_a?(Array) || tr.th.empty?
-              to_array(tr_node.td).each do |cell|
-                tc = transform_table_cell(cell)
-                safe_append(tr, :th, tc) if tc
+          elsif src_order && src_order.any? && !ths.empty?
+            counters = Hash.new(0)
+            src_order.each do |e|
+              next if e.text?
+              tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
+              case tag
+              when "th"
+                tc = transform_table_cell(ths[idx])
+                append_ordered(tr, :th, tc) if tc
+              when "td"
+                tc = transform_table_cell(tds[idx])
+                append_ordered(tr, :td, tc) if tc
               end
             end
           else
-            # Body rows: mixed th/td rows must keep cell order (WS3 —
-            # separate th-then-td appends serialised the header cell
-            # after its sibling data cells)
-            src_order = tr_node.respond_to?(:element_order) ? tr_node.element_order : nil
-            ths = to_array(tr_node.th)
-            tds = to_array(tr_node.td)
-            if src_order && src_order.any? && !ths.empty?
-              counters = Hash.new(0)
-              src_order.each do |e|
-                next if e.text?
-                tag = e.element_tag
-                idx = counters[tag]
-                counters[tag] += 1
-                case tag
-                when "th"
-                  tc = transform_table_cell(ths[idx])
-                  append_ordered(tr, :th, tc) if tc
-                when "td"
-                  tc = transform_table_cell(tds[idx])
-                  append_ordered(tr, :td, tc) if tc
-                end
-              end
-            else
-              ths.each do |cell|
-                tc = transform_table_cell(cell)
-                safe_append(tr, :th, tc) if tc
-              end
-              tds.each do |cell|
-                tc = transform_table_cell(cell)
-                safe_append(tr, :td, tc) if tc
-              end
+            ths.each do |cell|
+              tc = transform_table_cell(cell)
+              safe_append(tr, :th, tc) if tc
+            end
+            tds.each do |cell|
+              tc = transform_table_cell(cell)
+              safe_append(tr, :td, tc) if tc
             end
           end
 
@@ -138,7 +135,14 @@ module Metanorma
           end
 
           cell_order = cell_node.respond_to?(:element_order) ? cell_node.element_order : nil
-          if cell_order && cell_order.any? { |e| !e.text? }
+          if cell_order && cell_order.any? { |e| !e.text? && CELL_BLOCK_MAP.key?(e.element_tag) }
+            # #295: block content in cells (an AsciiDoc a| cell) used
+            # to serialise as an EMPTY cell — the interleave path only
+            # knew inline tags. Blocks walk in source order; block
+            # kinds without a v3 td home go through safe_append's
+            # warn-and-drop rather than vanishing silently.
+            build_cell_blocks(tc, cell_node, cell_order)
+          elsif cell_order && cell_order.any? { |e| !e.text? }
             # mixed cell content: keep inline elements (fn, stem, em …)
             # in place instead of joining the bare text runs (WS3)
             build_interleaved_content(tc, cell_node, cell_order)
@@ -150,6 +154,51 @@ module Metanorma
           end
 
           tc
+        end
+
+        CELL_BLOCK_MAP = {
+          "p" => :p,
+          "ul" => :ul,
+          "ol" => :ol,
+          "dl" => :dl,
+          "sourcecode" => :sourcecode,
+          "figure" => :figure,
+          "table" => :table,
+          "quote" => :quote,
+          "formula" => :formula,
+          "note" => :note,
+        }.freeze
+
+        def build_cell_blocks(tc, cell_node, cell_order)
+          counters = Hash.new(0)
+          cell_order.each do |e|
+            next if e.text?
+
+            tag = e.element_tag
+            idx = counters[tag]
+            counters[tag] += 1
+            attr = CELL_BLOCK_MAP[tag] or next
+            child = to_array(model_attr(cell_node, attr))[idx] or next
+            cell_child_results(attr, child).compact.each do |r|
+              append_ordered(tc, example_result_tag(r), r)
+            end
+          end
+        end
+
+        def cell_child_results(attr, child)
+          case attr
+          when :p then [transform_paragraph(child)]
+          when :ul then [transform_unordered_list(child)]
+          when :ol then [transform_ordered_list(child)]
+          when :dl then [transform_definition_list(child)]
+          when :sourcecode then [transform_sourcecode(child)]
+          when :figure then [transform_figure(child)]
+          when :table then [transform_table(child)]
+          when :quote then [transform_quote(child)]
+          when :formula then Array(transform_formula(child))
+          when :note then li_note_results(child)
+          else []
+          end
         end
 
         def build_table_surroundings(table_node)
