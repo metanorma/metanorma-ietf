@@ -327,7 +327,6 @@ Metanorma::Document::Relaton::OrgSubdivision:
   logo: "relaton metadata; no RFC v3 carrier (parity with released leg)"
   subtype: "relaton metadata; no RFC v3 carrier (parity with released leg)"
 Metanorma::Document::Relaton::Organization:
-  contact: "OPEN metanorma-ietf#298: org-author address"
   identifier: "relaton metadata; no RFC v3 carrier (parity with released leg)"
   logo: "relaton metadata; no RFC v3 carrier (parity with released leg)"
   variant: "relaton metadata; no RFC v3 carrier (parity with released leg)"
