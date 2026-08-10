@@ -18,10 +18,7 @@ Metanorma::BasicDocument::BibData::BibliographicItem:
 Metanorma::BasicDocument::DataTypes::FormattedString:
   variant: "relaton i18n variant; no v3 carrier (parity)"
 Metanorma::Document::Components::AncillaryBlocks::ExampleBlock:
-  formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
-  list: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
-  quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
   recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
   requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
   subsequence: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
@@ -50,8 +47,6 @@ Metanorma::Document::Components::BibData::BibliographicItem:
   type_attr: "relaton metadata; no RFC v3 carrier (parity with released leg)"
   validity: "relaton metadata; no RFC v3 carrier (parity with released leg)"
 Metanorma::Document::Components::Blocks::NoteBlock:
-  formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
-  quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
   type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::Blocks::Passthrough:
   formats: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
@@ -189,9 +184,7 @@ Metanorma::Document::Components::Lists::DdElement:
   quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
 Metanorma::Document::Components::Lists::ListItem:
   checkedcheckbox: "adjudicated low/design: checkbox li (WS5b A4.12; old output was invalid v3)"
-  formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
   label: "no per-li label in v3 (parity)"
-  quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
   uncheckedcheckbox: "adjudicated low/design: checkbox li (WS5b A4.12; old output was invalid v3)"
 Metanorma::Document::Components::Lists::OrderedList:
   display: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
@@ -204,7 +197,6 @@ Metanorma::Document::Components::MultiParagraph::AdmonitionBlock:
   contents: "OPEN metanorma-ietf#293: footnote family"
   del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   footnotes: "OPEN metanorma-ietf#293: footnote family"
-  keep_with_previous: "OPEN fix wave (WS5b A2.5, V1-confirmed; unticketed item flagged 2026-08-10)"
   tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::MultiParagraph::ParagraphsBlock:
@@ -214,7 +206,6 @@ Metanorma::Document::Components::MultiParagraph::ParagraphsBlock:
   contents: "OPEN metanorma-ietf#293: footnote family"
   del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   footnotes: "OPEN metanorma-ietf#293: footnote family"
-  keep_with_previous: "OPEN fix wave (WS5b A2.5, V1-confirmed; unticketed item flagged 2026-08-10)"
   tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::MultiParagraph::QuoteBlock:
@@ -224,7 +215,6 @@ Metanorma::Document::Components::MultiParagraph::QuoteBlock:
   contents: "OPEN metanorma-ietf#293: footnote family"
   del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   footnotes: "OPEN metanorma-ietf#293: footnote family"
-  keep_with_previous: "OPEN fix wave (WS5b A2.5, V1-confirmed; unticketed item flagged 2026-08-10)"
   tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::MultiParagraph::ReviewBlock:
@@ -237,7 +227,6 @@ Metanorma::Document::Components::MultiParagraph::ReviewBlock:
   del: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
   display: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
   footnotes: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
-  keep_with_previous: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
   reviewer: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
   tab: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
   type_attr: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
@@ -246,7 +235,6 @@ Metanorma::Document::Components::Paragraphs::ParagraphBlock:
   alignment: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
-  keep_with_previous: "OPEN fix wave (WS5b A2.5, V1-confirmed; unticketed item flagged 2026-08-10)"
   tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::Paragraphs::ParagraphWithFootnote:
@@ -255,7 +243,6 @@ Metanorma::Document::Components::Paragraphs::ParagraphWithFootnote:
   bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   footnotes: "OPEN metanorma-ietf#293: footnote family"
-  keep_with_previous: "OPEN fix wave (WS5b A2.5, V1-confirmed; unticketed item flagged 2026-08-10)"
   tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::ReferenceElements::Callout:
@@ -287,7 +274,6 @@ Metanorma::Document::Components::Tables::ColGroupElement:
 Metanorma::Document::Components::Tables::HeaderTableCell:
   bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
-  quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
   valign: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::Tables::TableBlock:
   colgroup: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
@@ -296,7 +282,6 @@ Metanorma::Document::Components::Tables::TableBlock:
 Metanorma::Document::Components::Tables::TextTableCell:
   bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
   formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
-  quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
   valign: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
 Metanorma::Document::Components::TextElements::RubyElement:
   ruby_paren: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
@@ -448,15 +433,11 @@ Metanorma::StandardDocument::Blocks::StandardAdmonitionBlock:
   cover_page: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   del: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   footnotes: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
-  keep_with_previous: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   notag: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   tab: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
 Metanorma::StandardDocument::Blocks::StandardExampleBlock:
-  formula: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
-  list: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   permission: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
-  quote: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   recommendation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   requirement: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   subsequence: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
@@ -473,7 +454,6 @@ Metanorma::StandardDocument::Blocks::StandardParagraphBlock:
   alignment: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   bookmark: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   del: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
-  keep_with_previous: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   tab: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
 Metanorma::StandardDocument::Blocks::StandardQuoteBlock:
@@ -483,7 +463,6 @@ Metanorma::StandardDocument::Blocks::StandardQuoteBlock:
   contents: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   del: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   footnotes: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
-  keep_with_previous: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   tab: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
   type_attr: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
 Metanorma::StandardDocument::Blocks::StandardSourcecodeBlock:
