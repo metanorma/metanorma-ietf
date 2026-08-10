@@ -366,19 +366,25 @@ module Metanorma
           biblio_format_cleanup(ref)
         end
 
+        # NB reject-then-assign, not delete-inside-each: deleting the
+        # current element skips its successor (#302)
         def biblio_refcontent_cleanup(ref)
           return unless ref.refcontent.is_a?(Array)
+
+          kept = []
           ref.refcontent.each do |rc|
             content = rc.content
-            if content.is_a?(Array)
-              val = content.map(&:to_s).join.strip
-              if val.empty?
-                ref.refcontent.delete(rc)
-              else
-                rc.content = [val]
-              end
+            unless content.is_a?(Array)
+              kept << rc
+              next
             end
+            val = content.map(&:to_s).join.strip
+            next if val.empty?
+
+            rc.content = [val]
+            kept << rc
           end
+          ref.refcontent = kept
         end
 
         def biblio_format_cleanup(ref)

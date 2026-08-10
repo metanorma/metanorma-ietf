@@ -48,7 +48,7 @@ module Metanorma
             # <relref>) express section references as <xref section=
             # sectionFormat=>
             xref = Rfcxml::V3::Xref.new
-            xref.target = bibitem_id.to_s
+            xref.target = to_ncname(bibitem_id.to_s)
             xref.section = section
             xref.relative = relative unless relative.to_s.empty?
             elem.display_format and xref.section_format = elem.display_format
@@ -60,7 +60,7 @@ module Metanorma
             # inline_spec — the released path emits them regardless of
             # a section value)
             xref = Rfcxml::V3::Xref.new
-            xref.target = bibitem_id.to_s
+            xref.target = to_ncname(bibitem_id.to_s)
             xref.relative = relative unless relative.to_s.empty?
             elem.display_format and xref.section_format = elem.display_format
             xref.content = [link_text.to_s] unless link_text.to_s.empty?
@@ -206,7 +206,9 @@ module Metanorma
           end
 
           xref = Rfcxml::V3::Xref.new
-          xref.target = target.to_s
+          # sanitised like element anchors, so IDREFs stay consistent
+          # (#302: '#'-carrying anchors produced dangling targets)
+          xref.target = to_ncname(target.to_s)
 
           format = elem.format
           xref.format = format if format && !format.to_s.empty?

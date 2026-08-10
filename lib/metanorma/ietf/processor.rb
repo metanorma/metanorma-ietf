@@ -1,5 +1,6 @@
 require "metanorma/processor"
 require "tempfile"
+require "fileutils"
 require_relative "transformer"
 
 module Metanorma
@@ -72,13 +73,22 @@ module Metanorma
         }
       end
 
-      # Mirror convert_forward's serialisation tail: non-ASCII <u>
-      # wrapping (N11), then validation warnings
+      # Mirror convert_forward's serialisation tail: bare-ampersand
+      # escaping (#302: was present on the library API path only),
+      # non-ASCII <u> wrapping (N11), then validation. Content errors
+      # are stashed so the output stage can quarantine (#302: the
+      # released leg moved invalid output to .err and halted; the
+      # port had reduced that to warnings)
       def rfc_post_process(xml, transformer, options)
+        xml = Transformer.escape_bare_ampersands(xml)
         xml = Transformer.u_cleanup(xml)
-        options[:validate] and
-          transformer.validate_rfc_xml(xml)
+        @rfc_content_errors = []
+        if options[:validate]
+          transformer.schema_validate(xml)
             .each { |e| warn "RFC XML: #{e}" }
+          @rfc_content_errors = transformer.content_validate(xml)
+          @rfc_content_errors.each { |e| warn "RFC XML: #{e}" }
+        end
         xml
       end
 
@@ -89,7 +99,12 @@ module Metanorma
           outname ||= inname.sub(/\.xml$/, ".rfc.xml")
           super(isodoc_node, inname, outname, format,
                 options.merge(validate: true))
-          @done_rfc = true
+          if @rfc_content_errors&.any?
+            FileUtils.mv(outname, "#{outname}.err", force: true)
+            warn "Cannot continue processing"
+          else
+            @done_rfc = true
+          end
         when :txt, :pdf, :html
           xml2rfc(isodoc_node, inname, outname, format, options)
         else
@@ -103,6 +118,10 @@ module Metanorma
         rfcname = inname.sub(/\.xml$/, ".rfc.xml")
         unless @done_rfc && File.exist?(rfcname)
           output(isodoc_node, inname, rfcname, :rfc, options)
+        end
+        unless File.exist?(rfcname)
+          warn "Cannot continue processing"
+          return nil
         end
 
         outext = { txt: ".txt", pdf: ".pdf", html: ".html" }[format]
