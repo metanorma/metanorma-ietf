@@ -157,7 +157,11 @@ module Metanorma
           abbrev = org_node.abbreviation
           if abbrev
             abbrev_text = abbrev.to_s.strip
-            org.abbrev = abbrev_text if abbrev_text && !abbrev_text.empty?
+            if abbrev_text && !abbrev_text.empty?
+              org.abbrev = abbrev_text
+              ascii_ab = Sterile.transliterate(abbrev_text)
+              org.ascii_abbrev = ascii_ab unless ascii_ab == abbrev_text
+            end
           end
 
           if name_text && !name_text.empty?

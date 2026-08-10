@@ -128,11 +128,28 @@ module Metanorma
       def self.recover_rfc_attributes(root, stripped_xml)
         doc = Nokogiri::XML(stripped_xml)
         vals = {}
-        %w[symRefs tocInclude sortRefs].each do |k|
+        %w[symRefs tocInclude sortRefs showOnFrontPage tocDepth
+           indexInclude iprExtract].each do |k|
           v = doc.at("//bibdata/ext/#{k}")&.text
           vals[k] = v if v && !v.empty?
         end
         root.define_singleton_method(:recovered_rfc_attributes) { vals }
+
+        # per-section ghosts (#299): the IETF converter emits @numbered
+        # (the model maps only @unnumbered) and @removeInRFC (unmapped);
+        # collect them per element id/anchor for the section transformer
+        secs = {}
+        doc.xpath("//*[@numbered] | //*[@removeInRFC]").each do |n|
+          key = n["anchor"] || n["id"] or next
+          # normalised exactly as Base#to_ncname normalises anchors
+          key = key.to_s.strip
+          key = "_" + key unless key.match?(/\A[a-zA-Z_]/)
+          key = key.gsub(/[^a-zA-Z0-9._\-]/, "_")
+          entry = (secs[key] ||= {})
+          entry["numbered"] = n["numbered"] if n["numbered"]
+          entry["removeInRFC"] = n["removeInRFC"] if n["removeInRFC"]
+        end
+        root.define_singleton_method(:recovered_section_attrs) { secs }
       end
 
       # Reader for the processor's document-model output leg (#233
