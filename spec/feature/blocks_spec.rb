@@ -893,7 +893,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       Fictitious
 
       World</t>
-            <t>Justify</t>
+            <t keepWithPrevious="true">Justify</t>
           </section>
         </middle>
         <back/>

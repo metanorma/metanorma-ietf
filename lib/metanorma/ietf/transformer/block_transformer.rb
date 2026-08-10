@@ -44,6 +44,11 @@ module Metanorma
           kwn = p_node.keep_with_next
           t.keep_with_next = "true" if kwn == "true" || kwn == true
 
+          # WS5b A2.5 (V1-confirmed, fixed under #297's umbrella)
+          kwp = p_node.respond_to?(:keep_with_previous) &&
+            p_node.keep_with_previous
+          t.keep_with_previous = "true" if kwp == "true" || kwp == true
+
           indent = model_attr(p_node, :indent)
           t.indent = indent.to_s if indent && !indent.to_s.empty?
 
@@ -220,6 +225,8 @@ module Metanorma
             dl: to_array(model_attr(note_node, :dl)),
             ul: to_array(model_attr(note_node, :ul)),
             ol: to_array(model_attr(note_node, :ol)),
+            formula: to_array(model_attr(note_node, :formula)),
+            quote: to_array(model_attr(note_node, :quote)),
           }
           if blocks.values.any? { |a| !a.empty? } && first
             label = Rfcxml::V3::Text.new
@@ -237,6 +244,17 @@ module Metanorma
           blocks[:ol].each do |ol|
             list = transform_ordered_list(ol)
             safe_append(aside, :ol, list) if list
+          end
+          # #297: formula and quote are mapped on NoteBlock
+          # (sourcecode/figure/table are not — model gap)
+          blocks[:formula].each do |f|
+            Array(transform_formula(f)).each do |r|
+              safe_append(aside, r.is_a?(Rfcxml::V3::Dl) ? :dl : :t, r)
+            end
+          end
+          blocks[:quote].each do |q|
+            bq = transform_quote(q)
+            safe_append(aside, :blockquote, bq) if bq
           end
 
           aside
@@ -303,7 +321,7 @@ module Metanorma
               idx = counters[tag]
               counters[tag] += 1
               child = example_child_result(example_node, tag, idx)
-              results << child if child
+              Array(child).each { |c| results << c }
             end
           else
             get_paragraphs(example_node).each do |p|
@@ -314,7 +332,7 @@ module Metanorma
               next if attr == :paragraphs
               to_array(model_attr(example_node, attr)).each do |c|
                 child = example_child_transform(attr, c)
-                results << child if child
+                Array(child).each { |cc| results << cc }
               end
             end
           end
@@ -329,6 +347,11 @@ module Metanorma
           "ol" => :ol,
           "dl" => :dl,
           "table" => :table,
+          # #297 additions: mapped on ExampleBlock ("list" is the
+          # legacy alias for ul; note has no mapping — model gap)
+          "formula" => :formula,
+          "quote" => :quote,
+          "list" => :list,
         }.freeze
 
         def example_child_result(example_node, tag, idx)
@@ -346,6 +369,9 @@ module Metanorma
           when :ol then transform_ordered_list(child)
           when :dl then transform_definition_list(child)
           when :table then transform_table(child)
+          when :formula then transform_formula(child)
+          when :quote then transform_quote(child)
+          when :list then transform_unordered_list(child)
           end
         end
 
@@ -360,6 +386,7 @@ module Metanorma
           when Rfcxml::V3::Ol then :ol
           when Rfcxml::V3::Dl then :dl
           when Rfcxml::V3::Table then :table
+          when Rfcxml::V3::Blockquote then :blockquote
           else :t
           end
         end
@@ -440,12 +467,51 @@ module Metanorma
             blockquote.cite = cite_uri.to_s if cite_uri && !cite_uri.to_s.empty?
           end
 
-          get_paragraphs(quote_node).each do |p|
-            t = transform_paragraph(p)
-            safe_append(blockquote, :t, t) if t
-          end
+          transform_quote_children(quote_node, blockquote)
 
           blockquote
+        end
+
+        QUOTE_CHILD_MAP = {
+          "p" => [:paragraphs, :t],
+          "ul" => [:ul, :ul],
+          "ol" => [:ol, :ol],
+        }.freeze
+
+        # #297: the model carries ul/ol inside quotes (dl and
+        # sourcecode are unmapped on QuoteBlock — model gap); walk in
+        # source order where element_order is available
+        def transform_quote_children(quote_node, blockquote)
+          src_order = quote_node.element_order
+          if src_order&.any?
+            counters = Hash.new(0)
+            src_order.each do |e|
+              next if e.text?
+
+              tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
+              mapping = QUOTE_CHILD_MAP[tag] or next
+              child = to_array(model_attr(quote_node, mapping[0]))[idx] or next
+              result = quote_child_transform(mapping[0], child)
+              append_ordered(blockquote, mapping[1], result) if result
+            end
+          else
+            QUOTE_CHILD_MAP.each_value do |(src_attr, target_attr)|
+              to_array(model_attr(quote_node, src_attr)).each do |child|
+                result = quote_child_transform(src_attr, child)
+                safe_append(blockquote, target_attr, result) if result
+              end
+            end
+          end
+        end
+
+        def quote_child_transform(attr, child)
+          case attr
+          when :paragraphs then transform_paragraph(child)
+          when :ul then transform_unordered_list(child)
+          when :ol then transform_ordered_list(child)
+          end
         end
 
         def transform_admonition(admon_node)
