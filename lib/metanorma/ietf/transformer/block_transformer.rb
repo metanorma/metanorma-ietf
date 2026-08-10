@@ -78,7 +78,19 @@ module Metanorma
               inline_obj = build_inline_element(p_node, tag, idx)
 
               if inline_obj
-                if inline_obj.is_a?(String)
+                if inline_obj.is_a?(Array)
+                  inline_obj.each do |part|
+                    if part.is_a?(String)
+                      content_fragments << part
+                      track_text_order(text_elem, part)
+                    else
+                      part_tag = part.class.name.split("::").last
+                        .downcase.to_sym
+                      safe_append(text_elem, part_tag, part)
+                      track_element_order(text_elem, part_tag, part)
+                    end
+                  end
+                elsif inline_obj.is_a?(String)
                   content_fragments << inline_obj
                   track_text_order(text_elem, inline_obj)
                 else
@@ -614,34 +626,40 @@ module Metanorma
 
         # ── Concept handling ────────────────────────────────────
 
+        # Returns a String, a single inline object, or a mixed Array of
+        # both (consumed part-by-part in build_interleaved_content) —
+        # the term reference is a real Xref, never spliced markup text
         def build_concept(concept_elem)
           return nil unless concept_elem
 
           parts = []
 
           renderterms = concept_elem.renderterm
-          if renderterms.is_a?(Array) && !renderterms.empty?
+          refterms = concept_elem.refterm
+          term = if renderterms.is_a?(Array) && !renderterms.empty?
+                   renderterms.join
+                 elsif refterms.is_a?(Array) && !refterms.empty?
+                   refterms.join
+                 end
+          if term && !term.to_s.empty?
             em = Rfcxml::V3::Em.new
-            em.content = [renderterms.join]
-            parts << em
-          elsif concept_elem.refterm.is_a?(Array) && !concept_elem.refterm.empty?
-            em = Rfcxml::V3::Em.new
-            em.content = [concept_elem.refterm.join]
+            em.content = [term.to_s]
             parts << em
           end
 
-          ref_text = nil
           xrefs = concept_elem.xref
-          if xrefs.is_a?(Array) && !xrefs.empty?
-            target = xrefs.first.target
-            ref_text = "[term defined in <xref target='#{target}'/>]"
+          if xrefs.is_a?(Array) && !xrefs.empty? && xrefs.first.target
+            xref = Rfcxml::V3::Xref.new
+            xref.target = to_ncname(xrefs.first.target.to_s)
+            parts << " " unless parts.empty?
+            parts << "[term defined in "
+            parts << xref
+            parts << "]"
           end
 
-          if ref_text
-            return parts.any? ? nil : ref_text
-          end
+          return nil if parts.empty?
 
-          parts.first if parts.any?
+          parts.length == 1 ? parts.first : parts
         end
 
         # ── Footnote handling ───────────────────────────────────

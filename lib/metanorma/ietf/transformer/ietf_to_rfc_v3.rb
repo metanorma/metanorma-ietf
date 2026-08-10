@@ -142,6 +142,11 @@ module Metanorma
         end
 
         def safe_append(obj, attr_name, item)
+          unless obj.respond_to?(attr_name)
+            warn "IETF: #{obj.class} has no #{attr_name} collection; " \
+                 "dropping element"
+            return
+          end
           coll = obj.public_send(attr_name)
           unless coll.is_a?(Array)
             obj.public_send(:"#{attr_name}=", [])
