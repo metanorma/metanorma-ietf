@@ -116,6 +116,41 @@ RSpec.describe Metanorma::Ietf::Processor do
       .to include("$$ y^(2) = x^(3) + a x + b $$    (1)")
   end
 
+  it "quarantines invalid RFC XML to .err and halts (#302)" do
+    semantic = <<~INPUT
+      #{BLANK_HDR}
+      <sections><clause id="c1"><title>Body</title>
+      <p id="p1">See <xref target="nonexistent-anchor"/>.</p>
+      </clause></sections>
+      </metanorma>
+    INPUT
+    FileUtils.rm_f ["quarantine.rfc.xml", "quarantine.rfc.xml.err"]
+    expect do
+      processor.output(semantic, "quarantine.xml", "quarantine.rfc.xml",
+                       :rfc)
+    end.to output(/Cannot continue processing/).to_stderr
+    expect(File.exist?("quarantine.rfc.xml")).to be false
+    expect(File.exist?("quarantine.rfc.xml.err")).to be true
+    FileUtils.rm_f "quarantine.rfc.xml.err"
+  end
+
+  it "escapes bare ampersands on the processor leg (#302)" do
+    semantic = <<~INPUT
+      #{BLANK_HDR}
+      <sections><clause id="c1"><title>Body</title>
+      <p id="p1">Pilcrow entity &amp;para; end.</p>
+      </clause></sections>
+      </metanorma>
+    INPUT
+    FileUtils.rm_f "escape.rfc.xml"
+    processor.output(semantic, "escape.xml", "escape.rfc.xml", :rfc)
+    expect(File.exist?("escape.rfc.xml")).to be true
+    out = File.read("escape.rfc.xml")
+    expect(out).to include("&amp;para;")
+    expect { Nokogiri::XML(out) { |c| c.strict } }.not_to raise_error
+    FileUtils.rm_f "escape.rfc.xml"
+  end
+
   it "does not find xml2rfc" do
     FileUtils.rm_f "test.xml"
     FileUtils.rm_f "test.html"
