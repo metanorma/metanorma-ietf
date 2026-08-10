@@ -19,6 +19,26 @@ module Metanorma
               sec = transform_clause(preface.acknowledgements)
               safe_append(middle, :section, sec) if sec
             end
+
+            # #299: the released path carried EVERY preface child bar
+            # abstract/foreword into <middle> — generic [.preface]
+            # clauses and the executive summary included
+            if preface.respond_to?(:executivesummary) && preface.executivesummary
+              sec = transform_clause(preface.executivesummary)
+              safe_append(middle, :section, sec) if sec
+            end
+            to_array(model_attr(preface, :content)).each do |cl|
+              # the presentation stage synthesizes a type="toc" clause
+              # in every preface; it is a rendering artefact, not body
+              next if cl.respond_to?(:type) && cl.type == "toc"
+              # a title+note-only clause is the reverse transformer's
+              # carrier for front <note>s; build_front_notes consumes
+              # it, and carrying it here would double-render the note
+              next if front_note_only_clause?(cl)
+
+              sec = transform_clause(cl)
+              safe_append(middle, :section, sec) if sec
+            end
           end
 
           sections = doc.sections
@@ -89,6 +109,21 @@ module Metanorma
           end
 
           middle
+        end
+
+        # tags a front-note carrier clause may carry in presentation
+        # XML: its title (semantic + fmt) and the note itself
+        FRONT_NOTE_CLAUSE_TAGS = %w[title fmt-title note].freeze
+
+        def front_note_only_clause?(clause)
+          return false if to_array(model_attr(clause, :notes)).empty?
+
+          order = clause.respond_to?(:element_order) ? clause.element_order : nil
+          return true unless order&.any?
+
+          order.all? do |e|
+            e.text? || FRONT_NOTE_CLAUSE_TAGS.include?(e.element_tag)
+          end
         end
 
         def transform_loose_bibitem(sections_node)
@@ -205,15 +240,33 @@ module Metanorma
           section
         end
 
+        # #299: @numbered (the IETF converter's emission) and
+        # @removeInRFC are model ghosts; Transformer.recover_rfc_attributes
+        # collects them per element id, and they re-attach here by anchor
+        def apply_recovered_section_attrs(section)
+          return unless section.anchor && doc.respond_to?(:recovered_section_attrs)
+
+          attrs = doc.recovered_section_attrs[section.anchor] or return
+          if (num = attrs["numbered"]) && !num.empty?
+            section.numbered = num
+          end
+          if (rir = attrs["removeInRFC"]) && !rir.empty?
+            section.remove_in_rfc = rir
+          end
+        end
+
         def transform_clause(clause)
           section = Rfcxml::V3::Section.new
 
           section.anchor = to_ncname(anchor_for(clause)) if anchor_for(clause)
 
+          # boolean OR "true" (#299: the string-only compare was dead
+          # against the model's :boolean mapping)
           unnumbered = clause.unnumbered if clause.class.method_defined?(:unnumbered)
-          if unnumbered == "true"
+          if unnumbered == "true" || unnumbered == true
             section.numbered = "false"
           end
+          apply_recovered_section_attrs(section)
 
           toc_val = clause.toc if clause.class.method_defined?(:toc)
           if toc_val

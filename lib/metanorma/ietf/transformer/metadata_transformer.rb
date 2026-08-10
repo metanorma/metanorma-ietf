@@ -49,6 +49,11 @@ module Metanorma
           rfc.sym_refs = vals["symRefs"] if vals["symRefs"]
           rfc.toc_include = vals["tocInclude"] if vals["tocInclude"]
           rfc.sort_refs = vals["sortRefs"] if vals["sortRefs"]
+          # #299: the F5 trio's siblings (xml2rfc v3 ignores the PI
+          # channel, so these root attributes are the only carriers)
+          rfc.toc_depth = vals["tocDepth"] if vals["tocDepth"]
+          rfc.index_include = vals["indexInclude"] if vals["indexInclude"]
+          rfc.ipr_extract = vals["iprExtract"] if vals["iprExtract"]
         end
 
         PI_ORDER = %w[sortrefs symrefs tocdepth subcompact compact strict

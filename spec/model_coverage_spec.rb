@@ -151,6 +151,10 @@ RSpec.describe "transformer model coverage" do
     "recovered_rfc_attributes" =>
       "by design: F5 side-channel, defined per-instance via " \
       "define_singleton_method (transformer.rb)",
+    "recovered_section_attrs" =>
+      "by design: per-element F5 side-channel (numbered/removeInRFC, " \
+      "#299), defined per-instance via define_singleton_method " \
+      "(transformer.rb)",
     "constituent" =>
       "OPEN: dead guard found by this detector 2026-08-10 — no model " \
       "class defines it; referencegroup constituents (#301 territory)",
