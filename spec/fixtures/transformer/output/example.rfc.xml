@@ -71,29 +71,29 @@ datagram is optically scanned into a electronically transmittable
 form.<xref target="RFC7253"/></t>
       <t anchor="_eaa93a4e-7380-40e7-a78e-9c4c619f4a48">This document extends OpenPGP and its ECC extension to support SM2, SM3 and SM4:</t>
       <ul anchor="_150b7098-39b4-489a-9a6b-016259c8ec13">
-        <li>support the SM3 hash algorithm for data validation purposes</li>
-        <li>support signatures utilizing the combination of SM3 with other digital
+        <li anchor="_868238e9-e25f-280b-5541-961c9e98ed7b">support the SM3 hash algorithm for data validation purposes</li>
+        <li anchor="_6c4c8b9b-82fd-28fb-a181-95ed204924d7">support signatures utilizing the combination of SM3 with other digital
 signing algorithms, such as RSA, ECDSA and SM2</li>
-        <li>support the SM2 asymmetric encryption algorithm for public key
+        <li anchor="_e7a55bd6-ca99-c2f6-7949-ecf2912b6f53">support the SM2 asymmetric encryption algorithm for public key
 operations</li>
-        <li>support usage of SM2 in combination with supported hash algorithms, such as
+        <li anchor="_32470127-e10a-00f9-ee51-2a69c413cbee">support usage of SM2 in combination with supported hash algorithms, such as
 SHA-256 and SM3</li>
-        <li>support the SM4 symmetric encryption algorithm for data protection purposes</li>
-        <li>defines the OpenPGP profile "OSCCA-SM234" to enable usage of OpenPGP
+        <li anchor="_a43702f2-d7fd-e0f8-5706-d1b5c53f867e">support the SM4 symmetric encryption algorithm for data protection purposes</li>
+        <li anchor="_98f17ed5-1b34-22a8-5812-6a2cc08a6621">defines the OpenPGP profile "OSCCA-SM234" to enable usage of OpenPGP
 in an OSCCA-compliant manner.</li>
       </ul>
       <t anchor="_87868839-ee7f-4be3-8176-f7e93d46b91d">Algorithm-Specific Fields for SM2DSA keys:</t>
       <ul anchor="_78f36624-8d42-4ae4-a760-676aeef23f24">
-        <li>
+        <li anchor="_11bda24f-869d-404a-e752-fdd845fedd61">
           <t anchor="_41fa997f-eb13-469a-8c56-b72a6be3f2e3">a variable-length field containing a curve OID, formatted
 as follows:</t>
           <ol anchor="_30deb9e9-1270-4de6-88e0-640360628ee1" type="a">
-            <li>a one-octet size of the following field; values 0 and
+            <li anchor="_82eaf589-dd1b-b6f5-dba4-8ce9609fe235">a one-octet size of the following field; values 0 and
 0xFF are reserved for future extensions</li>
-            <li>octets representing a curve OID.</li>
+            <li anchor="_a444d870-9b14-2498-d600-4b613166ff11">octets representing a curve OID.</li>
           </ol>
         </li>
-        <li>MPI of an EC point representing a public key</li>
+        <li anchor="_8e0fd9d8-c14d-9e92-41b9-92920277a412">MPI of an EC point representing a public key</li>
       </ul>
       <section anchor="_definitions">
         <name>Definitions</name>

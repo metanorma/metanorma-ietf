@@ -54,8 +54,27 @@ module Metanorma
           end
         end
 
+        # #294: the model attribute for a nested dl is :dl (the old
+        # :definition_lists guard was dead), the li's id becomes its
+        # anchor, all mapped block children are carried, and children
+        # walk in SOURCE order via element_order (the dd fix, extended)
+        LI_CHILD_MAP = {
+          "p" => :paragraphs,
+          "ul" => :unordered_lists,
+          "ol" => :ordered_lists,
+          "dl" => :dl,
+          "sourcecode" => :sourcecode,
+          "figure" => :figure,
+          "table" => :table,
+          "quote" => :quote,
+          "formula" => :formula,
+          "example" => :example,
+          "note" => :note,
+        }.freeze
+
         def transform_list_item(item)
           li = Rfcxml::V3::Li.new
+          li.anchor = to_ncname(anchor_for(item)) if anchor_for(item)
 
           text = item.text
           text = item.content_text if text.nil? || (text.is_a?(Array) && text.empty?)
@@ -64,36 +83,25 @@ module Metanorma
             li.content = [text_val] unless text_val.nil? || text_val.empty?
           end
 
-          get_paragraphs(item).each do |p|
-            t = transform_paragraph(p)
-            if t
-              append_ordered(li, :t, t)
+          src_order = item.element_order
+          if src_order&.any? { |e| !e.text? }
+            counters = Hash.new(0)
+            src_order.each do |e|
+              next if e.text?
+
+              tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
+              attr = LI_CHILD_MAP[tag] or next
+              child = to_array(model_attr(item, attr))[idx] or next
+              append_li_results(li, li_child_results(attr, child))
             end
-          end
-
-          to_array(item.unordered_lists || []).each do |ul|
-            list = transform_unordered_list(ul)
-            append_ordered(li, :ul, list) if list
-          end
-
-          to_array(item.ordered_lists || []).each do |ol|
-            list = transform_ordered_list(ol)
-            append_ordered(li, :ol, list) if list
-          end
-
-          dls = item.class.method_defined?(:definition_lists) ? item.definition_lists : nil
-          dls = nil unless dls.is_a?(Array)
-          if dls
-            dls.each do |dl|
-              list = transform_definition_list(dl)
-              append_ordered(li, :dl, list) if list
+          else
+            LI_CHILD_MAP.each_value do |attr|
+              to_array(model_attr(item, attr)).each do |child|
+                append_li_results(li, li_child_results(attr, child))
+              end
             end
-          end
-
-          sourcecodes = item.class.method_defined?(:sourcecode) ? item.sourcecode : nil
-          to_array(sourcecodes).each do |sc|
-            src = transform_sourcecode(sc)
-            append_ordered(li, :sourcecode, src) if src
           end
 
           li_t = li.t
@@ -103,6 +111,38 @@ module Metanorma
           end
 
           li
+        end
+
+        def li_child_results(attr, child)
+          case attr
+          when :paragraphs then [transform_paragraph(child)]
+          when :unordered_lists then [transform_unordered_list(child)]
+          when :ordered_lists then [transform_ordered_list(child)]
+          when :dl then [transform_definition_list(child)]
+          when :sourcecode then [transform_sourcecode(child)]
+          when :figure then [transform_figure(child)]
+          when :table then [transform_table(child)]
+          when :quote then [transform_quote(child)]
+          when :formula then Array(transform_formula(child))
+          when :example then Array(transform_example(child))
+          when :note then li_note_results(child)
+          else []
+          end
+        end
+
+        # v3 li admits no aside: unpack the note's rendering into the
+        # li directly (t's carry the NOTE: prefix from transform_note)
+        def li_note_results(note_node)
+          aside = transform_note(note_node, nil)
+          return [] unless aside
+
+          %i[t ul ol dl blockquote].flat_map { |a| to_array(aside.public_send(a)) }
+        end
+
+        def append_li_results(li, results)
+          results.compact.each do |r|
+            append_ordered(li, example_result_tag(r), r)
+          end
         end
 
         def transform_definition_list(dl_node)

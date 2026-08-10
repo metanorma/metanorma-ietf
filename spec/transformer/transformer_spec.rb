@@ -212,7 +212,9 @@ RSpec.describe Metanorma::Ietf::Transformer do
     let(:result) { described_class.convert(input_xml) }
 
     it "unwraps single t elements inside list items" do
-      expect(result).to include("<li>")
+      # li now carries its anchor (#294); the unwrap shows as text
+      # content directly inside <li>, not a nested <t>
+      expect(result).to match(/<li anchor="[^"]*">[^\n<]/)
     end
   end
 

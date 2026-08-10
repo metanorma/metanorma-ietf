@@ -102,8 +102,8 @@ or less human. Notwithstanding, several<sup>ish</sup> beasts both animate<sub>d<
 and wooden played a significant part in this encounter; most
 notably:</t>
       <ul anchor="_833ee464-94ca-4a81-862b-a47067acfd7b">
-        <li>The Projectile Cow, see <xref target="projectile-cow"/></li>
-        <li>The Trojan Rabbit, see <xref target="trojan-rabbit"/></li>
+        <li anchor="_587b7744-f6de-0b9d-db6c-ed5dbf72fe8e">The Projectile Cow, see <xref target="projectile-cow"/></li>
+        <li anchor="_537bd5e9-2d7c-f877-e2df-f244cc459fe9">The Trojan Rabbit, see <xref target="trojan-rabbit"/></li>
       </ul>
       <figure anchor="projectile-cow">
         <name>The Projectile Cow with an accompanying cannon</name>
@@ -274,37 +274,37 @@ return notifyCreature(killerRabbit, &amp;carrot);</sourcecode>
         <t anchor="_8be217b0-3490-4da3-991f-1a639f8f1f13">On the beast's encounter with the Knights of the Round Table,
 the following personnel engaged with it in combat:</t>
         <ul anchor="_d924aacc-6d8c-4bd1-b884-df0c85c7c737">
-          <li>
+          <li anchor="_d00be587-c6e8-5cfd-220e-de3618b3312b">
             <t anchor="_24d9db2f-e4bf-4e1f-8cbc-845b7549c8a4">Killed</t>
             <ul anchor="_de05d887-0640-4390-88b5-d780fead9549">
-              <li>Sir Bors</li>
-              <li>Sir Gawain</li>
-              <li>Sir Ector</li>
+              <li anchor="_6ee9d105-6ce0-b5ed-5145-6c929e605fc6">Sir Bors</li>
+              <li anchor="_a2ef2ab5-55b2-4460-1978-87304bee2d92">Sir Gawain</li>
+              <li anchor="_7538defe-0232-2542-9c80-c8c3afb06bf8">Sir Ector</li>
             </ul>
           </li>
-          <li>
+          <li anchor="_9b1e7ce3-661f-9f95-19f7-79842e963f6e">
             <t anchor="_fb631821-3443-4666-9572-273133ec328a">Soiled Himself</t>
             <ul anchor="_247d20c1-8087-4013-9bde-104114ee31ba">
-              <li>Sir Robin</li>
+              <li anchor="_842dbca1-dc7b-1f6f-5e45-7c9a5b1693b8">Sir Robin</li>
             </ul>
           </li>
-          <li>
+          <li anchor="_42a767f4-10d3-2ac3-f1c8-4616bfc11e00">
             <t anchor="_9f1faf8d-87d8-44bc-ba3e-2cf6632642b4">Panicked</t>
             <ul anchor="_b4152be1-d965-4ed8-b281-fbf8710ff4c0">
-              <li>King Arthur</li>
+              <li anchor="_70ff86fa-3819-0734-2550-4b458432a00d">King Arthur</li>
             </ul>
           </li>
-          <li>
+          <li anchor="_26399e65-1bf0-1f40-2e57-85ce04619ecf">
             <t anchor="_3efeb71c-863a-4ff9-9d6b-889823340774">Employed Ordnance</t>
             <ul anchor="_7a852199-7195-4f61-ac43-c49789304d57">
-              <li>The Lector</li>
-              <li>Brother Maynard</li>
+              <li anchor="_2e9fa0a5-585a-2deb-5ee4-6357ddd546fc">The Lector</li>
+              <li anchor="_c52ade55-60c7-8814-19e2-42e10d5d73a2">Brother Maynard</li>
             </ul>
           </li>
-          <li>
+          <li anchor="_e67ab7b6-2dcf-deba-be70-b35eff104cf2">
             <t anchor="_2e8c5006-aecb-4542-86ee-2eaa0d7d14f2">Scoffed</t>
             <ul anchor="_37f41a82-4fa7-43e7-933f-81434d7230eb">
-              <li>Tim the Enchanter</li>
+              <li anchor="_fee86705-a27d-7d99-8d48-d68b22b9bd4f">Tim the Enchanter</li>
             </ul>
           </li>
         </ul>
@@ -379,47 +379,47 @@ of the Holy Hand Grenade of Antioch <bcp14>MAY</bcp14> be summarized as
 follows, although this summary <bcp14>SHALL NOT</bcp14> be used as a substitute
 for a reading from the Book of Armaments:</t>
         <ol anchor="_aa2acaa8-4b87-4359-a9f4-a16bdf50e41c" type="1">
-          <li>Preamble: St Attila Benediction</li>
-          <li>
+          <li anchor="_4c126692-86e6-d1a1-4585-e7a3a5000b55">Preamble: St Attila Benediction</li>
+          <li anchor="_adc28ef9-19b2-f2f1-ba10-eb9e757234cc">
             <t anchor="_92d7aecb-f9db-4811-ae07-0b6fbc5eb40d">Feast of the People on Sundry Foods</t>
             <ul anchor="_2b3b970c-6ba8-4438-bb15-d0d13f78dc9e">
-              <li>Lambs</li>
-              <li>Sloths</li>
-              <li>Carp</li>
-              <li>Anchovies</li>
-              <li>Orangutangs</li>
-              <li>Breakfast Cereals</li>
-              <li>Fruit Bats</li>
-              <li>
+              <li anchor="_5fe8a9aa-8583-c07b-7cf7-09f779beedfe">Lambs</li>
+              <li anchor="_64f75ae0-84ef-152f-0e96-429184ca9114">Sloths</li>
+              <li anchor="_5fbaef42-1e02-8a55-927e-664856098ff4">Carp</li>
+              <li anchor="_cd673860-a01a-b35f-712e-09965f44ccab">Anchovies</li>
+              <li anchor="_09f9fdc9-73d1-80d8-f210-049380176bf2">Orangutangs</li>
+              <li anchor="_0f9df82d-5f45-8dea-e669-79d4d0d6eaab">Breakfast Cereals</li>
+              <li anchor="_01e01855-630b-f58c-4248-ad70c70b306a">Fruit Bats</li>
+              <li anchor="_ea93e358-a47d-2f8a-76b3-312f444953b2">
 <em>et hoc genus omne</em>
 </li>
             </ul>
           </li>
-          <li>Take out the Holy Pin</li>
-          <li>
+          <li anchor="_88ab830e-0dca-4be6-b0cb-6427240a0ea7">Take out the Holy Pin</li>
+          <li anchor="_d3b8848f-0373-5461-8640-af587a4fe884">
             <t anchor="_0e33d6f2-8552-4db7-a27d-bc7cb974333b">The Count</t>
             <ol anchor="_8370b1c7-9c72-4449-ab57-e4c142d074d4" type="A">
-              <li>Count is to Three: no more, no less</li>
-              <li>Not Four</li>
-              <li>Nor Two, except if the count then proceeds to Three</li>
-              <li>Five is Right Out</li>
+              <li anchor="_a7d5e6f7-cbc1-442c-6d9d-2685e3e7163c">Count is to Three: no more, no less</li>
+              <li anchor="_4eb48e90-d45c-2381-7895-29b81b9cfcd4">Not Four</li>
+              <li anchor="_d6497609-9a64-909e-ea1d-9048f6f118eb">Nor Two, except if the count then proceeds to Three</li>
+              <li anchor="_953ccdf1-2526-b415-8b55-dc3719416ca4">Five is Right Out</li>
             </ol>
           </li>
-          <li>Lob the Holy Hand Grenade of Antioch towards the Foe</li>
-          <li>The Foe, being naughty in the <strong>LORD's</strong> sight, <bcp14>SHALL</bcp14> snuff it</li>
+          <li anchor="_3d218e0e-9654-8504-ff0a-846ed9790780">Lob the Holy Hand Grenade of Antioch towards the Foe</li>
+          <li anchor="_7106c629-07b4-64ce-087f-49b2845f7451">The Foe, being naughty in the <strong>LORD's</strong> sight, <bcp14>SHALL</bcp14> snuff it</li>
         </ol>
         <t anchor="_555b242d-d98e-48c1-972b-9b08e2671c6b">This could also be represented in pseudocode as follows:</t>
         <ol anchor="_924f027f-491a-4abf-948a-513dfa1bf55b" type="1">
-          <li>Take out the Holy Pin</li>
-          <li>
+          <li anchor="_43ba5539-497d-2f56-260b-84610331607f">Take out the Holy Pin</li>
+          <li anchor="_d5a41180-5906-b042-0de5-e505a8598059">
             <t anchor="_5474ee22-0691-4bda-ab84-26d43d790880">The Count</t>
             <sourcecode anchor="_b563c08a-67e9-44a7-8f5f-d2c9bb7d2bb3">integer count;
 for count := 1 step 1 until 3 do
   say(count)
 comment Five is Right Out</sourcecode>
           </li>
-          <li>Lob the Holy Hand Grenade of Antioch towards the Foe</li>
-          <li>Foe snuffs it</li>
+          <li anchor="_567757b1-ac03-28ea-6aed-ebd715ec5d94">Lob the Holy Hand Grenade of Antioch towards the Foe</li>
+          <li anchor="_5cb38d39-4b81-92da-462f-325409dfcb32">Foe snuffs it</li>
         </ol>
       </section>
     </section>
