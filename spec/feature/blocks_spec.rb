@@ -1165,6 +1165,12 @@ RSpec.describe "IETF block rendering (WS3)" do
     expect(out.at("//section/t[@keepWithNext]")).not_to be_nil
   end
 
+  # MODEL GAP (metanorma-document 0.2.9): FigureBlock maps neither p
+  # nor sourcecode, so pseudocode CONTENT is parse-ghosted; the fixed
+  # dispatch (metanorma-ietf#303 — the guard probed :class_attr where
+  # the model maps :figure_class) falls back to the generic figure
+  # path, preserving the caption. Content example pending below;
+  # re-test on the model upgrade.
   it "processes pseudocode" do
     input = <<~INPUT
       <itu-standard xmlns="http://riboseinc.com/isoxml">
@@ -1201,6 +1207,26 @@ RSpec.describe "IETF block rendering (WS3)" do
     OUTPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to strip_guid(output)
+  end
+
+  it "renders pseudocode figure content" do
+    pending "MODEL GAP (metanorma-document 0.2.9): FigureBlock maps " \
+            "neither p nor sourcecode, so pseudocode content cannot " \
+            "reach the transformer (metanorma-ietf#303, " \
+            "metanorma-document#46). Re-test on the model upgrade."
+    input = <<~INPUT
+      <itu-standard xmlns="http://riboseinc.com/isoxml">
+              <sections><clause id="blockclause"><title>Blocks</title>
+        <figure id="_" class="pseudocode"><name>Label</name><p id="_">  <strong>A</strong><br/>
+              <smallcap>B</smallcap></p>
+      <p id="_">  <em>C</em></p></figure>
+      </preface></itu-standard>
+    INPUT
+    out = feature_convert(input)
+    expect(out).to include("A")
+    expect(out).to include("B")
+    expect(out).to include("C")
+    expect(out).to include("<sourcecode")
   end
 
 end
