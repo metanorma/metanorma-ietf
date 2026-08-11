@@ -440,11 +440,32 @@ module Metanorma
           return unless @queued_images && !@queued_images.empty?
 
           walk_all_sections(rfc) do |section|
-            next unless section.t.is_a?(Array)
-            section.t.each do |t|
-              extract_queued_images(t, section)
+            if section.t.is_a?(Array)
+              section.t.each do |t|
+                extract_queued_images(t, section)
+              end
+            end
+            # markers inside list items were orphaned (#296): the
+            # sweep never walked ul/ol li content
+            %i[ul ol].each do |lt|
+              to_array(model_attr(section, lt)).each do |list|
+                to_array(model_attr(list, :li)).each do |li|
+                  to_array(model_attr(li, :t)).each do |t|
+                    extract_queued_images(t, section)
+                  end
+                  extract_queued_images_from_content(li, section)
+                end
+              end
             end
           end
+        end
+
+        # li content may carry the marker as a bare string fragment
+        # (inline-paragraph list items), not inside a nested t
+        def extract_queued_images_from_content(elem, section)
+          return unless elem.respond_to?(:content)
+
+          extract_queued_images(elem, section)
         end
 
         def extract_queued_images(text_elem, section)
@@ -466,7 +487,10 @@ module Metanorma
           indices_to_extract.each do |item|
             figure = Rfcxml::V3::Figure.new
             safe_append(figure, :artwork, item[:image][:artwork])
-            safe_append(section, :figure, figure)
+            # append_ordered, not safe_append (#296): an untracked
+            # append never serialises when the section carries an
+            # element order — the recovered figure was lost
+            append_ordered(section, :figure, figure)
 
             content[item[:index]] = content[item[:index]].gsub("[IMAGE #{item[:image][:number]}]", "")
             @queued_images.delete(item[:image])

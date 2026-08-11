@@ -23,36 +23,46 @@ module Metanorma
           # Use element_order to process figure children in order
           src_order = figure_node.element_order
           if src_order && src_order.any?
-            pre_idx = 0
-            img_idx = 0
-            sc_idx = 0
+            counters = Hash.new(0)
             src_order.each do |e|
               next if e.text?
               tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
               case tag
               when "image"
-                images = to_array(figure_node.image || [])
-                img = images[img_idx]
-                img_idx += 1
+                img = to_array(figure_node.image || [])[idx]
                 if img
                   artwork = transform_image_to_artwork(img)
                   safe_append(figure, :artwork, artwork) if artwork
                 end
               when "pre"
-                pres = to_array(figure_node.pre || [])
-                pre_node = pres[pre_idx]
-                pre_idx += 1
+                pre_node = to_array(figure_node.pre || [])[idx]
                 if pre_node
                   artwork = transform_pre_to_artwork(pre_node)
                   safe_append(figure, :artwork, artwork) if artwork
                 end
               when "sourcecode"
-                sourcecodes = to_array(figure_node.sourcecode_blocks || [])
-                if sourcecodes[sc_idx]
-                  src = transform_sourcecode(sourcecodes[sc_idx])
+                sourcecodes = to_array(model_attr(figure_node,
+                                                  :sourcecode_blocks) || [])
+                if sourcecodes[idx]
+                  src = transform_sourcecode(sourcecodes[idx])
                   safe_append(figure, :sourcecode, src) if src
                 end
-                sc_idx += 1
+              # subfigures were dropped outright (#296): the walk had
+              # no figure branch though the model maps it
+              when "figure"
+                sub = to_array(model_attr(figure_node, :figure) || [])[idx]
+                append_subfigure_content(figure, sub) if sub
+              # the figure key <dl> was dropped outright (#296)
+              when "dl"
+                dl_node = to_array(model_attr(figure_node, :dl) || [])[idx]
+                append_figure_key(figure, dl_node) if dl_node
+              when "key"
+                k = to_array(model_attr(figure_node, :key) || [])[idx]
+                k && to_array(model_attr(k, :dl)).each do |d|
+                  append_figure_key(figure, d)
+                end
               end
             end
           else
@@ -68,8 +78,9 @@ module Metanorma
             end
           end
 
-          # Figure source/citation
-          sources = figure_node.source
+          # Figure source/citation (model_attr: a Subfigure model has
+          # no source accessor — #296 crash)
+          sources = model_attr(figure_node, :source)
           if sources
             sources = [sources] unless sources.is_a?(Array)
             sources.each do |src|
@@ -85,6 +96,54 @@ module Metanorma
           end
 
           figure
+        end
+
+        # v3 figure admits no nested figure: fold a subfigure's
+        # artworks/sourcecode into the parent (the released path
+        # promoted subfigures to sibling figures); each subfigure's
+        # caption rides its first artwork as @name and its id as
+        # @anchor, so no content is lost (#296)
+        def append_subfigure_content(figure, sub_node)
+          sub = transform_figure(sub_node)
+          return unless sub
+
+          if sub.is_a?(Rfcxml::V3::Sourcecode)
+            safe_append(figure, :sourcecode, sub)
+            return
+          end
+
+          arts = to_array(sub.artwork)
+          if (first = arts.first)
+            cap = sub.name && to_array(sub.name.content).join
+            if cap && !cap.strip.empty? && first.name.to_s.empty?
+              first.name = cap.strip
+            end
+            first.anchor ||= sub.anchor
+          end
+          arts.each { |a| safe_append(figure, :artwork, a) }
+          to_array(sub.sourcecode).each do |s|
+            safe_append(figure, :sourcecode, s)
+          end
+        end
+
+        # v3 figure admits no dl: the key flattens into the postamble
+        # as "term: definition" lines — text-at-minimum (#296)
+        def append_figure_key(figure, dl_node)
+          dts = to_array(model_attr(dl_node, :dt))
+          dds = to_array(model_attr(dl_node, :dd))
+          lines = dts.each_with_index.map do |dt, i|
+            dd = dds[i]
+            term = flatten_inline_text(dt).to_s.strip
+            defn = dd ? flatten_inline_text(dd).to_s.strip : ""
+            next if term.empty? && defn.empty?
+
+            defn.empty? ? term : "#{term}: #{defn}"
+          end.compact
+          return if lines.empty?
+
+          postamble = figure.postamble || Rfcxml::V3::Postamble.new
+          postamble.content = to_array(postamble.content) + lines
+          figure.postamble = postamble
         end
 
         def transform_pseudocode(figure_node)
@@ -127,6 +186,24 @@ module Metanorma
         def transform_image_to_artwork(img_node)
           artwork = Rfcxml::V3::Artwork.new
 
+          # anchor (xrefs to the image dangled without it), align, and
+          # width/height sizing are carried (#296, #305) — wired before
+          # the SVG branches' early returns so every path keeps them
+          if anchor_for(img_node)
+            artwork.anchor = to_ncname(anchor_for(img_node))
+          end
+          align = model_attr(img_node, :align)
+          artwork.align = align.to_s if align && !align.to_s.empty?
+          # "auto" is the converter's no-sizing marker, not a size
+          width = model_attr(img_node, :width)
+          if width && !width.to_s.empty? && width.to_s != "auto"
+            artwork.width = width.to_s
+          end
+          height = model_attr(img_node, :height)
+          if height && !height.to_s.empty? && height.to_s != "auto"
+            artwork.height = height.to_s
+          end
+
           # the model maps the src XML attribute to :source (Media superclass)
           src = img_node.respond_to?(:source) ? img_node.source : nil
           src ||= img_node.target if img_node.respond_to?(:target)
@@ -166,11 +243,12 @@ module Metanorma
           alt = img_node.alt
           artwork.alt = alt.to_s if alt && !alt.to_s.empty?
 
-          # Title (v3 artwork has no title attribute; keep only where
-          # the model supports it — WS3, blocks_spec latent crash)
+          # v3 artwork has no title attribute — @name is its labelled
+          # counterpart, and the respond_to?(:title=) branch was dead
+          # code (#296)
           title = img_node.title
-          if title && !title.to_s.empty? && artwork.respond_to?(:title=)
-            artwork.title = title.to_s
+          if title && !title.to_s.empty? && artwork.name.to_s.empty?
+            artwork.name = title.to_s
           end
 
           # a contentless, sourceless artwork is noise (WS3,
