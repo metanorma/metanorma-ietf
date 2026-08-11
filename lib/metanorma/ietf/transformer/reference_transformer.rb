@@ -75,7 +75,13 @@ module Metanorma
                 raw_ref = extract_passthrough_reference(pass_model) if pass_model
                 safe_append(references, :reference, raw_ref) if raw_ref
               when "bibitem"
-                append_reference(references, transform_bibitem(bibitem_queue.shift))
+                bib = bibitem_queue.shift
+                # hidden bibitems are excluded here too (#301: the
+                # check lived only in the no-order fallback branch,
+                # and the ordered branch is the one 0.2.9 takes)
+                next if hidden_bibitem?(bib)
+
+                append_reference(references, transform_bibitem(bib))
               end
             end
           else
@@ -104,7 +110,17 @@ module Metanorma
         end
 
         def hidden_bibitem?(bibitem)
-          bibitem && bibitem.hidden == "true"
+          return false unless bibitem
+
+          hidden = model_attr(bibitem, :hidden)
+          # bibitem@hidden is parse-ghosted on the 0.2.9 model; the F5
+          # side-channel recovers it per element id (#301)
+          if hidden.nil? && doc.respond_to?(:recovered_section_attrs)
+            key = anchor_for(bibitem)
+            key = key && to_ncname(key)
+            hidden = key && doc.recovered_section_attrs[key]&.fetch("hidden", nil)
+          end
+          hidden == "true" || hidden == true
         end
 
         def extract_passthrough_reference(pass_model)
@@ -130,7 +146,7 @@ module Metanorma
             return transform_referencegroup(bibitem)
           end
 
-          if formattedref_only?(bibitem)
+          if formattedref_bibitem?(bibitem)
             return transform_formattedref_bibitem(bibitem)
           end
 
@@ -196,15 +212,13 @@ module Metanorma
           ref
         end
 
+        # relation type="includes" is the ONLY constituent carrier the
+        # model has — the former :constituent probes were dead guards
+        # (#301); re-add a branch only if a model vintage grows one
         def reference_group?(bibitem)
           return false unless bibitem
-          return true if included_bibitems(bibitem).any?
-          return false unless bibitem.class.method_defined?(:constituent)
 
-          constituents = bibitem.constituent
-          return false unless constituents
-          consts = [constituents].flatten
-          consts.any? { |c| c && !c.to_s.strip.empty? }
+          included_bibitems(bibitem).any?
         end
 
         # <relation type="includes"> is how a referencegroup carries
@@ -225,57 +239,53 @@ module Metanorma
           target = extract_bibitem_target(bibitem)
           group.target = target if target && !target.empty?
 
-          included = included_bibitems(bibitem)
-          if included.any?
-            # constituents are complete bibitems: render each through
-            # the full reference pipeline (front, date, abstract,
-            # keywords, seriesInfo, stream), as the released path does;
-            # their anchors fall out of bibitem_anchor's IETF-docid
-            # fallback ("RFC 5730" -> RFC5730)
-            included.each do |constituent|
-              ref = transform_bibitem(constituent)
-              safe_append(group, :reference, ref) if ref
-            end
-          else
-            to_array(bibitem.constituent).each do |constituent|
-              next unless constituent
-              ref = transform_constituent(constituent)
-              safe_append(group, :reference, ref) if ref
-            end
+          # constituents are complete bibitems: render each through
+          # the full reference pipeline (front, date, abstract,
+          # keywords, seriesInfo, stream), as the released path does;
+          # their anchors fall out of bibitem_anchor's IETF-docid
+          # fallback ("RFC 5730" -> RFC5730)
+          included_bibitems(bibitem).each do |constituent|
+            ref = transform_bibitem(constituent)
+            safe_append(group, :reference, ref) if ref
           end
 
           group
         end
 
-        def transform_constituent(constituent)
-          ref = Rfcxml::V3::Reference.new
-
-          if constituent.id
-            ref.anchor = to_ncname(constituent.id)
-          end
-
-          if constituent.title
-            title_text = ls_text(constituent.title)
-            if title_text && !title_text.empty?
-              front = ref.front || Rfcxml::V3::Front.new
-              t = Rfcxml::V3::Title.new
-              t.content = [title_text]
-              front.title = t
-              ref.front = front
-            end
-          end
-
-          extract_bibitem_series_info(constituent).each do |si|
-            safe_append(ref, :series_info, si)
-          end
-
-          ref
-        end
-
-        def formattedref_only?(bibitem)
+        # a formattedref is the FULL rendered citation — the human- or
+        # (almost always) relaton-render-formatted text that populates
+        # the v3 reference; a bare title does not. It therefore wins
+        # over a co-present title (#301 item 6, adjudicated 2026-08-11:
+        # restores the released #279 precedence; the fetched-title-wins
+        # flip discarded the authored/rendered citation). Bibitems with
+        # NEITHER also route here, for the docid fallback.
+        def formattedref_bibitem?(bibitem)
           return false unless bibitem
+
+          fr = model_attr(bibitem, :formatted_ref)
+          return true if fr && !mixed_text(fr).to_s.strip.empty?
+          return true if recovered_formattedref_for(bibitem)
+
           title = extract_bibitem_title(bibitem)
           title.nil? || title.empty?
+        end
+
+        # the authored formattedref captured from the PRE-presentation
+        # semantic XML (Transformer.recover_formattedrefs — the shared
+        # bibrender replaces it in presentation whenever a title
+        # coexists)
+        def recovered_formattedref_for(bibitem)
+          return nil unless bibitem &&
+            doc.respond_to?(:recovered_formattedrefs)
+
+          [model_attr(bibitem, :anchor), model_attr(bibitem, :id)]
+            .each do |k|
+            next if k.nil? || k.to_s.strip.empty?
+
+            hit = doc.recovered_formattedrefs[to_ncname(k)]
+            return hit if hit
+          end
+          nil
         end
 
         def transform_formattedref_bibitem(bibitem)
@@ -290,6 +300,10 @@ module Metanorma
           formatted = bibitem.formatted_ref
           title_text = formatted ? mixed_text(formatted) : nil
           title_text = nil if title_text&.strip&.empty?
+          # the authored formattedref, when presentation clobbered it
+          # (#301 item 6) — it renders as the reference title, the
+          # released RfcConvert shape
+          title_text ||= recovered_formattedref_for(bibitem)
           # No formattedref either: fall back to the authoritative
           # docidentifier. RFC XML requires front/title, and leaving
           # it unset serialises the model's DEFAULT empty element as
@@ -372,7 +386,9 @@ module Metanorma
         def extract_bibitem_target(bibitem)
           uris = to_array(bibitem.link)
 
-          src = uris.find { |u| u.type == "src" }
+          # the released path accepted src OR HTML-typed uris (#301)
+          src = uris.find { |u| u.type == "src" } ||
+            uris.find { |u| u.type == "HTML" }
           return nil unless src
 
           text = u_content(src)
@@ -397,9 +413,16 @@ module Metanorma
           text&.empty? ? nil : text
         end
 
+        # the released renderer's allowed-role set beyond
+        # author/editor (#301): a translator-only bibitem rendered its
+        # translator, not <author surname="Unknown"/>
+        FALLBACK_CONTRIBUTOR_ROLES =
+          %w[performer adapter translator publisher distributor
+             authorizer].freeze
+
         def extract_bibitem_authors(bibitem)
           authors = []
-          publishers = []
+          fallbacks = []
           to_array(bibitem.contributor).each do |contrib|
             next unless contrib.role
             roles = to_array(contrib.role)
@@ -409,16 +432,17 @@ module Metanorma
             person = contrib.person
 
             author = build_bibitem_author(person, org)
+            next unless author
 
             case role_type
             when "author", "editor"
-              authors << author if author
-            when "publisher"
-              publishers << author if author
+              authors << author
+            when *FALLBACK_CONTRIBUTOR_ROLES
+              fallbacks << author
             end
           end
 
-          authors.empty? ? publishers : authors
+          authors.empty? ? fallbacks : authors
         end
 
         def build_bibitem_author(person, org)
@@ -431,7 +455,11 @@ module Metanorma
         def extract_bibitem_date(bibitem)
           dates = to_array(bibitem.date)
 
-          pub = dates.find { |d| d.type == "published" }
+          # released cascade (#301): published → issued → circulated →
+          # first non-accessed; published-only lost issued-only dates
+          pub = %w[published issued circulated]
+            .filter_map { |t| dates.find { |d| d.type == t } }.first
+          pub ||= dates.find { |d| d.type != "accessed" }
           return nil unless pub
 
           date = Rfcxml::V3::Date.new
@@ -501,15 +529,19 @@ module Metanorma
         # seriesInfo, metanorma/metanorma-ordinal are display
         # artefacts (B-5). Released-path parity (WS3 ref): RFC
         # references carry no refcontent at all.
+        # ISBN/ISSN/URN joined the exclusions (#301): the released
+        # exclusion list suppressed them and the single-pick rewrite
+        # had started emitting them
         NON_REFCONTENT_TYPES =
           %w[IETF Internet-Draft rfc-anchor DOI
-             metanorma metanorma-ordinal].freeze
+             metanorma metanorma-ordinal ISBN ISSN URN].freeze
 
         def extract_bibitem_refcontent(bibitem)
           ids = to_array(bibitem.docidentifier)
 
-          id = ids.find { |d| d.type == "ISO" }
-          id ||= ids.find do |d|
+          # ALL eligible identifiers joined (#301): the released path
+          # rendered "ISO 2002, IEEE 802.2002", not a single pick
+          eligible = ids.select do |d|
             d.type && !NON_REFCONTENT_TYPES.include?(d.type) &&
               (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
           end
@@ -518,27 +550,29 @@ module Metanorma
           # refcontent only from authoritative identifiers. It
           # surfaces only in the 81f7bc1 orphan fallback, where the
           # reference has no other visible text.
-          id ||= ids.find do |d|
-            d.type != "metanorma-ordinal" &&
-              (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
-          end unless bibitem_has_visible_text?(bibitem)
-
-          return nil unless id
-          text = id_content(id)
-          # a display-rewritten identifier whose content collapsed to its
-          # own type name carries no information
-          return nil if text.nil? || text.empty? || text == id.type
-          # WS2 A-3: an identifier that merely echoes the reference
-          # anchor ("…, ZELLER." / "…, Grail." for GRAIL) is noise, not
-          # a citation — unless the reference has no other visible text
-          # (the 81f7bc1 orphan fallback, where the identifier is all
-          # there is)
-          if text.casecmp?(bibitem_anchor(bibitem).to_s) &&
-              bibitem_has_visible_text?(bibitem)
-            return nil
+          if eligible.empty? && !bibitem_has_visible_text?(bibitem)
+            eligible = ids.select do |d|
+              d.type != "metanorma-ordinal" &&
+                (!d.respond_to?(:scope) || d.scope.to_s != "biblio-tag")
+            end
           end
 
-          text
+          texts = eligible.filter_map do |id|
+            text = id_content(id)
+            # a display-rewritten identifier whose content collapsed
+            # to its own type name carries no information
+            next if text.nil? || text.empty? || text == id.type
+            # WS2 A-3: an identifier that merely echoes the reference
+            # anchor ("…, ZELLER." / "…, Grail." for GRAIL) is noise,
+            # not a citation — unless the reference has no other
+            # visible text (the 81f7bc1 orphan fallback)
+            next if text.casecmp?(bibitem_anchor(bibitem).to_s) &&
+              bibitem_has_visible_text?(bibitem)
+
+            text
+          end.uniq
+
+          texts.empty? ? nil : texts.join(", ")
         end
 
         def bibitem_has_visible_text?(bibitem)
