@@ -9,8 +9,11 @@ module Metanorma
           table = Rfcxml::V3::Table.new
           table.anchor = to_ncname(anchor_for(table_node)) if anchor_for(table_node)
 
-          # Handle unnumbered tables
-          if table_node.unnumbered == "true"
+          # Handle unnumbered tables (boolean OR "true" — the
+          # string-only compare is dead against a :boolean mapping,
+          # same family as #299's unnumbered fix)
+          unnumbered = table_node.unnumbered
+          if unnumbered == "true" || unnumbered == true
             table.anchor = nil
           end
 
@@ -18,17 +21,16 @@ module Metanorma
           talign = model_attr(table_node, :align)
           table.align = talign.to_s if talign && !talign.to_s.empty?
 
-          name_node = table_node.name
-          if name_node
-            name = Rfcxml::V3::Name.new
-            # MODEL GAP (metanorma-document 0.2.9, WS3): caption inline
-            # markup (<em> …) is lost at parse — NameWithIdElement maps
-            # no inline collections and each_mixed_content yields
-            # nothing, so only the text runs survive
-            name_text = ls_text(name_node)
-            name.content = [name_text] if name_text && !name_text.empty?
-            table.name = name unless name.content.nil? || name.content.empty?
-          end
+          # MODEL GAP (metanorma-document 0.2.9, WS3): caption inline
+          # markup (<em> …) is lost at parse — NameWithIdElement maps
+          # no inline collections, so only the text runs survive; the
+          # #292 name builder carries mapped inlines on upgrade
+          name = build_inline_name(table_node.name)
+          table.name = name if name
+
+          # table-scoped footnote dedup (#293): reused labels across
+          # tables are distinct footnotes
+          @footnote_scope = table.anchor || table_node.object_id
 
           thead_node = table_node.thead
           if thead_node
@@ -49,6 +51,8 @@ module Metanorma
           end
 
           table
+        ensure
+          @footnote_scope = nil
         end
 
         def transform_table_section(section_node, role)

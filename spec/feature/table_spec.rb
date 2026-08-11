@@ -120,8 +120,8 @@ RSpec.describe "IETF table rendering (WS3)" do
                 </tr>
                 <tr>
                   <th align="left">Arborio</th>
-                  <th align="center">Drago[1]</th>
-                  <th align="center">Balilla[1]</th>
+                  <th align="center">Drago [1]</th>
+                  <th align="center">Balilla [1]</th>
                   <th align="center">Thaibonnet</th>
                 </tr>
               </thead>
@@ -158,7 +158,7 @@ RSpec.describe "IETF table rendering (WS3)" do
             <aside>
               <t>NOTE: This is a table about rice</t>
             </aside>
-            <table anchor="tableD-2">
+            <table>
               <tbody>
                 <tr>
                   <td>A</td>
@@ -170,7 +170,7 @@ RSpec.describe "IETF table rendering (WS3)" do
         <back>
           <section anchor="endnotes">
             <name>Endnotes</name>
-            <t>[1] Parboiled rice.</t>
+            <t anchor="_">[1] Parboiled rice.</t>
           </section>
         </back>
       </rfc>
