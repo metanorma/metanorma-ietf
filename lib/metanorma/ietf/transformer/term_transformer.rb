@@ -9,13 +9,9 @@ module Metanorma
           section = Rfcxml::V3::Section.new
           section.anchor = to_ncname(terms_node.id) if terms_node.id
 
-          title = terms_node.title
-          if title
-            name = Rfcxml::V3::Name.new
-            name_text = ls_text(title)
-            name.content = [name_text] if name_text && !name_text.empty?
-            section.name = name unless name.content.nil? || name.content.empty?
-          end
+          # inline markup in titles is carried, not flattened (#292)
+          name = build_inline_name(terms_node.title)
+          section.name = name if name
 
           # Vintage tolerance (WS3): one model maps <p> to .p and
           # <term> to .term; another maps paragraphs to .paragraphs
@@ -231,15 +227,8 @@ module Metanorma
 
           if designation.class.method_defined?(:expression) && designation.expression
             expr = designation.expression
-            return ls_text(expr.name || expr)
-          end
-
-          if designation.class.method_defined?(:letter_symbol) && designation.letter_symbol
-            return extract_letter_symbol_text(designation.letter_symbol)
-          end
-
-          if designation.class.method_defined?(:graphical_symbol) && designation.graphical_symbol
-            return "[graphical symbol]"
+            # descendant text survives markup in designations (#292)
+            return flatten_inline_text(expr.name || expr)
           end
 
           ls_text(designation) || ""

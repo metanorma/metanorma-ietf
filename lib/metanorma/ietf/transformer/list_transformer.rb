@@ -241,6 +241,23 @@ module Metanorma
             coll = dt_node.eref
             return nil unless coll.is_a?(Array) && coll[idx]
             build_eref_xref(coll[idx])
+          # link/stem/br in a dt were omitted outright (#292); v3 dt
+          # has no link home, so the link drops to its text/target
+          when "link"
+            coll = dt_node.respond_to?(:link) ? dt_node.link : nil
+            return nil unless coll.is_a?(Array) && coll[idx]
+            l = coll[idx]
+            text = ls_text(l)
+            if (text.nil? || text.empty?) && l.respond_to?(:target)
+              text = l.target.to_s
+            end
+            text && !text.empty? ? text : nil
+          when "stem"
+            coll = dt_node.respond_to?(:stem) ? dt_node.stem : nil
+            return nil unless coll.is_a?(Array) && coll[idx]
+            build_stem_text(coll[idx])
+          when "br"
+            "\n"
           else
             nil
           end
