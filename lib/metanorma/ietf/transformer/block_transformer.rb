@@ -742,31 +742,37 @@ module Metanorma
           if reference && !reference.empty?
             # WS3 (footnotes_spec): increment only on first sight — the
             # unconditional bump consumed a number on every reuse,
-            # producing [1],[1],[3]
-            num = @seen_footnotes[reference] ||= (@footnote_counter += 1)
+            # producing [1],[1],[3]. Dedup is keyed per table scope
+            # (#293): two tables may reuse the same label with
+            # different text — the old leg keyed on table id + label
+            key = [@footnote_scope, reference]
+            num = @seen_footnotes[key] ||= (@footnote_counter += 1)
             collect_footnote_content(num, fn_elem)
-            "[#{num}]"
           else
             @footnote_counter += 1
             num = @footnote_counter
             collect_footnote_content(num, fn_elem)
-            "[#{num}]"
           end
+          # the old leg set the marker off from running text (#293)
+          " [#{num}]"
         end
 
         def collect_footnote_content(num, fn_elem)
-          ps = fn_elem.p
-          return unless ps
-          ps = [ps] unless ps.is_a?(Array)
-          return if ps.empty?
           return if @collected_footnotes.key?(num)
 
-          paragraphs = ps.map do |p|
-            text = extract_paragraph_text(p)
-            text.strip unless text.nil? || text.strip.empty?
+          # flatten_inline_text (not the p's own text runs): a
+          # footnote's inline markup lost even its TEXT (#293). The
+          # paragraph id rides along so xrefs to the footnote body
+          # resolve to the endnote. (A non-paragraph fn body — a bare
+          # ul — is a 0.2.9 parse ghost: FnElement maps only p.)
+          entries = to_array(fn_elem.p).map do |p|
+            text = flatten_inline_text(p)
+            next if text.nil? || text.strip.empty?
+
+            { text: text.strip, anchor: anchor_for(p) }
           end.compact
 
-          @collected_footnotes[num] = paragraphs if paragraphs.any?
+          @collected_footnotes[num] = entries if entries.any?
         end
 
         # ── Inline image handling ───────────────────────────────
@@ -789,30 +795,17 @@ module Metanorma
 
         # ── Dropped inline elements ─────────────────────────────
 
-        def build_dropped_inline(p_node, tag, idx)
-          case tag
-          when "smallcap"
-            coll = p_node.smallcap
-            return nil unless coll.is_a?(Array) && coll[idx]
-            ls_text(coll[idx]).to_s
         # inlines with no v3 counterpart drop to text — INCLUDING their
         # descendants' text (#292: ls_text lost a nested xref's content
         # outright; keyword's bare .to_s leaked the model inspect form)
-          when "strike"
-            coll = p_node.strike
-            return nil unless coll.is_a?(Array) && coll[idx]
-            ls_text(coll[idx]).to_s
-          when "underline"
-            coll = p_node.underline
-            return nil unless coll.is_a?(Array) && coll[idx]
-            ls_text(coll[idx]).to_s
-          when "keyword"
-            coll = p_node.keyword
-            return nil unless coll.is_a?(Array) && coll[idx]
-            coll[idx].to_s
-          else
-            nil
-          end
+        def build_dropped_inline(p_node, tag, idx)
+          return nil unless %w[smallcap strike underline
+                               keyword].include?(tag)
+
+          coll = p_node.public_send(tag)
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          flatten_inline_text(coll[idx]).to_s
         end
       end
     end
