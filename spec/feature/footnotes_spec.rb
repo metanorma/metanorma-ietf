@@ -28,17 +28,17 @@ RSpec.describe IsoDoc do
     # share a number ([1] twice); numbering is first-use-sequential.
     output = <<~OUTPUT
       #{FEATURE_HDR}
-                   <t>A.[1]</t>
-                   <t>B.[1]</t>
-                   <t>C.[2]</t>
+                   <t>A. [1]</t>
+                   <t>B. [1]</t>
+                   <t>C. [2]</t>
                  </abstract>
                </front>
                <middle/>
                <back>
                  <section anchor="endnotes">
                    <name>Endnotes</name>
-                   <t>[1] Formerly denoted as 15 % (m/m).</t>
-                   <t>[2] Hello! denoted as 15 % (m/m).</t>
+                   <t anchor="_">[1] Formerly denoted as 15 % (m/m).</t>
+                   <t anchor="_">[2] Hello! denoted as 15 % (m/m).</t>
                  </section>
                </back>
              </rfc>

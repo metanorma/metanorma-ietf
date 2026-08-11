@@ -229,10 +229,12 @@ module Metanorma
           section.name = name
 
           @collected_footnotes.keys.sort.each do |num|
-            paragraphs = @collected_footnotes[num]
-            paragraphs.each do |text|
+            @collected_footnotes[num].each do |entry|
               t = Rfcxml::V3::Text.new
-              t.content = ["[#{num}] #{text}"]
+              # the body paragraph's id (#293): xrefs into the
+              # footnote body resolve to its endnote
+              t.anchor = to_ncname(entry[:anchor]) if entry[:anchor]
+              t.content = ["[#{num}] #{entry[:text]}"]
               safe_append(section, :t, t)
             end
           end
