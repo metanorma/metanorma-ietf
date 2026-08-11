@@ -172,6 +172,58 @@ module Metanorma
 
         SIMPLE_INLINE_TAGS = %w[em strong tt sub sup].freeze
 
+        # Text content INCLUDING descendant elements' text, in source
+        # order. ls_text returns only a node's own string runs, so a
+        # caller that flattens to it drops child-element text outright
+        # (#292); this is the text-at-minimum fallback for carriers
+        # with no inline home (labels, dropped inlines).
+        def flatten_inline_text(node)
+          return nil unless node
+
+          order = node.respond_to?(:element_order) ? node.element_order : nil
+          return ls_text(node) unless order&.any?
+
+          counters = Hash.new(0)
+          order.map do |e|
+            if e.text?
+              e.text_content.to_s
+            else
+              tag = e.element_tag
+              idx = counters[tag]
+              counters[tag] += 1
+              child = node.respond_to?(tag) &&
+                to_array(node.public_send(tag))[idx]
+              child ? flatten_inline_text(child).to_s : ""
+            end
+          end.join
+        end
+
+        # Build a v3 <name> carrying the node's inline children in
+        # source order — v3 name admits the full inline set, so titles
+        # and captions keep their markup instead of losing child
+        # content to ls_text flattening (#292)
+        def build_inline_name(name_node)
+          return nil unless name_node
+
+          name = Rfcxml::V3::Name.new
+          order = name_node.respond_to?(:element_order) ?
+            name_node.element_order : nil
+          if order&.any?
+            build_interleaved_content(name, name_node, order)
+          else
+            text = ls_text(name_node)
+            name.content = [text] if text && !text.empty?
+          end
+          text_empty = to_array(name.content).join.strip.empty?
+          has_inlines = %i[bcp14 cref em eref iref relref strong sub
+                           sup tt xref].any? do |t|
+            to_array(name.public_send(t)).any?
+          end
+          return nil if text_empty && !has_inlines
+
+          name
+        end
+
         def build_simple_inline(node, tag, idx)
           return nil unless SIMPLE_INLINE_TAGS.include?(tag)
 
@@ -188,6 +240,15 @@ module Metanorma
 
         def build_simple_inline_model(model, tag)
           elem = Rfcxml::V3.const_get(SIMPLE_INLINE_CLASSES[tag]).new
+          # mixed content (<em>alpha <strong>beta</strong> gamma</em>):
+          # the text-XOR-children shape dropped the children whenever
+          # own text was non-empty (#292) — interleave in source order
+          order = model.respond_to?(:element_order) ? model.element_order : nil
+          if order&.any? { |e| !e.text? } &&
+              order.any? { |e| e.text? && !e.text_content.to_s.strip.empty? }
+            return build_mixed_simple_inline(elem, model, order)
+          end
+
           val = ls_text(model)
           if val && !val.empty?
             elem.content = [val]
@@ -200,6 +261,41 @@ module Metanorma
             # element is noise, so it is suppressed (WS3, cleanup_spec)
             return nil
           end
+          elem
+        end
+
+        def build_mixed_simple_inline(elem, model, order)
+          fragments = []
+          counters = Hash.new(0)
+          order.each do |e|
+            if e.text?
+              fragments << e.text_content.to_s
+              track_text_order(elem, e.text_content.to_s)
+              next
+            end
+            tag = e.element_tag
+            idx = counters[tag]
+            counters[tag] += 1
+            child = model.respond_to?(tag) &&
+              to_array(model.public_send(tag))[idx]
+            next unless child
+
+            if SIMPLE_INLINE_TAGS.include?(tag)
+              built = build_simple_inline_model(child, tag)
+              next unless built
+
+              safe_append(elem, tag.to_sym, built)
+              track_element_order(elem, tag.to_sym, built)
+            else
+              # no nested v3 home (link, xref inside em): keep the text
+              text = flatten_inline_text(child)
+              if text && !text.empty?
+                fragments << text
+                track_text_order(elem, text)
+              end
+            end
+          end
+          elem.content = fragments
           elem
         end
 

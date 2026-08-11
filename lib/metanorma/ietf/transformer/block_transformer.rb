@@ -125,6 +125,12 @@ module Metanorma
         end
 
         def build_inline_element(p_node, tag, idx)
+          # title/caption models walk through here too (#292): guard
+          # the accessor reads for vintages that don't map the tag
+          unless %w[br note index].include?(tag) || p_node.respond_to?(tag)
+            return nil
+          end
+
           simple = build_simple_inline(p_node, tag, idx)
           return simple if simple
 
@@ -301,7 +307,7 @@ module Metanorma
           label.keep_with_next = "true"
           label_text = counter ? "EXAMPLE #{counter}" : "EXAMPLE"
           name_node = model_attr(example_node, :name)
-          name_text = name_node && ls_text(name_node)
+          name_text = name_node && flatten_inline_text(name_node)
           label_text += ": #{name_text.strip}" if name_text && !name_text.strip.empty?
           label.content = [label_text]
           results << label
@@ -789,6 +795,9 @@ module Metanorma
             coll = p_node.smallcap
             return nil unless coll.is_a?(Array) && coll[idx]
             ls_text(coll[idx]).to_s
+        # inlines with no v3 counterpart drop to text — INCLUDING their
+        # descendants' text (#292: ls_text lost a nested xref's content
+        # outright; keyword's bare .to_s leaked the model inspect form)
           when "strike"
             coll = p_node.strike
             return nil unless coll.is_a?(Array) && coll[idx]

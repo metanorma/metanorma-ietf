@@ -275,13 +275,9 @@ module Metanorma
             section.toc = first if first && !first.to_s.empty?
           end
 
-          title = clause.title
-          if title
-            name = Rfcxml::V3::Name.new
-            title_text = ls_text(title)
-            name.content = [title_text] if title_text && !title_text.empty?
-            section.name = name unless name.content.nil? || name.content.empty?
-          end
+          # inline markup in titles is carried, not flattened (#292)
+          name = build_inline_name(clause.title)
+          section.name = name if name
 
           parse_clause_children(clause, section)
 
