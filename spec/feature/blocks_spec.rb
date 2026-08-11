@@ -324,7 +324,8 @@ RSpec.describe "IETF block rendering (WS3)" do
             <name>Blocks</name>
             <figure anchor="figureA-1">
               <name>Split-it-right  divider</name>
-              <artwork src="rice_images/rice_image1.png" alt="alttext"/>
+              <artwork src="rice_images/rice_image1.png" alt="alttext" anchor="_" name="titletxt" width="30" height="20"/>
+              <postamble>A: B</postamble>
             </figure>
             <figure anchor="figure-B">
               <artwork anchor="BC" type="ascii-art" alt="hello"><![CDATA[A <

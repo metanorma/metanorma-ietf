@@ -212,6 +212,9 @@ RSpec.describe "IETF inline rendering (WS3)" do
             <t>
 
       </t>
+            <figure>
+              <artwork alt="alttext" anchor="A" height="20" name="titletxt" src="rice_images/rice_image1.png" width="30"/>
+            </figure>
           </section>
         </middle>
         <back/>
