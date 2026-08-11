@@ -155,18 +155,10 @@ RSpec.describe "transformer model coverage" do
       "by design: per-element F5 side-channel (numbered/removeInRFC, " \
       "#299), defined per-instance via define_singleton_method " \
       "(transformer.rb)",
-    "constituent" =>
-      "OPEN: dead guard found by this detector 2026-08-10 — no model " \
-      "class defines it; referencegroup constituents (#301 territory)",
-    "deprecated" =>
-      "OPEN: dead guard found by this detector 2026-08-10 — model attr " \
-      "is presumably deprecates (#300 territory)",
-    "letter_symbol" =>
-      "OPEN: dead guard found by this detector 2026-08-10 — designation " \
-      "accessor named differently in the model (#300 territory)",
-    "graphical_symbol" =>
-      "OPEN: dead guard found by this detector 2026-08-10 — designation " \
-      "accessor named differently in the model (#300 territory)",
+    "recovered_formattedrefs" =>
+      "by design: pre-presentation authored-formattedref side-channel " \
+      "(#301 item 6), defined per-instance via " \
+      "define_singleton_method (transformer.rb)",
   }.freeze
 
   it "probes only accessor names that exist on some reachable model class" do

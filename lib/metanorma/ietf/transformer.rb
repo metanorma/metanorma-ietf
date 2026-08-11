@@ -41,10 +41,15 @@ module Metanorma
       # Reverse-produced MN XML re-presents like any other semantic
       # input — settled by probe evidence 2026-07-24, see qa-plan.
       def self.convert_forward(xml_string, options = {})
+        semantic_xml = xml_string
         if options.fetch(:presentation, true)
           xml_string = presentation(xml_string, options)
         end
         doc = parse_semantic(xml_string)
+        # authored formattedrefs live only in the PRE-presentation
+        # semantic XML — the shared bibrender replaces them when a
+        # title coexists (#301 item 6); recover them per bibitem id
+        recover_formattedrefs(doc, semantic_xml)
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
@@ -117,6 +122,33 @@ module Metanorma
         root
       end
 
+      # The author's (or standoc's) formattedref is the FULL rendered
+      # citation and wins over a co-present fetched title (#301 item
+      # 6, adjudicated 2026-08-11: released #279 precedence). The
+      # presentation stage's shared bibrender REPLACES a formattedref
+      # whenever a title coexists (isodoc refs.rb bibrender_item), so
+      # the authored text must be captured from the semantic XML
+      # before presentation runs. Keyed by NCName-normalised bibitem
+      # id, consumed by the reference transformer; text-at-minimum
+      # (inline markup flattens).
+      def self.recover_formattedrefs(root, semantic_xml)
+        doc = Nokogiri::XML(
+          semantic_xml.gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"},
+                            ""),
+        )
+        frs = {}
+        doc.xpath("//bibitem/formattedref").each do |fr|
+          bib = fr.parent
+          key = bib["anchor"] || bib["id"] or next
+          key = key.to_s.strip
+          key = "_" + key unless key.match?(/\A[a-zA-Z_]/)
+          key = key.gsub(/[^a-zA-Z0-9._\-]/, "_")
+          text = fr.text.to_s.strip
+          frs[key] = text unless text.empty?
+        end
+        root.define_singleton_method(:recovered_formattedrefs) { frs }
+      end
+
       # bibdata/ext symRefs|tocInclude|sortRefs — the v3 <rfc> ROOT
       # ATTRIBUTE channel the released path reads (section.rb) — are
       # parse ghosts on the model (0.2.9 and 0.5.1 alike; upstream
@@ -135,11 +167,14 @@ module Metanorma
         end
         root.define_singleton_method(:recovered_rfc_attributes) { vals }
 
-        # per-section ghosts (#299): the IETF converter emits @numbered
-        # (the model maps only @unnumbered) and @removeInRFC (unmapped);
-        # collect them per element id/anchor for the section transformer
+        # per-element ghosts (#299, #301): the IETF converter emits
+        # @numbered (the model maps only @unnumbered) and @removeInRFC
+        # (unmapped), and bibitem@hidden is unmapped outright; collect
+        # them per element id/anchor for the section and reference
+        # transformers
         secs = {}
-        doc.xpath("//*[@numbered] | //*[@removeInRFC]").each do |n|
+        doc.xpath("//*[@numbered] | //*[@removeInRFC] | " \
+                  "//bibitem[@hidden]").each do |n|
           key = n["anchor"] || n["id"] or next
           # normalised exactly as Base#to_ncname normalises anchors
           key = key.to_s.strip
@@ -148,6 +183,7 @@ module Metanorma
           entry = (secs[key] ||= {})
           entry["numbered"] = n["numbered"] if n["numbered"]
           entry["removeInRFC"] = n["removeInRFC"] if n["removeInRFC"]
+          entry["hidden"] = n["hidden"] if n["hidden"]
         end
         root.define_singleton_method(:recovered_section_attrs) { secs }
       end
