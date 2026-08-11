@@ -591,7 +591,6 @@ Metanorma::StandardDocument::Terms::NonVerbalRepresentation:
 Metanorma::StandardDocument::Terms::RelatedTerm:
   termref: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
 Metanorma::StandardDocument::Terms::Term:
-  deprecates: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
   subject: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
   tag: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
   usage_info: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
