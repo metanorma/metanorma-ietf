@@ -90,79 +90,61 @@ module Metanorma
             end
           end
 
-          # Render deprecated designations
-          deprecated = term_node.deprecated if term_node.class.method_defined?(:deprecated)
-          if deprecated
-            deprecated = [deprecated] unless deprecated.is_a?(Array)
-            deprecated.each do |dep|
-              term_text = extract_term_name(dep)
-              next if term_text.nil? || term_text.empty?
-              t = Rfcxml::V3::Text.new
-              t.content = ["DEPRECATED: #{term_text}"]
-              safe_append(section, :t, t)
-            end
+          # Render deprecated designations — the model's accessor is
+          # :deprecates, matching the semantic element; probing
+          # :deprecated made this branch dead code (#300)
+          to_array(model_attr(term_node, :deprecates)).each do |dep|
+            term_text = extract_term_name(dep)
+            next if term_text.nil? || term_text.empty?
+
+            t = Rfcxml::V3::Text.new
+            t.content = ["DEPRECATED: #{term_text}"]
+            safe_append(section, :t, t)
           end
 
-          # Definition paragraphs — wrap multiple in ordered list
-          definition_paragraphs = get_paragraphs(term_node)
-          if definition_paragraphs.empty? && term_node.respond_to?(:definition)
-            # vintage shape (WS3): <definition><verbal-definition><p>
-            # maps definition[] -> verbalexpression[] -> paragraph[]
-            definition_paragraphs =
-              to_array(term_node.definition).flat_map do |d|
-                verbs = d.respond_to?(:verbalexpression) ? d.verbalexpression : nil
-                to_array(verbs).flat_map do |v|
-                  to_array(v.respond_to?(:paragraph) ? v.paragraph : nil)
+          # Definition rendering. The enumeration unit is the
+          # DEFINITION, not the paragraph (#300): one definition with
+          # two paragraphs is a single definition, not two enumerated
+          # ones — only multiple <definition> elements get the ol.
+          definition_groups = definition_paragraph_groups(term_node)
+          first_para = true
+          apply_domain = lambda do |t|
+            if first_para
+              domain = term_node.domain
+              if domain
+                domain_text = domain.is_a?(String) ? domain : ls_text(domain)
+                if domain_text && !domain_text.empty?
+                  existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
+                  t.content = ["<#{domain_text}> #{existing}"]
                 end
-              end.compact
+              end
+              first_para = false
+            end
+            t
           end
-          if definition_paragraphs.size > 1
-            first_para = true
+          if definition_groups.size > 1
             ol = Rfcxml::V3::Ol.new
             # the released path keeps <t anchor> inside term-definition
             # list items by construction (terms.rb), unlike body lists;
             # exempt this ol from the single-t li flatten (WS3)
             (@term_definition_ols ||= []) << ol.object_id
-            definition_paragraphs.each_with_index do |p, idx|
+            definition_groups.each do |group|
               li = Rfcxml::V3::Li.new
-              t = transform_paragraph(p)
-              next unless t
+              group.each do |p|
+                t = transform_paragraph(p)
+                next unless t
 
-              if first_para
-                domain = term_node.domain
-                if domain
-                  domain_text = domain.is_a?(String) ? domain : ls_text(domain)
-                  if domain_text && !domain_text.empty?
-                    existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-                    t.content = ["<#{domain_text}> #{existing}"]
-                  end
-                end
-                first_para = false
+                safe_append(li, :t, apply_domain.call(t))
               end
-
-              safe_append(li, :t, t) if t
               safe_append(ol, :li, li)
             end
             safe_append(section, :ol, ol)
           else
-            first_para = true
-            definition_paragraphs.each do |p|
+            definition_groups.flatten.each do |p|
               t = transform_paragraph(p)
               next unless t
 
-              if first_para
-                domain = term_node.domain
-                if domain
-                  domain_text = domain.is_a?(String) ? domain : ls_text(domain)
-                  if domain_text && !domain_text.empty?
-                    existing = t.content.is_a?(Array) ? t.content.join : t.content.to_s
-                    t.content = ["<#{domain_text}> #{existing}"]
-                  end
-                end
-                first_para = false
-              end
-
-              safe_append(section, :t, t) if t
+              safe_append(section, :t, apply_domain.call(t))
             end
           end
 
@@ -198,12 +180,12 @@ module Metanorma
             safe_append(section, :aside, aside) if aside
           end
 
-          # Term sources → <t>[SOURCE: ...]</t>
-          sources = term_node.respond_to?(:source) ? term_node.source : nil
-          to_array(sources).each do |src|
-            t = transform_term_source(src)
-            safe_append(section, :t, t) if t
-          end
+          # Term sources → ONE merged <t>[SOURCE: A; B]</t> (#300):
+          # the released path merged consecutive sources into a single
+          # bracket instead of one per source
+          t = transform_term_sources(to_array(model_attr(term_node,
+                                                         :source)))
+          safe_append(section, :t, t) if t
 
           # Related terms
           related = term_node.respond_to?(:related) ? term_node.related : nil
@@ -222,6 +204,23 @@ module Metanorma
           section
         end
 
+        # one group of paragraphs per <definition> element; the flat
+        # get_paragraphs carrier (vintage shapes) is a single group
+        def definition_paragraph_groups(term_node)
+          if term_node.respond_to?(:definition)
+            groups = to_array(term_node.definition).map do |d|
+              verbs = model_attr(d, :verbalexpression)
+              to_array(verbs).flat_map do |v|
+                to_array(model_attr(v, :paragraph))
+              end.compact
+            end.reject(&:empty?)
+            return groups if groups.any?
+          end
+
+          flat = get_paragraphs(term_node)
+          flat.empty? ? [] : [flat]
+        end
+
         def extract_term_name(designation)
           return "" unless designation
 
@@ -231,67 +230,68 @@ module Metanorma
             return flatten_inline_text(expr.name || expr)
           end
 
+          # MODEL GAP (metanorma-document 0.2.9): Designation maps
+          # only expression + geographic_area — <letter-symbol> and
+          # <graphical-symbol> designations are parse-ghosted, so no
+          # branch can reach them (#300; the former :letter_symbol /
+          # :graphical_symbol probes were dead guards). Re-add the
+          # branches on the model upgrade.
           ls_text(designation) || ""
         end
 
-        def extract_letter_symbol_text(letter_symbol)
-          return "" unless letter_symbol
+        def transform_term_sources(sources)
+          return nil if sources.empty?
 
-          if letter_symbol.class.method_defined?(:stem) && letter_symbol.stem
-            text = build_stem_text(letter_symbol.stem)
-            return text if text && !text.empty?
+          t = Rfcxml::V3::Text.new
+          append_text = lambda do |s|
+            t.content = to_array(t.content) + [s]
+            track_text_order(t, s)
           end
-
-          if letter_symbol.class.method_defined?(:text) && letter_symbol.text
-            text = letter_symbol.text
-            text = [text] unless text.is_a?(Array)
-            return text.join unless text.empty?
+          append_text.call("[SOURCE: ")
+          sources.each_with_index do |src, i|
+            append_text.call("; ") if i.positive?
+            append_term_source(t, src, append_text)
           end
-
-          ""
+          append_text.call("]")
+          t
         end
 
-        def transform_term_source(source)
-          return nil unless source
-
-          text = "[SOURCE: "
-
+        def append_term_source(t, source, append_text)
           origin = source.origin
           if origin
-            target = origin.bibitemid if origin.class.method_defined?(:bibitemid)
+            target = origin.class.method_defined?(:bibitemid) &&
+              origin.bibitemid
             if target
-              # WS3: empty section=/relative= attributes dropped; the
-              # origin locality itself is not mapped by the model
-              # (metanorma-document 0.2.9 \u2014 see qa-plan WS3 note), so
-              # no section can be emitted yet
-              text += "<xref target='#{target}'/>"
+              # a REAL xref element, not spliced markup text \u2014 the
+              # string splice serialised as escaped &lt;xref&gt;
+              # literals (#300). WS3: the origin locality itself is
+              # not mapped by the model (metanorma-document 0.2.9),
+              # so no section can be emitted yet
+              xref = Rfcxml::V3::Xref.new
+              xref.target = to_ncname(target.to_s)
+              safe_append(t, :xref, xref)
+              track_element_order(t, :xref, xref)
             else
-              text += ls_text(origin).to_s
+              append_text.call(ls_text(origin).to_s)
             end
           end
 
           status = source.status
-          if status
-            case status.to_s
-            when "modified"
-              text += ", modified"
-              mod = source.modification
-              if mod
-                # mixed_text: the modification is a mixed-content
-                # paragraph; ls_text saw only its (empty) string runs
-                mod_text = mixed_text(mod)
-                text += " \u2014 #{mod_text}" if mod_text && !mod_text.empty?
-              end
-            when "adapted"
-              text += ", adapted"
+          case status.to_s
+          when "modified" then append_text.call(", modified")
+          when "adapted" then append_text.call(", adapted")
+          end
+          # the modification note is appended REGARDLESS of status
+          # (#300): the released path did not gate it on "modified"
+          mod = model_attr(source, :modification)
+          if mod
+            # mixed_text: the modification is a mixed-content
+            # paragraph; ls_text saw only its (empty) string runs
+            mod_text = mixed_text(mod)
+            if mod_text && !mod_text.empty?
+              append_text.call(" \u2014 #{mod_text}")
             end
           end
-
-          text += "]"
-
-          t = Rfcxml::V3::Text.new
-          t.content = [text]
-          t
         end
 
         def transform_related_term(related)
