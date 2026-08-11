@@ -603,16 +603,9 @@ module Metanorma
           note = Rfcxml::V3::Note.new
           note.remove_in_rfc = note_node.remove_in_rfc.to_s unless note_node.remove_in_rfc.nil?
 
-          names = to_array(note_node.name)
-          first_name = names.first
-          if first_name
-            name_text = ls_text(first_name)
-            if name_text && !name_text.to_s.strip.empty?
-              name = Rfcxml::V3::Name.new
-              name.content = [name_text.to_s.strip]
-              note.name = name
-            end
-          end
+          # inline markup in note names is carried, not flattened (#292)
+          name = build_inline_name(to_array(note_node.name).first)
+          note.name = name if name
 
           get_paragraphs(note_node).each do |p|
             t = transform_paragraph(p)
@@ -625,15 +618,9 @@ module Metanorma
           note = Rfcxml::V3::Note.new
           note.remove_in_rfc = note_node.remove_in_rfc.to_s unless note_node.remove_in_rfc.nil?
 
-          title_node = clause_node.title
-          if title_node
-            title_text = ls_text(title_node)
-            if title_text && !title_text.to_s.strip.empty?
-              name = Rfcxml::V3::Name.new
-              name.content = [title_text.to_s.strip]
-              note.name = name
-            end
-          end
+          # inline markup in note names is carried, not flattened (#292)
+          name = build_inline_name(clause_node.title)
+          note.name = name if name
 
           get_paragraphs(note_node).each do |p|
             t = transform_paragraph(p)

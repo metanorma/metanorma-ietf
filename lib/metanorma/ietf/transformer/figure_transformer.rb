@@ -16,13 +16,9 @@ module Metanorma
           figure = Rfcxml::V3::Figure.new
           figure.anchor = to_ncname(anchor_for(figure_node)) if anchor_for(figure_node)
 
-          name_node = figure_node.name
-          if name_node
-            name = Rfcxml::V3::Name.new
-            name_text = ls_text(name_node)
-            name.content = [name_text] if name_text && !name_text.empty?
-            figure.name = name unless name.content.nil? || name.content.empty?
-          end
+          # inline markup in captions is carried, not flattened (#292)
+          name = build_inline_name(figure_node.name)
+          figure.name = name if name
 
           # Use element_order to process figure children in order
           src_order = figure_node.element_order
