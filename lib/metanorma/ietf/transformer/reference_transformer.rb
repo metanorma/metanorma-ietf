@@ -150,6 +150,14 @@ module Metanorma
             return transform_formattedref_bibitem(bibitem)
           end
 
+          # the relaton-bib v3 exporter is the preferred reference
+          # back-end (relaton-bib#125, adopted 2026-08-13); the
+          # internal field-by-field renderer below remains the
+          # fallback for presentation-free runs, source-less bibitems
+          # and exporter errors
+          exported = export_reference_v3(bibitem)
+          return exported if exported
+
           ref = Rfcxml::V3::Reference.new
 
           ref.anchor = bibitem_anchor(bibitem)
@@ -210,6 +218,60 @@ module Metanorma
           end
 
           ref
+        end
+
+        # bibitem → Rfcxml::V3::Reference via the relaton-bib v3
+        # exporter, fed the PRE-presentation semantic bibitem XML
+        # (Transformer.recover_bibitem_sources, ordinal identifiers
+        # already stripped). Returns nil — falling back to the
+        # internal renderer — when no source XML was captured
+        # (presentation-free runs), when export raises, or when
+        # disabled via options[:reference_export] = false.
+        def export_reference_v3(bibitem)
+          return nil if options[:reference_export] == false
+          return nil unless doc.respond_to?(:recovered_bibitem_sources)
+
+          raw = nil
+          [model_attr(bibitem, :anchor), model_attr(bibitem, :id)]
+            .each do |k|
+            next if k.nil? || k.to_s.strip.empty?
+
+            raw = doc.recovered_bibitem_sources[to_ncname(k)] and break
+          end
+          return nil unless raw
+
+          require "relaton/bib"
+          item = Relaton::Bib::Item.from_xml(raw)
+          ref = Relaton::Bib::Converter::BibXml
+            .from_item(item, v3: true, anchor: bibitem_anchor(bibitem))
+          graft_internal_extras(ref, bibitem)
+          ref
+        rescue StandardError => e
+          warn "IETF: v3 reference export failed for " \
+               "#{bibitem_anchor(bibitem)} (#{e.class}: #{e.message}); " \
+               "using the internal renderer"
+          nil
+        end
+
+        # corrections OURS on top of the export: bibitem-note
+        # annotations (the exporter's no-annotation rule covers
+        # document asides, but the released path also rendered
+        # bibitem notes), and suppression of the empty <date/> it
+        # emits for unparseable dates ("--", under preparation)
+        def graft_internal_extras(ref, bibitem)
+          return unless ref.is_a?(Rfcxml::V3::Reference)
+
+          ann = extract_bibitem_annotation(bibitem)
+          if ann && !ann.empty? && to_array(ref.annotation).empty?
+            a = Rfcxml::V3::Annotation.new
+            a.content = ann
+            safe_append(ref, :annotation, a)
+          end
+
+          d = ref.front&.date
+          if d && d.year.nil? && d.month.nil? && d.day.nil?
+            ref.front.date = nil
+          end
         end
 
         # relation type="includes" is the ONLY constituent carrier the
