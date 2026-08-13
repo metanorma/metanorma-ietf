@@ -1,0 +1,505 @@
+# frozen_string_literal: true
+
+module Metanorma
+  module Ietf
+    module Transformer
+      module CleanupTransformer
+        # CleanupTransformer methods are public utilities for testing.
+        # The cleanup pipeline methods themselves remain internal.
+
+        # Strip XML/HTML tags from a string using character iteration.
+        # Needed because the metanorma-document model sometimes serializes
+        # inline elements as XML fragments within text content, and the
+        # model library does not provide plain-text extraction.
+        def strip_xml_tags(str)
+          return str unless str.is_a?(String)
+          result = +""
+          in_tag = false
+          str.each_char do |ch|
+            if ch == "<"
+              in_tag = true
+            elsif ch == ">"
+              in_tag = false
+            elsif !in_tag
+              result << ch
+            end
+          end
+          result
+        end
+
+        BCP14_KEYWORDS = [
+          "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+          "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+          "MAY", "OPTIONAL",
+          "must", "must not", "required", "shall", "shall not",
+          "should", "should not", "recommended", "not recommended",
+          "may", "optional",
+        ].freeze
+
+        INLINE_ATTRS = %i[em strong tt sub sup eref xref relref bcp14 iref cref br u].freeze
+
+        def cleanup(rfc)
+          li_cleanup(rfc)
+          deflist_cleanup(rfc)
+          bcp14_cleanup(rfc)
+          front_cleanup(rfc)
+          biblio_cleanup(rfc)
+          aside_cleanup(rfc)
+          image_cleanup(rfc)
+          rfc
+        end
+
+        # ── Model traversal helpers ──────────────────────────────
+
+        def walk_sections(sections, &block)
+          return unless sections
+          sections = [sections] unless sections.is_a?(Array)
+          sections.compact.each do |section|
+            block.call(section)
+            walk_sections(section.section, &block)
+          end
+        end
+
+        def walk_all_sections(rfc, &block)
+          walk_sections(rfc.middle&.section, &block) if rfc.middle
+          walk_sections(rfc.back&.section, &block) if rfc.back
+        end
+
+        # ── List Item Unwrapping ────────────────────────────────
+
+        def li_cleanup(rfc)
+          walk_all_sections(rfc) do |section|
+            cleanup_list_items(section.ul) if section.ul.is_a?(Array)
+            cleanup_list_items(section.ol) if section.ol.is_a?(Array)
+            walk_nested_list_items(section)
+          end
+        end
+
+        def cleanup_list_items(lists)
+          return unless lists.is_a?(Array)
+          lists.each { |list| cleanup_single_li_items(list) }
+        end
+
+        def cleanup_single_li_items(list)
+          return unless list && list.li.is_a?(Array)
+          # term-definition ols keep <t anchor> in their items, as the
+          # released path constructs them (WS3)
+          return if @term_definition_ols&.include?(list.object_id)
+          list.li.each do |li|
+            unwrap_single_t_in_li(li)
+            cleanup_list_items(li.ul)
+            cleanup_list_items(li.ol)
+          end
+        end
+
+        def unwrap_single_t_in_li(li)
+          return unless li.t.is_a?(Array) && li.t.size == 1
+          has_other_children = false
+          %i[ul ol dl sourcecode table figure blockquote].each do |attr|
+            val = li.public_send(attr)
+            if val.is_a?(Array) && !val.empty?
+              has_other_children = true
+              break
+            end
+          end
+          return if has_other_children
+
+          t = li.t.first
+
+          if t.element_order.is_a?(Array) &&
+              t.element_order.any? { |e| e.node_type == :element }
+            # N7: the t carries interleaved inline elements. Flattening
+            # its text and migrating the inline collections separately
+            # displaced every xref/eref to the end of the item; replay
+            # the t's fragments onto the li in order instead.
+            li.t = []
+            li.element_order = nil
+            replay_mixed_content(t, li)
+            return
+          end
+
+          t_content = extract_text_content(t)
+          li_content = li.content
+
+          if li_content.is_a?(Array) && li_content.any? { |c| c.to_s.strip.empty? } && t_content && !t_content.strip.empty?
+            li.content = [t_content]
+          elsif li_content.nil? || (li_content.is_a?(Array) && li_content.all? { |c| c.to_s.strip.empty? })
+            li.content = [t_content]
+          else
+            existing = li_content.is_a?(Array) ? li_content.join : li_content.to_s
+            new_content = existing.strip.empty? ? t_content : existing + t_content
+            li.content = [new_content]
+          end
+
+          migrate_inline_elements(t, li)
+
+          li.t = []
+          li.element_order = nil
+        end
+
+        # Replay a mixed-content source model's ordered fragments onto
+        # a target model: text fragments and inline elements re-track
+        # in source order under the OrderTracker contract.
+        def replay_mixed_content(source, target)
+          content = []
+          counters = Hash.new(0)
+          source.element_order.each do |entry|
+            if entry.node_type == :text
+              content << entry.text_content
+              OrderTracker.track_text(target, entry.text_content)
+            else
+              attr = entry.name.to_sym
+              idx = counters[entry.name]
+              counters[entry.name] += 1
+              coll = source.respond_to?(attr) && source.public_send(attr)
+              obj = coll.is_a?(Array) ? coll[idx] : nil
+              next unless obj
+
+              OrderTracker.append_ordered(target, attr, obj)
+            end
+          end
+          target.content = content
+        end
+
+        def extract_text_content(text_elem)
+          return "" unless text_elem
+          content = text_elem.content
+          return content.is_a?(Array) ? content.join : content.to_s if content
+          ""
+        end
+
+        def migrate_inline_elements(source, target)
+          INLINE_ATTRS.each do |attr|
+            src_val = source.public_send(attr)
+            next unless src_val.is_a?(Array) && !src_val.empty?
+            tgt_val = target.public_send(attr)
+            tgt_val = [] unless tgt_val.is_a?(Array)
+            tgt_val.concat(src_val)
+            target.public_send(:"#{attr}=", tgt_val)
+          end
+        end
+
+        def walk_nested_list_items(section)
+          return unless section.section.is_a?(Array)
+          section.section.each do |sub|
+            cleanup_list_items(sub.ul) if sub.ul.is_a?(Array)
+            cleanup_list_items(sub.ol) if sub.ol.is_a?(Array)
+            walk_nested_list_items(sub)
+          end
+        end
+
+        # ── Definition List Cleanup ──────────────────────────────
+
+        def deflist_cleanup(rfc)
+          walk_all_sections(rfc) do |section|
+            cleanup_definition_lists(section.dl) if section.dl.is_a?(Array)
+          end
+        end
+
+        def cleanup_definition_lists(dls)
+          return unless dls.is_a?(Array)
+          dls.each { |dl| cleanup_single_dl(dl) }
+        end
+
+        def cleanup_single_dl(dl)
+          return unless dl && dl.dt.is_a?(Array)
+          dl.dt.each { |dt| dt_cleanup_single(dt) }
+          dl.dd.each { |dd| dd_cleanup_single(dd) } if dl.dd.is_a?(Array)
+        end
+
+        def dt_cleanup_single(dt)
+          return unless dt
+          if dt.xref.is_a?(Array)
+            dt.xref.each do |xref|
+              if xref.target && !xref.target.empty?
+                dt.anchor ||= xref.target
+              end
+            end
+          end
+        end
+
+        def dd_cleanup_single(dd)
+          return unless dd
+          if dd.t.is_a?(Array) && !dd.t.empty?
+            first_t = dd.t.first
+            if first_t&.anchor && !dd.anchor
+              dd.anchor = first_t.anchor
+              first_t.anchor = nil
+            end
+          end
+        end
+
+        # ── Sourcecode Cleanup ──────────────────────────────────
+
+        # (sourcecode_cleanup retired, WS2 A-1: code text is normalised
+        # to character data at construction in transform_sourcecode;
+        # the character-level tag stripper here ate genuine "<".)
+
+        # ── BCP14 from Strong ───────────────────────────────────
+
+        def bcp14_cleanup(rfc)
+          walk_all_text_elements(rfc) do |text_elem|
+            convert_strong_to_bcp14(text_elem)
+          end
+        end
+
+        def walk_all_text_elements(rfc, &block)
+          if rfc.front && rfc.front.abstract
+            abs = rfc.front.abstract
+            abs.t.each { |t| block.call(t) } if abs.t.is_a?(Array)
+          end
+
+          walk_all_sections(rfc) do |section|
+            section.t.each { |t| block.call(t) } if section.t.is_a?(Array)
+            section.blockquote.each { |bq| bq.t.each { |t| block.call(t) } if bq.t.is_a?(Array) } if section.blockquote.is_a?(Array)
+            walk_t_in_lists(section, &block)
+          end
+        end
+
+        def walk_t_in_lists(section, &block)
+          %i[ul ol].each do |list_attr|
+            next unless section.public_send(list_attr).is_a?(Array)
+            section.public_send(list_attr).each { |list| walk_t_in_li(list, &block) }
+          end
+        end
+
+        def walk_t_in_li(list, &block)
+          return unless list && list.li.is_a?(Array)
+          list.li.each do |li|
+            li.t.each { |t| block.call(t) } if li.t.is_a?(Array)
+            li.ul.each { |ul| walk_t_in_li(ul, &block) } if li.ul.is_a?(Array)
+            li.ol.each { |ol| walk_t_in_li(ol, &block) } if li.ol.is_a?(Array)
+          end
+        end
+
+        def convert_strong_to_bcp14(text_elem)
+          strongs = text_elem.strong
+          return unless strongs.is_a?(Array)
+
+          changed = false
+          new_strongs = []
+          strongs.each_with_index do |s, i|
+            text = extract_bcp14_text(s)
+            if bcp14_keyword?(text)
+              bcp = Rfcxml::V3::Bcp14.new
+              bcp.content = text.upcase
+              safe_append(text_elem, :bcp14, bcp)
+              replace_in_element_order(text_elem, "strong", i, "bcp14")
+              changed = true
+            else
+              new_strongs << s
+            end
+          end
+
+          text_elem.strong = new_strongs if changed
+        end
+
+        def extract_bcp14_text(strong_elem)
+          content = strong_elem.content
+          return content.is_a?(Array) ? content.join.strip : content.to_s.strip if content
+          ""
+        end
+
+        def bcp14_keyword?(text)
+          return false unless text
+          BCP14_KEYWORDS.include?(text)
+        end
+
+        def replace_in_element_order(text_elem, old_tag, old_idx, new_tag)
+          order = text_elem.element_order
+          return unless order.is_a?(Array)
+
+          count = 0
+          order.each_with_index do |e, i|
+            next if e.text?
+            if e.element_tag == old_tag
+              if count == old_idx
+                order[i] = build_order_entry_for(text_elem, new_tag.to_sym)
+                return
+              end
+              count += 1
+            end
+          end
+        end
+
+        # ── Front Cleanup ──────────────────────────────────────
+
+        def front_cleanup(rfc)
+          return unless rfc.front
+          cleanup_front_title(rfc.front.title) if rfc.front.title
+        end
+
+        # Front title content may contain XML serialization artifacts from
+        # the metanorma-document model. The model library does not provide
+        # plain-text extraction for formatted titles, so we strip tags here.
+        def cleanup_front_title(title)
+          return unless title
+          content = title.content
+          return unless content.is_a?(Array)
+          title.content = content.map { |c| c.is_a?(String) ? strip_xml_tags(c) : c }
+        end
+
+        # ── Bibliography Cleanup ───────────────────────────────
+
+        def biblio_cleanup(rfc)
+          return unless rfc.back && rfc.back.references.is_a?(Array)
+          rfc.back.references.each do |refs|
+            next unless refs.reference.is_a?(Array)
+            refs.reference.each do |ref|
+              cleanup_single_reference(ref)
+            end
+            # Nested references
+            if refs.references.is_a?(Array)
+              refs.references.each do |nested_refs|
+                next unless nested_refs.reference.is_a?(Array)
+                nested_refs.reference.each do |ref|
+                  cleanup_single_reference(ref)
+                end
+              end
+            end
+          end
+        end
+
+        def cleanup_single_reference(ref)
+          return unless ref
+          biblio_refcontent_cleanup(ref)
+          biblio_format_cleanup(ref)
+        end
+
+        # NB reject-then-assign, not delete-inside-each: deleting the
+        # current element skips its successor (#302)
+        def biblio_refcontent_cleanup(ref)
+          return unless ref.refcontent.is_a?(Array)
+
+          kept = []
+          ref.refcontent.each do |rc|
+            content = rc.content
+            unless content.is_a?(Array)
+              kept << rc
+              next
+            end
+            val = content.map(&:to_s).join.strip
+            next if val.empty?
+
+            rc.content = [val]
+            kept << rc
+          end
+          ref.refcontent = kept
+        end
+
+        def biblio_format_cleanup(ref)
+          ref.format = [] if ref.format.is_a?(Array)
+        end
+
+        # ── Aside Cleanup ──────────────────────────────────────
+
+        def aside_cleanup(rfc)
+          walk_all_sections(rfc) do |section|
+            cleanup_asides_in_blockquotes(section)
+          end
+        end
+
+        def cleanup_asides_in_blockquotes(section)
+          return unless section.blockquote.is_a?(Array)
+          section.blockquote.each do |bq|
+            next unless bq.t.is_a?(Array)
+            moved_asides = extract_moved_asides(bq, :t)
+            moved_asides.each do |aside|
+              safe_append(section, :aside, aside)
+            end
+          end
+        end
+
+        def extract_moved_asides(container, child_attr)
+          moved = []
+          children = container.public_send(child_attr)
+          return moved unless children.is_a?(Array)
+
+          # Check if any children are Aside elements
+          aside_children = children.select { |c| c.is_a?(Rfcxml::V3::Aside) }
+          return moved if aside_children.empty?
+
+          aside_children.each do |aside|
+            children.delete(aside)
+            moved << aside
+          end
+
+          moved
+        end
+        # (model-side unicode wrapping retired, WS3: it mixed U model
+        # objects into ordered content arrays — serialising as their
+        # inspect strings — and emitted format/ascii attributes the
+        # released path never had. The post-serialisation
+        # Transformer.u_cleanup, N11, covers non-ASCII declaration with
+        # exact old-path parity.)
+        
+
+        # ── Inline Image Cleanup ───────────────────────────────
+
+        def image_cleanup(rfc)
+          return unless @queued_images && !@queued_images.empty?
+
+          walk_all_sections(rfc) do |section|
+            if section.t.is_a?(Array)
+              section.t.each do |t|
+                extract_queued_images(t, section)
+              end
+            end
+            # markers inside list items were orphaned (#296): the
+            # sweep never walked ul/ol li content
+            %i[ul ol].each do |lt|
+              to_array(model_attr(section, lt)).each do |list|
+                to_array(model_attr(list, :li)).each do |li|
+                  to_array(model_attr(li, :t)).each do |t|
+                    extract_queued_images(t, section)
+                  end
+                  extract_queued_images_from_content(li, section)
+                end
+              end
+            end
+          end
+        end
+
+        # li content may carry the marker as a bare string fragment
+        # (inline-paragraph list items), not inside a nested t
+        def extract_queued_images_from_content(elem, section)
+          return unless elem.respond_to?(:content)
+
+          extract_queued_images(elem, section)
+        end
+
+        def extract_queued_images(text_elem, section)
+          content = text_elem.content
+          return unless content.is_a?(Array)
+
+          indices_to_extract = []
+          content.each_with_index do |fragment, i|
+            next unless fragment.is_a?(String)
+            @queued_images.each do |qi|
+              if fragment.include?("[IMAGE #{qi[:number]}]")
+                indices_to_extract << { index: i, image: qi }
+              end
+            end
+          end
+
+          return if indices_to_extract.empty?
+
+          indices_to_extract.each do |item|
+            figure = Rfcxml::V3::Figure.new
+            safe_append(figure, :artwork, item[:image][:artwork])
+            # append_ordered, not safe_append (#296): an untracked
+            # append never serialises when the section carries an
+            # element order — the recovered figure was lost
+            append_ordered(section, :figure, figure)
+
+            content[item[:index]] = content[item[:index]].gsub("[IMAGE #{item[:image][:number]}]", "")
+            @queued_images.delete(item[:image])
+          end
+
+          text_elem.content = content
+        end
+
+      end
+    end
+  end
+end

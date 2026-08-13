@@ -1,0 +1,601 @@
+# Model-coverage ignore ledger (see spec/model_coverage_spec.rb).
+# Generated 2026-08-10 from the WS5c joint-2 audit adjudications;
+# every entry names why the attribute is legitimately unread.
+# OPEN entries are pending fix-wave items: fixing one DELETES it.
+# UNTRIAGED entries await the next adjudication pass.
+Metanorma::BasicDocument::BibData::BibliographicItem:
+  access_location: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  classification: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  copyright: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  edition: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  extent: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  fetched: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  license: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  medium: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  place: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  price: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  validity: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::BasicDocument::DataTypes::FormattedString:
+  variant: "relaton i18n variant; no v3 carrier (parity)"
+Metanorma::Document::Components::AncillaryBlocks::ExampleBlock:
+  permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  subsequence: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::AncillaryBlocks::FigureBlock:
+  audio: "released leg never rendered media (parity; no v3 home)"
+  footnotes: "OPEN metanorma-ietf#293: footnote family"
+  subsequence: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  video: "released leg never rendered media (parity; no v3 home)"
+Metanorma::Document::Components::AncillaryBlocks::FormulaBlock:
+  inequality: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::AncillaryBlocks::SourcecodeBlock:
+  subsequence: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::BibData::BibliographicItem:
+  access_location: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  biblio_tag: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  classification: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  copyright: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  edition: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  extent: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  fetched: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  license: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  medium: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  place: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  price: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  type_attr: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  validity: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Components::Blocks::NoteBlock:
+  type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Blocks::Passthrough:
+  formats: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Blocks::PermissionModel:
+  classification: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  description: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  inherit: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  model: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  obligation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  subject: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+Metanorma::Document::Components::Blocks::RecommendationModel:
+  classification: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  description: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  inherit: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  model: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  obligation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  subject: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+Metanorma::Document::Components::Blocks::RequirementClassification:
+  tag: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+Metanorma::Document::Components::Blocks::RequirementModel:
+  classification: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  description: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  inherit: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  model: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  obligation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  subject: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+Metanorma::Document::Components::ContribMetadata::ContributionElementMetadata:
+  date_time: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  integrity_value: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::ContribMetadata::Hash:
+  algorithm: "authoring provenance (contrib_metadata family); no RFC v3 home"
+Metanorma::Document::Components::ContribMetadata::Signature:
+  algorithm: "authoring provenance (contrib_metadata family); no RFC v3 home"
+  public_key: "authoring provenance (contrib_metadata family); no RFC v3 home"
+  signature: "authoring provenance (contrib_metadata family); no RFC v3 home"
+Metanorma::Document::Components::DataTypes::LocalizedString:
+  variant: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Components::EmptyElements::IndexElement:
+  tertiary: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  to: "adjudicated DELIBERATE (WS5c row 10: date-range ends have no seriesInfo home)"
+Metanorma::Document::Components::EmptyElements::PageBreakElement:
+  orientation: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::IdElements::Audio:
+  altsource: "released leg never rendered media (parity; no v3 home)"
+  longdesc: "released leg never rendered media (parity; no v3 home)"
+Metanorma::Document::Components::IdElements::Image:
+  longdesc: "released leg never rendered media (parity; no v3 home)"
+Metanorma::Document::Components::IdElements::Media:
+  longdesc: "released leg never rendered media (parity; no v3 home)"
+Metanorma::Document::Components::IdElements::Video:
+  altsource: "released leg never rendered media (parity; no v3 home)"
+  longdesc: "released leg never rendered media (parity; no v3 home)"
+Metanorma::Document::Components::Inline::BiblioTagElement:
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::ErefElement:
+  normative: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FmtAnnotationBodyElement:
+  end_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  reviewer: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  start_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  to: "adjudicated DELIBERATE (WS5c row 10: date-range ends have no seriesInfo home)"
+Metanorma::Document::Components::Inline::FmtAnnotationEndElement:
+  start_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FmtAnnotationStartElement:
+  end_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FmtFnLabelElement:
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FmtSourcecodeElement:
+  callout: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FmtTitleElement:
+  depth: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FmtXrefLabelElement:
+  container: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::FnElement:
+  hiddenref: "OPEN metanorma-ietf#293: footnote family"
+  original_reference: "OPEN metanorma-ietf#293: footnote family"
+Metanorma::Document::Components::Inline::LinkElement:
+  style: "OPEN (WS5b A3.4: released derived eref brackets= from link style=; wave batch 2)"
+  update_type: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::LocalizedStringElement:
+  comma: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  conn: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  enum_comma: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Components::Inline::LocalizedStringsElement:
+  localized_string: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Components::Inline::SemxElement:
+  admitted_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  annotation_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  author_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  br_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  callout_annotation_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  concept_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  definition_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  deprecates_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  domain_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  element_attr: "OPEN metanorma-ietf#292/#294: inline coverage family"
+  figure_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  fn_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  formula_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  identifier_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  link_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  modification_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  name_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  preferred_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  source_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  sourcecode_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  stem_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  sub_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  tab_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  title_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  tt_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+  verbal_definition_child: "OPEN metanorma-ietf#292: flattening family (WS5b T3)"
+Metanorma::Document::Components::Inline::SpanElement:
+  callout: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  style: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::StemInlineElement:
+  block: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Inline::XrefElement:
+  nopage: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  nosee: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  pagenumber: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  style: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Lists::DdElement:
+  formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
+  quote: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
+Metanorma::Document::Components::Lists::ListItem:
+  checkedcheckbox: "adjudicated low/design: checkbox li (WS5b A4.12; old output was invalid v3)"
+  label: "no per-li label in v3 (parity)"
+  uncheckedcheckbox: "adjudicated low/design: checkbox li (WS5b A4.12; old output was invalid v3)"
+Metanorma::Document::Components::Lists::OrderedList:
+  display: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  display_directives: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::MultiParagraph::AdmonitionBlock:
+  add: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  block_class: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  contents: "OPEN metanorma-ietf#293: footnote family"
+  del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  footnotes: "OPEN metanorma-ietf#293: footnote family"
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::MultiParagraph::ParagraphsBlock:
+  add: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  contents: "OPEN metanorma-ietf#293: footnote family"
+  del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  footnotes: "OPEN metanorma-ietf#293: footnote family"
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::MultiParagraph::QuoteBlock:
+  add: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  contents: "OPEN metanorma-ietf#293: footnote family"
+  del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  footnotes: "OPEN metanorma-ietf#293: footnote family"
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::MultiParagraph::ReviewBlock:
+  add: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  alignment: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  applies_from: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  applies_to: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  bookmark: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  contents: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  del: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  display: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  footnotes: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  reviewer: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  tab: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+  type_attr: "annotation/review carrier: cref pipeline is a bucket-A model-vintage deferral (#291)"
+Metanorma::Document::Components::Paragraphs::ParagraphBlock:
+  add: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Paragraphs::ParagraphWithFootnote:
+  add: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  del: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  footnotes: "OPEN metanorma-ietf#293: footnote family"
+  tab: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::ReferenceElements::Callout:
+  target_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::ReferenceElements::Citation:
+  bib_item: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  bib_locality_stack: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  display_text: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::ReferenceElements::IndexXrefElement:
+  also: "v3 iref has item/subitem only (parity)"
+  tertiary: "v3 iref has item/subitem only (parity)"
+Metanorma::Document::Components::ReferenceElements::ReferenceToCitationElement:
+  cite_as: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  normative: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::ReferenceElements::SourceOrigin:
+  display_text: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Sections::BasicSection:
+  blocks: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::Document::Components::Sections::ContentSection:
+  blocks: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsections: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::Document::Components::Sections::HierarchicalSection:
+  blocks: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsections: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::Document::Components::Sections::ReferencesSection:
+  blocks: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::Document::Components::Tables::ColGroupElement:
+  col: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Tables::HeaderTableCell:
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
+  valign: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Tables::TableBlock:
+  colgroup: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  summary: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::Tables::TextTableCell:
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  formula: "OPEN metanorma-ietf#294/#295/#297: container/coverage family (WS5b T4)"
+  valign: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::TextElements::RubyElement:
+  ruby_paren: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  ruby_text: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::Document::Components::TextElements::StemElement:
+  block_attr: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  number_format: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Components::TextElements::TextElementType:
+  elements: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::Document::Relaton::Address:
+  formatted_address_attr: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::Affiliation:
+  description: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::BibliographicDate:
+  to: "adjudicated DELIBERATE (WS5c row 10: date-range ends have no seriesInfo home)"
+Metanorma::Document::Relaton::ContributorRole:
+  description: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::CopyrightAssociation:
+  owner: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  to: "adjudicated DELIBERATE (WS5c row 10: date-range ends have no seriesInfo home)"
+Metanorma::Document::Relaton::DocumentRelation:
+  bib_source_locality: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  description: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::DocumentStatus:
+  iteration: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  stage_abbreviation: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  substage: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  substage_abbreviation: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::FullName:
+  addition: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  prefix: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  variant: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::KeywordType:
+  taxon: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  vocabid: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::MediumType:
+  carrier: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  form: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  genre: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  scale: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::OrgSubdivision:
+  identifier: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  logo: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  subtype: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::Organization:
+  identifier: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  logo: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  variant: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  variant_subdivision: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::Person:
+  contact: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  identifier: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::PlaceType:
+  region_attr: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::PriceType:
+  currency: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::RegionElement:
+  iso: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::SeriesType:
+  formattedref: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  partnumber: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  place: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  run: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  to: "adjudicated DELIBERATE (WS5c row 10: date-range ends have no seriesInfo home)"
+Metanorma::Document::Relaton::TypedTitleString:
+  variant: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::ValidityType:
+  revision: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  validity_begins: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  validity_ends: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::Document::Relaton::VersionInfo:
+  draft: "adjudicated DELIBERATE (WS5c row 10: bibdata version metadata deliberately dodged)"
+  revision_date: "adjudicated DELIBERATE (WS5c row 10: bibdata version metadata deliberately dodged)"
+Metanorma::IetfDocument::Metadata::IetfBibDataExtensionType:
+  flavor: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::IetfDocument::Metadata::IetfBibliographicItem:
+  access_location: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  biblio_tag: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  classification: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  copyright: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  edition: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  extent: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  fetched: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  license: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  medium: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  place: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  price: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  type_attr: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+  validity: "relaton metadata; no RFC v3 carrier (parity with released leg)"
+Metanorma::IetfDocument::Root:
+  boilerplate: "xml2rfc generates RFC boilerplate from ipr= (released leg: empty #boilerplate)"
+  colophon: "no RFC v3 home; released leg did not render (parity)"
+  flavor: "register dispatch, not content"
+  indexsect: "xml2rfc generates the index from iref (parity)"
+  localized_strings: "i18n scaffolding, render-time only"
+  metanorma_extension: "presentation-metadata channel; cref render gate reads bibdata ext instead (#291 cref deferral)"
+  term_sources: "root-level termdocsource provenance; not rendered on either leg"
+Metanorma::IetfDocument::Sections::IetfAnnexSection:
+  appendix: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  floating_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  pagebreak: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::IetfDocument::Sections::IetfClauseSection:
+  amend: "adjudicated N-A: amend family (WS5c row 12)"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  floating_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  form: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  pagebreak: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::IetfDocument::Sections::IetfContentSection:
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::IetfDocument::Sections::IetfSections:
+  floating_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::AnnotationContainer:
+  annotations: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::StandardDocument::AnnotationContainer::Annotation:
+  reviewer: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  to: "adjudicated DELIBERATE (WS5c row 10: date-range ends have no seriesInfo home)"
+Metanorma::StandardDocument::Blocks::AmendBlock:
+  auto_number: "adjudicated N-A: amend family (WS5c row 12)"
+  change: "adjudicated N-A: amend family (WS5c row 12)"
+  description: "adjudicated N-A: amend family (WS5c row 12)"
+  new_content: "adjudicated N-A: amend family (WS5c row 12)"
+  path: "adjudicated N-A: amend family (WS5c row 12)"
+  path_end: "adjudicated N-A: amend family (WS5c row 12)"
+  position: "adjudicated N-A: amend family (WS5c row 12)"
+  tag: "adjudicated N-A: amend family (WS5c row 12)"
+Metanorma::StandardDocument::Blocks::Form:
+  action: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  input: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  label: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  tag: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardAdmonitionBlock:
+  add: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  block_class: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  contents: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  cover_page: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  del: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  footnotes: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  notag: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  tab: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardExampleBlock:
+  permission: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  recommendation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  requirement: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardFigureBlock:
+  audio: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  footnotes: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  video: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardFormulaBlock:
+  inequality: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardParagraphBlock:
+  add: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  del: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  tab: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardQuoteBlock:
+  add: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  alignment: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  contents: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  del: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  footnotes: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  tab: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  type_attr: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardSourcecodeBlock:
+  linenums: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Blocks::StandardTableBlock:
+  colgroup: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  plain: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  style: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsequence: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  summary: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Boilerplate:
+  copyright_statement: "xml2rfc generates boilerplate from ipr= (parity)"
+  feedback_statement: "xml2rfc generates boilerplate from ipr= (parity)"
+  legal_statement: "xml2rfc generates boilerplate from ipr= (parity)"
+  license_statement: "xml2rfc generates boilerplate from ipr= (parity)"
+Metanorma::StandardDocument::Elements::Input:
+  checked: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  disabled: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  maxlength: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  minlength: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  readonly: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Elements::Select:
+  disabled: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  multiple: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  option: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Elements::StandardPageBreakElement:
+  orientation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Elements::Textarea:
+  cols: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  rows: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Lists::StandardUnorderedList:
+  display: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  display_directives: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Refs::ReferenceToTermbase:
+  base: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+Metanorma::StandardDocument::Refs::StandocReferenceToCitationElement:
+  case: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  cite_as: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  droploc: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  normative: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  style: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Refs::StandocReferenceToIdElement:
+  case: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  display_text: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  droploc: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  label: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  style: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  to: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  xref_target: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::Abstract:
+  inline_header: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  obligation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  variant_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::Acknowledgements:
+  inline_header: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  obligation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  variant_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::ClauseHierarchicalSection:
+  amend: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  bookmark: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  floating_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  form: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  inline_header: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  obligation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  pagebreak: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  permission: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  recommendation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  requirement: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  subsections: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  variant_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::ClauseSection:
+  amend: "adjudicated N-A: amend family (WS5c row 12)"
+  bookmark: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  floating_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  form: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  pagebreak: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  permission: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  recommendation: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  requirement: "OPEN metanorma-ietf#299 + metanorma-document#46: reqt family (model-blocked)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::Sections::ContentSection:
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::Sections::DefinitionSection:
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::Sections::FloatingTitle:
+  depth: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  tag: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::Foreword:
+  inline_header: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  obligation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  variant_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::Introduction:
+  inline_header: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  obligation: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+  variant_title: "UNTRIAGED: lazily-loaded model class (suite-order sweep); adjudicate on next ledger pass"
+Metanorma::StandardDocument::Sections::StandardReferencesSection:
+  amend: "adjudicated N-A: amend family (WS5c row 12)"
+  blocks: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  branch_number: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  normative: "UNTRIAGED: see docs/ws5c/c2-model-vs-transformer.md (+ session diff.txt); adjudicate on next ledger pass"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::Sections::StandardSection:
+  amend: "adjudicated N-A: amend family (WS5c row 12)"
+  blocks: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  branch_number: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::Sections::TermsSection:
+  inline_header: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  obligation: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+  variant_title: "metanorma-ism / generic collection; no v3 home or walked via typed attrs (parity)"
+Metanorma::StandardDocument::Terms::Designation:
+  absent: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+  geographic_area: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+  sources: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+Metanorma::StandardDocument::Terms::NonVerbalRepresentation:
+  formula: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+  sources: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+Metanorma::StandardDocument::Terms::RelatedTerm:
+  termref: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+Metanorma::StandardDocument::Terms::Term:
+  subject: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+  tag: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+  usage_info: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+Metanorma::StandardDocument::Terms::TermDefinition:
+  nonverbalrepresentation: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+Metanorma::StandardDocument::Terms::TermExpression:
+  abbreviation_type: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"
+  usage: "OPEN metanorma-ietf#300 or parity per WS5b/WS5c terms adjudication (see docs/ws5c)"

@@ -1,0 +1,124 @@
+= WS2 discrepancy log — old path vs new (B) pipeline
+:toc:
+
+Produced by `rake compare:rfc` (`tools/compare_old_new.rb`) over the
+post-release baseline corpus (`ws1b-postrelease-baselines/`:
+`rfc-3339`, `example`, `antioch`; antioch compared via the symmetric
+non-RFC-7996 remote-SVG elision on both legs). First full run
+2026-07-26; artefacts under `tmp/compare/<doc>/`.
+
+Classification: *A* new-transformer bug (becomes a fix task) · *B*
+legitimate improvement / agreed decision · *C* old-path bug the new
+path fixes · *D* cosmetic. Severity is nit-derived per the WS2 rules.
+
+== Headline
+
+* All three documents render on both legs, xml2rfc exit 0.
+* Nit balance: rfc-3339 +1 warning (one more long reference line);
+  example −1 warning (the old path's redundant `ascii=` attribute is
+  gone); antioch ±0.
+* Text-diff sizes: 58 / 22 / 58 changed lines, dominated by C and D
+  classes. Two A-class items surfaced (below).
+
+== A — new-transformer bugs (fix tasks, by severity)
+
+*ALL THREE FIXED 2026-07-27* (suite 225/0; harness re-run: nit
+balance 0 added / 1 removed corpus-wide; document fixtures unchanged
+byte-for-byte):
+
+* A-1: code text is normalised to character data at construction
+  (`transform_sourcecode`: `<br/>` → newline, recognisable tags drop,
+  `CGI.unescapeHTML` decodes only well-formed entities so a literal
+  `&caerbannog` survives both schema vintages). The post-hoc
+  `sourcecode_cleanup` pass — whose character-level tag stripper ate
+  genuine `<` — is retired.
+* A-2: the committee contributor (an organization carrying a
+  Workgroup subdivision) is excluded from front authors, mirroring
+  the released `front.rb#author`; the subdivision match in
+  `build_workgroups` is now case-insensitive, which also restored
+  the missing `<workgroup>` on rfc-3339.
+* A-3: refcontent suppresses identifiers that echo the reference
+  anchor (case-insensitively) and typeless citation-label
+  docidentifiers ("Grail"), keeping both only in the 81f7bc1 orphan
+  fallback where the reference has no other visible text.
+
+[cols="1,3,8", options="header"]
+|===
+| # | Where | Finding
+
+| A-1 | antioch sourcecode | Ampersands in sourcecode/artwork content
+render as `&amp;` in the text output (`LocateCreature(&amp;caerbannog,
+…)`) — the content is escaped once too often on the way into RFC XML.
+(The old path has its own distinct bug on the same material: it
+renders a literal `&#x26;`.) Severity: content corruption in rendered
+code, no nit raised.
+
+| A-2 | rfc-3339 masthead | A stray `IETF` line appears in the
+right-hand masthead column: the publisher organisation still leaks
+into the front authors (the N5 residue — the reference-line half of
+N5 is fixed, see C-4). Severity: visible front-page artefact, no nit.
+
+| A-3 | rfc-3339 `[ZELLER]`, antioch `[GRAIL]` | `refcontent` falls
+back to a docidentifier that merely repeats the reference anchor
+("…, ZELLER." / "…, Grail."). Suppress the fallback when it matches
+the anchor. Severity: cosmetic noise in references.
+|===
+
+== B — agreed decisions visible in the diff
+
+* NOTE labels render unnumbered (`NOTE:` for `NOTE 1:`/`NOTE 2:`) —
+  the #233 concession (2026-07-23). The autonum decision remains
+  available in presentation XML; the IETF flavour does not render it.
+
+== C — old-path bugs the new path fixes
+
+[cols="1,3,8", options="header"]
+|===
+| # | Where | Finding
+
+| C-1 | example §2 | The old path renders sourcecode as "(Artwork
+only available as RUBY: …)" — the Ruby snippet is elided from the
+text output entirely. The new path renders the code.
+
+| C-2 | example `[RFC7253]` | Old emits a broken empty `DOI ,`; new
+emits `RFC 7253, DOI 10.17487/RFC7253`.
+
+| C-3 | rfc-3339 `[IMAIL]`, `[HOST-REQ]` | Old assigns the wrong
+series: `BCP 11` / `BCP 3` where RFC 822 is STD 11 and RFC 1123 is
+STD 3. New renders STD (bibitem.series data mapping, N9).
+
+| C-4 | antioch `[RFC2119]`, `[RFC2635]`, `[RFC7990]` | Old renders
+the publisher (`IETF,` / `IAB,`) inside the author position of
+reference lines; new drops it. Old also drops the FYI series; new
+restores `FYI 35` (N9).
+
+| C-5 | rfc-3339 `[ABNF]` | Author order restored: old "Overell, P.,
+IETF, and D. Crocker"; new "Crocker, D., Overell, P., …" (Crocker is
+the first author of RFC 2234).
+
+| C-6 | example author block | Full forename ("David Waitzman") for
+the old path's "D Waitzman".
+
+| C-7 | example `[ISO.IEC.10118-3]` | Reference carries its
+identifier (`ISO/IEC 10118-3`) where old had a bare `ISO/IEC,`.
+|===
+
+== D — cosmetic
+
+* Render-date and derived expiry/page-footer differences (the legs
+  are rendered on different days; the XML surface normalises dates,
+  the text surface does not).
+* `RFC n` appears twice in some reference lines (refcontent +
+  seriesInfo carry the same identifier).
+* Reference line-wrap shifts (`ISO 8601:1988` breaking differently)
+  as a consequence of the richer identifier content; also the source
+  of rfc-3339's +1 long-line warning.
+
+== Verdict
+
+The old and new paths produce the same documents. Beyond the two
+A-class fix tasks and one cosmetic-noise item, every delta is either
+an agreed decision (B), an old-path defect the new path corrects (C),
+or dating/wrapping cosmetics (D). The "diffs are minor" claim is
+accepted *with* the A-list as recorded fix tasks, per the WS2
+acceptance rule.

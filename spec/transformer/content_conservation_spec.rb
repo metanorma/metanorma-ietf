@@ -1,0 +1,200 @@
+# frozen_string_literal: true
+
+require "spec_helper"
+require "nokogiri"
+
+# Content-conservation invariant: every content-bearing element in the
+# Semantic XML input must have a non-blank counterpart in the RFC XML
+# output. Guards the silent-loss defect class (empty-but-truthy collection
+# reads): see docs/truthy-collection-audit.md and the WS1b findings.
+#
+# Known-open defects are encoded as `pending`: when a fix lands and the
+# example starts passing, RSpec fails the run until the pending marker is
+# removed — the defect ledger and the suite cannot drift apart.
+RSpec.describe Metanorma::Ietf::Transformer do
+  describe "content conservation (current-schema Semantic XML)" do
+    let(:input_xml) do
+      File.read("spec/fixtures/transformer/input/rfc3339-current.xml")
+    end
+    let(:input) do
+      doc = Nokogiri::XML(input_xml)
+      doc.remove_namespaces!
+      doc
+    end
+    let(:output) do
+      Nokogiri::XML(described_class.convert(input_xml))
+    end
+
+    it "conserves sourcecode content" do
+      in_codes = input.xpath("//sourcecode").map { |n| n.text.strip }
+        .reject(&:empty?)
+      out_codes = output.xpath("//sourcecode").map { |n| n.text.strip }
+      expect(out_codes.size).to eq(in_codes.size)
+      expect(out_codes.reject(&:empty?).size).to eq(in_codes.size)
+    end
+
+    it "conserves bibliography entries" do
+      # direct children only: relaton entries nest relation bibitems inside
+      in_refs = input.xpath("//references/bibitem")
+      out_refs = output.xpath("//references/reference")
+      expect(out_refs.size).to eq(in_refs.size)
+    end
+
+    it "conserves document keywords" do
+      # N8 fixed (cd9674c): document-level bibdata keywords only —
+      # bibliography bibitems carry their own relaton keywords, which
+      # RFC XML has no slot for. The corpus fixture has no
+      # document-level keywords (RFC 3339 predates them), so this
+      # guard runs on a synthetic document (always-on per user
+      # directive 2026-08-01; the A-1 synthetic guard is the
+      # precedent).
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <bibdata>
+            <title language="en" format="text/plain" type="main">T</title>
+            <docidentifier>draft-t-01</docidentifier>
+            <keyword>alpha</keyword>
+            <keyword>bravo</keyword>
+            <ext><ipr>trust200902</ipr></ext>
+          </bibdata>
+          <sections><clause id="c1"><title>C</title><p>A</p></clause></sections>
+        </metanorma>
+      XML
+      out = Nokogiri::XML(described_class.convert(synthetic))
+      out_kw = out.xpath("//front/keyword").map { |n| n.text.strip }
+      expect(out_kw).to match_array(%w[alpha bravo])
+    end
+
+    it "conserves the workgroup" do
+      # N8 fixed (cd9674c). The fixture carries the workgroup in the
+      # committee-contributor shape (A-2: organization with a
+      # Workgroup subdivision), which the previous editorialgroup
+      # XPath missed — the guard self-skipped although the construct
+      # was present (always-on per user directive 2026-08-01)
+      in_wg = input.xpath("//bibdata//subdivision[@type='Workgroup' " \
+                          "or @type='workgroup']/name | " \
+                          "//bibdata//editorialgroup//name | " \
+                          "//bibdata//workgroup")
+        .map { |n| n.text.strip }.reject(&:empty?)
+      expect(in_wg).not_to be_empty
+      out_wg = output.xpath("//front/workgroup").map { |n| n.text.strip }
+      expect(out_wg).to include(in_wg.first)
+    end
+
+    it "renders code text as character data (WS2 A-1, synthetic)" do
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <sections><clause id="c1"><title>C</title>
+            <sourcecode id="s1" lang="c"><body>x = a &amp; b; y = 1 &lt; 2;<br/>z = q &gt;&gt; 3;</body></sourcecode>
+          </clause></sections>
+        </metanorma>
+      XML
+      out = described_class.convert(synthetic)
+      code = out[%r{<sourcecode[^>]*>.*?</sourcecode>}m]
+      # single-escaped entities: no &amp;amp; double escape, no eaten
+      # "<", and <br/> became a newline
+      expect(code).to include("x = a &amp; b; y = 1 &lt; 2;\nz = q &gt;&gt; 3;")
+    end
+
+    it "emits front keywords and workgroup (N8, synthetic)" do
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <bibdata type="standard">
+            <title language="en" format="text/plain" type="main">K</title>
+            <docidentifier>9999</docidentifier><docnumber>9999</docnumber>
+            <language>en</language><script>Latn</script>
+            <status><stage>published</stage></status>
+            <keyword>timestamps</keyword>
+            <keyword>calendars</keyword>
+            <ext>
+              <doctype>rfc</doctype>
+              <editorialgroup><workgroup>Network Working Group</workgroup></editorialgroup>
+              <ipr>trust200902</ipr>
+            </ext>
+          </bibdata>
+          <sections>
+            <clause id="c1"><title>One</title><p id="p1">Text.</p></clause>
+          </sections>
+        </metanorma>
+      XML
+      out = Nokogiri::XML(described_class.convert(synthetic))
+      expect(out.xpath("//front/keyword").map(&:text))
+        .to match_array(%w[timestamps calendars])
+      expect(out.xpath("//front/workgroup").map(&:text))
+        .to eq ["Network Working Group"]
+    end
+
+    it "conserves link URLs in formattedrefs" do
+      # N4: the URL was silently deleted, rendering "<>."
+      in_links = input.xpath("//references//bibitem//formattedref//link")
+        .map { |n| n["target"] }.compact.reject(&:empty?)
+      skip "no formattedref links in fixture" if in_links.empty?
+      text = output.to_xml
+      in_links.each { |url| expect(text).to include(url) }
+    end
+
+    it "renders the compound main title for multi-part references" do
+      # N10: the first title (the intro part) truncated ISO-style titles
+      expect(output.to_xml).to include(
+        "Data elements and interchange formats - Information " \
+        "interchange - Representation of dates and times",
+      )
+    end
+
+    it "declares non-ASCII text with <u>" do
+      # N11: parity with the released path's u_cleanup
+      expect(output.xpath("//u").map(&:text)).to include("©")
+    end
+
+    it "keeps inline citations interleaved in list items" do
+      # N7: flattening a list item's single t displaced its xrefs to
+      # the end of the item, leaving "[] ... .[NTP]"
+      li = output.xpath("//li").find do |l|
+        l.text.include?("Network Time Protocol")
+      end
+      expect(li).not_to be_nil
+      expect(li.to_xml).to include('[<xref target="NTP"/>]')
+    end
+
+    it "conserves user-authored anchors" do
+      # N2 mapping half fixed (anchor_for sweep); management half is the
+      # presentation layer's per the architecture decision
+      in_anchors = input.xpath("//*[@anchor]").map { |n| n["anchor"] }.uniq
+      skip "no user anchors in fixture" if in_anchors.empty?
+      out_anchors = output.xpath("//*[@anchor]").map { |n| n["anchor"] }
+      missing = in_anchors - out_anchors
+      expect(missing).to be_empty
+    end
+
+    it "conserves formulas" do
+      # the corpus fixture carries no formulas (N13 waited for a
+      # formula-bearing fixture); synthetic instead, always-on per
+      # user directive 2026-08-01. Conservation-level assertion: the
+      # formula's MathML content must surface in the output text.
+      synthetic = <<~XML
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+          <bibdata>
+            <title language="en" format="text/plain" type="main">T</title>
+            <docidentifier>draft-t-01</docidentifier>
+            <ext><ipr>trust200902</ipr></ext>
+          </bibdata>
+          <sections><clause id="c1"><title>C</title>
+            <formula id="f1"><stem type="MathML" block="true">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>y</mi><mo>=</mo><mn>42</mn>
+              </math>
+            </stem></formula>
+          </clause></sections>
+        </metanorma>
+      XML
+      out = described_class.convert(synthetic)
+      expect(Nokogiri::XML(out).text).to include("42")
+    end
+
+    it "emits a non-blank abstract" do
+      skip "no abstract in fixture" if input.xpath("//preface/abstract |
+        //bibdata/abstract").empty?
+      expect(output.xpath("//front/abstract").text.strip).not_to be_empty
+    end
+  end
+end

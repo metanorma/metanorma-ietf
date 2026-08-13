@@ -1,0 +1,251 @@
+# frozen_string_literal: true
+
+require "sterile"
+require "htmlentities"
+
+module Metanorma
+  module Ietf
+    module Transformer
+      # Shared utilities for both forward and reverse transformers.
+      #
+      # Provides text extraction, ID normalization, collection helpers,
+      # and organization building that both directions need.
+      module Base
+        public
+
+        # Types that use .text for their primary content
+        TEXT_BASED_TYPES = [
+          Metanorma::Document::Components::Inline::TitleWithAnnotationElement,
+          Metanorma::Document::Components::Inline::EmRawElement,
+          Metanorma::Document::Components::Inline::StrongRawElement,
+          Metanorma::Document::Components::Inline::SupElement,
+          Metanorma::Document::Components::Inline::TtElement,
+          Metanorma::Document::Components::Inline::Bcp14Element,
+          Metanorma::Document::Components::Inline::SpanElement,
+          Metanorma::Document::Components::Inline::SmallCapElement,
+          Metanorma::Document::Components::Inline::NameWithIdElement,
+          Metanorma::Document::Components::Inline::ErefElement,
+          Metanorma::Document::Components::Inline::XrefElement,
+          Metanorma::Document::Components::Inline::FmtTitleElement,
+          Metanorma::Document::Components::Inline::FmtXrefLabelElement,
+          Metanorma::Document::Components::Inline::FmtNameElement,
+          Metanorma::Document::Components::Inline::FmtFnLabelElement,
+          Metanorma::Document::Components::Inline::FmtSourcecodeElement,
+          Metanorma::Document::Components::Inline::FmtConceptElement,
+          Metanorma::Document::Components::Inline::FmtXrefElement,
+          Metanorma::Document::Components::Inline::SemxElement,
+          Metanorma::Document::Components::Inline::BiblioTagElement,
+          Metanorma::Document::Components::Inline::DisplayTextElement,
+          Metanorma::Document::Components::Inline::VariantTitleElement,
+        ].freeze
+
+        # Render a mixed-content value to plain text in fragment order.
+        # Unlike ls_text (which reads only the string fragments), this
+        # walks each_mixed_content, so element fragments contribute:
+        # links render as their text, or as their target URL when bare
+        # (N4 — the URL was silently deleted); other elements fall back
+        # to ls_text.
+        def mixed_text(obj)
+          return ls_text(obj) unless obj.respond_to?(:each_mixed_content)
+
+          out = +""
+          obj.each_mixed_content do |frag|
+            out << if frag.is_a?(String)
+                     frag
+                   elsif frag.is_a?(Metanorma::Document::Components::Inline::LinkElement)
+                     text = frag.respond_to?(:value) && ls_text(frag.value)
+                     text && !text.strip.empty? ? text : frag.target.to_s
+                   else
+                     ls_text(frag).to_s
+                   end
+          end
+          out
+        end
+
+        # Extract plain text from a metanorma-document value.
+        # Handles LocalizedString, FormattedString, inline elements, arrays.
+        def ls_text(obj)
+          return nil unless obj
+          return obj if obj.is_a?(String)
+          return obj.map { |o| ls_text(o) }.compact.join if obj.is_a?(Array)
+
+          if obj.is_a?(Metanorma::Document::Components::DataTypes::LocalizedString) ||
+             obj.is_a?(Metanorma::Document::Components::DataTypes::FormattedString)
+            val = obj.value
+            return val.is_a?(Array) ? val.join : val.to_s
+          end
+
+          if obj.is_a?(Metanorma::Document::Relaton::DocumentIdentifier)
+            return obj.id.to_s
+          end
+
+          if TEXT_BASED_TYPES.any? { |t| obj.is_a?(t) }
+            t = obj.text
+            return t.is_a?(Array) ? t.join : t.to_s
+          end
+
+          # respond_to? guards: model vintages differ in which carrier
+          # they map (WS3 — StandardDocument::Terms elements map .text
+          # only; a bare call to the other raises)
+          c = obj.respond_to?(:content) ? obj.content : nil
+          return c.is_a?(Array) ? c.join : c.to_s if c
+
+          t = obj.respond_to?(:text) ? obj.text : nil
+          return t.is_a?(Array) ? t.join : t.to_s if t
+
+          if obj.respond_to?(:each_mixed_content)
+            out = +""
+            obj.each_mixed_content do |f|
+              out << (f.is_a?(String) ? f : ls_text(f).to_s)
+            end
+            return out
+          end
+
+          obj.to_s
+        end
+
+        def extract_text(node)
+          return "" unless node
+          result = ls_text(node)
+          result.is_a?(String) ? result.strip : ""
+        end
+
+        # Get the anchor/id for a node
+        # The presentation stage promotes user-authored anchors to id=
+        # (GUIDs remain where no anchor was authored), so the effective
+        # anchor IS the id; the former anchor-preference is retired
+        # with the presentation default. semx-id stays as fallback:
+        # for some constructs (e.g. verbal-definition paragraphs) the
+        # layer moves the GUID to semx-id and leaves id empty (WS3).
+        def anchor_for(node)
+          %i[id semx_id].each do |m|
+            next unless node.respond_to?(m)
+
+            v = node.public_send(m)
+            return v if v && !v.to_s.strip.empty?
+          end
+          nil
+        end
+
+        # respond_to?-guarded model read: vintages differ in which
+        # collections they map, and an unmapped accessor raises (WS3)
+        def model_attr(node, name)
+          node.respond_to?(name) ? node.public_send(name) : nil
+        end
+
+        # Sanitize an id to be a valid NCName (for XML anchors)
+        def to_ncname(id)
+          return nil unless id
+          id = id.to_s.strip
+          return nil if id.empty?
+          id = "_" + id unless id.match?(/\A[a-zA-Z_]/)
+          id.gsub(/[^a-zA-Z0-9._\-]/, "_")
+        end
+
+        # Coerce a value into an Array.
+        def to_array(val)
+          return [] if val.nil?
+          val.is_a?(Array) ? val : [val]
+        end
+
+        # Build an Rfcxml::V3::Organization from a metanorma-document organization node.
+        def build_rfc_organization(org_node)
+          org = Rfcxml::V3::Organization.new
+          name_text = extract_text(to_array(org_node.name).first)
+          org.content = [name_text] if name_text && !name_text.empty?
+
+          abbrev = org_node.abbreviation
+          if abbrev
+            abbrev_text = abbrev.to_s.strip
+            if abbrev_text && !abbrev_text.empty?
+              org.abbrev = abbrev_text
+              ascii_ab = Sterile.transliterate(abbrev_text)
+              org.ascii_abbrev = ascii_ab unless ascii_ab == abbrev_text
+            end
+          end
+
+          if name_text && !name_text.empty?
+            ascii = Sterile.transliterate(name_text)
+            org.ascii = ascii unless ascii == name_text
+          end
+
+          org
+        end
+
+        # Build a Metanorma::Document::Relaton::Organization from an rfcxml Organization.
+        def build_mn_organization(rfc_org)
+          org = Metanorma::Document::Relaton::Organization.new
+          name_text = extract_rfc_text(rfc_org)
+          if name_text && !name_text.empty?
+            ls = Metanorma::Document::Relaton::LocalizedName.new(
+              content: [name_text],
+            )
+            org.name = [ls]
+          end
+          org.abbreviation = rfc_org.abbrev if rfc_org.abbrev && !rfc_org.abbrev.to_s.empty?
+          org
+        end
+
+        # Strip CDATA wrappers that the rfcxml parser preserves in artwork content.
+        def strip_cdata(text)
+          return text unless text.is_a?(String)
+          text.gsub(/\A<!\[CDATA\[/, "").gsub(/\]\]>\z/, "")
+        end
+
+        # Extract plain text from an rfcxml model object.
+        def extract_rfc_text(node)
+          return "" unless node
+          return node.to_s.strip if node.is_a?(String)
+          return node.map { |n| extract_rfc_text(n) }.join if node.is_a?(Array)
+
+          content = node.content
+          if content
+            return content.is_a?(Array) ? content.map(&:to_s).join.strip : content.to_s.strip
+          end
+
+          text = node.text
+          if text
+            return text.is_a?(Array) ? text.map(&:to_s).join.strip : text.to_s.strip
+          end
+
+          node.to_s.strip
+        end
+
+        # Extract all text content from a mixed-content rfcxml node,
+        # walking inline elements for their text.
+        def extract_rfc_mixed_text(node)
+          return "" unless node
+          return node.to_s if node.is_a?(String)
+          return node.map { |n| extract_rfc_mixed_text(n) }.join if node.is_a?(Array)
+
+          # For nodes with element_order (mixed content), walk the order
+          if node.element_order.is_a?(Array) && !node.element_order.empty?
+            parts = []
+            node.element_order.each_with_index do |entry, idx|
+              if entry.text?
+                parts << (entry.text_content || "")
+              elsif entry.element?
+                # Find the corresponding child element(s)
+                attr_name = entry.name.to_sym
+                children = node.public_send(attr_name)
+                children = [children] unless children.is_a?(Array)
+                child = children.is_a?(Array) ? children[idx] : children
+                if child
+                  parts << extract_rfc_mixed_text(child)
+                end
+              end
+            end
+            return parts.join.strip
+          end
+
+          # Fallback: concatenate content and text
+          c = node.content
+          c = c.is_a?(Array) ? c.join : c.to_s if c
+          return c.strip if c && !c.strip.empty?
+
+          ""
+        end
+      end
+    end
+  end
+end
