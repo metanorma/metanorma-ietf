@@ -575,9 +575,10 @@ RSpec.describe "IETF inline rendering (WS3)" do
               <front>
                 <title>Cereals and cereal products</title>
                 <author>
-                  <organization abbrev="ISO">International Organization for Standardization</organization>
+                  <organization abbrev="ISO" ascii="International Organization for Standardization">International Organization for Standardization</organization>
                 </author>
               </front>
+              <refcontent>ISO 712</refcontent>
             </reference>
           </references>
         </back>
@@ -804,7 +805,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
               <front>
                 <title>Cereals and cereal products</title>
                 <author>
-                  <organization>International Organization for Standardization</organization>
+                  <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                 </author>
               </front>
               <refcontent>ISO 712</refcontent>

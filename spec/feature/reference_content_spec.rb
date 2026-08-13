@@ -4,6 +4,11 @@ require "spec_helper"
 # the item-6 precedence as adjudicated 2026-08-11: a formattedref is
 # the full rendered citation and wins over a co-present title.
 RSpec.describe "IETF reference content (#301)" do
+  # reference_export: false — these examples spec the INTERNAL
+  # renderer, which since the relaton-bib#125 adoption (2026-08-13)
+  # is the fallback lane (presentation-free runs, source-less
+  # bibitems, exporter errors); the exporter lane has its own example
+  # below and the relaton-bib corpus spec (their #126)
   def biblio_convert(bibitems)
     input = <<~INPUT
       #{BLANK_HDR}
@@ -13,7 +18,9 @@ RSpec.describe "IETF reference content (#301)" do
       </references></bibliography>
       </iso-standard>
     INPUT
-    strip_guid(feature_convert(input))
+    strip_guid(Metanorma::Ietf::Transformer.convert(
+                 input, reference_export: false,
+               ))
   end
 
   it "excludes hidden bibitems" do
@@ -54,6 +61,28 @@ RSpec.describe "IETF reference content (#301)" do
     B
     expect(out).to include("<refcontent>ISO 2002, IEEE 802.2002</refcontent>")
     expect(out).not_to include("978-0-000-00000-0")
+  end
+
+  it "renders references through the relaton-bib v3 exporter by default" do
+    input = <<~INPUT
+      #{BLANK_HDR}
+      <sections><clause id="c1"><title>Body</title><p id="p1">T.</p></clause></sections>
+      <bibliography><references id="R1" normative="true"><title>Normative References</title>
+      <bibitem id="EXP" type="standard"><title>Exported Title</title>
+      <docidentifier type="W3C">W3C EXP</docidentifier>
+      <docidentifier type="metanorma-ordinal">[9]</docidentifier>
+      <date type="published"><on>2019-03</on></date></bibitem>
+      </references></bibliography>
+      </iso-standard>
+    INPUT
+    out = strip_guid(feature_convert(input))
+    # the exporter's signature shape: seriesInfo/refcontent inside
+    # front is not asserted here — the markers are the exporter date
+    # rendering and the ordinal identifier WE strip pre-export
+    expect(out).to match(%r{<reference anchor="EXP">})
+    expect(out).to include("<refcontent>W3C EXP</refcontent>")
+    expect(out).not_to include("[9]")
+    expect(out).to match(/<date month="March" year="2019"\/>/)
   end
 
   it "lets a formattedref win over a co-present title" do

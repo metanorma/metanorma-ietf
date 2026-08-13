@@ -195,10 +195,16 @@ are used in a tactical environment.<xref target="RFC7253"/>, <xref target="ISO.I
         <front>
           <title>IT Security techniques — Hash-functions — Part 3: Dedicated hash-functions</title>
           <author>
-            <organization abbrev="ISO">International Organization for Standardization</organization>
+            <organization abbrev="ISO" ascii="International Organization for Standardization">International Organization for Standardization</organization>
+            <address>
+              <uri>www.iso.org</uri>
+            </address>
           </author>
           <author>
-            <organization abbrev="IEC">International Electrotechnical Commission</organization>
+            <organization abbrev="IEC" ascii="International Electrotechnical Commission">International Electrotechnical Commission</organization>
+            <address>
+              <uri>www.iec.ch</uri>
+            </address>
           </author>
         </front>
         <refcontent>ISO/IEC 10118-3</refcontent>
@@ -209,15 +215,19 @@ are used in a tactical environment.<xref target="RFC7253"/>, <xref target="ISO.I
       <reference anchor="RFC7253" target="https://www.rfc-editor.org/info/rfc7253">
         <front>
           <title>The OCB Authenticated-Encryption Algorithm</title>
-          <author fullname="T. Krovetz"/>
-          <author fullname="P. Rogaway"/>
+          <seriesInfo name="DOI" value="10.17487/RFC7253"/>
+          <seriesInfo name="RFC" value="7253"/>
+          <author fullname="T. Krovetz" asciiFullname="T. Krovetz">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
+          <author fullname="P. Rogaway" asciiFullname="P. Rogaway">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
           <date month="May" year="2014"/>
           <abstract>
             <t>This document specifies OCB, a shared-key blockcipher-based encryption scheme that provides confidentiality and authenticity for plaintexts and authenticity for associated data.  This document is a product of the Crypto Forum Research Group (CFRG).</t>
           </abstract>
         </front>
-        <seriesInfo name="DOI" value="10.17487/RFC7253"/>
-        <seriesInfo name="RFC" value="7253"/>
       </reference>
     </references>
   </back>

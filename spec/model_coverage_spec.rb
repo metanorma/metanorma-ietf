@@ -159,6 +159,11 @@ RSpec.describe "transformer model coverage" do
       "by design: pre-presentation authored-formattedref side-channel " \
       "(#301 item 6), defined per-instance via " \
       "define_singleton_method (transformer.rb)",
+    "recovered_bibitem_sources" =>
+      "by design: pre-presentation raw-bibitem side-channel feeding " \
+      "the relaton-bib v3 exporter (relaton-bib#125 adoption), " \
+      "defined per-instance via define_singleton_method " \
+      "(transformer.rb)",
   }.freeze
 
   it "probes only accessor names that exist on some reachable model class" do

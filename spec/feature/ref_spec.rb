@@ -300,7 +300,7 @@ RSpec.describe "IETF references rendering (WS3)" do
         <middle>
           <section anchor="B">
             <name>Introduction</name>
-            <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+            <t anchor="_">
       <xref target="ISO712"/>
       <xref target="ISBN"/>
       <xref target="ISSN"/>
@@ -320,7 +320,10 @@ RSpec.describe "IETF references rendering (WS3)" do
               <stream>IETF</stream>
               <front>
                 <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-                <author fullname="S. Bradner"/>
+                <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+                <seriesInfo name="BCP" value="14"/>
+                <seriesInfo name="RFC" value="2119"/>
+                <author fullname="S. Bradner" asciiFullname="S. Bradner"/>
                 <date month="March" year="1997"/>
                 <keyword>Standards</keyword>
                 <keyword>Track</keyword>
@@ -329,14 +332,13 @@ RSpec.describe "IETF references rendering (WS3)" do
                   <t>In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
                 </abstract>
               </front>
-              <seriesInfo name="DOI" value="10.17487/RFC2119"/>
-              <seriesInfo name="BCP" value="14"/>
-              <seriesInfo name="RFC" value="2119"/>
             </reference>
             <reference anchor="RFC2397" target="https://www.rfc-editor.org/info/rfc2397">
               <front>
                 <title>The "data" URL scheme</title>
-                <author fullname="L. Masinter"/>
+                <seriesInfo name="DOI" value="10.17487/RFC2397"/>
+                <seriesInfo name="RFC" value="2397"/>
+                <author fullname="L. Masinter" asciiFullname="L. Masinter"/>
                 <date month="August" year="1998"/>
                 <keyword>DATA-URL</keyword>
                 <keyword>uniform resource locator</keyword>
@@ -346,14 +348,12 @@ RSpec.describe "IETF references rendering (WS3)" do
                   <t>A new URL scheme, "data", is defined. It allows inclusion of small data items as "immediate" data, as if it had been included externally. [STANDARDS-TRACK]</t>
                 </abstract>
               </front>
-              <seriesInfo name="DOI" value="10.17487/RFC2397"/>
-              <seriesInfo name="RFC" value="2397"/>
             </reference>
             <reference anchor="ISO712">
               <front>
                 <title>Cereals and cereal products</title>
                 <author>
-                  <organization>International Organization for Standardization</organization>
+                  <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                 </author>
               </front>
               <refcontent>ISO 712</refcontent>
@@ -361,8 +361,9 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ISO16634">
               <front>
                 <title>Cereals, pulses, milled cereal products, xxxx, oilseeds and animal feeding stuffs</title>
-                <author>
-                  <organization abbrev="ISO1">International Supporters of Odium</organization>
+                <seriesInfo name="DOI" value="1234"/>
+                <author role="editor">
+                  <organization abbrev="ISO1" ascii="International Supporters of Odium">International Supporters of Odium</organization>
                 </author>
                 <keyword>keyword1</keyword>
                 <keyword>keyword2</keyword>
@@ -372,13 +373,12 @@ RSpec.describe "IETF references rendering (WS3)" do
               </front>
               <annotation>ISO DATE: Under preparation. (Stage at the time of publication ISO/DIS 16634)</annotation>
               <refcontent>ISO 16634:-- (all parts)</refcontent>
-              <seriesInfo name="DOI" value="1234"/>
             </reference>
             <reference anchor="ISO20483">
               <front>
                 <title>Cereals and pulses</title>
                 <author initials="Ö." asciiInitials="O." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
-                <author surname="Citizen"/>
+                <author initials="A. B." asciiInitials="A. B." surname="Citizen" asciiSurname="Citizen" role="editor"/>
                 <date year="2013"/>
                 <abstract>
                   <t>This is an abstract</t>
@@ -390,8 +390,8 @@ RSpec.describe "IETF references rendering (WS3)" do
               <front>
                 <title>Cereals and pulses II</title>
                 <author initials="Ö." asciiInitials="O." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
-                <author surname="Citizen"/>
-                <author surname="Third"/>
+                <author initials="A. B." asciiInitials="A. B." surname="Citizen" asciiSurname="Citizen"/>
+                <author initials="Th." asciiInitials="Th." surname="Third" asciiSurname="Third" role="editor"/>
                 <date year="2013"/>
                 <abstract>
                   <t>This is an abstract</t>
@@ -412,23 +412,25 @@ RSpec.describe "IETF references rendering (WS3)" do
               <front>
                 <title>Chemicals for analytical laboratory use</title>
                 <author>
-                  <organization abbrev="ISBN">International SBN</organization>
+                  <organization abbrev="ISBN" ascii="International SBN">International SBN</organization>
                 </author>
               </front>
+              <refcontent>ISBN</refcontent>
             </reference>
             <reference anchor="ISSN">
               <front>
                 <title>Instruments for analytical laboratory use</title>
                 <author>
-                  <organization abbrev="ISSN">International SSN</organization>
+                  <organization abbrev="ISSN" ascii="International SSN">International SSN</organization>
                 </author>
               </front>
+              <refcontent>ISSN</refcontent>
             </reference>
             <reference anchor="ISO3696">
               <front>
                 <title>Water for analytical laboratory use</title>
                 <author>
-                  <organization abbrev="ISO">International Standards Organization</organization>
+                  <organization abbrev="ISO" ascii="International Standards Organization">International Standards Organization</organization>
                 </author>
               </front>
               <refcontent>ISO 3696</refcontent>
@@ -436,19 +438,21 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ref11">
               <front>
                 <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+                <seriesInfo name="RFC" value="10"/>
                 <author>
-                  <organization abbrev="IETF">Internet Engineering Task Force</organization>
+                  <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
                 </author>
               </front>
-              <seriesInfo name="RFC" value="10"/>
             </reference>
             <reference anchor="I-D.aboba-context-802">
               <front>
                 <title>A Model for Context Transfer in IEEE 802</title>
-                <author fullname="Bernard Aboba"/>
+                <seriesInfo name="Internet-Draft" value="draft-aboba-context-802-00"/>
+                <author fullname="Bernard Aboba" asciiFullname="Bernard Aboba">
+                  <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+                </author>
                 <date month="October" year="2003"/>
               </front>
-              <seriesInfo name="Internet-Draft" value="draft-aboba-context-802-00"/>
             </reference>
           </references>
         </back>
@@ -629,7 +633,7 @@ RSpec.describe "IETF references rendering (WS3)" do
         <middle>
           <section anchor="B">
             <name>Introduction</name>
-            <t anchor="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+            <t anchor="_">
       <xref target="ISO712"/>
       <xref target="ISBN"/>
       <xref target="ISSN"/>
@@ -649,7 +653,7 @@ RSpec.describe "IETF references rendering (WS3)" do
               <front>
                 <title>Cereals and cereal products</title>
                 <author>
-                  <organization>International Organization for Standardization</organization>
+                  <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
                 </author>
               </front>
               <refcontent>ISO 712</refcontent>
@@ -657,8 +661,9 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ISO16634">
               <front>
                 <title>Cereals, pulses, milled cereal products, xxxx, oilseeds and animal feeding stuffs</title>
-                <author>
-                  <organization abbrev="ISO1">International Supporters of Odium</organization>
+                <seriesInfo name="DOI" value="1234"/>
+                <author role="editor">
+                  <organization abbrev="ISO1" ascii="International Supporters of Odium">International Supporters of Odium</organization>
                 </author>
                 <keyword>keyword1</keyword>
                 <keyword>keyword2</keyword>
@@ -668,13 +673,12 @@ RSpec.describe "IETF references rendering (WS3)" do
               </front>
               <annotation>ISO DATE: Under preparation. (Stage at the time of publication ISO/DIS 16634)</annotation>
               <refcontent>ISO 16634:-- (all parts)</refcontent>
-              <seriesInfo name="DOI" value="1234"/>
             </reference>
             <reference anchor="ISO20483">
               <front>
                 <title>Cereals and pulses</title>
                 <author initials="Ö." asciiInitials="O." surname="Nürk" asciiSurname="Nurk" fullname="Ölaf Nürk" asciiFullname="Olaf Nurk"/>
-                <author surname="Citizen"/>
+                <author initials="A. B." asciiInitials="A. B." surname="Citizen" asciiSurname="Citizen"/>
                 <date year="2013"/>
                 <abstract>
                   <t>This is an abstract</t>
@@ -689,23 +693,25 @@ RSpec.describe "IETF references rendering (WS3)" do
               <front>
                 <title>Chemicals for analytical laboratory use</title>
                 <author>
-                  <organization abbrev="ISBN">International SBN</organization>
+                  <organization abbrev="ISBN" ascii="International SBN">International SBN</organization>
                 </author>
               </front>
+              <refcontent>ISBN</refcontent>
             </reference>
             <reference anchor="ISSN">
               <front>
                 <title>Instruments for analytical laboratory use</title>
                 <author>
-                  <organization abbrev="ISSN">International SSN</organization>
+                  <organization abbrev="ISSN" ascii="International SSN">International SSN</organization>
                 </author>
               </front>
+              <refcontent>ISSN</refcontent>
             </reference>
             <reference anchor="ISO3696">
               <front>
                 <title>Water for analytical laboratory use</title>
                 <author>
-                  <organization abbrev="ISO">International Standards Organization</organization>
+                  <organization abbrev="ISO" ascii="International Standards Organization">International Standards Organization</organization>
                 </author>
               </front>
               <refcontent>ISO 3696</refcontent>
@@ -713,11 +719,11 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="ref11">
               <front>
                 <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+                <seriesInfo name="RFC" value="10"/>
                 <author>
-                  <organization abbrev="IETF">Internet Engineering Task Force</organization>
+                  <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
                 </author>
               </front>
-              <seriesInfo name="RFC" value="10"/>
             </reference>
           </references>
         </back>
@@ -785,7 +791,7 @@ RSpec.describe "IETF references rendering (WS3)" do
         <middle>
           <section anchor="_clause">
             <name>Clause</name>
-            <t anchor="_c401175c-2d9b-4758-ba27-d4f50ddb062a">A</t>
+            <t anchor="_">A</t>
           </section>
         </middle>
         <back>
@@ -798,6 +804,7 @@ RSpec.describe "IETF references rendering (WS3)" do
                   <title>X</title>
                   <author surname="Unknown"/>
                 </front>
+                <refcontent>B</refcontent>
               </reference>
             </references>
             <references anchor="_informative_references">
@@ -807,6 +814,7 @@ RSpec.describe "IETF references rendering (WS3)" do
                   <title>Y</title>
                   <author surname="Unknown"/>
                 </front>
+                <refcontent>D</refcontent>
               </reference>
             </references>
           </references>
@@ -819,6 +827,7 @@ RSpec.describe "IETF references rendering (WS3)" do
                   <title>X</title>
                   <author surname="Unknown"/>
                 </front>
+                <refcontent>F</refcontent>
               </reference>
             </references>
             <references anchor="_informative_references_2">
@@ -828,6 +837,7 @@ RSpec.describe "IETF references rendering (WS3)" do
                   <title>Y</title>
                   <author surname="Unknown"/>
                 </front>
+                <refcontent>H</refcontent>
               </reference>
             </references>
           </references>
