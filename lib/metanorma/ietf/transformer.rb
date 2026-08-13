@@ -139,14 +139,44 @@ module Metanorma
         frs = {}
         doc.xpath("//bibitem/formattedref").each do |fr|
           bib = fr.parent
-          key = bib["anchor"] || bib["id"] or next
-          key = key.to_s.strip
-          key = "_" + key unless key.match?(/\A[a-zA-Z_]/)
-          key = key.gsub(/[^a-zA-Z0-9._\-]/, "_")
+          key = ncname_key(bib["anchor"] || bib["id"]) or next
           text = fr.text.to_s.strip
           frs[key] = text unless text.empty?
         end
         root.define_singleton_method(:recovered_formattedrefs) { frs }
+
+        recover_bibitem_sources(root, doc)
+      end
+
+      def self.ncname_key(key)
+        return nil if key.nil? || key.to_s.strip.empty?
+
+        key = key.to_s.strip
+        key = "_" + key unless key.match?(/\A[a-zA-Z_]/)
+        key.gsub(/[^a-zA-Z0-9._\-]/, "_")
+      end
+
+      # Raw PRE-presentation bibitem XML per element id/anchor: the
+      # clean relaton data (before the presentation bibrender rewrites
+      # content) that the relaton-bib v3 exporter consumes
+      # (relaton-bib#125 — the reference back-end the transformer
+      # prefers over its internal field-by-field renderer).
+      # Preprocessing OURS by adjudication 2026-08-12: the
+      # metanorma/metanorma-ordinal display identifiers the toolchain
+      # itself injects are stripped before export.
+      def self.recover_bibitem_sources(root, doc)
+        bibs = {}
+        doc.xpath("//bibliography//bibitem | //references/bibitem")
+          .each do |bib|
+          next if bib.ancestors("bibitem").any?
+
+          key = ncname_key(bib["anchor"] || bib["id"]) or next
+          clean = bib.dup
+          clean.xpath(".//docidentifier[@type='metanorma' or " \
+                      "@type='metanorma-ordinal']").each(&:remove)
+          bibs[key] = clean.to_xml
+        end
+        root.define_singleton_method(:recovered_bibitem_sources) { bibs }
       end
 
       # bibdata/ext symRefs|tocInclude|sortRefs — the v3 <rfc> ROOT

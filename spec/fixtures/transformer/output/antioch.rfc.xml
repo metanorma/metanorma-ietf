@@ -521,15 +521,17 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
       <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
         <front>
           <title>Key words for use in RFCs to Indicate Requirement Levels</title>
-          <author fullname="S. Bradner"/>
+          <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="2119"/>
+          <author fullname="S. Bradner" asciiFullname="S. Bradner">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
           <date month="March" year="1997"/>
           <abstract>
             <t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
           </abstract>
         </front>
-        <seriesInfo name="DOI" value="10.17487/RFC2119"/>
-        <seriesInfo name="BCP" value="14"/>
-        <seriesInfo name="RFC" value="2119"/>
       </reference>
     </references>
     <references anchor="_informative_references">
@@ -537,41 +539,49 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
       <reference anchor="RFC2635" target="https://www.rfc-editor.org/info/rfc2635">
         <front>
           <title>DON'T SPEW A Set of Guidelines for Mass Unsolicited Mailings and Postings (spam*)</title>
-          <author fullname="S. Hambridge"/>
-          <author fullname="A. Lunde"/>
+          <seriesInfo name="DOI" value="10.17487/RFC2635"/>
+          <seriesInfo name="FYI" value="35"/>
+          <seriesInfo name="RFC" value="2635"/>
+          <author fullname="S. Hambridge" asciiFullname="S. Hambridge">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
+          <author fullname="A. Lunde" asciiFullname="A. Lunde">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
           <date month="June" year="1999"/>
           <abstract>
             <t>This document explains why mass unsolicited electronic mail messages are harmful in the Internetworking community.  This memo provides information for the Internet community.</t>
           </abstract>
         </front>
-        <seriesInfo name="DOI" value="10.17487/RFC2635"/>
-        <seriesInfo name="FYI" value="35"/>
-        <seriesInfo name="RFC" value="2635"/>
       </reference>
       <reference anchor="RFC8140" target="https://www.rfc-editor.org/info/rfc8140">
         <front>
           <title>The Arte of ASCII: Or, An True and Accurate Representation of an Menagerie of Thynges Fabulous and Wonderful in Ye Forme of Character</title>
-          <author fullname="A. Farrel"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8140"/>
+          <seriesInfo name="RFC" value="8140"/>
+          <author fullname="A. Farrel" asciiFullname="A. Farrel">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
           <date month="April" year="2017"/>
           <abstract>
             <t>Ever since Gutenberg discovered and patented ASCII and the corresponding "Courier New" font with its now-famous "ten" point size, artisans and artificers have striven to represent their views of the world in print.Similarly, starting from Darwin's discovery of the hippogriff and his subsequent registration of the creature as an International Trade Mark, men (and some women) have struggled to catalog the fabulous variety that is called "nature".This document supplies a number of representations of all manner of things (both elemental and hypothetical) supplied by some of our best collectors of curios and delivered in a manner that may well be reused by the cunning document author.</t>
           </abstract>
         </front>
-        <seriesInfo name="DOI" value="10.17487/RFC8140"/>
-        <seriesInfo name="RFC" value="8140"/>
       </reference>
       <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174">
         <front>
           <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
-          <author fullname="B. Leiba"/>
+          <seriesInfo name="DOI" value="10.17487/RFC8174"/>
+          <seriesInfo name="BCP" value="14"/>
+          <seriesInfo name="RFC" value="8174"/>
+          <author fullname="B. Leiba" asciiFullname="B. Leiba">
+            <organization abbrev="IETF" ascii="Internet Engineering Task Force">Internet Engineering Task Force</organization>
+          </author>
           <date month="May" year="2017"/>
           <abstract>
             <t>RFC 2119 specifies common key words that may be used in protocol  specifications.  This document aims to reduce the ambiguity by clarifying that only UPPERCASE usage of the key words have the  defined special meanings.</t>
           </abstract>
         </front>
-        <seriesInfo name="DOI" value="10.17487/RFC8174"/>
-        <seriesInfo name="BCP" value="14"/>
-        <seriesInfo name="RFC" value="8174"/>
       </reference>
       <reference target="https://www.rfc-editor.org/info/rfc7990" anchor="RFC7990">
         <front>
