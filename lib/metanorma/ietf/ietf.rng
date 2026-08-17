@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar ns='https://www.metanorma.org/ns/standoc' xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<grammar ns='https://www.metanorma.org/ns/standoc' xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <include href="relaton-ietf.rng"/>
   <include href="isodoc.rng">
     <define name="ParagraphAttributes">
@@ -50,13 +50,16 @@
     </define>
     <define name="OlAttributes">
       <attribute name="type">
+        <a:documentation>One of the named numbering styles, or a renderer-native numbering
+format string passed through for xml2rfc to expand, e.g. "R%d"
+(metanorma-model-iso#159; subsumes the former "text" named value)</a:documentation>
         <choice>
           <value>roman</value>
           <value>alphabet</value>
           <value>arabic</value>
           <value>roman_upper</value>
           <value>alphabet_upper</value>
-          <value>text</value>
+          <text/>
         </choice>
       </attribute>
       <optional>
@@ -139,28 +142,6 @@
         </optional>
         <ref name="XrefBody"/>
       </element>
-    </define>
-    <define name="erefType">
-      <optional>
-        <attribute name="normative">
-          <data type="boolean"/>
-        </attribute>
-      </optional>
-      <attribute name="citeas"/>
-      <attribute name="type">
-        <ref name="ReferenceFormat"/>
-      </attribute>
-      <optional>
-        <attribute name="alt"/>
-      </optional>
-      <optional>
-        <attribute name="displayFormat"/>
-      </optional>
-      <optional>
-        <attribute name="relative"/>
-      </optional>
-      <ref name="CitationType"/>
-      <text/>
     </define>
     <define name="quote-source">
       <element name="source">
@@ -261,6 +242,25 @@
     </define>
   </include>
   <!-- end overrides -->
+  <define name="erefType" combine="interleave">
+    <a:documentation>RFC XML idiosyncratic attributes on cross-references to bibliographic
+entities. Additive augmentation of the base erefType: the former wholesale
+redefinition in the override block had rotted against the base grammar
+(bare mixed text predating ErefBody/display-text), and is retired per the
+flavor-override-elimination direction (metanorma-model-iso#158). NB @type
+thereby reverts to optional (base): requiredness cannot be tightened
+through &amp;=; the generator always emits it</a:documentation>
+    <optional>
+      <attribute name="displayFormat">
+        <a:documentation>Rendering format for the reference in RFC XML (xml2rfc displayFormat)</a:documentation>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="relative">
+        <a:documentation>Reference target expressed relative to the containing document (xml2rfc relative)</a:documentation>
+      </attribute>
+    </optional>
+  </define>
   <define name="TextElement" combine="choice">
     <ref name="review"/>
   </define>
