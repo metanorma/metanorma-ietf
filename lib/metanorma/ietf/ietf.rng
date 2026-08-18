@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar ns='https://www.metanorma.org/ns/standoc' xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <include href="relaton-ietf.rng"/>
-  <include href="isodoc.rng">
+  <include href="standoc.rng">
     <define name="ParagraphAttributes">
       <optional>
         <attribute name="align">
