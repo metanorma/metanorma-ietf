@@ -13,12 +13,9 @@ gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "feat/mo
 gem "metanorma-document", github: "metanorma/metanorma-document", branch: "feat/model-validation-l1-declarations"
 gem "metanorma-iso", github: "metanorma/metanorma-iso", branch: "feat/model-validation-migration"
 
-# pubid-2 / relaton-bib 2.2 chain (isodoc PR#825)
+# relaton v3 monogem + pubid-2 prerelease chain (isodoc PR#825)
 gem "isodoc",
     github: "metanorma/isodoc",
     branch: "rt-pubid-2-migration"
-gem "relaton-cli", ">= 2.2.0.pre.alpha.1"
-gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
-gem "pubid",
-    github: "pubid/pubid",
-    branch: "main"
+gem "relaton-cli", ">= 3.0.0.pre.alpha.1"
+gem "pubid", ">= 2.0.0.pre.alpha.9"
