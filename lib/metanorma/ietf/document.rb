@@ -8,6 +8,9 @@ end
 
 module Metanorma
   module Ietf::Document
+    autoload :Metadata, "metanorma/ietf/document/metadata"
+    autoload :Root, "metanorma/ietf/document/root"
+    autoload :Sections, "metanorma/ietf/document/sections"
   end
 end
 
@@ -30,5 +33,7 @@ Metanorma::Core::Flavors.register(Metanorma::Core::Flavor.new(
   gem: "metanorma-ietf",
   model_root: Metanorma::Ietf::Document::Root,
   pubid_module: nil,
-  renderers: { html: Metanorma::Html::StandardRenderer },
+  renderers: { html: lambda do |_document, **_options|
+    Metanorma::Html::StandardRenderer
+  end },
 ))

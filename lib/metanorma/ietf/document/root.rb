@@ -3,7 +3,7 @@
 module Metanorma
   module Ietf::Document
     class Root < Lutaml::Model::Serializable
-      include Metanorma::StandardDocument::RootAttributes
+      include Metanorma::Standoc::Document::RootAttributes
 
       def self.lutaml_default_register
         :ietf_document
@@ -12,7 +12,7 @@ module Metanorma
       attribute :bibdata,
                 Metanorma::Ietf::Document::Metadata::IetfBibliographicItem
       attribute :preface,
-                Metanorma::StandardDocument::Sections::Preface
+                Metanorma::Standoc::Document::Sections::Preface
       attribute :sections,
                 Metanorma::Ietf::Document::Sections::IetfSections
       attribute :annex,
@@ -21,9 +21,9 @@ module Metanorma
 
       xml do
         element "metanorma"
-        namespace Metanorma::StandardDocument::Namespace
+        namespace Metanorma::Standoc::Document::Namespace
 
-        Metanorma::StandardDocument::RootXmlMapping.apply(self)
+        Metanorma::Standoc::Document::RootXmlMapping.apply(self)
       end
     end
   end

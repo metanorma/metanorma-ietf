@@ -3,7 +3,7 @@
 module Metanorma
   module Ietf::Document
     module Sections
-      class IetfAnnexSection < Metanorma::StandardDocument::Sections::AnnexSection
+      class IetfAnnexSection < Metanorma::Standoc::Document::Sections::AnnexSection
         # IETF-specific attributes
         attribute :numbered, :string
         attribute :remove_in_rfc, :boolean
@@ -15,10 +15,10 @@ module Metanorma
           element "annex"
           ordered
 
-          Metanorma::StandardDocument::SectionXmlMapping.apply_annex_attributes(self)
+          Metanorma::Standoc::Document::SectionXmlMapping.apply_annex_attributes(self)
           map_attribute "numbered",    to: :numbered
           map_attribute "removeInRFC", to: :remove_in_rfc
-          Metanorma::StandardDocument::SectionXmlMapping.apply_annex_elements(self)
+          Metanorma::Standoc::Document::SectionXmlMapping.apply_annex_elements(self)
         end
       end
     end

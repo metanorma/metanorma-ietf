@@ -11,7 +11,7 @@ module Metanorma
       #
       # Extends StandardDocument sections with loose bibitem references
       # and paragraph elements directly inside sections.
-      class IetfSections < Metanorma::StandardDocument::Sections::Sections
+      class IetfSections < Metanorma::Standoc::Document::Sections::Sections
         attribute :bibitem,
                   Metanorma::BasicDocument::BibData::BibliographicItem,
                   collection: true
@@ -23,11 +23,11 @@ module Metanorma
           element "sections"
           ordered
 
-          Metanorma::StandardDocument::SectionXmlMapping.apply_sections_elements(self)
+          Metanorma::Standoc::Document::SectionXmlMapping.apply_sections_elements(self)
           map_element "bibitem",        to: :bibitem
           map_element "p",              to: :p
 
-          Metanorma::StandardDocument::SectionXmlMapping.apply_sections_attributes(self)
+          Metanorma::Standoc::Document::SectionXmlMapping.apply_sections_attributes(self)
         end
       end
     end

@@ -3,7 +3,7 @@
 module Metanorma
   module Ietf::Document
     module Sections
-      class IetfClauseSection < Metanorma::StandardDocument::Sections::ClauseSection
+      class IetfClauseSection < Metanorma::Standoc::Document::Sections::ClauseSection
         # IETF-specific attributes
         attribute :numbered, :string
         attribute :remove_in_rfc, :boolean
@@ -15,10 +15,10 @@ module Metanorma
           element "clause"
           ordered
 
-          Metanorma::StandardDocument::SectionXmlMapping.apply_clause_attributes(self)
+          Metanorma::Standoc::Document::SectionXmlMapping.apply_clause_attributes(self)
           map_attribute "numbered",    to: :numbered
           map_attribute "removeInRFC", to: :remove_in_rfc
-          Metanorma::StandardDocument::SectionXmlMapping.apply_clause_elements(self)
+          Metanorma::Standoc::Document::SectionXmlMapping.apply_clause_elements(self)
         end
       end
     end
