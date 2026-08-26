@@ -10,4 +10,3 @@ require_relative "metanorma/ietf/validate"
 require_relative "isodoc/ietf/rfc_convert"
 
 Metanorma::Registry.instance.register(Metanorma::Ietf::Processor)
-require "metanorma/ietf/document"
