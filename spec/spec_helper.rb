@@ -50,6 +50,15 @@ def htmlencode(xml)
   end
 end
 
+# WS3: the ported spec/isodoc surface. Runs an old-vintage Semantic-XML
+# input through the full default pipeline (presentation stage included),
+# normalising the legacy namespace the narrow strip rightly ignores.
+def feature_convert(input)
+  input = input.sub('xmlns="http://riboseinc.com/isoxml"',
+                    'xmlns="https://www.metanorma.org/ns/ietf"')
+  Metanorma::Ietf::Transformer.convert(input)
+end
+
 def strip_guid(xml)
   xml.gsub(%r{ id="_[^"]+"}, ' id="_"')
     .gsub(%r{ from="_[^"]+"}, ' from="_"')
@@ -145,6 +154,24 @@ BLANK_HDR = <<~"HDR".freeze
          <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
             </presentation-metadata>
           </metanorma-extension>
+HDR
+
+# WS3: the default pipeline's skeleton-document header, for ported
+# spec/isodoc expectations (the old XML_HDR reflects the released
+# path's skeleton defaults)
+FEATURE_HDR = <<~HDR.freeze
+  <?rfc strict="yes"?>
+  <?rfc compact="yes"?>
+  <?rfc subcompact="no"?>
+  <?rfc tocdepth="4"?>
+  <?rfc symrefs="yes"?>
+  <?rfc sortrefs="yes"?>
+  <rfc category='std' ipr='trust200902' submissionType='IETF' version='3' xml:lang='en'>
+    <front>
+      <title/>
+      <seriesInfo value='' name='Internet-Draft' asciiName='Internet-Draft' status='Informational' stream='IETF'/>
+      <date day="1" year="2000" month="January"/>
+      <abstract anchor="_">
 HDR
 
 XML_HDR = <<~HDR.freeze

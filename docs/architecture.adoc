@@ -1,0 +1,506 @@
+= Metanorma IETF → RFC XML: transformer architecture
+:toc: macro
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 3
+:source-highlighter: rouge
+
+This document describes the architecture of the model-driven transformer that
+converts Metanorma Semantic XML (the IETF flavour) into RFC XML v3, introduced
+by PR #257 (issue https://github.com/metanorma/metanorma-ietf/issues/233[#233]).
+It is written for a maintainer navigating the code for the first time.
+
+It is the durable companion to the QA/integration plan in
+xref:qa-plan.adoc[`qa-plan.adoc`]; where the plan tracks *what we are doing to
+the code*, this document records *what the code is*.
+
+toc::[]
+
+== Overview and rationale
+
+The transformer replaces the previous `IsoDoc::Ietf` rendering layer (22 files,
+Nokogiri/string based) with an object-model pipeline. Instead of walking the
+input XML DOM and emitting output XML as strings, it:
+
+1. deserialises Semantic XML into a `metanorma-document` object graph;
+2. builds an `rfcxml` object graph (RFC XML v3 model objects) from it;
+3. serialises that graph to RFC XML.
+
+The three library layers it stands on:
+
+`lutaml-model`:: The serialization framework underneath everything. It maps XML
+elements/attributes to Ruby objects and back, and — crucially — tracks the
+order of mixed content (text interleaved with inline elements) via an
+`element_order` array. See <<element-order>>.
+
+`metanorma-document`:: The *input* model. `Metanorma::IetfDocument::Root` and
+its component classes (`Metanorma::Document::Components::...`) are the
+deserialised form of Metanorma Semantic XML. Built on `lutaml-model`.
+
+`rfcxml`:: The *output* model. `Rfcxml::V3::*` classes (`Rfc`, `Section`,
+`Text`, `Author`, `Reference`, …) are the object form of RFC XML v3 (RFC 7991).
+Built on `lutaml-model`. Serialising one produces RFC XML.
+
+The design intent is that no transformation step manipulates XML as strings:
+input and output are both typed object graphs, and the transformer is the
+mapping between them.
+
+[NOTE]
+====
+This intent has one significant qualification that this document records
+honestly: the new transformer, as delivered in PR #257, *drops* a body of
+presentation-layer enrichment that the old path performed for free. See
+<<inherited-enrichment>>. Restoring that enrichment (workstream WS1b in the QA
+plan) reintroduces a preprocessing stage, which is a deliberate, maintainer-owned
+departure from the PR author's "no presentation step" constraint.
+====
+
+== Pipeline: old vs new
+
+[cols="1,2,2", options="header"]
+|===
+| Stage | OLD (`main`) | NEW (PR #257)
+
+| AsciiDoc → Semantic XML
+| `Metanorma::Ietf::Converter` (Asciidoctor backend)
+| unchanged
+
+| Semantic XML → RFC XML
+| `IsoDoc::Ietf::RfcConvert` — Nokogiri builder + inherited `IsoDoc::Convert`
+enrichment + heavy post-cleanup
+| `Metanorma::Ietf::Transformer.convert(xml, direction: :forward)` — object model
+
+| `.rfc.xml` written by
+| `RfcConvert#convert` (and eagerly via `converter.rb#outputs`)
+| processor `output(:rfc)` only (the eager side-effect was removed)
+
+| `.rfc.txt` / `.pdf` / `.html`
+| external `xml2rfc` rendering the `.rfc.xml`
+| unchanged — same `xml2rfc` shell-out
+|===
+
+The metanorma processor's declared `output_formats` (`rxl, xml, rfc, html,
+txt, pdf`) is identical between old and new. Only the Semantic → RFC step
+changed. `processor.rb#xml2rfc` is untouched: `.rfc.txt`, `.pdf` and `.html`
+are produced by the external `xml2rfc` binary rendering the `.rfc.xml` in both
+worlds.
+
+[IMPORTANT]
+.RFC XML defers numbering to xml2rfc
+====
+Unlike the HTML/PDF flavours, RFC XML legitimately leaves *section, figure and
+table numbering and internal cross-reference text* to `xml2rfc` at final render
+time. Correct RFC XML therefore carries bare `<xref target="..."/>` and no
+`<num>` elements. This is why some enrichment the old path computed is correctly
+*absent* from RFC XML — and why the WS1b enrichment stage must keep only the
+subset RFC XML genuinely needs pre-resolved. See <<inherited-enrichment>>.
+====
+
+== The entry façade
+
+`lib/metanorma/ietf/transformer.rb` is the public entry point.
+
+[source,ruby]
+----
+Metanorma::Ietf::Transformer.convert(xml_string, direction: :forward, **options)
+----
+
+`:forward` (Metanorma → RFC):: `convert_forward` strips the default namespace,
+calls `Metanorma::IetfDocument::Root.from_xml`, constructs an `IetfToRfcV3`,
+calls `#transform` to get an `Rfcxml::V3::Rfc`, serialises with
+`rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")`, and — when
+`options[:validate]` — runs `validate_rfc_xml` and warns each error.
+
+`:reverse` (RFC → Metanorma):: `convert_reverse` calls
+`Rfcxml::V3::Rfc.from_xml`, constructs `RfcV3ToIetf::Transformer`, and returns
+`root.to_xml`. This is *new* functionality with no old-code counterpart. See
+<<reverse>>.
+
+The processor wires the forward path into the metanorma toolchain:
+`lib/metanorma/ietf/processor.rb#output` routes the `:rfc` format through
+`Transformer.convert(isodoc_node, options.merge(validate: true))` and writes the
+result.
+
+[[forward]]
+== The forward transformer
+
+`lib/metanorma/ietf/transformer/ietf_to_rfc_v3.rb` defines `IetfToRfcV3`, the
+orchestrator. It is small and readable: it `include`s 13 mixin modules plus a
+`Base`, and `#transform` is a nine-line builder.
+
+[source,ruby]
+----
+def transform
+  rfc = Rfcxml::V3::Rfc.new
+  set_rfc_attributes(rfc)   # MetadataTransformer
+  rfc.link  = build_links   # MetadataTransformer
+  rfc.front = build_front   # FrontTransformer
+  rfc.middle = build_middle # SectionTransformer
+  rfc.back  = build_back    # SectionTransformer
+  cleanup(rfc)              # CleanupTransformer
+  rfc
+end
+----
+
+The complexity lives in the leaf modules, not the orchestrator. The maintainer's
+objection to "epic methods" applies to a handful of these (flagged below and
+tracked for refactor in WS4 of the plan).
+
+Mixed in, in order: `Base`, `MetadataTransformer`, `FrontTransformer`,
+`SectionTransformer`, `BlockTransformer`, `InlineTransformer`, `ListTransformer`,
+`TableTransformer`, `FigureTransformer`, `TermTransformer`,
+`ReferenceTransformer`, `AnnotationTransformer`, `CleanupTransformer`,
+`ValidationTransformer`.
+
+Per-document state lives in the orchestrator instance: `@doc`, `@options`,
+`@xrefs` (an empty hash — see <<inherited-enrichment>>), `@footnote_counter`,
+`@seen_footnotes`, `@collected_footnotes`, `@image_counter`, `@queued_images`.
+
+=== Module responsibilities
+
+`MetadataTransformer` (`metadata_transformer.rb`, ~143 lines):: RFC root
+attributes from bibdata: version, submission type, consensus, category (maps
+series "intended" → std/info/exp/bcp/historic), ipr, number, docName, obsoletes,
+updates, lang; processing-instruction settings (`extract_pi_settings`, RFC 7749
+defaults); `build_links` (derivedFrom for internet-drafts).
+
+`FrontTransformer` (`front_transformer.rb`, ~432 lines):: Front matter: title,
+seriesInfo, authors (`build_authors`, `build_person_author`), date, areas,
+workgroups, keywords, abstract, front notes. Postal address building
+(`build_postal*`) is the complex part, with formatted-vs-structured fallbacks.
+*Refactor target:* `build_postal_from_structured` (~50 lines).
+
+`SectionTransformer` (`section_transformer.rb`, ~452 lines):: Document body.
+`build_middle` (preface introduction/acknowledgements + main sections),
+`build_back` (bibliography, annexes, endnotes), `build_endnotes`,
+`transform_clause`. *Refactor targets, the worst in the codebase:*
+`parse_ordered_children` (~187 lines, a `case` over 13+ child element types
+driven by `element_order`) and `parse_unordered_children` (~92 lines, the
+no-`element_order` fallback that duplicates the same `case`).
+
+`BlockTransformer` (`block_transformer.rb`, ~546 lines):: Block content:
+paragraphs (`transform_paragraph` → `Rfcxml::V3::Text`), notes, examples,
+sourcecode, blockquotes, admonitions, formulas; and the inline reconstruction
+machinery (`build_interleaved_content`, `build_inline_element`). *Refactor
+targets:* `build_inline_element` (~62 lines, a `case` over 20+ inline tags),
+`build_interleaved_content` (~50 lines), `transform_sourcecode` (~50 lines).
+Carries `INLINE_TAG_MAP` and `ADMONITION_TYPES` constant maps.
+
+`InlineTransformer` (`inline_transformer.rb`, ~206 lines):: Inline references:
+`build_eref_xref` (chooses `Xref` vs `Relref` by locality), `extract_eref_locality`
+(reads `locality_stack` connectives), `build_xref`, `build_link`,
+`build_stem_text` (MathML/AsciiMath → `$$…$$` via Plurimath), `build_iref`.
+
+`ListTransformer` (`list_transformer.rb`, ~337 lines):: `transform_unordered_list`,
+`transform_ordered_list` (with `map_ol_type` arabic→1/roman→i/alpha→a, `start`),
+`transform_definition_list` (dt/dd), list items with nested lists/sourcecode.
+
+`TableTransformer` (`table_transformer.rb`, ~158 lines):: `transform_table`
+(anchor, name, thead/tbody/tfoot), rows, cells (align, colspan, rowspan),
+`build_table_surroundings` (key/notes after the table).
+
+`FigureTransformer` (`figure_transformer.rb`, ~210 lines):: figures, the
+pseudocode-as-sourcecode special case (`pseudocode_figure?`),
+`transform_image_to_artwork` (svg/png data-URI), figure source citations.
+Defers image placement via `@queued_images` (resolved in cleanup).
+
+`TermTransformer` (`term_transformer.rb`, ~310 lines):: terms/definitions
+sections, single-term rendering (preferred/admitted/deprecated designations +
+definitions), `transform_definitions_section`.
+
+`ReferenceTransformer` (`reference_transformer.rb`, ~412 lines):: bibliography.
+`transform_references_section`, `transform_bibitem` (→ `Rfcxml::V3::Reference`:
+anchor, target, front title/authors/date/abstract, refcontent, seriesInfo,
+annotation), reference groups, formattedref-only fallback. *Refactor target:*
+`transform_bibitem` (~50 lines). Reads `bibitem.contributor`/`date`/
+`docidentifier`/`abstract`/`link`/`note`.
+
+`AnnotationTransformer` (`annotation_transformer.rb`, ~25 lines):: *Stub.*
+`render_annotations?` checks the `notedraftinprogress` PI; `build_annotations`
+currently returns `[]` unconditionally — editor annotations → `cref` is *not
+implemented*. Adjudicated as a known model-vintage deferral (the annotation
+container parses to zero annotations on the pinned `metanorma-document`);
+resolves with the model upgrade — see the QA plan's ledger.
+
+`CleanupTransformer` (`cleanup_transformer.rb`, ~475 lines):: post-build fixes
+on the `rfcxml` graph, run as a pipeline by `cleanup(rfc)`: `li_cleanup`
+(unwrap single `<t>` in `<li>`), `sourcecode_cleanup`, `deflist_cleanup`,
+`bcp14_cleanup` (strong → `bcp14` for MUST/SHOULD/…), `front_cleanup`,
+`biblio_cleanup`, `aside_cleanup`, `unicode_cleanup` (wrap non-ASCII in `<u>`),
+`image_cleanup` (flush `@queued_images`). Uses the `walk_sections` /
+`walk_all_text_elements` tree-walkers. *Refactor targets:* `wrap_unicode_in_text`
+(~50), `unwrap_single_t_in_li` (~45), `convert_strong_to_bcp14` (~35).
+
+`ValidationTransformer` (`validation_transformer.rb`, ~248 lines):: see
+<<validation>>.
+
+[[element-order]]
+== The `element_order` mechanism
+
+This is the single most load-bearing and least intuitive concept in the
+codebase. Read this section before trying to follow `parse_ordered_children`
+or `build_interleaved_content`.
+
+=== The problem it solves
+
+XML mixed content interleaves text and elements:
+
+[source,xml]
+----
+<t>See <xref target="x"/> and the <em>note</em> below.</t>
+----
+
+A naive object model would store `text = "See  and the  below."`, `xref = [...]`,
+`em = [...]` and *lose the order* — on serialisation you could not reconstruct
+where each inline element sat relative to the text. `lutaml-model` solves this
+by maintaining, on every model object, an `element_order` array of
+`Lutaml::Xml::Element` entries, one per child (text run or element), in source
+order.
+
+=== How the transformer uses it
+
+The forward transformer reads the *input* object's `element_order` to learn the
+source order, and replays it onto the *output* object so the RFC XML comes out
+in the same order. The replay is mediated by `OrderTracker`
+(`order_tracker.rb`), which exposes a small public API instead of touching
+`lutaml-model` internals:
+
+[source,ruby]
+----
+OrderTracker.append_ordered(target, attr_name, item)  # push item into a collection AND record its position
+OrderTracker.track_text(target, text)                 # record a text run at the current position
+OrderTracker.track_element(target, attr_name)         # record an element position without re-appending
+----
+
+The orchestrator delegates to these via `append_ordered`, `track_text_order`,
+`track_element_order`, plus a non-tracking `safe_append` (which coerces the
+attribute to an array first).
+
+`build_interleaved_content` (in `BlockTransformer`) is the canonical reader: it
+iterates the source `element_order`; for a text node it appends the text and
+calls `track_text_order`; for an element node it looks up the right input child
+by a per-tag counter, builds the corresponding `rfcxml` inline object, and
+`safe_append` + `track_element_order`s it.
+
+`parse_ordered_children` (in `SectionTransformer`) is the same pattern one level
+up, for *block* children of a clause: a `case` over the element tag, a
+`counters` hash giving the index into each input collection, and `append_ordered`
+onto the output section. The ~187-line length is this `case` plus its 13+
+branches; the WS4 refactor replaces it with a tag→handler dispatch table.
+
+[NOTE]
+====
+When the input has *no* `element_order` (some inputs/older fixtures),
+`parse_unordered_children` is the fallback: it iterates each input collection in
+turn. This duplicates the `case` logic and is the second-worst method; the WS4
+refactor factors the shared per-tag handlers out of both.
+====
+
+[[inherited-enrichment]]
+== Inherited enrichment: the autonumbering / xref pipeline
+
+This section records a correction to an early, wrong reading of the old code,
+and is the rationale for WS1b in the QA plan.
+
+=== What the old path did (and the new one does not)
+
+`IsoDoc::Ietf::RfcConvert < IsoDoc::Convert`. The *inherited* `convert` runs an
+enrichment pipeline **before** `RfcConvert#convert1` even starts
+(`isodoc/convert.rb`, `convert_init → convert_xref_init → Xref#parse`). That
+`Xref#parse` computes, into an `@anchors` hash:
+
+* section numbers (nested "2.3.1"),
+* note / example / admonition labels,
+* figure / table labels,
+* formula labels,
+* ordered-list item values,
+* footnote numbering.
+
+Then, inside `convert1`, `document_preprocess` (`rfc_convert.rb`) additionally
+runs `reference_names` (computing `[RFC2119]`-style reference labels),
+`requirement`/`recommendation`/`permission` rendering, and re-parses xrefs.
+These results are *actively consumed* when emitting RFC XML — note labels,
+formula labels, `eref_localities` (relaton-render section formatting), sourcecode
+xref resolution, and footnote de-duplication via `@seen_footnote`.
+
+This is **not** "purely a helper for requirement/bibliography rendering" (an
+earlier investigation said so; it was wrong). It is a full enrichment pipeline
+inherited from the IsoDoc base classes.
+
+=== What the new transformer does instead
+
+The new transformer initialises `@xrefs = {}` and never populates it. As a
+result it *drops or defers wholesale to xml2rfc*: cross-reference and eref
+display text, eref locality formatting, figure/table/note numbering, formula
+labels, concept resolution, and annotations. Footnotes are reimplemented but
+*restructured* — collected into a back-matter endnotes section rather than
+emitted inline.
+
+=== The KEEP / SUPPRESS split (WS1b)
+
+Because RFC XML defers much to `xml2rfc` (see the IMPORTANT admonition under
+<<Pipeline: old vs new>>), we must *not* reinstate the whole pipeline. WS1b adds
+a pared-down `PresentationXMLConvert` subclass as a preprocessing stage that:
+
+[cols="1,3", options="header"]
+|===
+| Disposition | Enrichment passes
+
+| *KEEP* (RFC XML needs it pre-resolved; xml2rfc will not compute it)
+| reference labels (`reference_names`), formula labels, note/example labels that
+surface as literal text, eref locality formatting (`eref_localities`), footnote
+numbering/de-dup, requirement/recommendation/permission rendering
+
+| *SUPPRESS* (xml2rfc computes it; injecting it would be wrong)
+| section / figure / table numbering, internal xref display text
+|===
+
+Target pipeline shape:
+
+----
+Semantic XML → [IETF-pared PresentationXMLConvert] → enriched XML → IetfToRfcV3 → RFC XML
+----
+
+The override "stops the presentation converter doing too much" — keeping the
+label/locality resolution, suppressing the numbering that belongs to xml2rfc.
+The full plan, watch-points (isodoc-subclassing fragility, the footnote
+inline-vs-endnote decision, `metanorma-document` round-trip of injected labels)
+and the deliberate departure from the PR author's design constraint are recorded
+in xref:qa-plan.adoc[the QA plan].
+
+=== Campaign-era additions (WS3–WS5c retrofits)
+
+Four mechanisms were retrofitted during the QA campaign and sit slightly
+outside the layer picture above; a maintainer will meet them in the code:
+
+`concept1` errormsg intercept (presentation subclass)::
+The grammar epic replaces unresolved term/symbol references with
+`concept/errormsg`; `errormsg` is generator-only with no document-model
+mapping, so it would be silently ghosted at `from_xml`. The presentation
+subclass resolves it to a `<strong>` carrying the message *before* the model
+parse — byte-identical to the released renderer's early return.
+
+`escape_bare_ampersands` (`transformer.rb`)::
+The model stack can emit literal entity references (`&para;`) in mixed
+content; this pass escapes bare ampersands during `convert_forward`'s
+serialisation tail, ahead of `u_cleanup`, whose reparse would otherwise choke.
+Known asymmetry: the processor leg's `rfc_post_process` does not yet run it
+(ticketed).
+
+`recover_rfc_attributes` (`transformer.rb`)::
+The pinned `metanorma-document` vintage parse-ghosts several `bibdata/ext`
+scalars (`symRefs`, `tocInclude`, `sortRefs`). This side-channel reads them
+from the raw presentation XML and attaches them to the parsed root via
+`define_singleton_method`, for `metadata_transformer` to consume. It is the
+pattern to extend when further ghosted ext attributes are recovered — and it
+retires wholesale when the model upgrade lands.
+
+`u_cleanup` placement::
+Non-ASCII wrapping in `<u>` runs *post-serialisation*, as a string-level pass
+over the emitted XML (same parents and character range as the released
+`u_cleanup`), not as a graph cleanup.
+
+The systematic record of what the transformer does *not* yet cover — and what
+was adjudicated as deliberately dropped — lives in the QA plan's WS5b/WS5c
+sections and the ticket set filed from them (metanorma-ietf#291–#308,
+metanorma-document#46); this document deliberately does not duplicate that
+ledger.
+
+[[reverse]]
+== The reverse transformer (RFC → Metanorma)
+
+`lib/metanorma/ietf/transformer/rfc_v3_to_ietf.rb` plus the
+`rfc_v3_to_ietf/` subdirectory mirror the forward transformer with 12 parallel
+modules (`metadata`, `front`, `section`, `block`, `inline`, `list`, `table`,
+`figure`, `term`, `reference`, `annotation`, `cleanup`). `Transformer#transform`
+builds a `Metanorma::IetfDocument::Root`, fills `bibdata`/`sections`, then
+bibliography, annexes and preface, runs a reverse cleanup, and returns it.
+
+This direction is entirely new (the old code never round-tripped) and is thinly
+tested. Whether RFC→MN is in scope for the current QA effort is an open item in
+the plan.
+
+[[validation]]
+== Validation
+
+Three distinct validation layers exist; do not conflate them:
+
+`ValidationTransformer` (internal):: `validate_rfc_xml(xml)` combines
+`schema_validate` (Nokogiri against `lib/metanorma/ietf/schema/v3.rng`) and
+`content_validate` (semantic rules: numbered-section nesting, toc nesting,
+references have name/value, xref/relref targets exist and relative-attr rules,
+ipr present/valid). Returns an error list; the façade `warn`s each.
+
+`xml2rfc` "nits":: warnings/errors emitted by the external `xml2rfc` binary when
+it renders the `.rfc.xml`. With the `<?rfc strict="yes"?>` PI it also enforces
+I-D nits and DTD validity. This is the IETF's own tooling and the *objective
+compliance yardstick* used in the QA comparison (see the plan's nits section).
+
+`idnits`:: runs on the rendered text output and checks IETF *submission*
+requirements (boilerplate, reference categorisation, line length, …).
+
+== Support layer
+
+`base.rb` (`Base`):: shared helpers mixed into both directions: `ls_text`
+(extract text from LocalizedString/FormattedString/arrays), `extract_text`,
+`anchor_for`, `to_ncname` (valid XML NCName), `to_array`,
+`build_rfc_organization` (with `sterile` ASCII transliteration), RFC mixed-text
+extraction.
+
+`null_objects.rb` (`NullObjects`):: `NullBibdata` / `NullExt` return nil for
+everything, so the orchestrator can write `doc.bibdata || NullBibdata.new` and
+avoid nil-guards throughout.
+
+`order_tracker.rb` (`OrderTracker`):: the sanctioned public API over
+`lutaml-model`'s `element_order` (see <<element-order>>).
+
+== Module map (quick reference)
+
+[cols="1,2", options="header"]
+|===
+| File | Role
+
+| `transformer.rb` | public façade (`convert`, `convert_forward`, `convert_reverse`)
+| `transformer/ietf_to_rfc_v3.rb` | forward orchestrator
+| `transformer/base.rb` | shared text/anchor/org helpers
+| `transformer/order_tracker.rb` | `element_order` public API
+| `transformer/null_objects.rb` | null-object fallbacks
+| `transformer/metadata_transformer.rb` | RFC root attributes, PI settings, links
+| `transformer/front_transformer.rb` | title, authors, date, areas, abstract, postal
+| `transformer/section_transformer.rb` | middle/back, clauses, endnotes *(epic methods)*
+| `transformer/block_transformer.rb` | paragraphs, notes, sourcecode, inline reconstruction *(epic methods)*
+| `transformer/inline_transformer.rb` | xref/relref/eref, stem, iref
+| `transformer/list_transformer.rb` | ul/ol/dl
+| `transformer/table_transformer.rb` | tables
+| `transformer/figure_transformer.rb` | figures, artwork, pseudocode
+| `transformer/term_transformer.rb` | terms/definitions
+| `transformer/reference_transformer.rb` | bibliography *(epic method: transform_bibitem)*
+| `transformer/annotation_transformer.rb` | annotations *(stub — not implemented)*
+| `transformer/cleanup_transformer.rb` | post-build cleanup pipeline *(epic methods)*
+| `transformer/validation_transformer.rb` | RNG + content validation
+| `transformer/rfc_v3_to_ietf.rb` + `rfc_v3_to_ietf/` | reverse transformer
+|===
+
+== Glossary: model classes → XML
+
+[cols="1,1,2", options="header"]
+|===
+| Concept | Input (`metanorma-document`) | Output (`rfcxml`)
+
+| document root | `Metanorma::IetfDocument::Root` | `Rfcxml::V3::Rfc`
+| paragraph | `…Components::Paragraphs::ParagraphBlock` | `Rfcxml::V3::Text` (`<t>`)
+| clause/section | clause components | `Rfcxml::V3::Section`
+| note | `…Components::Blocks::NoteBlock` | `Rfcxml::V3::Aside`
+| emphasis/strong | `em` / `strong` | `Rfcxml::V3::Em` / `Strong`
+| cross-reference | `xref` / `eref` (+ `locality_stack`) | `Rfcxml::V3::Xref` / `Relref`
+| bibliographic item | `bibitem` | `Rfcxml::V3::Reference`
+| mixed-content order | `element_order` (lutaml) | `element_order` (lutaml), via `OrderTracker`
+|===
+
+== See also
+
+* xref:qa-plan.adoc[`qa-plan.adoc`] — the QA/integration plan and workstreams
+* `docs/discrepancy-log.adoc` — old-vs-new output differences, triaged (WS2/WS5)
+* https://github.com/metanorma/metanorma-ietf/pull/257[PR #257] /
+  https://github.com/metanorma/metanorma-ietf/issues/233[issue #233]
+* RFC 7991 (RFC XML v3 vocabulary), RFC 7998 (xml2rfc v3 prep tool)

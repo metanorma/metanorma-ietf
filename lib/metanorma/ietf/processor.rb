@@ -1,11 +1,10 @@
 require "metanorma/processor"
 require "tempfile"
-
-require "isodoc/ietf/rfc_convert"
+require "fileutils"
+require_relative "transformer"
 
 module Metanorma
   module Ietf
-    RfcConvert = ::IsoDoc::Ietf::RfcConvert
 
     class Processor < Metanorma::Processor
       def initialize # rubocop:disable Lint/MissingSuper
@@ -57,13 +56,55 @@ module Metanorma
         end
       end
 
+      # The :rfc leg runs architecture B (#233): presentation stage,
+      # then model parse, via Transformer::PresentationReader. Core's
+      # strip_default_namespace stays OFF: its strip is blanket and
+      # denamespaces embedded MathML/SVG (campaign finding N13); the
+      # reader applies the narrow Metanorma-namespace strip itself.
+      def document_transformers
+        {
+          rfc: {
+            reader: Transformer::PresentationReader,
+            transformer: Transformer::IetfToRfcV3,
+            to_xml_options: { pretty: true, declaration: true,
+                              encoding: "utf-8" },
+            post_process: method(:rfc_post_process),
+          },
+        }
+      end
+
+      # Mirror convert_forward's serialisation tail: bare-ampersand
+      # escaping (#302: was present on the library API path only),
+      # non-ASCII <u> wrapping (N11), then validation. Content errors
+      # are stashed so the output stage can quarantine (#302: the
+      # released leg moved invalid output to .err and halted; the
+      # port had reduced that to warnings)
+      def rfc_post_process(xml, transformer, options)
+        xml = Transformer.escape_bare_ampersands(xml)
+        xml = Transformer.u_cleanup(xml)
+        @rfc_content_errors = []
+        if options[:validate]
+          transformer.schema_validate(xml)
+            .each { |e| warn "RFC XML: #{e}" }
+          @rfc_content_errors = transformer.content_validate(xml)
+          @rfc_content_errors.each { |e| warn "RFC XML: #{e}" }
+        end
+        xml
+      end
+
       def output(isodoc_node, inname, outname, format, options = {})
         options_preprocess(options)
         case format
         when :rfc
           outname ||= inname.sub(/\.xml$/, ".rfc.xml")
-          RfcConvert.new(options).convert(inname, isodoc_node, nil, outname)
-          @done_rfc = true
+          super(isodoc_node, inname, outname, format,
+                options.merge(validate: true))
+          if @rfc_content_errors&.any?
+            FileUtils.mv(outname, "#{outname}.err", force: true)
+            warn "Cannot continue processing"
+          else
+            @done_rfc = true
+          end
         when :txt, :pdf, :html
           xml2rfc(isodoc_node, inname, outname, format, options)
         else
@@ -77,6 +118,10 @@ module Metanorma
         rfcname = inname.sub(/\.xml$/, ".rfc.xml")
         unless @done_rfc && File.exist?(rfcname)
           output(isodoc_node, inname, rfcname, :rfc, options)
+        end
+        unless File.exist?(rfcname)
+          warn "Cannot continue processing"
+          return nil
         end
 
         outext = { txt: ".txt", pdf: ".pdf", html: ".html" }[format]

@@ -14,14 +14,6 @@ module Metanorma
         xmldoc
       end
 
-      def boilerplate_isodoc(xmldoc)
-        x = xmldoc.dup
-        x.root.add_namespace(nil, @conv.xml_namespace)
-        @isodoc ||= @conv.isodoc(@lang, @script, @locale)
-        # initialise @isodoc.xrefs, for @isodoc.xrefs.info
-        @isodoc
-      end
-
       def dt_cleanup(xmldoc)
         xmldoc.xpath("//dt").each do |dt|
           /:$/.match?(dt.text.strip) and next
@@ -101,6 +93,8 @@ module Metanorma
           end
         end
       end
+
+      def termdef_boilerplate_insert(xmldoc, _isodoc, _once = false); end
 
       def section_names_refs_cleanup(xml); end
 
