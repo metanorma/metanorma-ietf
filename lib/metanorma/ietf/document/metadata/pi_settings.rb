@@ -5,6 +5,8 @@ module Metanorma
     module Metadata
       class PiSettings < Lutaml::Model::Serializable
         attribute :toc, :string
+        # legacy camelCase pi spelling beside <toc> (metanorma-document#43)
+        attribute :tocinclude, :string
         attribute :tocdepth, :string
         attribute :symrefs, :string
         attribute :sortrefs, :string
@@ -17,6 +19,7 @@ module Metanorma
         xml do
           element "pi"
           map_element "toc", to: :toc
+          map_element "tocinclude", to: :tocinclude
           map_element "tocdepth", to: :tocdepth
           map_element "symrefs", to: :symrefs
           map_element "sortrefs", to: :sortrefs
