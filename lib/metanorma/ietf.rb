@@ -1,4 +1,5 @@
 require_relative "ietf/processor"
+require "metanorma/ietf/document"
 require_relative "ietf/version"
 
 module Metanorma

@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="3.7.5" schema-version="v2.1.6" flavor="ietf">
+<bibdata type="standard">
+<title language="en" type="abbrev">IP Datagrams on Avian Carriers</title>
+
+<title language="en" type="main">RFC XML v3 Example: A Standard for the Transmission of IP Datagrams on Avian Carriers</title>
+<docidentifier primary="true">1149</docidentifier><docnumber>1149</docnumber><date type="updated"><on>1990-04-01</on></date><contributor><role type="author"/><person>
+<name><forename>David</forename><surname>Waitzman</surname></name>
+<affiliation><organization>
+<name>BBN STC</name>
+<address><formattedAddress>10 Moulton Street<br/>Cambridge<br/>MA 02238</formattedAddress></address></organization></affiliation><phone>(617) 873-4323</phone><email>dwaitzman@BBN.COM</email><uri>http://bbn.com</uri></person></contributor><contributor><role type="author"/><person>
+<name><forename>Nick</forename><surname>Nicholas</surname></name>
+<affiliation><organization>
+<name>BBN STC</name>
+<address><formattedAddress>10 Moulton Street<br/>Cambridge<br/>MA 02238</formattedAddress></address></organization></affiliation><phone>(617) 873-4323</phone><email>opoudjis@gmail.com</email><uri>http://opoudjis.net</uri></person></contributor><contributor><role type="author"><description>committee</description></role><organization>
+<name>Internet Engineering Task Force</name>
+<subdivision type="Workgroup">
+<name>Network Working Group</name>
+</subdivision><abbreviation>IETF</abbreviation></organization></contributor><contributor><role type="publisher"/><organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation></organization></contributor><version>1990-04-01</version><language>en</language><script>Latn</script><status><stage>published</stage></status><copyright><from>2026</from><owner><organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation></organization></owner></copyright><relation type="derivedFrom">
+<bibitem type="standard" schema-version="v1.5.6">
+  <fetched>2026-06-19</fetched>
+  
+<title type="main">Standard for the transmission of IP datagrams on avian carriers</title>
+
+  <uri type="src">https://www.rfc-editor.org/info/rfc1149</uri>
+  <docidentifier type="IETF" primary="true">RFC 1149</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC1149</docidentifier>
+  <docnumber>RFC1149</docnumber>
+  <date type="published">
+    <on>1990-04</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">D.</formatted-initials>          <surname language="en" script="Latn">Waitzman</surname>          <completename language="en" script="Latn">D. Waitzman</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      
+<name language="en">RFC Publisher</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      
+<name language="en">RFC Series</name>
+
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">
+    <p>This memo describes an experimental method for the encapsulation of IP datagrams in avian carriers.  This specification is primarily useful in Metropolitan Area Networks.  This is an experimental, not recommended standard.</p>
+
+  </abstract>
+  <status>
+    <stage>EXPERIMENTAL</stage>
+  </status>
+  <series>
+    
+<title>RFC</title>
+
+    <number>1149</number>
+  </series>
+  <series type="stream">
+    
+<title>INDEPENDENT</title>
+
+  </series>
+  <keyword>
+    <vocab>avian</vocab>
+  </keyword>
+  <keyword>
+    <vocab>carrier</vocab>
+  </keyword>
+  <keyword>
+    <vocab>april</vocab>
+  </keyword>
+  <keyword>
+    <vocab>fools</vocab>
+  </keyword>
+</bibitem>
+
+</relation><relation type="obsoletes">
+<bibitem type="standard" schema-version="v1.5.6">
+  <fetched>2026-06-19</fetched>
+  
+<title type="main">Request For Comments reference guide</title>
+
+  <uri type="src">https://www.rfc-editor.org/info/rfc1000</uri>
+  <docidentifier type="IETF" primary="true">RFC 1000</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC1000</docidentifier>
+  <docnumber>RFC1000</docnumber>
+  <date type="published">
+    <on>1987-08</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                              <formatted-initials language="en" script="Latn">J.K.</formatted-initials>          <surname language="en" script="Latn">Reynolds</surname>          <completename language="en" script="Latn">J.K. Reynolds</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">J.</formatted-initials>          <surname language="en" script="Latn">Postel</surname>          <completename language="en" script="Latn">J. Postel</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      
+<name language="en">RFC Publisher</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      
+<name language="en">RFC Series</name>
+
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">
+    <p>This RFC Reference Guide is intended to provide a historical account by categorizing and summarizing of the Request for Comments numbers 1 through 999 issued between the years 1969-1987.  These documents have been crossed referenced to indicate which RFCs are current, obsolete, or revised.</p>
+
+  </abstract>
+  <status>
+    <stage>UNKNOWN</stage>
+  </status>
+  <series>
+    
+<title>RFC</title>
+
+    <number>1000</number>
+  </series>
+  <series type="stream">
+    
+<title>Legacy</title>
+
+  </series>
+</bibitem>
+
+</relation><relation type="obsoletes">
+<bibitem type="standard" schema-version="v1.5.6">
+  <fetched>2026-06-19</fetched>
+  
+<title type="main">IAB official protocol standards</title>
+
+  <uri type="src">https://www.rfc-editor.org/info/rfc1200</uri>
+  <docidentifier type="IETF" primary="true">RFC 1200</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC1200</docidentifier>
+  <docnumber>RFC1200</docnumber>
+  <date type="published">
+    <on>1991-04</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      
+<name language="en">Defense Advanced Research Projects Agency</name>
+
+      <abbreviation language="en">DARPA</abbreviation>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      
+<name language="en">Internet Activities Board</name>
+
+      <abbreviation language="en">IAB</abbreviation>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      
+<name language="en">RFC Publisher</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      
+<name language="en">RFC Series</name>
+
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">
+    <p>This memo describes the state of standardization of protocols used in the Internet as determined by the Internet Activities Board (IAB).  An overview of the standards procedures is presented first, followed by discussions of the standardization process and the RFC document series, then the explanation of the terms is presented, the lists of protocols in each stage of standardization follows, and finally pointers to references and contacts for further information.</p>
+
+  </abstract>
+  <status>
+    <stage>HISTORIC</stage>
+  </status>
+  <relation type="obsoletedBy">
+    <bibitem>
+      <formattedref>RFC1250</formattedref>
+      <docidentifier type="IETF" primary="true">RFC1250</docidentifier>
+    </bibitem>
+
+  </relation>
+  <series>
+    
+<title>RFC</title>
+
+    <number>1200</number>
+  </series>
+  <series type="stream">
+    
+<title>Legacy</title>
+
+  </series>
+  <keyword>
+    <vocab>IAB</vocab>
+  </keyword>
+  <keyword>
+    <vocab>official</vocab>
+  </keyword>
+  <keyword>
+    <vocab>protocol</vocab>
+  </keyword>
+  <keyword>
+    <vocab>standards</vocab>
+  </keyword>
+</bibitem>
+
+</relation><relation type="updates">
+<bibitem type="standard" schema-version="v1.5.6">
+  <fetched>2026-06-19</fetched>
+  
+<title type="main">Operational Criteria for Root Name Servers</title>
+
+  <uri type="src">https://www.rfc-editor.org/info/rfc2010</uri>
+  <docidentifier type="IETF" primary="true">RFC 2010</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC2010</docidentifier>
+  <docnumber>RFC2010</docnumber>
+  <date type="published">
+    <on>1996-10</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">B.</formatted-initials>          <surname language="en" script="Latn">Manning</surname>          <completename language="en" script="Latn">B. Manning</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">P.</formatted-initials>          <surname language="en" script="Latn">Vixie</surname>          <completename language="en" script="Latn">P. Vixie</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      
+<name language="en">RFC Publisher</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      
+<name language="en">RFC Series</name>
+
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">
+    <p>This document specifies the operational requirements of root name servers, including host hardware capacities, name server software revisions, network connectivity, and physical environment.  This memo provides information for the Internet community.  This memo does not specify an Internet standard of any kind.</p>
+
+  </abstract>
+  <status>
+    <stage>INFORMATIONAL</stage>
+  </status>
+  <relation type="obsoletedBy">
+    <bibitem>
+      <formattedref>RFC2870</formattedref>
+      <docidentifier type="IETF" primary="true">RFC2870</docidentifier>
+    </bibitem>
+
+  </relation>
+  <series>
+    
+<title>RFC</title>
+
+    <number>2010</number>
+  </series>
+  <series type="stream">
+    
+<title>Legacy</title>
+
+  </series>
+  <keyword>
+    <vocab>host</vocab>
+  </keyword>
+  <keyword>
+    <vocab>hardware</vocab>
+  </keyword>
+</bibitem>
+
+</relation><relation type="updates">
+<bibitem type="standard" schema-version="v1.5.6">
+  <fetched>2026-06-19</fetched>
+  
+<title type="main">Managing the X.500 Root Naming Context</title>
+
+  <uri type="src">https://www.rfc-editor.org/info/rfc2120</uri>
+  <docidentifier type="IETF" primary="true">RFC 2120</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC2120</docidentifier>
+  <docnumber>RFC2120</docnumber>
+  <date type="published">
+    <on>1997-03</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">D.</formatted-initials>          <surname language="en" script="Latn">Chadwick</surname>          <completename language="en" script="Latn">D. Chadwick</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      
+<name language="en">RFC Publisher</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      
+<name language="en">RFC Series</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author">
+      <description>committee</description>
+    </role>
+    <organization>
+      
+<name language="en">Internet Engineering Task Force</name>
+
+      <subdivision type="workgroup">
+        
+<name>Integrated Directory Services</name>
+
+        <identifier>ids</identifier>
+      </subdivision>
+      <abbreviation language="en">IETF</abbreviation>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">
+    <p>This document describes the use of 1993 ISO X.500 Standard protocols for managing the root context.  Whilst the ASN.1 is compatible with that of the X.500 Standard, the actual settings of the parameters are supplementary to that of the X.500 Standard.  This memo defines an Experimental Protocol for the Internet community.</p>
+
+  </abstract>
+  <status>
+    <stage>EXPERIMENTAL</stage>
+  </status>
+  <series>
+    
+<title>RFC</title>
+
+    <number>2120</number>
+  </series>
+  <series type="stream">
+    
+<title>IETF</title>
+
+  </series>
+  <keyword>
+    <vocab>X.500-NAME</vocab>
+  </keyword>
+  <keyword>
+    <vocab>ISO</vocab>
+  </keyword>
+  <keyword>
+    <vocab>International</vocab>
+  </keyword>
+  <keyword>
+    <vocab>Standards</vocab>
+  </keyword>
+  <keyword>
+    <vocab>Organization</vocab>
+  </keyword>
+</bibitem>
+
+</relation><series type="stream">
+<title>IETF</title>
+</series><series type="intended">
+<title>full-standard</title>
+</series><ext><doctype>rfc</doctype><flavor>ietf</flavor><area>Internet</area><ipr>trust200902</ipr><consensus>true</consensus><pi><tocinclude>yes</tocinclude></pi></ext></bibdata><metanorma-extension><semantic-metadata><stage-published>true</stage-published></semantic-metadata>
+<presentation-metadata><toc-heading-levels>2</toc-heading-levels><html-toc-heading-levels>2</html-toc-heading-levels><doc-toc-heading-levels>2</doc-toc-heading-levels><pdf-toc-heading-levels>2</pdf-toc-heading-levels></presentation-metadata></metanorma-extension>
+<preface><foreword id="_d8b1be11-c587-1651-f748-8c6a5eae1d3a" obligation="informative">
+<title id="_41c9fad3-d4c1-eecc-4fad-f91704acc026">Foreword</title>
+<p id="_c72e4364-d18b-73a9-cd8a-737e1c55eed6">Avian carriers can provide high delay, low throughput, and low altitude service.  The connection topology is limited to a single point-to-point path for each carrier, used with standard carriers, but many carriers can be used without significant interference with each other, outside of early spring.  This is because of the 3D ether space available to the carriers, in contrast to the 1D ether used by IEEE802.3.  The carriers have an intrinsic collision avoidance system, which increases availability.  Unlike some network technologies, such as packet radio, communication is not limited to line-of-sight distance.  Connection oriented service is available in some cities, usually based upon a central hub topology.</p>
+
+<note id="_31ef9267-2dec-6024-152f-45fc443fc8ab"><p id="_f904fd0b-239f-7903-55b5-3057711da163">Yes, this is an April Fool's RFC.</p>
+</note>
+</foreword></preface><sections>
+<clause id="_7db07fdc-fcc6-b1d5-fbd9-4af3fe5d67d4" anchor="frame" inline-header="false" obligation="normative">
+<title id="_7f507f76-d16f-6909-7c72-3bf386b1aac3">Frame Format</title>
+<p id="_e5b93d18-9b70-055e-f3ea-e7d3e221cb31">The IP <em>datagram</em> is <strong>printed</strong>, on a small scroll of paper, in hexadecimal, with each octet separated by whitestuff and blackstuff. The scroll of paper is wrapped around one leg of the avian carrier. A band of duct tape is used to secure the datagram's edges.  The bandwidth is limited to the leg length.  The MTU is variable, and paradoxically, generally increases with increased carrier age.  A typical MTU is 256 milligrams.  Some datagram padding may be needed.<eref type="inline" bibitemid="RFC7253" citeas="RFC 7253"><display-text>alt</display-text></eref></p>
+
+<p id="_cbfa7d28-50f5-f4d4-8920-3ff81bb853de">Upon receipt, the duct tape is removed and the paper copy of the datagram is optically scanned into a electronically transmittable form.<eref type="inline" bibitemid="RFC7253" citeas="RFC 7253"/></p>
+
+<p id="_fc8f9bad-4c2e-b401-b3d3-cb0f27d860c0">This document extends OpenPGP and its ECC extension to support SM2, SM3 and SM4:</p>
+
+<ul id="_11114aa2-d4d3-dc06-3f39-b73ad2a1e845"><li><p id="_98a97c6d-e43a-046f-92b7-a86350931f2a">support the SM3 hash algorithm for data validation purposes</p>
+</li>
+<li><p id="_8486d222-630f-43b8-c65b-10549d192419">support signatures utilizing the combination of SM3 with other digital signing algorithms, such as RSA, ECDSA and SM2</p>
+</li>
+<li><p id="_268cc9bf-7e8f-315e-2c10-6a7d73687574">support the SM2 asymmetric encryption algorithm for public key operations</p>
+</li>
+<li><p id="_255af7b3-c69e-c5a5-56fc-bde30fbf3df3">support usage of SM2 in combination with supported hash algorithms, such as SHA-256 and SM3</p>
+</li>
+<li><p id="_8f08871f-baf2-3786-e40d-16949089bea8">support the SM4 symmetric encryption algorithm for data protection purposes</p>
+</li>
+<li><p id="_fb103500-02ce-e0fc-ac73-cb9107a94fbb">defines the OpenPGP profile "OSCCA-SM234" to enable usage of OpenPGP in an OSCCA-compliant manner.</p>
+</li>
+</ul>
+
+<p id="_4b2313ce-fea3-eceb-2685-e9273bfe3c5f">Algorithm-Specific Fields for SM2DSA keys:</p>
+
+<ul id="_89dbcd4e-108d-9cf0-7ed6-9b0ef9295fa2"><li><p id="_fe06d2f8-ca68-409e-9de1-b5bc9a808ed0">a variable-length field containing a curve OID, formatted as follows:</p>
+<ol id="_17a18a84-e68b-f34c-7ca5-11679fb126bf" type="alphabet"><li><p id="_3eb09fc7-ad4f-4770-c225-3eff8dda6773">a one-octet size of the following field; values 0 and 0xFF are reserved for future extensions</p>
+</li>
+<li><p id="_6136e5a8-c212-93d7-c60f-1cd13370e58e">octets representing a curve OID.</p>
+</li>
+</ol>
+</li>
+<li><p id="_82b05769-7668-5b78-21e8-4b845ca516e6">MPI of an EC point representing a public key</p>
+</li>
+</ul>
+
+<clause id="_b1474689-968c-d908-ec3c-52106a8e875b" inline-header="false" obligation="normative">
+<title id="_0615fb18-bab7-fcce-7fe6-b06f78cdb707">Definitions</title>
+<dl id="_188c1a32-874f-ef99-a4e5-24156e77be2b"><dt>OSCCA-compliant:</dt>
+<dd id="_2c9455c4-4da3-7bc6-4086-0552e4f2e2d7"><p id="_5adcd946-10f3-f180-1cbb-f92b4fabcca2">All cryptographic algorithms used are compliant with OSCCA  regulations.</p>
+</dd>
+<dt>SM2DSA:</dt>
+<dd id="_7b3b9b29-a8d6-5212-a466-05a95dc958b8"><p id="_d180edc5-58f8-2e9c-b0fe-e8bc3c1dc0f2">The elliptic curve digital signature algorithm. <eref type="inline" bibitemid="ISO.IEC.10118-3" citeas="ISO/IEC 10118-3"/></p>
+</dd>
+<dt>SM2KEP:</dt>
+<dd id="_8b7e1db2-3e31-e655-5f70-c3c628b2333a"><p id="_25816a40-fcab-ddd3-59c1-c36e64922ead">The elliptic curve key exchange protocol.</p>
+</dd>
+<dt>SM2PKE:</dt>
+<dd id="_0116d3dc-faf1-2b5c-6d96-3d0e43c0319c"><p id="_987ddefc-c7ab-b1a9-8e61-63fffb1d2c9e">The public key encryption algorithm.</p>
+</dd>
+</dl>
+
+<clause id="_6fba1756-f50c-b73f-e7ae-de44b06779dd" inline-header="false" obligation="normative">
+<title id="_e5c05521-6e9f-c226-9867-b510573a6031">Elliptic Curve Formula</title>
+<formula id="_715e97cf-cc6f-9198-2c02-2a02635bb1a7"><stem block="true" type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <msup>
+      <mi>y</mi>
+      <mn>2</mn>
+    </msup>
+    <mo>=</mo>
+    <msup>
+      <mi>x</mi>
+      <mn>3</mn>
+    </msup>
+    <mo>+</mo>
+    <mi>a</mi>
+    <mi>x</mi>
+    <mo>+</mo>
+    <mi>b</mi>
+  </mstyle>
+</math><asciimath>y^2 = x^3 + ax + b</asciimath></stem></formula>
+</clause>
+
+<clause id="_0668a897-0729-7359-eab6-8d077ee7d57e" inline-header="false" obligation="normative">
+<title id="_f72a1b8a-26da-a612-fff6-cb3044394ac5">Curve Parameters</title>
+<figure id="_38f5804e-e275-ab99-08ac-4c30d1b4a706" anchor="curveparam1">
+<name id="_59c73436-21a8-490f-957a-38b2088d4c34">Curve Parameters Listing</name>
+<pre>p   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      FFFFFFFF 00000000 FFFFFFFF FFFFFFFF
+a   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      FFFFFFFF 00000000 FFFFFFFF FFFFFFFC
+b   = 28E9FA9E 9D9F5E34 4D5A9E4B CF6509A7
+      F39789F5 15AB8F92 DDBCBD41 4D940E93
+n   = FFFFFFFE FFFFFFFF FFFFFFFF FFFFFFFF
+      7203DF6B 21C6052B 53BBF409 39D54123
+x_G = 32C4AE2C 1F198119 5F990446 6A39C994
+      8FE30BBF F2660BE1 715A4589 334C74C7
+y_G = BC3736A2 F4F6779C 59BDCEE3 6B692153
+      D0A9877C C62A4740 02DF32E5 2139F0A0</pre></figure>
+</clause>
+</clause>
+</clause>
+
+<clause id="_d5a85061-7303-41bd-5529-02ec3201dfe0" inline-header="false" obligation="normative">
+<title id="_c27516a5-6e4f-4ec8-a61e-b5068e8bd886">Code to launch spaceship</title>
+<sourcecode id="_8abc4413-b0aa-2586-57e2-b7d8276f1e34" lang="ruby"><body>&lt;CODE BEGINS&gt;
+module Foo
+  class Bar
+    def prepare_launch(spaceship, rocket)
+      spaceship.load_personnel
+      rocket.load(spaceship)
+      rocket
+    end
+  end
+end
+&lt;CODE ENDS&gt;</body></sourcecode>
+
+</clause>
+
+<clause id="_d9df8192-4e34-7d26-aaf2-3a74d971dbc1" inline-header="false" obligation="normative">
+<title id="_b1a9a7a3-261d-d749-2e1f-9bdade213f54">Supported Algorithms</title>
+<clause id="_131fa81d-7b45-e79d-ae30-55d9a9944512" inline-header="false" obligation="normative">
+<title id="_3ac8ad3b-f341-575b-0040-5ee1acf3a29c">Public Key Algorithms</title>
+<p id="_dbf9c7d4-7e2b-f423-6695-bfa7f24883c5">The SM2 algorithm is supported with the following extension.</p>
+
+<note id="_eeef76c5-c355-62fd-62be-150d1905b285"><p id="_d571ae80-753f-6a4c-7ad5-1f8758363e86">ECDH is defined in Section 8 of this document.</p>
+</note>
+
+<p id="_5555327b-ccda-8f33-5ca9-d63c61d41122">The following public key algorithm IDs are added to expand Section 9.1 of RFC4880, "Public-Key Algorithms":</p>
+
+<table id="_1989e233-0cf6-dc99-4526-e418f56d3465">
+<name id="_c1ed91d5-95cd-1165-ac36-7b3fb8bbaa2e">Table 2</name>
+<thead><tr id="_1be4ba81-2d3d-5477-18b0-d0f4fb194075"><th id="_d70cd83b-1ca4-750f-d351-7b8d5db90aa5" valign="top" align="left">ID</th>
+<th id="_8c2ec212-6ffc-bebf-42a3-ec5fb9b49bd3" valign="top" align="left">Description of Algorithm</th>
+</tr></thead>
+<tbody><tr id="_e5c4edf2-3aa6-0e06-c62a-1879abd9a991"><td id="_8a436298-f5e7-8475-f6fc-030e5c8f6b3f" valign="top" align="left">TBD</td>
+<td id="_44a40bdb-8e34-d724-d540-c1b5308eed0c" valign="top" align="left">SM2</td>
+</tr></tbody>
+</table>
+</clause>
+</clause>
+
+<clause id="_c1643524-e296-14ab-92b8-5a12f4f44ece" inline-header="false" obligation="normative">
+<title id="_645dcf20-0b3a-7d83-b7d0-00cc74831140">Security Considerations</title>
+<p id="_84ba58f1-507c-e7eb-23e2-982c6903e8c4">Security is not generally a problem in normal operation, but special<br/> measures  <span class="bcp14">MUST</span> be taken (such as data encryption) when avian carriers are used in a tactical environment.<eref type="inline" bibitemid="RFC7253" citeas="RFC 7253"/>, <eref type="inline" bibitemid="ISO.IEC.10118-3" citeas="ISO/IEC 10118-3"/></p>
+</clause>
+
+
+
+
+</sections><bibliography><references id="_f46be799-926b-e78f-ab62-73e11bfafdbf" normative="false" obligation="informative">
+<title id="_a49f7782-d850-ca98-828b-7466eb53a469">Normative  References</title><bibitem anchor="ISO.IEC.10118-3" id="_f91d73e7-5f5f-a9aa-26df-56b66ac0f61b" type="standard">
+<docidentifier type="ISO">ISO/IEC 10118-3</docidentifier><docnumber>10118-3</docnumber><contributor><role type="publisher"/><organization>
+<name>ISO</name>
+</organization></contributor><contributor><role type="publisher"/><organization>
+<name>IEC</name>
+</organization></contributor><language>en</language><script>Latn</script></bibitem>
+
+</references><references id="_46aa1c09-4c33-c329-3e5d-d014f838163d" normative="false" obligation="informative">
+<title id="_d78142cf-fee4-7aa4-bf03-fef36ffffd4a">Informative References</title><bibitem id="_9357d6f0-ef39-fc9c-320f-a82406a4e16c" type="standard" schema-version="v1.5.6" anchor="RFC7253">
+  <fetched>2026-06-19</fetched>
+  
+<title type="main">The OCB Authenticated-Encryption Algorithm</title>
+
+  <uri type="src">https://www.rfc-editor.org/info/rfc7253</uri>
+  <docidentifier type="IETF" primary="true">RFC 7253</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC7253</docidentifier>
+  <docnumber>RFC7253</docnumber>
+  <date type="published">
+    <on>2014-05</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">T.</formatted-initials>          <surname language="en" script="Latn">Krovetz</surname>          <completename language="en" script="Latn">T. Krovetz</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      
+<name>                    <formatted-initials language="en" script="Latn">P.</formatted-initials>          <surname language="en" script="Latn">Rogaway</surname>          <completename language="en" script="Latn">P. Rogaway</completename>       </name>
+
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      
+<name language="en">RFC Publisher</name>
+
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="authorizer"/>
+    <organization>
+      
+<name language="en">RFC Series</name>
+
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">
+    <p id="_2a409525-de79-3dca-f16e-919a3474346b">This document specifies OCB, a shared-key blockcipher-based encryption scheme that provides confidentiality and authenticity for plaintexts and authenticity for associated data.  This document is a product of the Crypto Forum Research Group (CFRG).</p>
+
+  </abstract>
+  <status>
+    <stage>INFORMATIONAL</stage>
+  </status>
+  <series>
+    
+<title>RFC</title>
+
+    <number>7253</number>
+  </series>
+  <series type="stream">
+    
+<title>IRTF</title>
+
+  </series>
+  <keyword>
+    <vocab>OCB</vocab>
+  </keyword>
+  <keyword>
+    <vocab>AEAD</vocab>
+  </keyword>
+  <keyword>
+    <vocab>authenticated-encryption</vocab>
+  </keyword>
+</bibitem>
+
+</references></bibliography>
+</metanorma>
