@@ -35,3 +35,21 @@ end
 module Metanorma
   deprecate_constant :IetfDocument
 end
+
+require "metanorma-core"
+
+# OCP adoption: ONE registration in the metanorma-core flavor table
+# (metanorma-core#18). Lazy: the table exists only on the flavor-table
+# line of metanorma-core; skip silently on resolutions without it.
+if defined?(Metanorma::Core::Flavors)
+  Metanorma::Core::Flavors.register(Metanorma::Core::Flavor.new(
+                                      name: :ietf,
+                                      gem: "metanorma-ietf",
+                                      model_root: Metanorma::Ietf::Document::Root,
+                                      pubid_module: nil,
+                                      renderers: { html: lambda do |_document, **_options|
+                                        require "metanorma/ietf/html"
+                                        Metanorma::Ietf::Html::Renderer
+                                      end },
+                                    ))
+end
