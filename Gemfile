@@ -9,10 +9,14 @@ gemspec
 # Revert each pin once the corresponding PR merges:
 #   - https://github.com/metanorma/metanorma-standoc/pull/1232
 #   - https://github.com/metanorma/metanorma-document/pull/45
-gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "feat/move-standard-document"
-gem "metanorma-document", github: "metanorma/metanorma-document", branch: "feat/model-validation-l1-declarations"
-gem "isodoc", github: "metanorma/isodoc", branch: "rt-pubid-2-migration"
+gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "feat/term-grammar-coverage" # TEMPORARY audit chain (stacked)
+gem "metanorma-document", github: "metanorma/metanorma-document", branch: "feat/render-new-vocabulary" # TEMPORARY audit chain
+gem "isodoc", github: "metanorma/isodoc", branch: "main" # merged as #825
 gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
 gem "pubid", github: "pubid/pubid", branch: "main"
 
 eval_gemfile("Gemfile.devel") rescue nil
+
+gem "metanorma-mirror", github: "metanorma/metanorma-mirror", branch: "feat/svgmap-imagemap-handlers" # TEMPORARY audit chain
+gem "metanorma-iso", github: "metanorma/metanorma-iso", branch: "feat/model-validation-migration" # TEMPORARY audit chain
+gem "metanorma-core", github: "metanorma/metanorma-core", branch: "feat/flavor-table" # TEMPORARY audit chain

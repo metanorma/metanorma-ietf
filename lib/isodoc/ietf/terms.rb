@@ -1,3 +1,5 @@
+require "isodoc"
+
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
