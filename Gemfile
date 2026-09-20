@@ -11,7 +11,7 @@ gem "metanorma-mirror", "~> 1.0"
 #   - https://github.com/metanorma/metanorma-standoc/pull/1232
 #   - https://github.com/metanorma/metanorma-document/pull/45
 gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "feat/term-grammar-coverage" # TEMPORARY audit chain (stacked)
-gem "metanorma-document", github: "metanorma/metanorma-document", branch: "feat/render-new-vocabulary" # TEMPORARY audit chain
+gem "metanorma-document", github: "metanorma/metanorma-document", branch: "main" # TEMPORARY audit chain
 gem "isodoc", github: "metanorma/isodoc", branch: "main" # merged as #825
 gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
 gem "pubid", github: "pubid/pubid", branch: "main"
