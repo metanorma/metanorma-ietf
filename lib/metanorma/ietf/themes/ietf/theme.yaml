@@ -1,0 +1,45 @@
+primary: "#333"
+accent: "#c44536"
+accent_deep: "#a3362b"
+gradient: "linear-gradient(135deg, #1a1a1a 0%, #333 50%, #4d4d4d 100%)"
+primary_light: "#f5f5f5"
+accent_light: "#fdf0ee"
+warm: "#c9982e"
+warm_light: "#fdf8ec"
+font_body: '"Roboto Slab", "Georgia", serif'
+font_sans: '"Inter", "Helvetica Neue", Arial, sans-serif'
+font_mono: '"JetBrains Mono", "Fira Code", monospace'
+font_url: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+header_background: "linear-gradient(135deg, #1a1a1a 0%, #333 50%, #4d4d4d 100%)"
+cover_background: "linear-gradient(175deg, #0d0d0d 0%, #1a1a1a 30%, #333 65%, #4d4d4d 100%)"
+cover_before_bg: "background: radial-gradient(ellipse at 30% 20%, rgba(196,69,54,0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(77,77,77,0.2) 0%, transparent 40%)"
+cover_after_bg: "height: 2px; background: linear-gradient(90deg, transparent, #c44536, transparent)"
+progress_bar_color: "#c44536"
+note_border: "#c44536"
+note_bg: "#fdf0ee"
+note_color: "#c44536"
+example_border: "#333"
+example_bg: "#f5f5f5"
+example_color: "#333"
+admonition_border: "#c9982e"
+admonition_color: "#c9982e"
+footer_border_color: "#c44536"
+cover_separator_color: "rgba(196,69,54,0.25)"
+extra_css: |
+  .sourcecode pre { background: #1a1a1a; border-color: #333; color: #e0e0e0; }
+
+# Publisher metadata
+publishers:
+  - "IETF"
+publisher_name: "IETF"
+logos_light: {}
+
+# Section ordering
+preface_order:
+  - foreword
+  - introduction
+  - abstract
+  - clause
+  - acknowledgements
+  - executivesummary
+toc_filter_types: []
