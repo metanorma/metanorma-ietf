@@ -51,5 +51,9 @@ if defined?(Metanorma::Core::Flavors)
                                         require "metanorma/ietf/html"
                                         Metanorma::Ietf::Html::Renderer
                                       end },
+                                      # The IETF pipeline is semantic-native:
+                                      # adoc -> semantic xml -> rfc.xml -> xml2rfc.
+                                      # No presentation XML exists anywhere in it.
+                                      semantic_input: true,
                                     ))
 end
