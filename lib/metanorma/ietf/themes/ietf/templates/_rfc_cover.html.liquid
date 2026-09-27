@@ -1,0 +1,25 @@
+<div class="document-cover rfc-cover">
+  <div class="rfc-cover-meta">
+    {% if stream %}
+    <p class="rfc-stream">{{ stream }}</p>
+    {% endif %}
+    <p class="rfc-category">Category: {{ category }}</p>
+    {% if date %}
+    <p class="rfc-date">{{ date }}</p>
+    {% endif %}
+    {% if docid %}
+    <p class="rfc-docid">{{ docid }}</p>
+    {% endif %}
+    <p class="rfc-issn">ISSN: 2070-1721</p>
+  </div>
+
+  <h1 class="rfc-title">{{ title }}</h1>
+
+  {% if authors and authors.size > 0 %}
+  <div class="rfc-authors">
+    {% for author in authors %}
+    <p class="rfc-author">{{ author }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
