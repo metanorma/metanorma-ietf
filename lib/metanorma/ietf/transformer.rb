@@ -159,7 +159,7 @@ module Metanorma
         require "nokogiri"
         doc = Nokogiri::XML(semantic_xml) { |c| c.noblanks }
         loose = {}
-        doc.xpath("//metanorma/bibitem").each do |bib|
+        doc.xpath('//*[local-name()="metanorma"]/*[local-name()="bibitem"]').each do |bib|
           next if bib.ancestors("bibitem").any?
 
           key = ncname_key(bib["anchor"] || bib["id"]) or next
