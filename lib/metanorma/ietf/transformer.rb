@@ -168,6 +168,14 @@ module Metanorma
       # itself injects are stripped before export.
       def self.recover_bibitem_sources(root, doc)
         bibs = {}
+        loose = {}
+        doc.xpath("//metanorma/bibitem").each do |bib|
+          next if bib.ancestors("bibitem").any?
+
+          key = ncname_key(bib["anchor"] || bib["id"]) or next
+          loose[key] = bib.dup.to_xml
+        end
+        root.define_singleton_method(:recovered_loose_bibitems) { loose }
         doc.xpath("//bibliography//bibitem | //references/bibitem")
           .each do |bib|
           next if bib.ancestors("bibitem").any?
