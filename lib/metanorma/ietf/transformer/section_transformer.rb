@@ -152,6 +152,26 @@ module Metanorma
             safe_append(section, :t, t)
           end
 
+          # [%bibitem] sections carry Relaton-shaped metadata, not
+          # paragraphs: render the contributors as the section text.
+          if paragraphs.empty? && bib.respond_to?(:contributor)
+            people = to_array(bib.contributor).filter_map do |c|
+              next unless c.respond_to?(:person) && c.person&.name
+              n = c.person.name
+              if n.respond_to?(:completename) && n.completename
+                n.completename.to_s
+              elsif n.respond_to?(:surname)
+                [n.respond_to?(:initials) ? n.initials : nil, n.surname]
+                  .compact.map(&:to_s).reject(&:empty?).join(" ")
+              end
+            end.reject(&:empty?)
+            unless people.empty?
+              t = Rfcxml::V3::Text.new
+              t.content = ["#{people.join(', ')}."]
+              safe_append(section, :t, t)
+            end
+          end
+
           section
         end
 
