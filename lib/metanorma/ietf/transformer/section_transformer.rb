@@ -160,13 +160,13 @@ module Metanorma
             raw = srcs[to_ncname(bib_id)] || srcs[to_ncname(section.anchor)]
             if raw
               node = Nokogiri::XML(raw)&.root
-              people = node ? node.xpath("./contributor").filter_map do |c|
-                pn = c.at_xpath("./person/name")
+              people = node ? node.xpath("./*[local-name()=\"contributor\"]").filter_map do |c|
+                pn = c.at_xpath("./*[local-name()=\"person\"]/*[local-name()=\"name\"]")
                 next unless pn
-                if pn.at_xpath("./completename")
-                  pn.at_xpath("./completename").text.strip
+                if (cn = pn.at_xpath("./*[local-name()=\"completename\"]"))
+                  cn.text.strip
                 else
-                  [pn.at_xpath("./initials")&.text, pn.at_xpath("./surname")&.text]
+                  [pn.at_xpath("./*[local-name()=\"initials\"]")&.text, pn.at_xpath("./*[local-name()=\"surname\"]")&.text]
                     .compact.map(&:strip).reject(&:empty?).join(" ")
                 end
               end.reject(&:empty?) : []
