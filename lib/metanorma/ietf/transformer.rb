@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "metanorma/document"
+require "metanorma/standard_document"
+require "metanorma/ietf_document"
 require "rfcxml"
 require "sterile"
 require "htmlentities"
@@ -50,6 +52,7 @@ module Metanorma
         # semantic XML — the shared bibrender replaces them when a
         # title coexists (#301 item 6); recover them per bibitem id
         recover_formattedrefs(doc, semantic_xml)
+        recover_loose_bibitems(doc, semantic_xml)
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
@@ -146,6 +149,23 @@ module Metanorma
         root.define_singleton_method(:recovered_formattedrefs) { frs }
 
         recover_bibitem_sources(root, doc)
+      end
+
+      # [%bibitem] sections at the body level: the presentation step
+      # consumes them into bare sections, so recover their raw XML from
+      # the PRE-presentation semantic document for the section
+      # transformer to render (title + contributor names).
+      def self.recover_loose_bibitems(root, semantic_xml)
+        require "nokogiri"
+        doc = Nokogiri::XML(semantic_xml) { |c| c.noblanks }
+        loose = {}
+        doc.xpath('//*[local-name()="bibitem" and not(ancestor::*[local-name()="bibliography" or local-name()="references"])]').each do |bib|
+          next if bib.ancestors("bibitem").any?
+
+          key = ncname_key(bib["anchor"] || bib["id"]) or next
+          loose[key] = bib.dup.to_xml
+        end
+        root.define_singleton_method(:recovered_loose_bibitems) { loose }
       end
 
       def self.ncname_key(key)

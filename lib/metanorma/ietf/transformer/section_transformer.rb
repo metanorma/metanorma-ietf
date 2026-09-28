@@ -128,7 +128,7 @@ module Metanorma
 
         def transform_loose_bibitem(sections_node)
           bibitems = to_array(sections_node.bibitem)
-          return nil if bibitems.empty?
+          return transform_recovered_loose_bibitem(sections_node) if bibitems.empty?
 
           bib = bibitems.first
           bib_id = bib.id
@@ -150,6 +150,32 @@ module Metanorma
             t = Rfcxml::V3::Text.new
             t.content = [text.strip]
             safe_append(section, :t, t)
+          end
+
+          # [%bibitem] sections carry Relaton-shaped metadata, not
+          # paragraphs. When the model captured no content, fall back to
+          # the recovered raw bibitem XML for the contributor names.
+          if paragraphs.empty?
+            srcs = doc.respond_to?(:recovered_loose_bibitems) ? doc.recovered_loose_bibitems : {}
+            raw = srcs[to_ncname(bib_id)] || srcs[to_ncname(section.anchor)]
+            if raw
+              node = Nokogiri::XML(raw)&.root
+              people = node ? node.xpath("./*[local-name()=\"contributor\"]").filter_map do |c|
+                pn = c.at_xpath("./*[local-name()=\"person\"]/*[local-name()=\"name\"]")
+                next unless pn
+                if (cn = pn.at_xpath("./*[local-name()=\"completename\"]"))
+                  cn.text.strip
+                else
+                  [pn.at_xpath("./*[local-name()=\"initials\"]")&.text, pn.at_xpath("./*[local-name()=\"surname\"]")&.text]
+                    .compact.map(&:strip).reject(&:empty?).join(" ")
+                end
+              end.reject(&:empty?) : []
+              unless people.empty?
+                t = Rfcxml::V3::Text.new
+                t.content = ["#{people.join(', ')}."]
+                safe_append(section, :t, t)
+              end
+            end
           end
 
           section
