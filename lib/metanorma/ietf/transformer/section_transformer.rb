@@ -153,61 +153,29 @@ module Metanorma
           end
 
           # [%bibitem] sections carry Relaton-shaped metadata, not
-          # paragraphs: render the contributors as the section text.
-          if paragraphs.empty? && bib.respond_to?(:contributor)
-            people = to_array(bib.contributor).filter_map do |c|
-              next unless c.respond_to?(:person) && c.person&.name
-              n = c.person.name
-              if n.respond_to?(:completename) && n.completename
-                n.completename.to_s
-              elsif n.respond_to?(:surname)
-                [n.respond_to?(:initials) ? n.initials : nil, n.surname]
-                  .compact.map(&:to_s).reject(&:empty?).join(" ")
+          # paragraphs. When the model captured no content, fall back to
+          # the recovered raw bibitem XML for the contributor names.
+          if paragraphs.empty?
+            srcs = doc.respond_to?(:recovered_loose_bibitems) ? doc.recovered_loose_bibitems : {}
+            raw = srcs[to_ncname(bib_id)] || srcs[to_ncname(section.anchor)]
+            if raw
+              node = Nokogiri::XML(raw)&.root
+              people = node ? node.xpath("./contributor").filter_map do |c|
+                pn = c.at_xpath("./person/name")
+                next unless pn
+                if pn.at_xpath("./completename")
+                  pn.at_xpath("./completename").text.strip
+                else
+                  [pn.at_xpath("./initials")&.text, pn.at_xpath("./surname")&.text]
+                    .compact.map(&:strip).reject(&:empty?).join(" ")
+                end
+              end.reject(&:empty?) : []
+              unless people.empty?
+                t = Rfcxml::V3::Text.new
+                t.content = ["#{people.join(', ')}."]
+                safe_append(section, :t, t)
               end
-            end.reject(&:empty?)
-            unless people.empty?
-              t = Rfcxml::V3::Text.new
-              t.content = ["#{people.join(', ')}."]
-              safe_append(section, :t, t)
             end
-          end
-
-          section
-        end
-
-        # Body-level [%bibitem] sections whose data did not map into the
-        # model: render them from the recovered raw bibitem XML (title +
-        # contributor names), keeping the section content present.
-        def transform_recovered_loose_bibitem(_sections_node)
-          srcs = doc.respond_to?(:recovered_loose_bibitems) ? doc.recovered_loose_bibitems : {}
-          return nil if srcs.empty?
-
-          node = Nokogiri::XML(srcs.values.first)&.root
-          return nil unless node
-
-          section = Rfcxml::V3::Section.new
-          anchor_id = node["anchor"] || node["id"]
-          section.anchor = to_ncname(anchor_id) if anchor_id
-
-          title_text = node.at_xpath("./title")&.text&.strip
-          name = Rfcxml::V3::Name.new
-          name.content = [title_text || anchor_id.to_s]
-          section.name = name
-
-          people = node.xpath("./contributor").filter_map do |c|
-            pn = c.at_xpath("./person/name")
-            next unless pn
-            if pn.at_xpath("./completename")
-              pn.at_xpath("./completename").text.strip
-            else
-              [pn.at_xpath("./initials")&.text, pn.at_xpath("./surname")&.text]
-                .compact.map(&:strip).reject(&:empty?).join(" ")
-            end
-          end.reject(&:empty?)
-          unless people.empty?
-            t = Rfcxml::V3::Text.new
-            t.content = ["#{people.join(', ') }."]
-            safe_append(section, :t, t)
           end
 
           section
