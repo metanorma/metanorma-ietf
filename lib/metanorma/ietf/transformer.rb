@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "metanorma/document"
+require "metanorma/standard_document"
+require "metanorma/ietf_document"
 require "rfcxml"
 require "sterile"
 require "htmlentities"
