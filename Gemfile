@@ -11,6 +11,10 @@ gemspec
 gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
 gem "metanorma-document", github: "metanorma/metanorma-document", branch: "main"
 gem "isodoc", github: "metanorma/isodoc", branch: "main"
+# standoc main registers Metanorma::Plugin::Lutaml::LutamlDataPreprocessor;
+# released metanorma-plugin-lutaml 0.7.x does not carry it yet (same pin
+# standoc main carries).
+gem "metanorma-plugin-lutaml", github: "metanorma/metanorma-plugin-lutaml", branch: "main"
 gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
 gem "pubid", github: "pubid/pubid", branch: "main"
 
