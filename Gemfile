@@ -3,15 +3,18 @@ git_source(:github) { |repo| "https://github.com/#{repo}" }
 
 gemspec
 
-# TEMPORARY: cross-PR branch pins so CI can resolve the in-flight
-# metanorma-standoc namespace rename (Metanorma::Standoc::Document)
-# and the pubid-2 / relaton-bib 2.2 / metanorma-document 0.5 chain.
-# Revert each pin once the corresponding PR merges:
-#   - https://github.com/metanorma/metanorma-standoc/pull/1232
-#   - https://github.com/metanorma/metanorma-document/pull/45
-gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "feat/move-standard-document"
-gem "metanorma-document", github: "metanorma/metanorma-document", branch: "feat/model-validation-l1-declarations"
-gem "isodoc", github: "metanorma/isodoc", branch: "rt-pubid-2-migration"
+# The cross-PR branch pins this block replaced are all merged:
+#   - metanorma-standoc#1232 (2026-09-05), metanorma-document#45
+#     (2026-09-06), isodoc #825/#824 — pin their mainlines instead, which
+#     also carry the relaton 3.0.0.pre.alpha.6 chain allowance
+#     (isodoc#846: relaton-render >= 1.3.0, < 1.5.0).
+gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
+gem "metanorma-document", github: "metanorma/metanorma-document", branch: "main"
+gem "isodoc", github: "metanorma/isodoc", branch: "main"
+# standoc main registers Metanorma::Plugin::Lutaml::LutamlDataPreprocessor;
+# released metanorma-plugin-lutaml 0.7.x does not carry it yet (same pin
+# standoc main carries).
+gem "metanorma-plugin-lutaml", github: "metanorma/metanorma-plugin-lutaml", branch: "main"
 gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
 gem "pubid", github: "pubid/pubid", branch: "main"
 
