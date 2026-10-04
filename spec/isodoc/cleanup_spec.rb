@@ -809,7 +809,7 @@ RSpec.describe IsoDoc::Ietf::RfcConvert do
            <section anchor="F">
              <name>Foreword</name>
              <sourcecode anchor="S" type="ruby" name="sourcecode1.rb" markers="true"><![CDATA[                puts "Hello, world." %w{a b c}.each do |x| puts x end
-                       RFC 4918, Section 
+                       RFC 4918
                        Hello
                        RFC 4918, Section 14.24
                        Hello
