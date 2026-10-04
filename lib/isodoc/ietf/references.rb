@@ -1,4 +1,4 @@
-require_relative "../../relaton/render/general"
+require_relative "reference_renderer"
 
 module IsoDoc
   module Ietf
@@ -18,10 +18,7 @@ module IsoDoc
         docxml.xpath(ns("//references/bibitem/docidentifier")).each do |i|
           i.children = docid_prefix(i["type"], i.text)
         end
-        @bibrenderer =
-          ::Relaton::Render::Ietf::General
-            .new(language: @lang, i18nhash: @i18n.get,
-                 config: @relatonrenderconfig)
+        @bibrenderer = ReferenceRenderer.new(language: @lang)
       end
 
       def implicit_reference(bib)
@@ -86,10 +83,9 @@ module IsoDoc
         # pipeline.
         did = bib1.at(ns("./docidentifier"))
         # A formattedref takes this path even when a title is also
-        # present: relaton-render honours the formattedref by returning
-        # it as BARE TEXT, which then lands as loose text inside
-        # <reference> -- invalid RFC XML (#279; trigger: relaton BCP
-        # collection items, e.g. citing "BCP 14").
+        # present: the raw reference text is not RFC XML front matter and
+        # lands as loose text inside <reference> -- invalid RFC XML (#279;
+        # trigger: relaton BCP collection items, e.g. citing "BCP 14").
         if f || (!bib1.at(ns("./title")) && did)
           ref.front do |front|
             front.title do |t|
@@ -101,7 +97,7 @@ module IsoDoc
             end
           end
         else
-          ref << @bibrenderer.render(bib1.to_xml, embedded: true)
+          ref << @bibrenderer.render(bib1)
         end
       end
 

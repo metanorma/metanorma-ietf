@@ -1129,7 +1129,7 @@ RSpec.describe IsoDoc::Ietf do
      "as front/title, not loose text (#279)" do
     # relaton BCP collection items (citing "BCP 14") carry BOTH a
     # formattedref and a title; the render path for titled bibitems
-    # hands them to relaton-render, which honours the formattedref by
+    # hands them to the renderer, which honours the formattedref by
     # returning bare text -- emitted as loose text inside <reference>,
     # which the RFC XML grammar rejects
     FileUtils.rm_f "test.rfc.xml"
