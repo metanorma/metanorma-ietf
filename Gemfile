@@ -15,6 +15,12 @@ gem "isodoc", github: "metanorma/isodoc", branch: "main"
 # released metanorma-plugin-lutaml 0.7.x does not carry it yet (same pin
 # standoc main carries).
 gem "metanorma-plugin-lutaml", github: "metanorma/metanorma-plugin-lutaml", branch: "main"
+# No constraint in this bundle names a relaton prerelease, so Bundler
+# refuses to consider the 1.4.0.pre relaton-render line that relaton
+# alpha.6+ requires and fresh resolutions back off to relaton
+# 3.0.0.pre.alpha.5, losing the #237 fetch fallback (draft citations in
+# base_spec fail to fetch). standoc main carries the same dev-side pin.
+gem "relaton", "~> 3.0.0.pre.alpha.8"
 gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
 gem "pubid", github: "pubid/pubid", branch: "main"
 
