@@ -1,18 +1,20 @@
-require "jing"
+require "leptris"
+require "leptris/xml/relaxng"
 require "fileutils"
 
 module IsoDoc
   module Ietf
     class RfcConvert < ::IsoDoc::Convert
       def schema_validate(filename)
-        errors = Jing.new(File.join(File.dirname(__FILE__), "v3.rng"))
-          .validate(filename)
-        errors.each do |error|
+        rng = Leptris::XML::RelaxNG.parse_file(
+          File.join(File.dirname(__FILE__), "v3.rng"))
+        doc = Leptris::XML.parse(File.read(filename), readonly: true)
+        rng.validate_errors(doc).each do |error|
           warn "RFC XML: Line #{'%06d' % error[:line]}:#{error[:column]} " \
                "#{error[:message]}"
         end
-      rescue Jing::Error => e
-        abort "Jing failed with error: #{e}"
+      rescue Leptris::XML::Error => e
+        abort "Schema validation failed with error: #{e}"
       end
 
       def content_validate(xml, filename)
