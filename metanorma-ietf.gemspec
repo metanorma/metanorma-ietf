@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "metanorma-ietf-data"
   spec.add_dependency "metanorma-standoc", ">= 3.4.2" # audit chain
-  spec.add_dependency "relaton-render"
+  spec.add_dependency "relaton-render", "~> 3.0.0.pre.alpha"
 
   spec.add_development_dependency "canon" #, "= 0.2.3"
   spec.add_development_dependency "debug"
