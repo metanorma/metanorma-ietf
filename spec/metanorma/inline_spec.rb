@@ -43,7 +43,7 @@ RSpec.describe Metanorma::Ietf do
                      </mml:mrow>
                   </mml:mrow>
                </mml:msub>
-            </math></stem> alt deprecated domain strike smallcap keyword
+            </mml:math></stem> alt deprecated domain strike smallcap keyword
       <span class="bcp14">KEYWORD</span>
       </p>
       </sections>
