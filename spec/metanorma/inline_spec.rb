@@ -30,20 +30,20 @@ RSpec.describe Metanorma::Ietf do
       super<sup>script</sup>
       sub<sub>script</sub>
       sub<sub><em>scr</em>ipt</sub>
-      <stem block="false" type="MathML"><math xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns="http://www.w3.org/1998/Math/MathML">
-               <mml:msub xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-                  <mml:mrow>
-                     <mml:mrow>
-                        <mml:mi mathvariant="bold-italic">F</mml:mi>
-                     </mml:mrow>
-                  </mml:mrow>
-                  <mml:mrow>
-                     <mml:mrow>
-                        <mml:mi mathvariant="bold-italic">Α</mml:mi>
-                     </mml:mrow>
-                  </mml:mrow>
-               </mml:msub>
-            </mml:math></stem> alt deprecated domain strike smallcap keyword
+      <stem block="false" type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML">
+               <msub>
+                  <mrow>
+                     <mrow>
+                        <mi mathvariant="bold-italic">F</mi>
+                     </mrow>
+                  </mrow>
+                  <mrow>
+                     <mrow>
+                        <mi mathvariant="bold-italic">Α</mi>
+                     </mrow>
+                  </mrow>
+               </msub>
+            </math></stem> alt deprecated domain strike smallcap keyword
       <span class="bcp14">KEYWORD</span>
       </p>
       </sections>
