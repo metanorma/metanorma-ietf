@@ -2,7 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}" }
 
 gemspec
-gem "metanorma-mirror", "~> 1.0"
+gem "metanorma-mirror", "~> 1.0", github: "metanorma/metanorma-mirror", branch: "main"
 
 # and the pubid-2 / relaton-bib 2.2 / metanorma-document 0.5 chain.
 # Revert each pin once the corresponding PR merges:
