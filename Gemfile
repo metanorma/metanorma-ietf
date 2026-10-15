@@ -10,8 +10,7 @@ gem "metanorma-mirror", "~> 1.0", github: "metanorma/metanorma-mirror", branch: 
 gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
 gem "metanorma-document", github: "metanorma/metanorma-document", branch: "main"
 gem "isodoc", github: "metanorma/isodoc", branch: "main" # merged as #825
-gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
-gem "pubid", github: "pubid/pubid", branch: "main"
+gem "pubid", "~> 2.0.0.pre.alpha"
 
 eval_gemfile("Gemfile.devel") rescue nil
 
