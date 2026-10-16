@@ -13,7 +13,7 @@ RSpec.describe "IETF list-item children (#294)" do
       <li id="i2"><p id="p2">second, see <xref target="itemid"/></p></li>
       </ul>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include('<li anchor="itemid">')
@@ -28,7 +28,7 @@ RSpec.describe "IETF list-item children (#294)" do
       <dl id="d1"><dt>term</dt><dd id="dd1"><p id="p2">NESTEDDLDEF</p></dd></dl>
       </li></ul>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("NESTEDDLDEF")
@@ -44,7 +44,7 @@ RSpec.describe "IETF list-item children (#294)" do
       <table id="t1"><tbody><tr><td>LITABLECELL</td></tr></tbody></table>
       </li></ul>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<li[^>]*>.*<blockquote[^>]*>.*LIQUOTE.*</blockquote>.*</li>}m)
@@ -61,7 +61,7 @@ RSpec.describe "IETF list-item children (#294)" do
       <p id="pc">trailing paragraph after sublist</p>
       </li></ul>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{leading paragraph.*<ul.*nested item.*</ul>.*trailing paragraph after sublist}m)

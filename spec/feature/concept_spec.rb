@@ -13,7 +13,7 @@ RSpec.describe "IETF body-text concepts (#306)" do
       </clause>
       <clause id="c2"><title>Target</title><p>T.</p></clause>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = nil
     expect { out = strip_guid(feature_convert(input)) }.not_to raise_error
@@ -31,7 +31,7 @@ RSpec.describe "IETF body-text concepts (#306)" do
       </clause>
       <clause id="c2"><title>Target</title><p>T.</p></clause>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = nil
     expect { out = strip_guid(feature_convert(input)) }.not_to raise_error

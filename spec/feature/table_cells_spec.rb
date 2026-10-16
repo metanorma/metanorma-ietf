@@ -13,7 +13,7 @@ RSpec.describe "IETF table cells (#295)" do
       <td><p id="p1">CELLLEAD</p><ul id="u1"><li><p id="p2">CELLLISTITEM</p></li></ul></td>
       </tr></tbody></table>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("CELLLEAD")
@@ -26,7 +26,7 @@ RSpec.describe "IETF table cells (#295)" do
       <sections><clause id="c1"><title>Body</title>
       <table id="t1" align="left"><tbody><tr><td>x</td></tr></tbody></table>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<table[^>]* align="left"/)
@@ -39,7 +39,7 @@ RSpec.describe "IETF table cells (#295)" do
       <table id="t1"><thead><tr><th>HEADA</th><td>HEADB</td></tr></thead>
       <tbody><tr><td>x</td><td>y</td></tr></tbody></table>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("HEADB")

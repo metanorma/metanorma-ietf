@@ -21,7 +21,7 @@ require "spec_helper"
 RSpec.describe "IETF table rendering (WS3)" do
   it "processes IsoXML tables" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections>
       <clause id="tabclause"><title>Tables</title>
             <table id="tableD-1" alt="tool tip" summary="long desc" align="right">
@@ -92,7 +92,7 @@ RSpec.describe "IETF table rendering (WS3)" do
       </table>
       </clause>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>

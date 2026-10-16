@@ -535,7 +535,7 @@ RSpec.describe "IETF metadata rendering (WS3)" do
     # comparison gating rfc_seriesinfo, dropping the document's own
     # seriesInfo and with it the "Request for Comments" masthead line
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata type="standard">
       <title language="en" format="text/plain" type="main">Date and Time on the Internet</title>
       <docidentifier>RFC 3339</docidentifier>
@@ -543,7 +543,7 @@ RSpec.describe "IETF metadata rendering (WS3)" do
       <ext><doctype>rfc</doctype><ipr>trust200902</ipr></ext>
       </bibdata>
       <sections><clause id="A"><title>A-title</title><p>A</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = feature_convert(input)
     xml = Nokogiri::XML(out)

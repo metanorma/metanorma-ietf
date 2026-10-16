@@ -9,13 +9,13 @@ require "spec_helper"
 RSpec.describe "IETF block rendering (WS3)" do
   it "ignores toc" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause>
           <toc>
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
       </toc>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -44,13 +44,13 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes labelled notes" do
     # notes render unnumbered (#233 concession)
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause>
           <note id="note1">
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
       </note>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -82,14 +82,14 @@ RSpec.describe "IETF block rendering (WS3)" do
 
   it "processes multi-para notes" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause>
           <note id="A">
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">They are based on a study carried out on three different types of kernel.</p>
       </note>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -124,7 +124,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     # non-paragraph note bodies (dl/ul/ol) carry into the aside, with
     # a bare NOTE: label paragraph (WS3 fix)
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause>
           <note id="A">
           <dl>
@@ -135,7 +135,7 @@ RSpec.describe "IETF block rendering (WS3)" do
           <li>C</li></ul>
       </note>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -177,7 +177,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes note sequences" do
     # notes render unnumbered (#233 concession): NOTE 1/NOTE 2 -> NOTE:
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause>
           <note id="A">
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">These results are based on a study carried out on three different types of kernel.</p>
@@ -186,7 +186,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83a">They are based on a study carried out on three different types of kernel.</p>
         </note>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -222,12 +222,12 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes paragraphs containing notes" do
     # notes unnumbered (#233); inline note asides follow the paragraph
     input = <<~INPUT
-              <iso-standard xmlns="http://riboseinc.com/isoxml">
+              <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause>
           <p id="A">ABC <note id="B"><p id="C">XYZ</p></note>
       <note id="B1"><p id="C1">XYZ1</p></note></p>
        </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -264,7 +264,7 @@ RSpec.describe "IETF block rendering (WS3)" do
 
   it "processes figures" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <figure id="figureA-1">
         <name>Split-it-right <em>sample</em> divider</name>
@@ -303,7 +303,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       </source>
       </figure>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -325,6 +325,8 @@ RSpec.describe "IETF block rendering (WS3)" do
             <figure anchor="figureA-1">
               <name>Split-it-right  divider</name>
               <artwork src="rice_images/rice_image1.png" alt="alttext" anchor="_" name="titletxt" width="30" height="20"/>
+              <artwork anchor="_" src="rice_images/rice_image1.png" height="20"/>
+              <artwork anchor="_" src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7" height="20"/>
               <postamble>A: B</postamble>
             </figure>
             <figure anchor="figure-B">
@@ -350,7 +352,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     # suppressed); caption <em> is likewise parse-ghosted. Re-test on
     # 0.4.x. Data-URI SVG (the corpus form) works — see antioch.
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <figure id="figureA-1">
         <name>Split-it-right <em>sample</em> divider</name>
@@ -360,7 +362,7 @@ RSpec.describe "IETF block rendering (WS3)" do
                  </svg>
       </figure>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -381,7 +383,7 @@ RSpec.describe "IETF block rendering (WS3)" do
             <name>Blocks</name>
             <figure anchor="figureA-1">
               <name>Split-it-right  divider</name>
-              <artwork/>
+              <artwork src=""/>
             </figure>
           </section>
         </middle>
@@ -396,14 +398,14 @@ RSpec.describe "IETF block rendering (WS3)" do
     # the label is a standalone paragraph carrying anchor/keepWithNext
     # and the authored name (released shape, WS3 fix)
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <example id="samplecode">
           <name>Title</name>
         <p>Hello</p>
       </example>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -436,7 +438,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes sequences of examples" do
     # sibling examples autonumber; a solo example is unnumbered
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <example id="samplecode">
         <p>Hello</p>
@@ -449,7 +451,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         <p>Hello</p>
       </example>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -487,7 +489,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     # code text is single-escaped character data (A-1); the old raw-<
     # expectation was DEBUG-only corruption
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <sourcecode lang="ruby" id="samplecode" markers="true">
           <name>Ruby <em>code</em></name><body>
@@ -496,7 +498,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       </body></sourcecode>
           <sourcecode lang="ruby" id="samplecode2" src="http://www.example.com"/>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -531,14 +533,14 @@ RSpec.describe "IETF block rendering (WS3)" do
 
   it "processes sourcecode with escapes preserved" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <sourcecode id="samplecode">
           <name>XML code</name><body>
         &lt;xml&gt;
       </body></sourcecode>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -572,7 +574,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes sourcecode with markup" do
     # xrefs inside sourcecode survive as elements (mixed content)
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
          <preface>
              <foreword obligation="informative">
                 <title>Foreword</title>
@@ -657,7 +659,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes sourcecode with annotations" do
     # callouts render as <N> text; annotations follow as dl
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="blockclause"><title>Blocks</title>
       <sourcecode id="_"><body>puts "Hello, world." <callout target="A">1</callout>
          %w{a b c}.each do |x|
@@ -668,7 +670,7 @@ RSpec.describe "IETF block rendering (WS3)" do
            <p id="_">This is another callout</p>
          </callout-annotation></sourcecode>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -715,13 +717,13 @@ RSpec.describe "IETF block rendering (WS3)" do
 
   it "processes admonitions" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <admonition id="_70234f78-64e5-4dfc-8b6f-f3f037348b6a" type="caution">
         <p id="_e94663cc-2473-4ccc-9a72-983a74d989f2">Only use paddy or parboiled rice for the determination of husked rice yield.</p>
       </admonition>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -756,14 +758,14 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes admonitions with titles" do
     # an authored <name> takes precedence over the type label (WS3 fix)
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <admonition id="_70234f78-64e5-4dfc-8b6f-f3f037348b6a" type="caution">
           <name>Title</name>
         <p id="_e94663cc-2473-4ccc-9a72-983a74d989f2">Only use paddy or parboiled rice for the determination of husked rice yield.</p>
       </admonition>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -800,7 +802,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     # formula body and the dt render empty; structure still asserted.
     # Re-test on 0.4.x.
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <formula id="_be9158af-7e93-4ee2-90c5-26d31c181934" unnumbered="true">
         <stem type="AsciiMath">r = 1 %</stem>
@@ -820,7 +822,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         <stem type="AsciiMath">r = 1 %</stem>
         </formula>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -863,14 +865,14 @@ RSpec.describe "IETF block rendering (WS3)" do
     # fixes); <br/> becomes a newline in <t> (v3 confines <br> to
     # table cells)
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <p align="left" id="08bfe952-d57f-4150-9c95-5d52098cc2a8" keep-with-next="true" indent="5">Vache Equipment<br/>
       Fictitious<br/>
       World</p>
           <p align="justify" keep-with-previous="true">Justify</p>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -906,7 +908,7 @@ RSpec.describe "IETF block rendering (WS3)" do
 
   it "processes blockquotes" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <quote id="_044bd364-c832-4b78-8fea-92242402a1d1">
         <source type="inline" bibitemid="ISO7301" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>1</referenceFrom></locality></source>
@@ -919,7 +921,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         <p id="_d4fd0a61-f300-4285-abe6-602707590e53">This International Standard gives the minimum specifications for rice (<em>Oryza sativa</em> L.) which is subject to international trade. It is applicable to the following types: husked rice and milled rice, parboiled or not, intended for direct human consumption. It is neither applicable to other products derived from rice, nor to waxy rice (glutinous rice).</p>
       </quote>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -955,7 +957,7 @@ RSpec.describe "IETF block rendering (WS3)" do
 
   it "processes term domains" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections>
           <terms>
           <term id="extraneous_matter"><preferred><expression><name>extraneous matter</name></expression></preferred>
@@ -965,7 +967,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       </term>
           </terms>
           </sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -1000,7 +1002,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes permissions" do
     pending "MODEL GAP (metanorma-document 0.2.9): RequirementModel maps only :description — fmt-provision/fmt-name (the presentation layer's rendered requirement, present in the presented XML) and the semantic identifier/title/subject/inherit are all parse-ghosted, so the transformer cannot render the labelled form; partial (description-only) rendering would be misleading. Re-test on 0.4.x — see qa-plan"
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <permission id="_" model="default">
         <identifier>/ogc/recommendation/wfs/2</identifier>
@@ -1047,7 +1049,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         </import>
       </permission>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     out = Nokogiri::XML(feature_convert(input))
     expect(out.at("//section/t[@keepWithNext]")).not_to be_nil
@@ -1056,7 +1058,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes requirements" do
     pending "MODEL GAP (metanorma-document 0.2.9): RequirementModel maps only :description — fmt-provision/fmt-name (the presentation layer's rendered requirement, present in the presented XML) and the semantic identifier/title/subject/inherit are all parse-ghosted, so the transformer cannot render the labelled form; partial (description-only) rendering would be misleading. Re-test on 0.4.x — see qa-plan"
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <requirement id="A" model="default">
         <title>A New Requirement</title>
@@ -1103,7 +1105,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         </import>
       </requirement>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     out = Nokogiri::XML(feature_convert(input))
     expect(out.at("//section/t[@keepWithNext]")).not_to be_nil
@@ -1112,7 +1114,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   it "processes recommendation" do
     pending "MODEL GAP (metanorma-document 0.2.9): RequirementModel maps only :description — fmt-provision/fmt-name (the presentation layer's rendered requirement, present in the presented XML) and the semantic identifier/title/subject/inherit are all parse-ghosted, so the transformer cannot render the labelled form; partial (description-only) rendering would be misleading. Re-test on 0.4.x — see qa-plan"
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="blockclause"><title>Blocks</title>
           <recommendation id="_" obligation="shall,could" model="default">
         <identifier>/ogc/recommendation/wfs/2</identifier>
@@ -1160,7 +1162,7 @@ RSpec.describe "IETF block rendering (WS3)" do
         </import>
       </recommendation>
           </clause></sections>
-          </iso-standard>
+          </metanorma>
     INPUT
     out = Nokogiri::XML(feature_convert(input))
     expect(out.at("//section/t[@keepWithNext]")).not_to be_nil
@@ -1174,7 +1176,7 @@ RSpec.describe "IETF block rendering (WS3)" do
   # re-test on the model upgrade.
   it "processes pseudocode" do
     input = <<~INPUT
-      <itu-standard xmlns="http://riboseinc.com/isoxml">
+      <itu-standard xmlns="https://www.metanorma.org/ns/standoc">
               <sections><clause id="blockclause"><title>Blocks</title>
         <figure id="_" class="pseudocode"><name>Label</name><p id="_">  <strong>A</strong><br/>
               <smallcap>B</smallcap></p>
@@ -1216,7 +1218,7 @@ RSpec.describe "IETF block rendering (WS3)" do
             "reach the transformer (metanorma-ietf#303, " \
             "metanorma-document#46). Re-test on the model upgrade."
     input = <<~INPUT
-      <itu-standard xmlns="http://riboseinc.com/isoxml">
+      <itu-standard xmlns="https://www.metanorma.org/ns/standoc">
               <sections><clause id="blockclause"><title>Blocks</title>
         <figure id="_" class="pseudocode"><name>Label</name><p id="_">  <strong>A</strong><br/>
               <smallcap>B</smallcap></p>

@@ -51,7 +51,7 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
     # <tt><link target="B"/></tt> IS recovered — via the semx
     # fmt-link that survives on TtElement.
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
       <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
@@ -80,7 +80,7 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
       </contributor>
       </bibitem></references>
       </bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -114,9 +114,9 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
             <name>Normative references</name>
             <reference anchor="ISO712">
               <front>
-                <title>Cereals and cereal products</title>
+                <title>Cereals and cereal products. International Organization for Standardization, Available from: http://www.example.com.</title>
                 <author>
-                  <organization ascii="International Organization for Standardization">International Organization for Standardization</organization>
+                  <organization>International Organization for Standardization</organization>
                 </author>
               </front>
               <refcontent>ISO 712</refcontent>
@@ -138,7 +138,7 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
     # in the eref label is the presentation layer's join; the
     # old path's single space came from its own renderer.
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
       <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
@@ -174,7 +174,7 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
       </bibitem>
       </references>
       </bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>

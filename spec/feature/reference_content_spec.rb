@@ -16,7 +16,7 @@ RSpec.describe "IETF reference content (#301)" do
       <bibliography><references id="R1" normative="true"><title>Normative References</title>
       #{bibitems}
       </references></bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     strip_guid(Metanorma::Ietf::Transformer.convert(
                  input, reference_export: false,
@@ -73,7 +73,7 @@ RSpec.describe "IETF reference content (#301)" do
       <docidentifier type="metanorma-ordinal">[9]</docidentifier>
       <date type="published"><on>2019-03</on></date></bibitem>
       </references></bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     # the exporter's signature shape: seriesInfo/refcontent inside

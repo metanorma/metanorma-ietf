@@ -8,7 +8,7 @@ RSpec.describe "IETF list rendering (WS3)" do
   it "processes unordered lists" do
     # nobullet="true" renders as empty="true", as the released path does
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface><foreword>
           <ul id="_61961034-0fb1-436b-b281-828857a59ddb" nobullet="true" spacing="compact" indent="5" bare="true">
         <li>
@@ -19,7 +19,7 @@ RSpec.describe "IETF list rendering (WS3)" do
         </li>
       </ul>
       </foreword></preface>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -59,7 +59,7 @@ RSpec.describe "IETF list rendering (WS3)" do
     # li+; the old DEBUG expectation just echoed it). Restructured to
     # the standoc shape: nested list inside the preceding li.
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <preface><foreword>
       <ol id="_ae34a226-aab4-496d-987b-1aa7b6314026" type="alphabet" start="7" spacing="compact" group="X" indent="5">
         <li>
@@ -77,7 +77,7 @@ RSpec.describe "IETF list rendering (WS3)" do
         </li>
       </ol>
       </foreword></preface>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -121,7 +121,7 @@ RSpec.describe "IETF list rendering (WS3)" do
   it "processes Roman Upper ordered lists" do
     # roman_upper maps to type="I" (B-6 canonical ol types)
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface><foreword>
           <ol id="_ae34a226-aab4-496d-987b-1aa7b6314026" type="roman_upper">
         <li anchor="_ae34a226-aab4-496d-987b-1aa7b6314027">
@@ -135,7 +135,7 @@ RSpec.describe "IETF list rendering (WS3)" do
         </li>
       </ol>
       </foreword></preface>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -180,7 +180,7 @@ RSpec.describe "IETF list rendering (WS3)" do
     # admissible in <abstract> ((dl|ol|t|ul)+), and notes are
     # unnumbered by the #233 concession.
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface><foreword>
           <dl id="_732d3f57-4f88-40bf-9ae9-633891edc395" newline="true" spacing="compact" indent="5">
         <dt id="A">
@@ -194,7 +194,7 @@ RSpec.describe "IETF list rendering (WS3)" do
         <note><p>This is a note</p></note>
         </dl>
       </foreword></preface>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -240,7 +240,7 @@ RSpec.describe "IETF list rendering (WS3)" do
     # rendered AFTER the nested dl; appends are now order-tracked
     # (the table-row th/td treatment)
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="c1"><title>C</title>
       <dl id="d1">
       <dt>Special notes:</dt>
@@ -254,7 +254,7 @@ RSpec.describe "IETF list rendering (WS3)" do
       </dd>
       </dl>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = Nokogiri::XML(feature_convert(input))
     dd = out.at("//section/dl/dd")

@@ -15,7 +15,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <figure id="f2"><name>Second sub</name><image id="i2" src="#{PNG}" mimetype="image/png"/></figure>
       </figure>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<artwork[^>]* anchor="i1"[^>]* name="First sub"|<artwork[^>]* name="First sub"[^>]* anchor="i1"/)
@@ -32,7 +32,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <dl id="k1" key="true"><dt>A</dt><dd><p id="kd1">alpha line</p></dd></dl>
       </figure>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("A: alpha line")
@@ -45,7 +45,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <figure id="f1"><image id="i1" src="#{PNG}" mimetype="image/png" width="300" height="200"/></figure>
       <figure id="f2"><image id="i2" src="#{PNG}" mimetype="image/png"/></figure>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<artwork[^>]*anchor="i1"[^>]*width="300"[^>]*height="200"/)
@@ -58,7 +58,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <sections><clause id="c1"><title>Body</title>
       <p id="p1">Before <image id="i1" src="#{PNG}" mimetype="image/png"/> after.</p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<figure>\s*<artwork anchor="i1"})
@@ -71,7 +71,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <sections><clause id="c1"><title>Body</title>
       <ul id="u1"><li><p id="lp1">Item <image id="i2" src="#{PNG}" mimetype="image/png"/> tail.</p></li></ul>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<artwork anchor="i2"/)
@@ -90,7 +90,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <source status="generalisation"><origin bibitemid="ISO712" type="inline" citeas="ISO 712"/></source>
       </figure>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/SOURCE.*ISO\s*712/m)
@@ -106,7 +106,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <sections><clause id="c1"><title>Body</title>
       <sourcecode id="s1" src="https://example.com/code.rb"/>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<sourcecode[^>]* src="https:\/\/example\.com\/code\.rb"/)
@@ -124,7 +124,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <image id="i1" src="#{PNG}" mimetype="image/png"/>
       <p id="fp2">POSTAMBLETEXT</p></figure>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("PREAMBLETEXT")
@@ -140,7 +140,7 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       <sections><clause id="c1"><title>Body</title>
       <pre id="pre1">ASCII ART HERE</pre>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<artwork[^>]*type="ascii-art"[^>]*>.*ASCII ART HERE/m)

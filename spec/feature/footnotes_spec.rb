@@ -4,7 +4,7 @@ require "fileutils"
 RSpec.describe IsoDoc do
   it "processes IsoXML footnotes" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface>
           <foreword>
           <p>A.<fn reference="2">
@@ -18,7 +18,7 @@ RSpec.describe IsoDoc do
       </fn></p>
           </foreword>
           </preface>
-          </iso-standard>
+          </metanorma>
     INPUT
     # WS3 migration: the old expectation captured the released path's
     # DEBUG (pre-cleanup) output — inline <fn>/<fnref>, which are not
@@ -53,7 +53,7 @@ RSpec.describe IsoDoc do
             "0.2.9), so no crefs can be built; <bookmark> is likewise " \
             "unmapped — see qa-plan WS3 note"
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface>
           <foreword>
           <p id="A">A.</p>
@@ -69,7 +69,7 @@ RSpec.describe IsoDoc do
             <annotation reviewer="ISO" id="_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712" date="20170108T0000" from="A" to="C"><p id="_c54b9549-369f-4f85-b5b2-9db3fd3d4c08">Second note.</p></annotation>
           <annotation reviewer="ISO" id="_4f4dff63-23c1-4ecb-8ac6-d3ffba93c712" date="20170108T0000" from="C" to="C"><p id="_c54b9549-369f-4f85-b5b2-9db3fd3d4c08">Third note.</p></annotation>
           </annotation-container>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       #{XML_HDR}

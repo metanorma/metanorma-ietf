@@ -15,7 +15,7 @@ RSpec.describe "IETF term content (#300)" do
       #{body}
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     strip_guid(feature_convert(input))
   end
@@ -81,7 +81,7 @@ RSpec.describe "IETF term content (#300)" do
       </term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).to include("First para.")
     expect(out).to include("Second para.")
@@ -99,7 +99,7 @@ RSpec.describe "IETF term content (#300)" do
       </term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).to match(%r{<ol[^>]*>.*First sense\..*Second sense\..*</ol>}m)
   end
@@ -115,7 +115,7 @@ RSpec.describe "IETF term content (#300)" do
       </term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).to include("DEPRECATED: oldalpha")
   end
@@ -136,7 +136,7 @@ RSpec.describe "IETF term content (#300)" do
       </term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).to include("[SOURCE:")
   end
@@ -155,7 +155,7 @@ RSpec.describe "IETF term content (#300)" do
       </term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).to include("β")
   end
