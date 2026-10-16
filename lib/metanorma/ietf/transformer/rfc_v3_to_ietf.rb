@@ -94,7 +94,7 @@ module Metanorma
             refs_sections = to_array(back.references)
             return if refs_sections.empty?
 
-            bib = Metanorma::StandardDocument::Sections::BibliographySection.new
+            bib = Metanorma::Standoc::Document::Sections::BibliographySection.new
             refs_sections.each do |refs_node|
               ref_section = transform_references_section(refs_node)
               next unless ref_section
@@ -123,7 +123,7 @@ module Metanorma
             front = rfc.front
             return unless front
 
-            preface = Metanorma::StandardDocument::Sections::Preface.new
+            preface = Metanorma::Standoc::Document::Sections::Preface.new
 
             if front.abstract
               abstract = transform_abstract(front.abstract)

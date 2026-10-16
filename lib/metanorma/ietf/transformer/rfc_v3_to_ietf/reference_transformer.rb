@@ -12,7 +12,7 @@ module Metanorma
           def transform_references_section(refs_node)
             return nil unless refs_node
 
-            section = Metanorma::StandardDocument::Sections::StandardReferencesSection.new(
+            section = Metanorma::Standoc::Document::Sections::StandardReferencesSection.new(
               id: refs_node.anchor,
             )
 

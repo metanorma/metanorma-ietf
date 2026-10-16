@@ -1,7 +1,7 @@
 MIME-Version: 1.0
-Content-Type: multipart/related; boundary="----=_NextPart_6bfc6978.66ad.454e"
+Content-Type: multipart/related; boundary="----=_NextPart_ecececff.3707.4bb8"
 
-------=_NextPart_6bfc6978.66ad.454e
+------=_NextPart_ecececff.3707.4bb8
 Content-ID: <test.htm>
 Content-Disposition: inline; filename="test.htm"
 Content-Type: text/html; charset="utf-8"
@@ -1087,7 +1087,7 @@ div.table_container {
       <p class="zzSTDTitle1">A</p>
       <div>
         <a name="_7801e2bf-7867-a1d9-5073-7ab5cd316359" id="_7801e2bf-7867-a1d9-5073-7ab5cd316359"></a>
-        <h1>1.<span style="mso-tab-count:1">&#xA0; </span>Clause</h1>
+        <h1>1<span class="fmt-clause-delim">.</span><span style="mso-tab-count:1">&#xA0; </span>Clause</h1>
         <p class="MsoNormal"><a name="_607696d7-c0bd-b893-ec64-2ea749438f26" id="_607696d7-c0bd-b893-ec64-2ea749438f26"></a>Para</p>
       </div>
     </div>
@@ -1096,7 +1096,7 @@ div.table_container {
 </html>
 
 
-------=_NextPart_6bfc6978.66ad.454e
+------=_NextPart_ecececff.3707.4bb8
 Content-ID: <filelist.xml>
 Content-Disposition: inline; filename="filelist.xml"
 Content-Transfer-Encoding: base64
@@ -1106,4 +1106,4 @@ PHhtbCB4bWxuczpvPSJ1cm46c2NoZW1hcy1taWNyb3NvZnQtY29tOm9mZmljZTpvZmZpY2UiPgog
 ICAgICAgIDxvOk1haW5GaWxlIEhSZWY9Ii4uL3Rlc3QuaHRtIi8+ICA8bzpGaWxlIEhSZWY9ImZp
 bGVsaXN0LnhtbCIvPgo8L3htbD4K
 
-------=_NextPart_6bfc6978.66ad.454e--
+------=_NextPart_ecececff.3707.4bb8--
