@@ -121,11 +121,9 @@ RSpec.describe "IETF term content (#300)" do
   end
 
   it "parses the legacy termsource element name" do
-    pending "LEGACY-NAME GAP (metanorma-document 0.2.9): the model " \
-            "maps the CURRENT element name <source> only; the legacy " \
-            "<termsource> of older semantic vintages is not aliased, " \
-            "so legacy-shaped inputs lose their term sources " \
-            "(metanorma-ietf#300 discussion)."
+    # the 0.4.x model line aliases the legacy <termsource> name, so
+    # legacy-shaped inputs carry their term sources again (the 0.2.9
+    # LEDGER-1 gap is closed)
     out = strip_guid(feature_convert(<<~INPUT))
       #{BLANK_HDR}
       <sections>

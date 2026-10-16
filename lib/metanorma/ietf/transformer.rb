@@ -143,7 +143,14 @@ module Metanorma
         doc.xpath("//bibitem/formattedref").each do |fr|
           bib = fr.parent
           key = ncname_key(bib["anchor"] || bib["id"]) or next
-          text = fr.text.to_s.strip
+          # bare <link> children carry their URL as the target, not
+          # text — splice it in, or the captured citation loses the
+          # URL inside its literal angle brackets (#267)
+          dup = fr.dup
+          dup.xpath(".//link").each do |l|
+            l.replace(l["target"].to_s) if l["target"]
+          end
+          text = dup.text.to_s.strip
           frs[key] = text unless text.empty?
         end
         root.define_singleton_method(:recovered_formattedrefs) { frs }

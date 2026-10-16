@@ -399,6 +399,9 @@ module Metanorma
           series_infos = extract_bibitem_series_info(bibitem)
           series_infos.each { |si| safe_append(ref, :series_info, si) }
 
+          stream = extract_bibitem_stream(bibitem)
+          ref.stream = stream if stream
+
           refcontent_text = extract_bibitem_refcontent(bibitem)
           # suppressed when it merely echoes the docid-derived title
           # fallback above (F9)
