@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous" />
 <style class="anchorjs"></style>
-</head><body lang="en" xml:lang="en"><div class="title-section"></div><br /><div class="prefatory-section"></div><br /><main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button><br /><div id="_7c5bb705-5660-6fe2-3823-1a3408fd59b9" class="TOC"><h1 class="IntroTitle"><a class="anchor" href="#_7c5bb705-5660-6fe2-3823-1a3408fd59b9"></a><a class="header" href="#_7c5bb705-5660-6fe2-3823-1a3408fd59b9">Table of contents</a></h1></div><p class="zzSTDTitle1">A</p><div id="_7801e2bf-7867-a1d9-5073-7ab5cd316359"><h1><a class="anchor" href="#_7801e2bf-7867-a1d9-5073-7ab5cd316359"></a><a class="header" href="#_7801e2bf-7867-a1d9-5073-7ab5cd316359">1.  Clause</a></h1><p id="_607696d7-c0bd-b893-ec64-2ea749438f26">Para</p></div></main><script type="text/x-mathjax-config">
+</head><body lang="en" xml:lang="en"><div class="title-section"></div><br /><div class="prefatory-section"></div><br /><main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button><br /><div id="_7c5bb705-5660-6fe2-3823-1a3408fd59b9" class="TOC"><h1 class="IntroTitle"><a class="anchor" href="#_7c5bb705-5660-6fe2-3823-1a3408fd59b9"></a><a class="header" href="#_7c5bb705-5660-6fe2-3823-1a3408fd59b9">Table of contents</a></h1></div><p class="zzSTDTitle1">A</p><div id="_7801e2bf-7867-a1d9-5073-7ab5cd316359"><h1><a class="anchor" href="#_7801e2bf-7867-a1d9-5073-7ab5cd316359"></a><a class="header" href="#_7801e2bf-7867-a1d9-5073-7ab5cd316359">1<span class="fmt-clause-delim">.</span>  Clause</a></h1><p id="_607696d7-c0bd-b893-ec64-2ea749438f26">Para</p></div></main><script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     "HTML-CSS": {
       preferredFont: "STIX",
@@ -50,24 +50,51 @@
       const jqToggle = $('#toggle');
       const animationSpeed = 'slow';
 
+      if(!jqNav.length || !jqToggle.length) {
+        return;
+      }
+
+      const navWidthExpanded = jqNav.outerWidth();
+      const bodyPaddingLeftExpanded =
+        parseFloat(jqBody.css('paddingLeft')) > 0 ?
+          jqBody.css('paddingLeft') : navWidthExpanded + 'px';
+      const expandedToggleLeft = navWidthExpanded + 'px';
+      let bandWidth = 0;
+
+      $('.document-stage-band:visible, .document-type-band:visible')
+        .each(function() {
+          const bounds = this.getBoundingClientRect();
+          bandWidth = Math.max(bandWidth, bounds.right);
+        });
+
+      const toggleWidth = jqToggle.outerWidth();
+      const collapsedToggleLeft = bandWidth + 'px';
+      const collapsedBodyPaddingLeft = bandWidth + toggleWidth + 'px';
+      jqToggle.css({
+        'left': jqNav.is(':visible') ? expandedToggleLeft : collapsedToggleLeft,
+        'top': '0px'
+      });
+
       jqToggle.on('click', function() {
         const isNavVisible = jqNav.is(':visible');
-        const fullNavWidth = jqNav.outerWidth();
-        const navLeft = isNavVisible ? '-' + fullNavWidth + 'px' : '0px';
-        const bodyMarginLeft = isNavVisible ? '0px' : fullNavWidth + 'px';
+        const navLeft = isNavVisible ? '-' + navWidthExpanded + 'px' : '0px';
+        const bodyPaddingLeft =
+          isNavVisible ? collapsedBodyPaddingLeft : bodyPaddingLeftExpanded;
+        const toggleLeft =
+          isNavVisible ? collapsedToggleLeft : expandedToggleLeft;
 
-        // Stop current animations
         jqNav.stop(true, true);
         jqBody.stop(true, true);
+        jqToggle.stop(true, true);
 
         if(!isNavVisible) {
-            jqNav.show();
+          jqNav.show();
         }
         jqNav.animate({'left': navLeft}, animationSpeed, function() {
           if(isNavVisible) {jqNav.hide()}
         });
-        jqBody.animate({'marginLeft': bodyMarginLeft}, animationSpeed);
-
+        jqBody.animate({'paddingLeft': bodyPaddingLeft}, animationSpeed);
+        jqToggle.animate({'left': toggleLeft}, animationSpeed);
       });
     })();
   </script>
@@ -252,5 +279,4 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 </script>
-
 </body></html>

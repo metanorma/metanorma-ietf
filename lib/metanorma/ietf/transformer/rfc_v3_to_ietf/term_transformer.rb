@@ -17,7 +17,7 @@ module Metanorma
           def transform_terms_section(section_node)
             return nil unless section_node
 
-            terms_section = Metanorma::StandardDocument::Sections::TermsSection.new(
+            terms_section = Metanorma::Standoc::Document::Sections::TermsSection.new(
               id: resolve_id(section_node),
               obligation: "normative",
             )
@@ -64,7 +64,7 @@ module Metanorma
 
             term_id = dt_node.anchor ? dt_node.anchor.to_s : generate_id
 
-            term = Metanorma::StandardDocument::Terms::Term.new(id: term_id)
+            term = Metanorma::Standoc::Document::Terms::Term.new(id: term_id)
 
             # Preferred designation
             designation = build_term_designation(term_text)
@@ -98,19 +98,19 @@ module Metanorma
               text = text[0...idx].strip
             end
 
-            name = Metanorma::StandardDocument::Terms::TermNameElement.new(
+            name = Metanorma::Standoc::Document::Terms::TermNameElement.new(
               text: [text],
             )
-            expression = Metanorma::StandardDocument::Terms::TermExpression.new(
+            expression = Metanorma::Standoc::Document::Terms::TermExpression.new(
               name: [name],
             )
-            Metanorma::StandardDocument::Terms::Designation.new(
+            Metanorma::Standoc::Document::Terms::Designation.new(
               expression: expression,
             )
           end
 
           def build_term_definition_from_dd(dd_node, term)
-            definition = Metanorma::StandardDocument::Terms::TermDefinition.new
+            definition = Metanorma::Standoc::Document::Terms::TermDefinition.new
 
             # Paragraphs in dd → definition paragraphs
             to_array(dd_node.t).each do |t_node|
