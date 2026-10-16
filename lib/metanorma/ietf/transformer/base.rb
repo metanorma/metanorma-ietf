@@ -52,9 +52,13 @@ module Metanorma
           obj.each_mixed_content do |frag|
             out << if frag.is_a?(String)
                      frag
-                   elsif frag.is_a?(Metanorma::Document::Components::Inline::LinkElement)
-                     text = frag.respond_to?(:value) && ls_text(frag.value)
-                     text && !text.strip.empty? ? text : frag.target.to_s
+                   elsif frag.respond_to?(:target) &&
+                       !frag.target.to_s.strip.empty? &&
+                       ls_text(frag.respond_to?(:value) ? frag.value : nil).to_s.strip.empty?
+                     # bare link: render the target URL (N4 — the URL
+                     # was silently deleted); the fragment class moved
+                     # across model vintages, so match by shape
+                     frag.target.to_s
                    else
                      ls_text(frag).to_s
                    end
