@@ -3,7 +3,6 @@
 require "isodoc"
 require_relative "i18n"
 require_relative "xref"
-require_relative "../../relaton/render/general"
 
 module IsoDoc
   module Ietf
@@ -27,14 +26,6 @@ module IsoDoc
 
       def xref_init(lang, script, _klass, i18n, options)
         @xrefs = Xref.new(lang, script, self, i18n, options)
-      end
-
-      # Same construction as the released lib/isodoc/ietf reference
-      # rendering (references.rb#bibliography_prep)
-      def bibrenderer(options = {})
-        ::Relaton::Render::Ietf::General
-          .new(options.merge(language: @lang, i18nhash: @i18n.get,
-                             config: @relatonrenderconfig))
       end
 
       # PASS KILL (evidence: antioch + example B-pipeline runs,
