@@ -50,12 +50,11 @@ def htmlencode(xml)
   end
 end
 
-# WS3: the ported spec/isodoc surface. Runs an old-vintage Semantic-XML
-# input through the full default pipeline (presentation stage included),
-# normalising the legacy namespace the narrow strip rightly ignores.
+# WS3: the ported spec/isodoc surface. Runs Semantic-XML input through
+# the full default pipeline (presentation stage included). The inputs
+# are natively the unified semantic root (ns/standoc, flavor=ietf); no
+# legacy-namespace translation runs at convert time.
 def feature_convert(input)
-  input = input.sub('xmlns="http://riboseinc.com/isoxml"',
-                    'xmlns="https://www.metanorma.org/ns/ietf"')
   Metanorma::Ietf::Transformer.convert(input)
 end
 

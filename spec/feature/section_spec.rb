@@ -12,10 +12,10 @@ RSpec.describe "IETF section rendering (WS3)" do
     # skeleton systematics: the new-path front (title/, Internet-Draft
     # seriesInfo, ipr/xml:lang defaults)
     input = <<~INPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml">
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
         <preface/>
         <sections/>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -45,7 +45,7 @@ RSpec.describe "IETF section rendering (WS3)" do
     # references/clauses (R, S/T) relocate to <back> as references
     # trees, in the released path's order; annexes follow as sections
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <preface>
       <abstract obligation="informative">
        <title>Foreword</title>
@@ -118,7 +118,7 @@ RSpec.describe "IETF section rendering (WS3)" do
        </references>
        </clause>
        </bibliography>
-       </iso-standard>
+       </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -218,7 +218,7 @@ RSpec.describe "IETF section rendering (WS3)" do
 
   it "processes simple terms & definitions" do
     input = <<~INPUT
-             <iso-standard xmlns="http://riboseinc.com/isoxml">
+             <metanorma xmlns="https://www.metanorma.org/ns/standoc">
        <sections>
        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
        <term id="J">
@@ -226,7 +226,7 @@ RSpec.describe "IETF section rendering (WS3)" do
        </term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -259,7 +259,7 @@ RSpec.describe "IETF section rendering (WS3)" do
 
   it "processes sections without titles" do
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <preface>
        <introduction id="M" inline-header="false" obligation="normative"><clause id="N" inline-header="false" obligation="normative">
        <title>Intro</title>
@@ -274,7 +274,7 @@ RSpec.describe "IETF section rendering (WS3)" do
        </clause></clause>
        </sections>
 
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -311,7 +311,7 @@ RSpec.describe "IETF section rendering (WS3)" do
 
   it "processes section attributes" do
     input = <<~INPUT
-      <ietf-standard xmlns="http://riboseinc.com/isoxml">
+      <ietf-standard xmlns="https://www.metanorma.org/ns/standoc">
          <sections>
        <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
          <title>Clause</title>

@@ -12,7 +12,7 @@ RSpec.describe "IETF section and root attributes (#299)" do
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1" unnumbered="true"><title>Unnumbered</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<section[^>]* numbered="false"/)
@@ -22,7 +22,7 @@ RSpec.describe "IETF section and root attributes (#299)" do
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1" numbered="false"><title>Unnumbered</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<section[^>]* numbered="false"/)
@@ -32,7 +32,7 @@ RSpec.describe "IETF section and root attributes (#299)" do
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1" removeInRFC="true"><title>Ephemeral</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<section[^>]* removeInRFC="true"/)
@@ -41,7 +41,7 @@ RSpec.describe "IETF section and root attributes (#299)" do
   it "carries tocDepth, indexInclude and iprExtract onto the rfc root" do
     input = hdr_ext("<tocDepth>2</tocDepth>\n<indexInclude>false</indexInclude>\n<iprExtract>c1</iprExtract>") + <<~XML
       <sections><clause id="c1"><title>Body</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     XML
     out = strip_guid(feature_convert(input))
     expect(out).to match(/<rfc[^>]* tocDepth="2"/)
@@ -57,7 +57,7 @@ RSpec.describe "IETF section and root attributes (#299)" do
       <executivesummary id="es1"><title>Executive Summary</title><p id="pe1">EXECSUMBODY</p></executivesummary>
       </preface>
       <sections><clause id="c1"><title>Body</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("PREFCLAUSEBODY")

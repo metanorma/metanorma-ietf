@@ -261,12 +261,22 @@ module Metanorma
             # element is noise, so it is suppressed (WS3, cleanup_spec)
             return nil
           end
+          # a child can be recovered yet itself be empty (its text
+          # ghosted a level deeper) — a bare element is still noise
+          has_child = SIMPLE_INLINE_TAGS.any? do |t|
+            next false unless elem.respond_to?(t)
+
+            to_array(elem.public_send(t)).any?
+          end
+          return nil if !has_child &&
+            to_array(elem.content).all? { |c| c.to_s.strip.empty? }
           elem
         end
 
         def build_mixed_simple_inline(elem, model, order)
           fragments = []
           counters = Hash.new(0)
+          built_children = 0
           order.each do |e|
             if e.text?
               fragments << e.text_content.to_s
@@ -286,6 +296,7 @@ module Metanorma
 
               safe_append(elem, tag.to_sym, built)
               track_element_order(elem, tag.to_sym, built)
+              built_children += 1
             else
               # no nested v3 home (link, xref inside em): keep the text
               text = flatten_inline_text(child)
@@ -295,6 +306,12 @@ module Metanorma
               end
             end
           end
+          # Parse-ghosted children can leave the walk with no
+          # recoverable content (own text empty, children dropped) —
+          # an empty element is noise, so it is suppressed, the same
+          # rule the own-text-only path applies (WS3, cleanup_spec).
+          return nil if built_children.zero? &&
+            fragments.all? { |f| f.to_s.strip.empty? }
           elem.content = fragments
           elem
         end

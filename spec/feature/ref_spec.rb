@@ -27,7 +27,7 @@ RSpec.describe "IETF references rendering (WS3)" do
     # untyped/RDF/xml URIs are not targets (released parity);
     # IETF docids ride seriesInfo + anchor, never refcontent
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
       <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
@@ -278,7 +278,7 @@ RSpec.describe "IETF references rendering (WS3)" do
       <bibitem id="I-D.aboba-context-802" type="standard">  <fetched>2021-09-19</fetched>  <title format="text/plain" language="en" script="Latn">A Model for Context Transfer in IEEE 802</title>  <uri type="xml">https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml</uri>  <uri type="TXT">http://www.ietf.org/internet-drafts/draft-aboba-context-802-00.txt</uri>  <docidentifier type="IETF">I-D.aboba-context-802</docidentifier>  <docidentifier type="rfc-anchor">I-D.aboba-context-802</docidentifier>  <docidentifier type="Internet-Draft">draft-aboba-context-802-00</docidentifier>  <date type="published">    <on>2003-10</on>  </date>  <contributor>    <role type="author"/>    <person>      <name>        <completename language="en">Bernard Aboba</completename>      </name>      <affiliation>        <organization>          <name>Internet Engineering Task Force</name>          <abbreviation>IETF</abbreviation>        </organization>      </affiliation>    </person>  </contributor>  <contributor>    <role type="publisher"/>    <organization>      <name>Internet Engineering Task Force</name>      <abbreviation>IETF</abbreviation>    </organization>  </contributor>  <language>en</language>  <script>Latn</script>  <series type="main">    <title format="text/plain" language="en" script="Latn">Internet-Draft</title>    <number>draft-aboba-context-802-00</number>  </series>  <place>Fremont, CA</place></bibitem>
       </references>
       </bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -469,7 +469,7 @@ RSpec.describe "IETF references rendering (WS3)" do
     # and the old expectation captured DEBUG output with no
     # xi:include in it anyway. Same input, plain bibliography.
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
       <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
@@ -611,7 +611,7 @@ RSpec.describe "IETF references rendering (WS3)" do
       </bibitem>
       </references>
       </bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -741,7 +741,7 @@ RSpec.describe "IETF references rendering (WS3)" do
     # <references> admits no <t> (the old DEBUG expectation
     # emitted it there, schema-invalid)
     input = <<~INPUT
-      <ietf-standard  xmlns="http://riboseinc.com/isoxml">
+      <ietf-standard  xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="_clause" inline-header="false" obligation="normative">
       <title>Clause</title>
       <p id="_c401175c-2d9b-4758-ba27-d4f50ddb062a">A</p>
@@ -855,7 +855,7 @@ RSpec.describe "IETF references rendering (WS3)" do
     # seriesInfo (the old path collapsed them into a refcontent
     # mislabelled "BCP 69" — classified old-path bug, WS2 log)
     input = <<~INPUT
-      <ietf-standard xmlns="http://riboseinc.com/isoxml">
+      <ietf-standard xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">The Holy Hand Grenade of Antioch</title>
       <docidentifier>draft-camelot-holy-grenade-01</docidentifier><docnumber>10</docnumber><contributor><role type="author"/><person>
@@ -1091,7 +1091,7 @@ RSpec.describe "IETF references rendering (WS3)" do
     # flattened into the title via a string -> XML reparse, fabricating
     # an element named "http:" -- a QName violation fatal to xml2rfc
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">Test</title>
       <docidentifier>draft-test-formattedref-01</docidentifier><docnumber>10</docnumber>
@@ -1107,7 +1107,7 @@ RSpec.describe "IETF references rendering (WS3)" do
         <docidentifier>IERS</docidentifier>
       </bibitem>
       </references></bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     xml = feature_convert(input)
     expect(xml).not_to include("<http:")
@@ -1127,7 +1127,7 @@ RSpec.describe "IETF references rendering (WS3)" do
     # <stream> admits only IAB/IETF/IRTF/independent; unknown streams
     # are omitted rather than emitted verbatim, which was xml2rfc-fatal
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata>
       <title language="en" format="text/plain" type="main">Test</title>
       <docidentifier>draft-test-stream-01</docidentifier><docnumber>10</docnumber>
@@ -1149,7 +1149,7 @@ RSpec.describe "IETF references rendering (WS3)" do
         <series type="stream"><title format="text/plain">Homebrew</title></series>
       </bibitem>
       </references></bibliography>
-      </iso-standard>
+      </metanorma>
     INPUT
     xml = feature_convert(input)
     ref1 = xml[%r{<reference anchor="RFC1149".*?</reference>}m]

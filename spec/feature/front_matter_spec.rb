@@ -16,7 +16,7 @@ RSpec.describe "IETF front matter (#298)" do
 
   BODY = <<~XML.freeze
     <sections><clause id="c1"><title>Body</title><p id="p1">T.</p></clause></sections>
-    </iso-standard>
+    </metanorma>
   XML
 
   it "stamps showOnFrontPage on author organizations" do
@@ -100,7 +100,7 @@ RSpec.describe "IETF front matter (#298)" do
       </foreword>
       </preface>
       <sections><clause id="c1"><title>Body</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     XML
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<note[^>]*>.*FOREWORDNOTE.*</note>}m)

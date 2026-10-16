@@ -11,7 +11,7 @@ RSpec.describe "IETF inline content preservation (#292)" do
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Plain <em>emphasized</em> tail</title><p id="p1">T.</p></clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<name>Plain <em>emphasized</em> tail</name>})
@@ -23,7 +23,7 @@ RSpec.describe "IETF inline content preservation (#292)" do
       <sections><clause id="c1"><title>Body</title>
       <p id="p1"><strike>cut <em>gone</em> here</strike></p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("cut gone here")
@@ -36,7 +36,7 @@ RSpec.describe "IETF inline content preservation (#292)" do
       <dl id="d1"><dt>Term <link target="http://example.com">site</link></dt>
       <dd><p id="dd1">Def.</p></dd></dl>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<dt[^>]*>Term site</dt>})
@@ -54,7 +54,7 @@ RSpec.describe "IETF inline content preservation (#292)" do
       <figure id="f1"><name>As <xref target="c1">Clause 1</xref> shows</name>
       <p id="fp1">FIGBODY</p></figure>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<name>As <xref target="c1">Clause 1</xref> shows</name>})
@@ -71,7 +71,7 @@ RSpec.describe "IETF inline content preservation (#292)" do
       <sections><clause id="c1"><title>Body</title>
       <p id="p1">Lead <em>alpha <strong>beta</strong> gamma</em> tail.</p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to match(%r{<em>alpha <strong>beta</strong> gamma</em>})
@@ -88,7 +88,7 @@ RSpec.describe "IETF inline content preservation (#292)" do
       <p id="p1"><strike>cut <xref target="c2">Clause 2</xref> here</strike></p>
       <clause id="c2"><title>Target</title><p id="p2">T.</p></clause>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("cut Clause 2 here")

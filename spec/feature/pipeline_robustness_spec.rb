@@ -14,7 +14,7 @@ RSpec.describe "IETF pipeline robustness (#302)" do
       <clause id="c1"><title>Body</title>
       <p id="p2">See <xref target="RFC5234#section-2"/>.</p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include('anchor="RFC5234_section-2"')

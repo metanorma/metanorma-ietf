@@ -9,7 +9,7 @@ RSpec.describe "IETF terms rendering (WS3)" do
             "deprecates content are dropped at parse — the transformer " \
             "cannot recover them (see qa-plan WS3 note)"
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections>
           <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>
           <p>For the purposes of this document, the following terms and definitions apply.</p>
@@ -58,7 +58,7 @@ RSpec.describe "IETF terms rendering (WS3)" do
       </source></term>
       </terms>
       </sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
           #{RFC_HDR}
@@ -121,7 +121,7 @@ RSpec.describe "IETF terms rendering (WS3)" do
 
   it "processes multiple term definitions" do
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
             <sections>
             <terms id="_terms_and_definitions" obligation="normative"><title>Terms and Definitions</title>
             <p>For the purposes of this document, the following terms and definitions apply.</p>
@@ -133,7 +133,7 @@ RSpec.describe "IETF terms rendering (WS3)" do
         </term>
         </terms>
         </sections>
-        </iso-standard>
+        </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version='1.0'?>

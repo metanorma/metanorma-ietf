@@ -17,7 +17,7 @@ RSpec.describe "IETF container children (#297)" do
       <p id="p3">Tail.</p>
       </quote>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("QUOTELISTITEM")
@@ -33,7 +33,7 @@ RSpec.describe "IETF container children (#297)" do
       <quote id="q1"><p id="p2">NOTEQUOTE</p></quote>
       </note>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("NOTEFORMULA")
@@ -49,7 +49,7 @@ RSpec.describe "IETF container children (#297)" do
       <quote id="q1"><p id="p2">EXQUOTE</p></quote>
       </example>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("EXFORMULA")
@@ -62,7 +62,7 @@ RSpec.describe "IETF container children (#297)" do
       <sections><clause id="c1"><title>Body</title>
       <p id="p1" keep-with-previous="true">KWP paragraph.</p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include('keepWithPrevious="true"')
@@ -81,7 +81,7 @@ RSpec.describe "IETF container children (#297)" do
       <ul id="u1"><li><p id="p2">ADMONLISTITEM</p></li></ul>
       </admonition>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("ADMONLISTITEM")
@@ -98,7 +98,7 @@ RSpec.describe "IETF container children (#297)" do
       <sourcecode id="s1"><body>NOTECODE()</body></sourcecode>
       </note>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
     expect(out).to include("NOTECODE()")

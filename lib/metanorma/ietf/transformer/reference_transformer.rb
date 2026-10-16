@@ -359,13 +359,16 @@ module Metanorma
 
           front = Rfcxml::V3::Front.new
 
-          formatted = bibitem.formatted_ref
-          title_text = formatted ? mixed_text(formatted) : nil
+          # The authored formattedref wins over whatever the model now
+          # carries: the presentation bibrender REPLACES formatted_ref
+          # with the fetched title when one co-exists (#301 item 6), so
+          # the model attribute is not the authored citation on the
+          # current stack — the pre-presentation capture is.
+          title_text = recovered_formattedref_for(bibitem)
           title_text = nil if title_text&.strip&.empty?
-          # the authored formattedref, when presentation clobbered it
-          # (#301 item 6) — it renders as the reference title, the
-          # released RfcConvert shape
-          title_text ||= recovered_formattedref_for(bibitem)
+          formatted = bibitem.formatted_ref
+          title_text ||= formatted ? mixed_text(formatted) : nil
+          title_text = nil if title_text&.strip&.empty?
           # No formattedref either: fall back to the authoritative
           # docidentifier. RFC XML requires front/title, and leaving
           # it unset serialises the model's DEFAULT empty element as
@@ -387,6 +390,9 @@ module Metanorma
           else
             front.author = authors
           end
+
+          date = extract_bibitem_date(bibitem)
+          front.date = date if date
 
           ref.front = front
 

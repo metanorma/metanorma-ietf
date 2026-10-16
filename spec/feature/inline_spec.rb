@@ -12,8 +12,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>&lt;pizza&gt;</p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to <<~OUTPUT
@@ -46,7 +45,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
     # <bookmark> is parse-ghosted (0.2.9 ledger); <br/> becomes a
     # newline in <t>
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>
       <em>A</em> <strong>B</strong> <sup>C</sup> <sub>D</sub> <tt>E</tt>
@@ -55,8 +54,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <bookmark id="H"/> <pagebreak/>
       </p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -99,14 +97,13 @@ RSpec.describe "IETF inline rendering (WS3)" do
     # fmt-link surviving on TtElement (bare link -> target text, N4);
     # the <tt> inside display-texts stays ghosted
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>
       <em><strong>&lt;</strong></em> <tt><link target="B"/></tt> <xref target="http_1_1" format="title" relative="#abc"><display-text>Requirement <tt>/req/core/http</tt></display-text></xref> <eref type="inline" bibitemid="ISO712" citeas="ISO 712"><display-text>Requirement <tt>/req/core/http</tt></display-text></eref> <eref type="inline" bibitemid="ISO712" displayFormat="of" citeas="ISO 712" relative="xyz"><locality type="section"><referenceFrom>3.1</referenceFrom></locality></eref>
       </p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -143,7 +140,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
     # the primary="true" ATTRIBUTE is shadowed by the :primary
     # element accessor (0.2.9 ledger)
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
        <sections><clause id="inlineclause"><title>Inline</title>
        <p>D<index>
        <primary>A<sub>B</sub></primary>
@@ -152,8 +149,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
        </index>.<index primary="true">
        <primary>D</primary></index></p>
        </clause></sections>
-       <sections>
-       </iso-standard>
+       </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -184,13 +180,13 @@ RSpec.describe "IETF inline rendering (WS3)" do
 
   it "processes inline images" do
     input = <<~INPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml">
+        <metanorma xmlns="https://www.metanorma.org/ns/standoc">
         <sections><clause id="inlineclause"><title>Inline</title>
         <p>
       <image src="rice_images/rice_image1.png" height="20" width="30" id="A" mimetype="image/png" alt="alttext" title="titletxt"/>
       </p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -226,7 +222,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
 
   it "processes links" do
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>
       <link target="http://example.com"/>
@@ -237,8 +233,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <link target="http://example.com" style="angle">example</link>
       </p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -276,14 +271,13 @@ RSpec.describe "IETF inline rendering (WS3)" do
 
   it "processes unrecognised markup" do
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>
       <barry fred="http://example.com">example</barry>
       </p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -318,7 +312,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
     # AsciiMath stem text parse-ghosts (0.2.9 ledger); MathML
     # converts via plurimath
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>
       <stem type="AsciiMath">&lt;A&gt;</stem>
@@ -327,8 +321,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <stem type="None">Latex?</stem>
       </p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -365,15 +358,14 @@ RSpec.describe "IETF inline rendering (WS3)" do
   it "overrides AsciiMath delimiters" do
     # delimiter escalation applies where stem text survives
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <sections><clause id="inlineclause"><title>Inline</title>
       <p>
       <stem type="AsciiMath">A</stem>
       $$Hello$$$
       </p>
       </clause></sections>
-      <sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -407,7 +399,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
 
   it "cross-references notes" do
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="inlineclause"><title>Inline</title>
           <p>
           <xref target="N1">note</xref>
@@ -466,7 +458,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       </note>
           </clause>
           </annex>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -524,7 +516,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
     # attribute-borne relative/sectionFormat pass through (WS3
     # fix); anchor-type direct localities are parse-ghosted
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="inlineclause"><title>Inline</title>
           <p>
           <eref type="inline" bibitemid="ISO712" citeas="ISO 712" relative="#abc" displayFormat="of">A</stem>
@@ -544,7 +536,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       </bibitem>
           </references>
           </bibliography>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -591,7 +583,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
   it "processes eref content" do
     pending "MODEL GAP (metanorma-document 0.2.9): direct <locality> children of eref are parse-ghosted (only localityStack maps and it is empty here), so the rich section labels (Table 1, Whole of text, ...) cannot be derived; the interim locality-label grammar serves stack-borne localities. The DRY-clean future is consuming fmt-eref. Re-test on 0.4.x — see qa-plan"
     input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="inlineclause"><title>Inline</title>
           <p>
           <eref type="inline" bibitemid="ISO712" citeas="ISO 712"/>
@@ -630,7 +622,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       </bibitem>
           </references>
           </bibliography>
-          </iso-standard>
+          </metanorma>
     INPUT
     expect(feature_convert(input)).to include "__unreachable_until_model_maps__"
   end
@@ -646,7 +638,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <passthrough>&lt;/abc&gt;</passthrough>
       </p>
       </preface>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).to include "<abc>X"
   end
@@ -660,7 +652,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <passthrough formats="rfc,html">&lt;abc&gt;X&lt;/abc&gt;</passthrough>
       </p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(feature_convert(input)).to include "__unreachable_until_model_maps__"
   end
@@ -673,14 +665,14 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <passthrough formats="html,doc">&lt;abc&gt;X&lt;/abc&gt;</passthrough>
       </p>
       </clause></sections>
-      </iso-standard>
+      </metanorma>
     INPUT
     expect(out).not_to include "<abc>"
   end
 
   it "processes concept markup" do
     input = <<~INPUT
-             <iso-standard xmlns="http://riboseinc.com/isoxml">
+             <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <sections><clause id="inlineclause"><title>Inline</title>
           <p>
           <ul>
@@ -756,9 +748,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
             <li><concept><strong>term <tt>participant's</tt> not resolved via ID <tt>participant__x2019_s</tt></strong></concept></li>
             </ul>
           </p>
-          </clause></sections>
-          <sections>
-          <clause id="clause1"><title>Clause 1</title></clause>
+          </clause>          <clause id="clause1"><title>Clause 1</title></clause>
           </sections>
           <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
           <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
@@ -774,7 +764,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
         </contributor>
       </bibitem>
       </references></bibliography>
-          </iso-standard>
+          </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
@@ -820,7 +810,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
 
   it "processes multiple-target xrefs" do
     input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
       <bibdata/>
         <sections>
        <clause id="A" inline-header="false" obligation="normative">
@@ -839,7 +829,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
        <clause id="ref3"/>
        <clause id="ref4"/>
          </sections>
-       </iso-standard>
+       </metanorma>
     INPUT
     output = <<~OUTPUT
       <?xml version="1.0" encoding="utf-8"?>
