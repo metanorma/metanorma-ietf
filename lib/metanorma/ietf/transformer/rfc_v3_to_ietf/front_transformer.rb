@@ -111,7 +111,7 @@ module Metanorma
             name = Metanorma::Document::Relaton::FullName.new
 
             if fullname && !fullname.to_s.empty?
-              name.complete_name = build_localized_string(fullname)
+              name.completename = build_localized_string(fullname)
             end
             if surname && !surname.to_s.empty?
               name.surname = build_localized_string(surname)
