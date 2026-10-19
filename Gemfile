@@ -15,7 +15,6 @@ gem "canon"
 gem "equivalent-xml"
 gem "htmlentities"
 gem "metanorma", github: "metanorma/metanorma", branch: "main"
-gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
 gem "rake"
 # Gemfile.devel may pin relaton-bib to a git branch (declaring the
 # same gem twice aborts the rescued eval_gemfile silently)
