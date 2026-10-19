@@ -346,6 +346,10 @@ module Metanorma
           end
 
           DD_CHILD_MAP.each do |_tag, (src_attr, target_attr)|
+            # paragraphs are owned by the dedicated dd.p block above;
+            # dispatching them here appended every paragraph twice
+            next if src_attr == :p
+
             to_array(dd.public_send(src_attr)).each do |child|
               result = dispatch_dd_child_transform(src_attr, child)
               safe_append(dd_elem, target_attr, result) if result
