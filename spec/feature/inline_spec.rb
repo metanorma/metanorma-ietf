@@ -152,27 +152,27 @@ RSpec.describe "IETF inline rendering (WS3)" do
        </metanorma>
     INPUT
     output = <<~OUTPUT
-      <?xml version="1.0" encoding="utf-8"?>
-      <?rfc sortrefs="yes"?>
-      <?rfc symrefs="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc subcompact="no"?>
-      <?rfc compact="yes"?>
-      <?rfc strict="yes"?>
-      <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
-        <front>
-          <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
-          <date day="1" month="January" year="2000"/>
-        </front>
-        <middle>
-          <section anchor="inlineclause">
-            <name>Inline</name>
-            <t>D<iref/>.<iref item="D"/></t>
-          </section>
-        </middle>
-        <back/>
-      </rfc>
+    <?xml version="1.0" encoding="utf-8"?>
+    <?rfc sortrefs="yes"?>
+    <?rfc symrefs="yes"?>
+    <?rfc tocdepth="4"?>
+    <?rfc subcompact="no"?>
+    <?rfc compact="yes"?>
+    <?rfc strict="yes"?>
+    <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
+      <front>
+        <title/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <date day="1" month="January" year="2000"/>
+      </front>
+      <middle>
+        <section anchor="inlineclause">
+          <name>Inline</name>
+          <t>D<iref item="AB" subitem="AB"/>.<iref item="D"/></t>
+        </section>
+      </middle>
+      <back/>
+    </rfc>
     OUTPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to strip_guid(output)

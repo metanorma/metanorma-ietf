@@ -54,6 +54,7 @@ module Metanorma
         recover_formattedrefs(doc, semantic_xml)
         recover_loose_bibitems(doc, semantic_xml)
         options = options.merge(child_order: dd_child_order_index(semantic_xml))
+        options = options.merge(row_orders: row_order_index(semantic_xml))
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
@@ -147,6 +148,30 @@ module Metanorma
           next unless did && !did.empty?
           ids = dd.element_children.filter_map { |c| c["id"] }
           index[did] = ids if ids.any?
+        end
+        index
+      rescue StandardError
+        {}
+      end
+
+      # Table rows carry no element_order for mixed th/td rows either;
+      # recover each row's cell-tag sequence keyed by the table id and
+      # the section (thead/tbody/tfoot), in source order.
+      def self.row_order_index(semantic_xml)
+        doc = Nokogiri::XML(semantic_xml)
+        index = {}
+        doc.xpath("//*[local-name() = 'table']").each do |table|
+          tid = table["id"]
+          next unless tid && !tid.empty?
+          sections = {}
+          { "thead" => "thead", "tbody" => "tbody", "tfoot" => "tfoot" }.each do |key, tag|
+            sec = table.element_children.find { |c| c.name == tag }
+            next unless sec
+            rows = sec.element_children.select { |c| c.name == "tr" }
+            seqs = rows.map { |tr| tr.element_children.map(&:name).select { |n| %w[th td].include?(n) } }
+            sections[key] = seqs if seqs.any?
+          end
+          index[tid] = sections if sections.any?
         end
         index
       rescue StandardError
