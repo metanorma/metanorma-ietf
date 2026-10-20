@@ -34,19 +34,19 @@ module Metanorma
 
           thead_node = table_node.thead
           if thead_node
-            thead = transform_table_section(thead_node, :header)
+            thead = transform_table_section(thead_node, :header, table_node)
             table.thead = thead
           end
 
           tbody_node = table_node.tbody
           if tbody_node
-            tbody = transform_table_section(tbody_node, :body)
+            tbody = transform_table_section(tbody_node, :body, table_node)
             table.tbody = tbody
           end
 
           tfoot_node = table_node.tfoot
           if tfoot_node
-            tfoot = transform_table_section(tfoot_node, :footer)
+            tfoot = transform_table_section(tfoot_node, :footer, table_node)
             table.tfoot = tfoot
           end
 
@@ -55,14 +55,17 @@ module Metanorma
           @footnote_scope = nil
         end
 
-        def transform_table_section(section_node, role)
+        def transform_table_section(section_node, role, table_node = nil)
           return nil unless section_node
 
           rows = to_array(section_node.tr)
+          tid = table_node.respond_to?(:id) && table_node.id ? table_node.id.to_s : nil
+          sec_key = { header: "thead", body: "tbody", footer: "tfoot" }[role]
+          sec_orders = ((@options[:row_orders] || {})[tid] || {})[sec_key] || []
 
           result_rows = []
-          rows.each do |tr|
-            row = transform_table_row(tr, role)
+          rows.each_with_index do |tr, i|
+            row = transform_table_row(tr, role, sec_orders[i])
             result_rows << row if row
           end
 
@@ -71,7 +74,7 @@ module Metanorma
           section
         end
 
-        def transform_table_row(tr_node, role)
+        def transform_table_row(tr_node, role, cell_order = nil)
           return nil unless tr_node
 
           tr = Rfcxml::V3::Tr.new
@@ -88,6 +91,20 @@ module Metanorma
             tds.each do |cell|
               tc = transform_table_cell(cell)
               safe_append(tr, :th, tc) if tc
+            end
+          elsif cell_order && cell_order.any? && !ths.empty?
+            counters = Hash.new(0)
+            cell_order.each do |tag|
+              idx = counters[tag]
+              counters[tag] += 1
+              case tag
+              when "th"
+                tc = transform_table_cell(ths[idx])
+                append_ordered(tr, :th, tc) if tc
+              when "td"
+                tc = transform_table_cell(tds[idx])
+                append_ordered(tr, :td, tc) if tc
+              end
             end
           elsif src_order && src_order.any? && !ths.empty?
             counters = Hash.new(0)
