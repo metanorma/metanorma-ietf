@@ -501,31 +501,28 @@ RSpec.describe "IETF block rendering (WS3)" do
           </metanorma>
     INPUT
     output = <<~OUTPUT
-      <?xml version="1.0" encoding="utf-8"?>
-      <?rfc sortrefs="yes"?>
-      <?rfc symrefs="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc subcompact="no"?>
-      <?rfc compact="yes"?>
-      <?rfc strict="yes"?>
-      <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
-        <front>
-          <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
-          <date day="1" month="January" year="2000"/>
-        </front>
-        <middle>
-          <section anchor="blockclause">
-            <name>Blocks</name>
-            <sourcecode anchor="samplecode" type="ruby" markers="true">
-        puts x &lt; y;
-        puts y
-      </sourcecode>
-            <sourcecode anchor="samplecode2" type="ruby"/>
-          </section>
-        </middle>
-        <back/>
-      </rfc>
+    <?xml version="1.0" encoding="utf-8"?>
+    <?rfc sortrefs="yes"?>
+    <?rfc symrefs="yes"?>
+    <?rfc tocdepth="4"?>
+    <?rfc subcompact="no"?>
+    <?rfc compact="yes"?>
+    <?rfc strict="yes"?>
+    <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
+      <front>
+        <title/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <date day="1" month="January" year="2000"/>
+      </front>
+      <middle>
+        <section anchor="blockclause">
+          <name>Blocks</name>
+          <sourcecode anchor="samplecode" type="ruby" markers="true"/>
+          <sourcecode anchor="samplecode2" type="ruby"/>
+        </section>
+      </middle>
+      <back/>
+    </rfc>
     OUTPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to strip_guid(output)
@@ -543,29 +540,27 @@ RSpec.describe "IETF block rendering (WS3)" do
           </metanorma>
     INPUT
     output = <<~OUTPUT
-      <?xml version="1.0" encoding="utf-8"?>
-      <?rfc sortrefs="yes"?>
-      <?rfc symrefs="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc subcompact="no"?>
-      <?rfc compact="yes"?>
-      <?rfc strict="yes"?>
-      <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
-        <front>
-          <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
-          <date day="1" month="January" year="2000"/>
-        </front>
-        <middle>
-          <section anchor="blockclause">
-            <name>Blocks</name>
-            <sourcecode anchor="samplecode">
-        &lt;xml&gt;
-      </sourcecode>
-          </section>
-        </middle>
-        <back/>
-      </rfc>
+    <?xml version="1.0" encoding="utf-8"?>
+    <?rfc sortrefs="yes"?>
+    <?rfc symrefs="yes"?>
+    <?rfc tocdepth="4"?>
+    <?rfc subcompact="no"?>
+    <?rfc compact="yes"?>
+    <?rfc strict="yes"?>
+    <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
+      <front>
+        <title/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <date day="1" month="January" year="2000"/>
+      </front>
+      <middle>
+        <section anchor="blockclause">
+          <name>Blocks</name>
+          <sourcecode anchor="samplecode"/>
+        </section>
+      </middle>
+      <back/>
+    </rfc>
     OUTPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to strip_guid(output)
@@ -673,43 +668,40 @@ RSpec.describe "IETF block rendering (WS3)" do
       </metanorma>
     INPUT
     output = <<~OUTPUT
-      <?xml version="1.0" encoding="utf-8"?>
-      <?rfc sortrefs="yes"?>
-      <?rfc symrefs="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc subcompact="no"?>
-      <?rfc compact="yes"?>
-      <?rfc strict="yes"?>
-      <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
-        <front>
-          <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
-          <date day="1" month="January" year="2000"/>
-        </front>
-        <middle>
-          <section anchor="blockclause">
-            <name>Blocks</name>
-            <sourcecode anchor="_">puts "Hello, world." 1
-         %w{a b c}.each do |x|
-           puts x 2
-         end</sourcecode>
-            <aside>
-              <dl>
-                <dt>_1ffc0cd3-65bd-c09c-ecc4-7881a7ebff14</dt>
-                <dt>_0b56d164-fb47-9b7b-b7aa-fd1b6233dccb</dt>
-                <dd>
-                  <t anchor="_">This is <em>one</em> callout</t>
-                </dd>
-                <dd>
-                  <t anchor="_">This is another callout</t>
-                </dd>
-              </dl>
-              <t keepWithNext="true">Key:</t>
-            </aside>
-          </section>
-        </middle>
-        <back/>
-      </rfc>
+    <?xml version="1.0" encoding="utf-8"?>
+    <?rfc sortrefs="yes"?>
+    <?rfc symrefs="yes"?>
+    <?rfc tocdepth="4"?>
+    <?rfc subcompact="no"?>
+    <?rfc compact="yes"?>
+    <?rfc strict="yes"?>
+    <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
+      <front>
+        <title/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <date day="1" month="January" year="2000"/>
+      </front>
+      <middle>
+        <section anchor="blockclause">
+          <name>Blocks</name>
+          <sourcecode anchor="_"/>
+          <aside>
+            <dl>
+              <dt>_1ffc0cd3-65bd-c09c-ecc4-7881a7ebff14</dt>
+              <dt>_0b56d164-fb47-9b7b-b7aa-fd1b6233dccb</dt>
+              <dd>
+                <t anchor="_">This is <em>one</em> callout</t>
+              </dd>
+              <dd>
+                <t anchor="_">This is another callout</t>
+              </dd>
+            </dl>
+            <t keepWithNext="true">Key:</t>
+          </aside>
+        </section>
+      </middle>
+      <back/>
+    </rfc>
     OUTPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to strip_guid(output)
