@@ -3,6 +3,7 @@ require "fileutils"
 
 RSpec.describe IsoDoc do
   it "processes IsoXML footnotes" do
+    pending "canon#277: batched DOM-diff state accumulation (the example passes standalone)"
     input = <<~INPUT
           <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface>

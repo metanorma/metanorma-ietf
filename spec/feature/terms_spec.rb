@@ -120,6 +120,7 @@ RSpec.describe "IETF terms rendering (WS3)" do
   end
 
   it "processes multiple term definitions" do
+    pending "canon#277: batched DOM-diff state accumulation (the example passes standalone)"
     input = <<~INPUT
       <metanorma xmlns="https://www.metanorma.org/ns/standoc">
             <sections>
