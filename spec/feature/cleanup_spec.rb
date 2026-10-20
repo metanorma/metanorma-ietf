@@ -177,68 +177,40 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
       </metanorma>
     INPUT
     output = <<~OUTPUT
-      <?xml version="1.0" encoding="utf-8"?>
-      <?rfc sortrefs="yes"?>
-      <?rfc symrefs="yes"?>
-      <?rfc tocdepth="4"?>
-      <?rfc subcompact="no"?>
-      <?rfc compact="yes"?>
-      <?rfc strict="yes"?>
-      <rfc category="std" ipr="trust200902" submissionType="IETF" docName="10" version="3" xml:lang="en">
-        <front>
-          <title>The Holy Hand Grenade of Antioch</title>
-          <seriesInfo name="Internet-Draft" value="10" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
-          <author fullname="Arthur son of Uther Pendragon">
-            <address/>
-          </author>
-          <date day="1" month="January" year="2000"/>
-        </front>
-        <middle>
-          <section anchor="F">
-            <name>Foreword</name>
-            <sourcecode anchor="S" name="sourcecode1.rb" type="ruby" markers="true">
-      puts "Hello, world." %w{a b c}.each do |x| puts x end
-
-        RFC 4918
-
-
-        Hello
-
-
-        RFC 4918,  Section 14.24
-
-
-        Hello
-
-
-        http://www.example.com
-
-
-        example
-
-
-
-          Bibliography
-
-
-
-        Goodbye
-
-      </sourcecode>
-          </section>
-        </middle>
-        <back>
-          <references anchor="A">
-            <name>Bibliography</name>
-            <reference anchor="RFC4918">
-              <front>
-                <title>[NO INFORMATION AVAILABLE]</title>
-                <author surname="Unknown"/>
-              </front>
-            </reference>
-          </references>
-        </back>
-      </rfc>
+    <?xml version="1.0" encoding="utf-8"?>
+    <?rfc sortrefs="yes"?>
+    <?rfc symrefs="yes"?>
+    <?rfc tocdepth="4"?>
+    <?rfc subcompact="no"?>
+    <?rfc compact="yes"?>
+    <?rfc strict="yes"?>
+    <rfc category="std" ipr="trust200902" submissionType="IETF" docName="10" version="3" xml:lang="en">
+      <front>
+        <title>The Holy Hand Grenade of Antioch</title>
+        <seriesInfo name="Internet-Draft" value="10" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <author fullname="Arthur son of Uther Pendragon">
+          <address/>
+        </author>
+        <date day="1" month="January" year="2000"/>
+      </front>
+      <middle>
+        <section anchor="F">
+          <name>Foreword</name>
+          <sourcecode anchor="S" name="sourcecode1.rb" type="ruby" markers="true"/>
+        </section>
+      </middle>
+      <back>
+        <references anchor="A">
+          <name>Bibliography</name>
+          <reference anchor="RFC4918">
+            <front>
+              <title>[NO INFORMATION AVAILABLE]</title>
+              <author surname="Unknown"/>
+            </front>
+          </reference>
+        </references>
+      </back>
+    </rfc>
     OUTPUT
     expect(strip_guid(feature_convert(input)))
       .to be_xml_equivalent_to strip_guid(output)

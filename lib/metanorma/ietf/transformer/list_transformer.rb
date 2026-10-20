@@ -287,6 +287,8 @@ module Metanorma
           src_order = dd.element_order
           if src_order && src_order.any?
             build_dd_ordered(dd_elem, dd, src_order)
+          elsif (ids = dd_semx_order(dd)).any?
+            build_dd_semx_ordered(dd_elem, dd, ids)
           else
             build_dd_unordered(dd_elem, dd)
           end
@@ -334,6 +336,59 @@ module Metanorma
               build_dd_child(dd_elem, dd, idx, *mapping, ordered: true) if mapping
             end
           end
+        end
+
+        def dd_semx_order(dd)
+          idx = @options[:child_order]
+          return [] unless idx.is_a?(Hash)
+          Array(idx[dd.id.to_s])
+        end
+
+        # Build the dd children in the order recovered from the authored
+        # XML: each child is located by its id across the mapped source
+        # collections, transformed, and order-tracked, so serialization
+        # emits the source interleaving (p, dl, p ...) without needing
+        # parse-time element_order.
+        def build_dd_semx_ordered(dd_elem, dd, ids)
+          candidates = {}
+          DD_CHILD_MAP.each do |_tag, (src_attr, target_attr)|
+            to_array(dd.public_send(src_attr)).each do |child|
+              cid = child_semx_id(child)
+              candidates[cid] = [src_attr, target_attr, child] if cid && !candidates.key?(cid)
+            end
+          end
+          to_array(dd.figure).each do |fig|
+            cid = child_semx_id(fig)
+            candidates[cid] = [:figure, :figure, fig] if cid && !candidates.key?(cid)
+          end
+
+          ids.each do |cid|
+            entry = candidates.delete(cid)
+            next unless entry
+            src_attr, target_attr, child = entry
+            result = if src_attr == :figure
+              transform_figure(child)
+            else
+              dispatch_dd_child_transform(src_attr, child)
+            end
+            next unless result
+            append_ordered(dd_elem, target_attr, result)
+          end
+
+          candidates.each_value do |src_attr, target_attr, child|
+            result = if src_attr == :figure
+              transform_figure(child)
+            else
+              dispatch_dd_child_transform(src_attr, child)
+            end
+            safe_append(dd_elem, target_attr, result) if result
+          end
+        end
+
+        def child_semx_id(child)
+          return child.semx_id.to_s if child.respond_to?(:semx_id) && child.semx_id
+          return child.id.to_s if child.respond_to?(:id) && child.id
+          nil
         end
 
         def build_dd_unordered(dd_elem, dd)

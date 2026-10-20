@@ -53,6 +53,7 @@ module Metanorma
         # title coexists (#301 item 6); recover them per bibitem id
         recover_formattedrefs(doc, semantic_xml)
         recover_loose_bibitems(doc, semantic_xml)
+        options = options.merge(child_order: dd_child_order_index(semantic_xml))
         transformer = IetfToRfcV3.new(doc, options)
         rfc = transformer.transform
         xml = rfc.to_xml(pretty: true, declaration: true, encoding: "utf-8")
@@ -134,6 +135,24 @@ module Metanorma
       # before presentation runs. Keyed by NCName-normalised bibitem
       # id, consumed by the reference transformer; text-at-minimum
       # (inline markup flattens).
+      # The semantic model does not carry per-dd child order (element_order
+      # is nil for list models), so the dd build recovers the source
+      # interleaving straight from the authored XML: for every dd, the
+      # ordered ids of its child elements.
+      def self.dd_child_order_index(semantic_xml)
+        doc = Nokogiri::XML(semantic_xml)
+        index = {}
+        doc.xpath("//*[local-name() = 'dd']").each do |dd|
+          did = dd["id"]
+          next unless did && !did.empty?
+          ids = dd.element_children.filter_map { |c| c["id"] }
+          index[did] = ids if ids.any?
+        end
+        index
+      rescue StandardError
+        {}
+      end
+
       def self.recover_formattedrefs(root, semantic_xml)
         doc = Nokogiri::XML(
           semantic_xml.gsub(%r{\sxmlns="https?://www\.metanorma\.org/ns/[^"]*"},
