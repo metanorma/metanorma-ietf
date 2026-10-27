@@ -3,18 +3,15 @@ source "https://rubygems.org"
 gemspec
 gem "metanorma-mirror", "~> 1.0", github: "metanorma/metanorma-mirror", branch: "main"
 
-# and the pubid-2 / relaton-bib 2.2 / metanorma-document 0.5 chain.
-# Revert each pin once the corresponding PR merges:
-#   - https://github.com/metanorma/metanorma-document/pull/45
-gem "metanorma-standoc", github: "metanorma/metanorma-standoc", branch: "main"
-gem "metanorma-document", github: "metanorma/metanorma-document", branch: "main"
-gem "isodoc", github: "metanorma/isodoc", branch: "main" # merged as #825
-gem "pubid", "~> 2.0.0.pre.alpha"
+gem "metanorma-standoc", "~> 3.5.1.pre.alpha" # Standoc::Document rename
+gem "metanorma-document", "~> 0.5.2.pre.alpha"
+gem "isodoc", "~> 3.7.4.pre.alpha"
+gem "pubid", "~> 2.0"
 
 gem "canon"
 gem "equivalent-xml"
 gem "htmlentities"
-gem "metanorma", github: "metanorma/metanorma", branch: "main"
+gem "metanorma", "~> 2.5.6.pre.alpha"
 gem "rake"
 # Gemfile.devel may pin relaton-bib to a git branch (declaring the
 # same gem twice aborts the rescued eval_gemfile silently)
