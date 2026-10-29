@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "metanorma-ietf-data"
   spec.add_dependency "metanorma-standoc", ">= 3.4.2" # audit chain: render-stack standoc is 3.5.0 (metanorma-standoc 186a1e6 precedent)
   spec.add_dependency "leptris", "~> 1.9"
-  spec.add_dependency "relaton-render", "~> 3.0"
+  spec.add_dependency "relaton-cli", "~> 3.0"
 
   spec.metadata["rubygems_mfa_required"] = "true"
 end
