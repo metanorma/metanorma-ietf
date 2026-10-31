@@ -14,7 +14,7 @@ RSpec.describe Metanorma::Ietf::Processor do
     output = <<~OUTPUT
       [[:html, "html"], [:pdf, "pdf"], [:rfc, "rfc.xml"], [:rxl, "rxl"], [:txt, "txt"], [:xml, "xml"]]
     OUTPUT
-    expect(processor.output_formats.sort.to_s).to be_equivalent_to output.strip
+    expect(processor.output_formats.sort.to_s).to eq output.strip
   end
 
   it "registers version against metanorma" do

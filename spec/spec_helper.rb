@@ -9,7 +9,7 @@ require "metanorma-ietf"
 # require "metanorma/standoc/converter"
 require "rspec/matchers"
 require "timecop"
-require "equivalent-xml"
+require "canon/rspec_matchers"
 require "htmlentities"
 require "canon"
 
