@@ -9,7 +9,6 @@ gem "isodoc", "~> 3.7.4.pre.alpha"
 gem "pubid", "~> 2.0"
 
 gem "canon"
-gem "equivalent-xml"
 gem "htmlentities"
 gem "metanorma", "~> 2.5.6.pre.alpha"
 gem "rake"
