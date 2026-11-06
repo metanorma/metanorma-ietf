@@ -208,7 +208,7 @@ are used in a tactical environment.<xref target="RFC7253"/>, <xref target="ISO.I
       <name>Informative References</name>
       <reference anchor="RFC7253" target="https://www.rfc-editor.org/info/rfc7253">
         <front>
-          <title>T. Krovetz and P. Rogaway. The OCB Authenticated-Encryption Algorithm. RFC, no. 7253. Internet Engineering Task Force, 2014. Available from: https://www.rfc-editor.org/info/rfc7253.</title>
+          <title>T. Krovetz and P. Rogaway. The OCB Authenticated-Encryption Algorithm. RFC, no. 7253. Internet Engineering Task Force, 2014. Available at: https://www.rfc-editor.org/info/rfc7253.</title>
           <author fullname="T. Krovetz"/>
           <author fullname="P. Rogaway"/>
           <date month="May" year="2014"/>

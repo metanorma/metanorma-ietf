@@ -521,7 +521,7 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
       <name>Normative References</name>
       <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
         <front>
-          <title>S. Bradner. Key words for use in RFCs to Indicate Requirement Levels. BCP, no. 14. Internet Engineering Task Force, 1997. Available from: https://www.rfc-editor.org/info/rfc2119.</title>
+          <title>S. Bradner. Key words for use in RFCs to Indicate Requirement Levels. BCP, no. 14. Internet Engineering Task Force, 1997. Available at: https://www.rfc-editor.org/info/rfc2119.</title>
           <author fullname="S. Bradner"/>
           <date month="March" year="1997"/>
         </front>
@@ -534,7 +534,7 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
       <name>Informative References</name>
       <reference anchor="RFC2635" target="https://www.rfc-editor.org/info/rfc2635">
         <front>
-          <title>S. Hambridge and A. Lunde. DON'T SPEW A Set of Guidelines for Mass Unsolicited Mailings and Postings (spam*). FYI, no. 35. Internet Engineering Task Force, 1999. Available from: https://www.rfc-editor.org/info/rfc2635.</title>
+          <title>S. Hambridge and A. Lunde. DON'T SPEW A Set of Guidelines for Mass Unsolicited Mailings and Postings (spam*). FYI, no. 35. Internet Engineering Task Force, 1999. Available at: https://www.rfc-editor.org/info/rfc2635.</title>
           <author fullname="S. Hambridge"/>
           <author fullname="A. Lunde"/>
           <date month="June" year="1999"/>
@@ -545,7 +545,7 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
       </reference>
       <reference anchor="RFC8140" target="https://www.rfc-editor.org/info/rfc8140">
         <front>
-          <title>A. Farrel. The Arte of ASCII: Or, An True and Accurate Representation of an Menagerie of Thynges Fabulous and Wonderful in Ye Forme of Character. RFC, no. 8140. Internet Engineering Task Force, 2017. Available from: https://www.rfc-editor.org/info/rfc8140.</title>
+          <title>A. Farrel. The Arte of ASCII: Or, An True and Accurate Representation of an Menagerie of Thynges Fabulous and Wonderful in Ye Forme of Character. RFC, no. 8140. Internet Engineering Task Force, 2017. Available at: https://www.rfc-editor.org/info/rfc8140.</title>
           <author fullname="A. Farrel"/>
           <date month="April" year="2017"/>
         </front>
@@ -554,7 +554,7 @@ ravaging beasts, such as the Killer Rabbit, who haunt the Internet.</t>
       </reference>
       <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174">
         <front>
-          <title>B. Leiba. Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. BCP, no. 14. Internet Engineering Task Force, 2017. Available from: https://www.rfc-editor.org/info/rfc8174.</title>
+          <title>B. Leiba. Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. BCP, no. 14. Internet Engineering Task Force, 2017. Available at: https://www.rfc-editor.org/info/rfc8174.</title>
           <author fullname="B. Leiba"/>
           <date month="May" year="2017"/>
         </front>
