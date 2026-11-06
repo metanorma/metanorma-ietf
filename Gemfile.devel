@@ -1,1 +1,2 @@
-gem "relaton-bib", github: "relaton/relaton-bib", branch: "feat/rfcxml-v3-export"
+
+gem "relaton", "~> 3.1.1"
