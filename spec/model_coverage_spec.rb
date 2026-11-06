@@ -96,6 +96,7 @@ RSpec.describe "transformer model coverage" do
     "multilingual_rendering" => "rendering directive; no RFC v3 home",
     "keep_lines_together" => "layout hint; no RFC v3 home",
     "columns" => "layout hint; no RFC v3 home",
+    "output_extensions" => "metanorma output-configuration hint; no RFC v3 home",
   }.freeze
 
   IGNORED_PREFIXES = {

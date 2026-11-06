@@ -319,7 +319,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
               <stream>IETF</stream>
               <front>
-                <title>S. Bradner. Key words for use in RFCs to Indicate Requirement Levels. Report no. RFC2119. BCP, no. 14. RFC Publisher, 1997. Available from: https://www.rfc-editor.org/info/rfc2119.</title>
+                <title>S. Bradner. Key words for use in RFCs to Indicate Requirement Levels. Report no. RFC2119. BCP, no. 14. RFC Publisher, 1997. Available at: https://www.rfc-editor.org/info/rfc2119.</title>
                 <author fullname="S. Bradner"/>
                 <date month="March" year="1997"/>
               </front>
@@ -329,7 +329,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="RFC2397" target="https://www.rfc-editor.org/info/rfc2397">
               <front>
-                <title>L. Masinter. The "data" URL scheme. Report no. RFC2397. RFC, no. 2397. RFC Publisher, 1998. Available from: https://www.rfc-editor.org/info/rfc2397.</title>
+                <title>L. Masinter. The "data" URL scheme. Report no. RFC2397. RFC, no. 2397. RFC Publisher, 1998. Available at: https://www.rfc-editor.org/info/rfc2397.</title>
                 <author fullname="L. Masinter"/>
                 <date month="August" year="1998"/>
               </front>
@@ -338,7 +338,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="ISO712">
               <front>
-                <title>Cereals and cereal products. International Organization for Standardization, Available from: http://www.example.com.</title>
+                <title>Cereals and cereal products. International Organization for Standardization, Available at: http://www.example.com.</title>
                 <author>
                   <organization>International Organization for Standardization</organization>
                 </author>
@@ -347,7 +347,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="ISO16634">
               <front>
-                <title>INTERNATIONAL SUPPORTERS OF ODIUM (ISO1) (ed.). Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs. Available from: http://www.example.com.</title>
+                <title>INTERNATIONAL SUPPORTERS OF ODIUM (ISO1) (ed.). Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs. Available at: http://www.example.com.</title>
                 <author>
                   <organization abbrev="ISO1">International Supporters of Odium</organization>
                 </author>
@@ -413,7 +413,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="ref11">
               <front>
-                <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar). Internet Engineering Task Force, Available from: https://xml2rfc.tools.ietf.org/10.xml.</title>
+                <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar). Internet Engineering Task Force, Available at: https://xml2rfc.tools.ietf.org/10.xml.</title>
                 <author>
                   <organization abbrev="IETF">Internet Engineering Task Force</organization>
                 </author>
@@ -422,7 +422,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="I-D.aboba-context-802">
               <front>
-                <title>Bernard Aboba. A Model for Context Transfer in IEEE 802. Internet-Draft, no. draft-aboba-context-802-00. Internet Engineering Task Force, 2003. Available from: https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml.</title>
+                <title>Bernard Aboba. A Model for Context Transfer in IEEE 802. Internet-Draft, no. draft-aboba-context-802-00. Internet Engineering Task Force, 2003. Available at: https://raw.githubusercontent.com/relaton/relaton-data-ietf/master/data/reference.I-D.aboba-context-802.xml.</title>
                 <author fullname="Bernard Aboba"/>
                 <date month="October" year="2003"/>
               </front>
@@ -625,7 +625,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             <name>Normative References</name>
             <reference anchor="ISO712">
               <front>
-                <title>Cereals and cereal products. International Organization for Standardization, Available from: http://www.example.com.</title>
+                <title>Cereals and cereal products. International Organization for Standardization, Available at: http://www.example.com.</title>
                 <author>
                   <organization>International Organization for Standardization</organization>
                 </author>
@@ -634,7 +634,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="ISO16634">
               <front>
-                <title>INTERNATIONAL SUPPORTERS OF ODIUM (ISO1) (ed.). Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs. Available from: http://www.example.com.</title>
+                <title>INTERNATIONAL SUPPORTERS OF ODIUM (ISO1) (ed.). Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs. Available at: http://www.example.com.</title>
                 <author>
                   <organization abbrev="ISO1">International Supporters of Odium</organization>
                 </author>
@@ -684,7 +684,7 @@ RSpec.describe "IETF references rendering (WS3)" do
             </reference>
             <reference anchor="ref11">
               <front>
-                <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar). Internet Engineering Task Force, Available from: https://xml2rfc.tools.ietf.org/10.xml.</title>
+                <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar). Internet Engineering Task Force, Available at: https://xml2rfc.tools.ietf.org/10.xml.</title>
                 <author>
                   <organization abbrev="IETF">Internet Engineering Task Force</organization>
                 </author>
