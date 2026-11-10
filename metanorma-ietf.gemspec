@@ -36,6 +36,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 3.3.0")
 
+  # Bundled gem required directly by lib code: base64 in transformer/figure_transformer.rb (metanorma/metanorma#669)
+  spec.add_dependency "base64"
   spec.add_dependency "isodoc"
   spec.add_dependency "metanorma-document"
   spec.add_dependency "metanorma-ietf-data"
