@@ -26,8 +26,10 @@ module Metanorma
 
       def metadata_series(node, xml)
         xml.series **{ type: "stream" } do |s|
-          add_noko_elem(s, "title", node.attr("submission-type") || "IETF")
-          # s.title (node.attr("submission-type") || "IETF")
+          # Asciidoctor downcases attribute names: :submissionType: lands
+          # as "submissiontype", :submission-type: as "submission-type";
+          # the RFC-XML world spells it camelCase, so accept both.
+          add_noko_elem(s, "title", submission_type_attr(node) || "IETF")
         end
         a = node.attr("intended-series") and
           xml.series **{ type: "intended" } do |s|
@@ -35,6 +37,10 @@ module Metanorma
             add_noko_elem(s, "title", parts[0])
             add_noko_elem(s, "number", parts[1..-1].join(" ")) if parts.size > 1
           end
+      end
+
+      def submission_type_attr(node)
+        node.attr("submission-type") || node.attr("submissiontype")
       end
 
       def title_fallback(node, xml)
