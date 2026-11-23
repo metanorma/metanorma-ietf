@@ -562,104 +562,211 @@ RSpec.describe "IETF RFC XML validation (WS3)" do
     end
   end
 
-  # RFC 7841 stream checks (xml2rfc preptool 5.4.x parity). The
-  # Idnits3 SUBMISSION_TYPE_UNEXPECTED report on metanorma-ietf#348
-  # is the downstream symptom of an unvalidated stream.
-  def stream_front(stream)
-    <<~FRONT
-      <front>
-      <title abbrev="dlts">Distributed Ledger Time-Stamp</title>
-      <seriesInfo name="Internet-Draft" value="draft-intesigroup-dlts-14" stream="#{stream}"></seriesInfo>
-      <author fullname="Author Name">
-      <address><postal></postal><email>author@example.com</email></address>
-      </author>
-      </front>
-    FRONT
+  # RFC XML emission validation: idnits3 submission-check findings on
+  # the Rfcxml model, recorded through the flavor log catalog. The
+  # Idnits3 SUBMISSION_TYPE_UNEXPECTED report on metanorma-ietf#348 is
+  # the downstream symptom of an unvalidated stream.
+  def model_rfc(attrs = {}, front: nil, middle: nil)
+    rfc = Rfcxml::V3::Rfc.new
+    rfc.submission_type = attrs[:submission_type]
+    rfc.category = attrs[:category]
+    rfc.ipr = attrs[:ipr]
+    rfc.doc_name = attrs[:doc_name]
+    rfc.consensus = attrs[:consensus]
+    rfc.front = front
+    rfc.middle = middle
+    rfc
   end
 
-  def stream_doc(attrs, stream: "independent")
-    <<~INPUT
-      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-intesigroup-dlts-14" ipr="trust200902" version="3" xml:lang="en" #{attrs}>
-      #{stream_front(stream)}
-      <middle>
-      <section anchor="A" numbered="true"><name>Introduction</name></section>
-      </middle>
-      </rfc>
-    INPUT
+  def model_front(stream: nil, workgroup: false)
+    front = Rfcxml::V3::Front.new
+    si = Rfcxml::V3::SeriesInfo.new
+    si.name = "Internet-Draft"
+    si.value = "draft-intesigroup-dlts-14"
+    si.stream = stream
+    author = Rfcxml::V3::Author.new
+    author.fullname = "Author Name"
+    abstract = Rfcxml::V3::Abstract.new
+    t = Rfcxml::V3::Text.new
+    t.content = ["Abstract."]
+    abstract.t = [t]
+    front.series_info = [si]
+    front.author = [author]
+    front.abstract = abstract
+    front.workgroup = [Rfcxml::V3::Workgroup.new] if workgroup
+    front
   end
 
-  describe "stream validation" do
-    it "accepts every RFC 7841 stream and keeps schema and content clean" do
+  def model_section(name: "Introduction")
+    section = Rfcxml::V3::Section.new
+    n = Rfcxml::V3::Name.new
+    n.content = [name]
+    section.name = n
+    section
+  end
+
+  describe "stream validation (model)" do
+    let(:validator) { Metanorma::Ietf::RfcValidate.new }
+
+    it "accepts every RFC 7841 stream with a legal category" do
       streams = { "IETF" => "std", "IAB" => "info", "IRTF" => "info",
                   "independent" => "info", "editorial" => "info" }
       streams.each do |stream, category|
-        rfc = stream_doc(%(submissionType="#{stream}" category="#{category}"),
-                         stream: stream)
-        expect(validator.schema_validate(rfc)).to be_empty
-        expect(content_errors(rfc)).not_to match(/submissionType/)
-        expect(content_errors(rfc)).not_to match(/stream/)
-        expect(content_errors(rfc)).not_to match(/category/)
+        rfc = model_rfc({ submission_type: stream, category: category,
+                          ipr: "trust200902" },
+                        front: model_front(stream: stream))
+        validator.content_validate(rfc)
+        validator.content_warnings(rfc)
+        expect(validator).not_to be_fatal
+        expect(validator).not_to be_entries
       end
     end
 
-    it "halts a stream outside the RFC 7841 enum with the legal values" do
-      rfc = stream_doc(%(submissionType="individual" category="info"))
-      errors = content_errors(rfc)
-      expect(errors)
+    it "aborts a stream outside the RFC 7841 enum with the legal values" do
+      rfc = model_rfc({ submission_type: "individual", category: "info",
+                        ipr: "trust200902" },
+                      front: model_front)
+      fatal = validator.content_validate(rfc)
+      expect(fatal.join("\n"))
         .to match(/Unknown submissionType \(stream\) on <rfc> element/)
-      expect(errors).to match(%r{\(:submission-type: individual\)})
-      expect(errors).to include("IETF, IAB, IRTF, independent, editorial")
+      expect(fatal.join("\n"))
+        .to include("IETF, IAB, IRTF, independent, editorial")
     end
 
-    it "rejects the same stream in the schema enum" do
-      rfc = stream_doc(%(submissionType="individual" category="info"))
-      expect(validator.schema_validate(rfc).join("\n"))
-        .to match(/submissionType/)
+    it "aborts a category that the stream does not carry" do
+      rfc = model_rfc({ submission_type: "editorial", category: "exp",
+                        ipr: "trust200902" },
+                      front: model_front(stream: "editorial"))
+      expect(validator.content_validate(rfc).join("\n"))
+        .to match(/is invalid for the editorial stream: must be one of info, but is exp/)
+      rfc = model_rfc({ submission_type: "IAB", category: "std",
+                        ipr: "trust200902" },
+                      front: model_front(stream: "IAB"))
+      expect(validator.content_validate(rfc).join("\n"))
+        .to match(/is invalid for the IAB stream: must be one of info, historic, but is std/)
     end
 
-    it "halts a category that the stream does not carry" do
-      rfc = stream_doc(%(submissionType="editorial" category="exp"),
-                       stream: "editorial")
-      expect(content_errors(rfc)).to match(
-        /is invalid for the editorial stream: must be one of info, but is exp/,
-      )
-      rfc = stream_doc(%(submissionType="IAB" category="std"),
-                       stream: "IAB")
-      expect(content_errors(rfc)).to match(
-        /is invalid for the IAB stream: must be one of info, historic, but is std/,
-      )
+    it "aborts a front seriesInfo stream inconsistent with the rfc stream (preptool 5.4.2.1)" do
+      rfc = model_rfc({ submission_type: "independent", category: "info",
+                        ipr: "trust200902" },
+                      front: model_front(stream: "IETF"))
+      expect(validator.content_validate(rfc).join("\n"))
+        .to match(/The stream setting of <front> <seriesInfo> \(IETF\) is inconsistent with the submissionType of <rfc> \(independent\)/)
     end
 
-    it "halts a front seriesInfo stream inconsistent with the rfc stream (preptool 5.4.2.1)" do
-      rfc = stream_doc(%(submissionType="independent" category="info"),
-                       stream: "IETF")
-      expect(content_errors(rfc)).to match(
-        /The stream setting of <front> <seriesInfo> \(IETF\) is inconsistent with the submissionType of <rfc> \(independent\)/,
-      )
-    end
-
-    it "halts a consensus setting on the independent and editorial streams" do
+    it "aborts a consensus setting on the independent and editorial streams" do
       %w(independent editorial).each do |stream|
-        rfc = stream_doc(%(submissionType="#{stream}" category="info" consensus="true"),
-                         stream: stream)
-        expect(content_errors(rfc)).to match(
-          /Expected no consensus setting for the #{stream} stream/,
-        )
+        rfc = model_rfc({ submission_type: stream, category: "info",
+                          ipr: "trust200902", consensus: "true" },
+                        front: model_front(stream: stream))
+        expect(validator.content_validate(rfc).join("\n"))
+          .to match(/Expected no consensus setting for the #{stream} stream/)
       end
     end
 
-    it "halts a consensus setting on the IRTF stream with no workgroup" do
-      rfc = stream_doc(%(submissionType="IRTF" category="info" consensus="true"),
-                       stream: "IRTF")
-      expect(content_errors(rfc)).to match(
-        /Expected no consensus setting for the IRTF stream with no workgroup/,
-      )
+    it "aborts a consensus setting on the IRTF stream with no workgroup" do
+      rfc = model_rfc({ submission_type: "IRTF", category: "info",
+                        ipr: "trust200902", consensus: "true" },
+                      front: model_front(stream: "IRTF"))
+      expect(validator.content_validate(rfc).join("\n"))
+        .to match(/Expected no consensus setting for the IRTF stream with no workgroup/)
     end
 
     it "accepts a consensus setting on the IETF stream" do
-      rfc = stream_doc(%(submissionType="IETF" category="std" consensus="true"),
-                       stream: "IETF")
-      expect(content_errors(rfc)).not_to match(/consensus/)
+      rfc = model_rfc({ submission_type: "IETF", category: "std",
+                        ipr: "trust200902", consensus: "true" },
+                      front: model_front(stream: "IETF", workgroup: true))
+      expect(validator.content_validate(rfc)).to be_empty
+    end
+
+    it "aborts a restricted ipr on the IETF stream (RFC 5378 s3.3)" do
+      %w(noModificationTrust200902 noDerivativesTrust200902).each do |ipr|
+        rfc = model_rfc({ submission_type: "IETF", category: "std",
+                          ipr: ipr },
+                        front: model_front(stream: "IETF"))
+        expect(validator.content_validate(rfc).join("\n"))
+          .to match(/withholds the right to produce derivative works/)
+      end
+      independent = model_rfc({ submission_type: "independent",
+                                category: "info", ipr: "trust200811" },
+                              front: model_front(stream: "independent"))
+      expect(Metanorma::Ietf::RfcValidate.new
+        .content_validate(independent)).to be_empty
+    end
+
+    it "aborts a draft-iab/draft-irtf name implying a different stream" do
+      rfc = model_rfc({ submission_type: "IETF", category: "std",
+                        ipr: "trust200902",
+                        doc_name: "draft-iab-probe-00" },
+                      front: model_front(stream: "IETF"))
+      expect(validator.content_validate(rfc).join("\n"))
+        .to match(/The document name draft-iab-probe-00 implies the IAB stream/)
+    end
+
+    it "aborts a missing abstract and warns on an empty one" do
+      no_abstract = model_rfc({ submission_type: "independent",
+                                category: "info", ipr: "trust200902" },
+                              front: Rfcxml::V3::Front.new)
+      expect(validator.content_validate(no_abstract).join("\n"))
+        .to match(/The abstract section is missing/)
+
+      empty_front = Rfcxml::V3::Front.new
+      empty_front.abstract = Rfcxml::V3::Abstract.new
+      rfc = model_rfc({ submission_type: "independent", category: "info",
+                        ipr: "trust200902" },
+                      front: empty_front)
+      fresh = Metanorma::Ietf::RfcValidate.new
+      fresh.content_validate(rfc)
+      fresh.content_warnings(rfc)
+      expect(fresh).not_to be_fatal
+      expect(fresh).to be_entries
+    end
+
+    it "warns on wide artwork, tabs, uncited references and deprecated emission" do
+      wide = Rfcxml::V3::Artwork.new
+      wide.content = "x" * 101
+      tabbed = Rfcxml::V3::Sourcecode.new
+      tabbed.content = ["a\tb"]
+      section = model_section
+      section.artwork = [wide]
+      section.sourcecode = [tabbed]
+      middle = Rfcxml::V3::Middle.new
+      middle.section = [section]
+      back = Rfcxml::V3::Back.new
+      refs = Rfcxml::V3::References.new
+      ref = Rfcxml::V3::Reference.new
+      ref.anchor = "UNCITED"
+      refs.reference = [ref]
+      back.references = [refs]
+      rfc = model_rfc({ submission_type: "independent", category: "info",
+                        ipr: "trust200902" },
+                      front: model_front(stream: "independent"),
+                      middle: middle)
+      rfc.back = back
+      validator.content_validate(rfc)
+      validator.content_warnings(rfc)
+      expect(validator).not_to be_fatal
+      report = validator.write("/tmp/should-not-write-here")
+      expect(File.read(report))
+        .to include("has lines wider than the 72 columns")
+        .and include("contains tab characters")
+        .and include("is listed in the References section")
+      FileUtils.rm_f(report)
+    end
+
+    it "logs the submitted-filename hint as info" do
+      rfc = model_rfc({ submission_type: "independent", category: "info",
+                        ipr: "trust200902",
+                        doc_name: "draft-intesigroup-dlts-14" },
+                      front: model_front(stream: "independent"))
+      validator.content_validate(rfc)
+      validator.record_filename_hint(rfc.doc_name)
+      expect(validator.entries?).to be true
+      report = validator.write("/tmp/should-not-write-here")
+      expect(File.read(report))
+        .to include("expects the submitted file to be named " \
+                    "draft-intesigroup-dlts-14.xml")
+      FileUtils.rm_f(report)
     end
   end
 end

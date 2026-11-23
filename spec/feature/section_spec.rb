@@ -28,7 +28,7 @@ RSpec.describe "IETF section rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle/>
@@ -131,7 +131,7 @@ RSpec.describe "IETF section rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_d96948c0-ac15-db56-ecc7-cf6a3590a17a"/>
         </front>
@@ -239,7 +239,7 @@ RSpec.describe "IETF section rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -287,7 +287,7 @@ RSpec.describe "IETF section rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -333,7 +333,7 @@ RSpec.describe "IETF section rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>

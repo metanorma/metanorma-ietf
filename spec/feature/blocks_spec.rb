@@ -28,7 +28,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -63,7 +63,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -102,7 +102,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -148,7 +148,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -199,7 +199,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -240,7 +240,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -317,7 +317,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -376,7 +376,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -419,7 +419,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -465,7 +465,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -512,7 +512,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
       <front>
         <title/>
-        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
         <date day="1" month="January" year="2000"/>
       </front>
       <middle>
@@ -551,7 +551,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
       <front>
         <title/>
-        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
         <date day="1" month="January" year="2000"/>
       </front>
       <middle>
@@ -630,7 +630,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_f47bb99e-052c-088c-ef35-ed9cb1c19df8"/>
         </front>
@@ -679,7 +679,7 @@ RSpec.describe "IETF block rendering (WS3)" do
     <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
       <front>
         <title/>
-        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
         <date day="1" month="January" year="2000"/>
       </front>
       <middle>
@@ -729,7 +729,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -771,7 +771,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -828,7 +828,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -878,7 +878,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -927,7 +927,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -973,7 +973,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -1187,7 +1187,7 @@ RSpec.describe "IETF block rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>

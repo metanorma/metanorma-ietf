@@ -93,7 +93,7 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" docName="10" version="3" xml:lang="en">
         <front>
           <title>The Holy Hand Grenade of Antioch</title>
-          <seriesInfo name="Internet-Draft" value="10" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="10" asciiName="Internet-Draft"/>
           <author fullname="Arthur son of Uther Pendragon">
             <address/>
           </author>
@@ -187,7 +187,7 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
     <rfc category="std" ipr="trust200902" submissionType="IETF" docName="10" version="3" xml:lang="en">
       <front>
         <title>The Holy Hand Grenade of Antioch</title>
-        <seriesInfo name="Internet-Draft" value="10" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <seriesInfo name="Internet-Draft" value="10" asciiName="Internet-Draft"/>
         <author fullname="Arthur son of Uther Pendragon">
           <address/>
         </author>

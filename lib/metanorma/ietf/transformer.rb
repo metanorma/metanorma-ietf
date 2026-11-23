@@ -14,6 +14,7 @@ module Metanorma
       autoload :NullObjects, "metanorma/ietf/transformer/null_objects"
       autoload :OrderTracker, "metanorma/ietf/transformer/order_tracker"
       autoload :IetfToRfcV3, "metanorma/ietf/transformer/ietf_to_rfc_v3"
+      autoload :ModelValidation, "metanorma/ietf/transformer/model_validation"
       autoload :RfcV3ToIetf, "metanorma/ietf/transformer/rfc_v3_to_ietf"
 
       class Error < StandardError; end
@@ -62,8 +63,13 @@ module Metanorma
         xml = u_cleanup(xml)
 
         if options[:validate]
-          errors = transformer.validate_rfc_xml(xml)
-          errors.each { |e| warn "RFC XML: #{e}" }
+          validator = RfcValidate.new
+          fatal = validator.content_validate(rfc, doc)
+          validator.content_warnings(rfc)
+          fatal.empty? or
+            raise Error, "FATAL ERRORS:\n\n#{fatal.join("\n\n")}"
+          transformer.validate_rfc_xml(xml)
+            .each { |e| warn "RFC XML: #{e}" }
         end
 
         xml

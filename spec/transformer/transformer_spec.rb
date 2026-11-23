@@ -33,13 +33,16 @@ RSpec.describe Metanorma::Ietf::Transformer do
       expect(result).to include("RFC XML v3 Example: A Standard for the Transmission of IP Datagrams on Avian Carriers")
     end
 
+    # No status/stream on the front seriesInfo: the idnits3
+    # submission check flags both as deprecated on the author's
+    # seriesInfo; xml2rfc's preptool re-adds the stream (5.4.2.1)
     it "builds series info" do
       expect(result).to include("<seriesInfo")
       expect(result).to include('name="RFC"')
       expect(result).to include('value="1149"')
       expect(result).to include('asciiName="RFC"')
-      expect(result).to include('status="Published"')
-      expect(result).to include('stream="IETF"')
+      expect(result).not_to include("status=")
+      expect(result).not_to include("stream=")
     end
 
     it "builds authors" do

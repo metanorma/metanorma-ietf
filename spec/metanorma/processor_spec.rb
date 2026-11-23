@@ -137,6 +137,7 @@ RSpec.describe Metanorma::Ietf::Processor do
   it "escapes bare ampersands on the processor leg (#302)" do
     semantic = <<~INPUT
       #{BLANK_HDR}
+      <preface><abstract id="ab1"><p>Abstract.</p></abstract></preface>
       <sections><clause id="c1"><title>Body</title>
       <p id="p1">Pilcrow entity &amp;para; end.</p>
       </clause></sections>

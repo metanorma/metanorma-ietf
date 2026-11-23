@@ -8,7 +8,7 @@
 <rfc number="1149" obsoletes="RFC 1000, RFC1000, 10.17487/RFC1000, RFC 1200, RFC1200, 10.17487/RFC1200" updates="RFC 2010, RFC2010, 10.17487/RFC2010, RFC 2120, RFC2120, 10.17487/RFC2120" category="std" consensus="true" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
   <front>
     <title abbrev="IP Datagrams on Avian Carriers">RFC XML v3 Example: A Standard for the Transmission of IP Datagrams on Avian Carriers</title>
-    <seriesInfo name="RFC" value="1149" asciiName="RFC" status="Published" stream="IETF"/>
+    <seriesInfo name="RFC" value="1149" asciiName="RFC"/>
     <author initials="D." surname="Waitzman" fullname="David Waitzman">
       <organization>BBN STC</organization>
       <address>

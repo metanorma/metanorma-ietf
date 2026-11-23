@@ -39,6 +39,10 @@ module Metanorma
           title
         end
 
+        # No status/stream on the front seriesInfo: the idnits3
+        # submission check flags both as deprecated on the author's
+        # seriesInfo (the values live on <rfc category/submissionType>),
+        # and xml2rfc's preptool re-adds the stream itself (5.4.2.1)
         def build_series_info
           infos = []
           if rfc?
@@ -48,41 +52,12 @@ module Metanorma
             ascii_val = Sterile.transliterate(si.value)
             si.ascii_value = ascii_val unless ascii_val == si.value
             si.ascii_name = "RFC"
-            # the released path passes the metadata stage through
-            # (capitalised text; numeric stages stay as-is), defaulting
-            # to Published (WS3, metadata_spec)
-            stage = model_attr(bibdata, :status)
-            stage_text = stage && ls_text(model_attr(stage, :stage) || stage)
-            si.status = if stage_text && !stage_text.strip.empty?
-                          stage_text.strip.capitalize
-                        else
-                          "Published"
-                        end
-            si.stream = extract_submission_type
             infos << si
           else
             si = Rfcxml::V3::SeriesInfo.new
             si.name = "Internet-Draft"
             si.value = extract_doc_name.to_s
             si.ascii_name = "Internet-Draft"
-            si.stream = extract_submission_type
-            # status = metadata stage, as on the RFC branch (the
-            # released path uses the stage for both); intended-series
-            # title only as fallback (WS3, metadata_spec)
-            stage = model_attr(bibdata, :status)
-            stage_text = stage && ls_text(model_attr(stage, :stage) || stage)
-            if stage_text && !stage_text.strip.empty?
-              si.status = stage_text.strip.capitalize
-            else
-              series_list = to_array(bibdata.series)
-              series_list.each do |s|
-                next unless s.type == "intended"
-                title = ls_text(s.title)
-                si.status = title&.capitalize || "Informational"
-                break
-              end
-            end
-            si.status ||= "Informational"
             infos << si
           end
 

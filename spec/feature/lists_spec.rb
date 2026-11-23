@@ -32,7 +32,7 @@ RSpec.describe "IETF list rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_ed83a3a2-f474-f409-00f5-da0bf4778879">
             <ul anchor="_61961034-0fb1-436b-b281-828857a59ddb" spacing="compact" bare="true" indent="5">
@@ -90,7 +90,7 @@ RSpec.describe "IETF list rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_e248a5b0-6f07-cd90-9d9f-538bc3e4cc59">
             <ol anchor="_ae34a226-aab4-496d-987b-1aa7b6314026" type="a" start="7" group="X" spacing="compact" indent="5">
@@ -148,7 +148,7 @@ RSpec.describe "IETF list rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_697ec077-372f-95fa-cbaa-008711519010">
             <ol anchor="_ae34a226-aab4-496d-987b-1aa7b6314026" type="I">
@@ -207,7 +207,7 @@ RSpec.describe "IETF list rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
           <abstract anchor="_3399f778-d5b4-bd70-c3ff-f2d9458f4614">
             <dl anchor="_732d3f57-4f88-40bf-9ae9-633891edc395" spacing="compact" newline="true" indent="5">
