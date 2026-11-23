@@ -325,7 +325,6 @@ RSpec.describe "IETF metadata rendering (WS3)" do
         <front>
           <title abbrev="Abbreviated Title" ascii="Ascii Title">Main Title?~@~I?~@~T?~@~ITitle</title>
           <seriesInfo name="RFC" value="1000" asciiName="RFC" status="10" stream="IRTF"/>
-          <seriesInfo name="" value="" status="FYI"/>
           <author fullname="Fred Flintstone">
             <organization>Slate Rock and Gravel Company</organization>
             <address>
@@ -495,7 +494,7 @@ RSpec.describe "IETF metadata rendering (WS3)" do
         <front>
           <title ascii="Document title">Dócument title</title>
           <seriesInfo name="Internet-Draft" value="1000" asciiName="Internet-Draft" status="Published" stream="IETF"/>
-          <seriesInfo name="" value="111" status="BCP"/>
+          <seriesInfo name="BCP" value="111"/>
           <author fullname="Fréd Flintstone" asciiFullname="Fred Flintstone">
             <organization ascii="Slate Rock and Gravel Company">Sláte Rock and Gravel Company</organization>
             <address>

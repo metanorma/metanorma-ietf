@@ -4,6 +4,12 @@ module Metanorma
   module Ietf
     module Transformer
       module FrontTransformer
+        # RFC 7991 s2.29 subseries pointer names, keyed by the
+        # intended-series title the flavor accepts
+        SERIES_INFO_NAMES = {
+          "standard" => "STD", "std" => "STD", "full-standard" => "STD",
+          "bcp" => "BCP", "fyi" => "FYI",
+        }.freeze
 
         def build_front
           front = Rfcxml::V3::Front.new
@@ -85,12 +91,21 @@ module Metanorma
             series_list = [series_list] unless series_list.is_a?(Array)
             series_list.each do |s|
               next unless s.type == "intended"
-              si = Rfcxml::V3::SeriesInfo.new
-              si.name = ""
-              # the intended-series number ("BCP 14" -> value=14, #298)
+              # RFC 7991 s2.29: the subseries pointers carry a name and
+              # number ("BCP 14" -> name="BCP" value="14", #298); the
+              # informational/experimental/historic statuses have no
+              # subseries (they live on the rfc category), and a
+              # seriesInfo without a number has nothing valid to point
+              # at — the former empty name="" value="" entries were
+              # schema-legal junk
+              title = ls_text(s.title)
+              name = title && SERIES_INFO_NAMES[title.downcase]
               num = s.respond_to?(:number) ? ls_text(s.number) : nil
-              si.value = num && !num.to_s.strip.empty? ? num.to_s.strip : ""
-              si.status = ls_text(s.title)
+              num = num&.strip
+              next unless name && num && !num.empty?
+              si = Rfcxml::V3::SeriesInfo.new
+              si.name = name
+              si.value = num
               infos << si
             end
           end
