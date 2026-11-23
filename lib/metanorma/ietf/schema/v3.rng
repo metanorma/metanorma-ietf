@@ -60,6 +60,7 @@
             <value>IAB</value>
             <value>IRTF</value>
             <value>independent</value>
+            <value>editorial</value>
           </choice>
         </attribute>
       </optional>
@@ -1265,6 +1266,8 @@
           <choice>
             <ref name="artset"/>
             <ref name="artwork"/>
+            <ref name="aside"/>
+            <ref name="blockquote"/>
             <ref name="dl"/>
             <ref name="figure"/>
             <ref name="ol"/>
@@ -1576,6 +1579,8 @@
           <ref name="iref"/>
           <ref name="relref"/>
           <ref name="strong"/>
+          <ref name="sub"/>
+          <ref name="sup"/>
           <ref name="tt"/>
           <ref name="xref"/>
         </choice>
@@ -1600,6 +1605,8 @@
           <ref name="iref"/>
           <ref name="relref"/>
           <ref name="strong"/>
+          <ref name="sub"/>
+          <ref name="sup"/>
           <ref name="tt"/>
           <ref name="xref"/>
         </choice>
@@ -2378,6 +2385,7 @@
           <value>IAB</value>
           <value>IRTF</value>
           <value>independent</value>
+          <value>editorial</value>
         </choice>
       </optional>
     </element>
@@ -2430,6 +2438,7 @@
             <value>IAB</value>
             <value>IRTF</value>
             <value>independent</value>
+            <value>editorial</value>
           </choice>
         </attribute>
       </optional>

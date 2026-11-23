@@ -119,7 +119,16 @@ module Metanorma
               return SERIES2CATEGORY.fetch(title.downcase, "std") if title
             end
           end
-          "std"
+          category_default
+        end
+
+        # With no intended series declared, fall back to a category the
+        # stream actually carries (RFC 7841): xml2rfc's preptool dies
+        # on stream/category combinations it has no boilerplate for,
+        # and the former blanket std default handed every independent
+        # document one
+        def category_default
+          extract_submission_type == "IETF" ? "std" : "info"
         end
 
         def extract_doc_name

@@ -48,13 +48,13 @@ RSpec.describe "IETF front matter (#298)" do
     expect(out).to include("<email>tools@example.org</email>")
   end
 
-  it "carries the intended-series number as seriesInfo value" do
+  it "carries the intended-series number as a subseries seriesInfo pointer" do
     input = hdr_with(doctype: "rfc", bibdata_insert: <<~B) + BODY
       <docnumber>1000</docnumber>
       <series type="intended"><title>BCP</title><number>14</number></series>
     B
     out = strip_guid(feature_convert(input))
-    expect(out).to include('<seriesInfo name="" value="14" status="BCP"/>')
+    expect(out).to include('<seriesInfo name="BCP" value="14"/>')
   end
 
   it "prefers authored initials over forename-derived" do

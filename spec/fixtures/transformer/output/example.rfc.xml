@@ -9,7 +9,6 @@
   <front>
     <title abbrev="IP Datagrams on Avian Carriers">RFC XML v3 Example: A Standard for the Transmission of IP Datagrams on Avian Carriers</title>
     <seriesInfo name="RFC" value="1149" asciiName="RFC" status="Published" stream="IETF"/>
-    <seriesInfo name="" value="" status="full-standard"/>
     <author initials="D." surname="Waitzman" fullname="David Waitzman">
       <organization>BBN STC</organization>
       <address>

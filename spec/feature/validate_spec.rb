@@ -561,4 +561,105 @@ RSpec.describe "IETF RFC XML validation (WS3)" do
         .not_to match(%r{Unknown ipr attribute})
     end
   end
+
+  # RFC 7841 stream checks (xml2rfc preptool 5.4.x parity). The
+  # Idnits3 SUBMISSION_TYPE_UNEXPECTED report on metanorma-ietf#348
+  # is the downstream symptom of an unvalidated stream.
+  def stream_front(stream)
+    <<~FRONT
+      <front>
+      <title abbrev="dlts">Distributed Ledger Time-Stamp</title>
+      <seriesInfo name="Internet-Draft" value="draft-intesigroup-dlts-14" stream="#{stream}"></seriesInfo>
+      <author fullname="Author Name">
+      <address><postal></postal><email>author@example.com</email></address>
+      </author>
+      </front>
+    FRONT
+  end
+
+  def stream_doc(attrs, stream: "independent")
+    <<~INPUT
+      <rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-intesigroup-dlts-14" ipr="trust200902" version="3" xml:lang="en" #{attrs}>
+      #{stream_front(stream)}
+      <middle>
+      <section anchor="A" numbered="true"><name>Introduction</name></section>
+      </middle>
+      </rfc>
+    INPUT
+  end
+
+  describe "stream validation" do
+    it "accepts every RFC 7841 stream and keeps schema and content clean" do
+      streams = { "IETF" => "std", "IAB" => "info", "IRTF" => "info",
+                  "independent" => "info", "editorial" => "info" }
+      streams.each do |stream, category|
+        rfc = stream_doc(%(submissionType="#{stream}" category="#{category}"),
+                         stream: stream)
+        expect(validator.schema_validate(rfc)).to be_empty
+        expect(content_errors(rfc)).not_to match(/submissionType/)
+        expect(content_errors(rfc)).not_to match(/stream/)
+        expect(content_errors(rfc)).not_to match(/category/)
+      end
+    end
+
+    it "halts a stream outside the RFC 7841 enum with the legal values" do
+      rfc = stream_doc(%(submissionType="individual" category="info"))
+      errors = content_errors(rfc)
+      expect(errors)
+        .to match(/Unknown submissionType \(stream\) on <rfc> element/)
+      expect(errors).to match(%r{\(:submission-type: individual\)})
+      expect(errors).to include("IETF, IAB, IRTF, independent, editorial")
+    end
+
+    it "rejects the same stream in the schema enum" do
+      rfc = stream_doc(%(submissionType="individual" category="info"))
+      expect(validator.schema_validate(rfc).join("\n"))
+        .to match(/submissionType/)
+    end
+
+    it "halts a category that the stream does not carry" do
+      rfc = stream_doc(%(submissionType="editorial" category="exp"),
+                       stream: "editorial")
+      expect(content_errors(rfc)).to match(
+        /is invalid for the editorial stream: must be one of info, but is exp/,
+      )
+      rfc = stream_doc(%(submissionType="IAB" category="std"),
+                       stream: "IAB")
+      expect(content_errors(rfc)).to match(
+        /is invalid for the IAB stream: must be one of info, historic, but is std/,
+      )
+    end
+
+    it "halts a front seriesInfo stream inconsistent with the rfc stream (preptool 5.4.2.1)" do
+      rfc = stream_doc(%(submissionType="independent" category="info"),
+                       stream: "IETF")
+      expect(content_errors(rfc)).to match(
+        /The stream setting of <front> <seriesInfo> \(IETF\) is inconsistent with the submissionType of <rfc> \(independent\)/,
+      )
+    end
+
+    it "halts a consensus setting on the independent and editorial streams" do
+      %w(independent editorial).each do |stream|
+        rfc = stream_doc(%(submissionType="#{stream}" category="info" consensus="true"),
+                         stream: stream)
+        expect(content_errors(rfc)).to match(
+          /Expected no consensus setting for the #{stream} stream/,
+        )
+      end
+    end
+
+    it "halts a consensus setting on the IRTF stream with no workgroup" do
+      rfc = stream_doc(%(submissionType="IRTF" category="info" consensus="true"),
+                       stream: "IRTF")
+      expect(content_errors(rfc)).to match(
+        /Expected no consensus setting for the IRTF stream with no workgroup/,
+      )
+    end
+
+    it "accepts a consensus setting on the IETF stream" do
+      rfc = stream_doc(%(submissionType="IETF" category="std" consensus="true"),
+                       stream: "IETF")
+      expect(content_errors(rfc)).not_to match(/consensus/)
+    end
+  end
 end

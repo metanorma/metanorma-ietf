@@ -193,6 +193,7 @@ module Metanorma
           ret += link_check(xml)
           ret += series_info_check(xml)
           ret += ipr_check(xml)
+          ret += submission_type_check(xml)
           ret
         end
 
@@ -240,6 +241,87 @@ module Metanorma
           IPR_VALUES.include?(xml.root["ipr"]) or
             return ["Unknown ipr attribute on <rfc> element (:ipr:): " \
                     "#{xml.root['ipr']}"]
+          []
+        end
+
+        # RFC 7991 s2.45.11: the legal submissionType (stream) values.
+        RFC7841_STREAMS = %w(IETF IAB IRTF independent editorial).freeze
+
+        # RFC 7841 s2: the category each stream may carry; source of
+        # truth is the xml2rfc boilerplate_rfc_7841.py
+        # boilerplate_rfc_status_of_memo table
+        RFC7841_STREAM_CATEGORIES = {
+          "IETF" => %w(std bcp exp historic info),
+          "IAB" => %w(info historic),
+          "IRTF" => %w(exp historic info),
+          "independent" => %w(exp historic info),
+          "editorial" => %w(info),
+        }.freeze
+
+        # Stream consistency across <rfc>, <front> <seriesInfo>,
+        # <category> and <consensus>. The schema enum rejects unknown
+        # stream values, but schema errors do not quarantine output;
+        # these content checks do, with messages citing the document
+        # attribute that produced the value. Mirrors xml2rfc preptool
+        # 5.4.x stream checks.
+        def submission_type_check(xml)
+          ret = []
+          ret += submission_type_enum_check(xml)
+          ret += stream_category_check(xml)
+          ret += series_info_stream_check(xml)
+          ret += consensus_check(xml)
+          ret
+        end
+
+        def submission_type_enum_check(xml)
+          st = xml.root["submissionType"] or return []
+          RFC7841_STREAMS.include?(st) or
+            return ["Unknown submissionType (stream) on <rfc> element " \
+                    "(:submission-type: #{st}): must be one of " \
+                    "#{RFC7841_STREAMS.join(', ')}"]
+          []
+        end
+
+        def stream_category_check(xml)
+          st = xml.root["submissionType"] || "IETF"
+          cat = xml.root["category"] or return []
+          legal = RFC7841_STREAM_CATEGORIES[st] or return []
+          legal.include?(cat) or
+            return ["The category of <rfc> (:intended-series: TYPE " \
+                    "NUMBER) is invalid for the #{st} stream: must be " \
+                    "one of #{legal.join(', ')}, but is #{cat}"]
+          []
+        end
+
+        # 5.4.2.1.  Compare <rfc> "submissionType" and
+        # <seriesInfo> "stream"
+        def series_info_stream_check(xml)
+          st = xml.root["submissionType"] || "IETF"
+          xml.xpath("//front//seriesInfo[@stream]").each do |s|
+            s["stream"] == st or
+              return ["The stream setting of <front> <seriesInfo> " \
+                      "(#{s['stream']}) is inconsistent with the " \
+                      "submissionType of <rfc> (#{st})"]
+          end
+          []
+        end
+
+        # 5.4.2.2.  "Status of This Memo" Insertion: the independent
+        # and editorial streams take no consensus setting, and the
+        # IRTF stream only when the document names a workgroup
+        def consensus_check(xml)
+          st = xml.root["submissionType"] || "IETF"
+          c = xml.root["consensus"] or return []
+          if %w(independent editorial).include?(st)
+            return ["Expected no consensus setting for the #{st} " \
+                    "stream (:consensus: #{c}); remove the " \
+                    ":consensus: document attribute"]
+          end
+          if st == "IRTF" && xml.at("//front/workgroup").nil?
+            return ["Expected no consensus setting for the IRTF " \
+                    "stream with no workgroup (:consensus: #{c}); " \
+                    "declare :workgroup: or remove :consensus:"]
+          end
           []
         end
       end
