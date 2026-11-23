@@ -10,7 +10,7 @@
 <rfc updates="RFC 8140, RFC8140, 10.17487/RFC8140" category="info" ipr="trust200902" submissionType="independent" docName="draft-camelot-holy-grenade-01" version="3" xml:lang="en">
   <front>
     <title abbrev="Hand Grenade of Antioch">The Holy Hand Grenade of Antioch</title>
-    <seriesInfo name="Internet-Draft" value="draft-camelot-holy-grenade-01" asciiName="Internet-Draft" status="Informational" stream="independent"/>
+    <seriesInfo name="Internet-Draft" value="draft-camelot-holy-grenade-01" asciiName="Internet-Draft"/>
     <author fullname="Arthur son of Uther Pendragon">
       <organization>Camelot</organization>
       <address>

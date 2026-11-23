@@ -47,5 +47,60 @@ module Metanorma
         "ietf.rng"
       end
     end
+
+    # RFC XML emission validation for the processor's document-model
+    # leg, in the Metanorma::Standoc::Validate shape: findings are
+    # recorded through Metanorma::Utils::Log against the flavor
+    # catalog (severity 0 aborts the compile), the full report is
+    # rendered to the standard .err.html artifact, and the submitted
+    # filename hint is logged as info.
+    class RfcValidate
+      def initialize
+        @log = Metanorma::Utils::Log.new(Converter::IETF_LOG_MESSAGES)
+      end
+
+      # Returns the abort entries (clean_abort wording). doc is the
+      # input metanorma-document model, for findings that need the
+      # authored value (the Rfcxml model default is indistinguishable
+      # from an authored one through the plain accessor)
+      def content_validate(rfc, doc = nil)
+        Transformer::ModelValidation.validate(rfc, doc)
+          .each do |id, params|
+          @log.add(id, nil, params: params)
+        end
+        @log.abort_messages
+      end
+
+      def content_warnings(rfc)
+        Transformer::ModelValidation.warnings(rfc).each do |id, params|
+          @log.add(id, nil, params: params)
+        end
+      end
+
+      # idnits3 FILENAME_DOCNAME_MISMATCH / FILENAME_TOO_MANY_DOTS
+      # apply to the submitted file, which Datatracker requires to be
+      # named after the draft; our build artifact keeps the source
+      # base name
+      def record_filename_hint(doc_name)
+        doc_name or return
+        @log.add("IETF_21", nil, params: [doc_name])
+      end
+
+      def fatal?
+        !@log.abort_messages.empty?
+      end
+
+      def entries?
+        !@log.messages.empty?
+      end
+
+      def write(filename)
+        @log.save_to(filename)
+        @log.write
+        # the same name save_to computes for the report
+        File.join(File.dirname(filename),
+                  "#{File.basename(filename, '.*')}.err.html")
+      end
+    end
   end
 end

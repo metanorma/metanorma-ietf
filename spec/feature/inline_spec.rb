@@ -26,7 +26,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
         <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
           <front>
             <title>Document title</title>
-            <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Published" stream="IETF"/>
+            <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
             <date day="1" month="January" year="2000"/>
           </front>
           <middle>
@@ -67,7 +67,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -116,7 +116,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -162,7 +162,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
     <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
       <front>
         <title/>
-        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+        <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
         <date day="1" month="January" year="2000"/>
       </front>
       <middle>
@@ -199,7 +199,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -246,7 +246,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -290,7 +290,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -334,7 +334,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -378,7 +378,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -477,7 +477,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -555,7 +555,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -782,7 +782,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -850,7 +850,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>
@@ -1016,7 +1016,7 @@ RSpec.describe "IETF inline rendering (WS3)" do
       <rfc category="std" ipr="trust200902" submissionType="IETF" version="3" xml:lang="en">
         <front>
           <title/>
-          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft" status="Informational" stream="IETF"/>
+          <seriesInfo name="Internet-Draft" value="" asciiName="Internet-Draft"/>
           <date day="1" month="January" year="2000"/>
         </front>
         <middle>

@@ -25,6 +25,11 @@ RSpec.describe "submission type attribute spellings" do
       :intended-series: informational
       #{attr_line}
 
+      [abstract]
+      --
+      Probe abstract.
+      --
+
       == Probe
 
       Text.
@@ -39,14 +44,18 @@ RSpec.describe "submission type attribute spellings" do
     Metanorma::Ietf::Transformer.convert(semantic_xml, direction: :forward)
   end
 
-  let(:validator) do
-    Metanorma::Ietf::Transformer::IetfToRfcV3.allocate
+  # The emitted Rfcxml model, exactly as the processor leg builds it:
+  # presentation stage, model parse, IetfToRfcV3 transform
+  let(:rfc_model) do
+    presented = Metanorma::Ietf::Transformer.presentation(semantic_xml)
+    doc = Metanorma::Ietf::Transformer.parse_semantic(presented)
+    Metanorma::Ietf::Transformer::IetfToRfcV3.new(doc).transform
   end
 
   # The RFC 7841 stream vocabulary: Datatracker's "Individual
   # Submissions" stream is spelled `independent` in RFC XML (RFC 7991
   # s2.45.11). A value outside the enum must not reach the output —
-  # the content validation halts it (stream validation specs in
+  # the model validation halts it (stream validation specs in
   # spec/feature/validate_spec.rb).
   context "with the declaration" do
     let(:attr_line) { ":submissionType: independent" }
@@ -59,8 +68,12 @@ RSpec.describe "submission type attribute spellings" do
       expect(rfc_xml).to include('submissionType="independent"')
     end
 
-    it "validates clean against the schema and content rules" do
-      expect(validator.validate_rfc_xml(rfc_xml)).to be_empty
+    it "validates clean on the model" do
+      v = Metanorma::Ietf::RfcValidate.new
+      v.content_validate(rfc_model)
+      v.content_warnings(rfc_model)
+      expect(v).not_to be_fatal
+      expect(v).not_to be_entries
     end
   end
 
@@ -87,10 +100,12 @@ RSpec.describe "submission type attribute spellings" do
       expect(rfc_xml).to include('submissionType="individual"')
     end
 
-    it "is halted by the stream validation with the legal values" do
-      expect(validator.validate_rfc_xml(rfc_xml).join("\n"))
+    it "is halted by the model validation with the legal values" do
+      v = Metanorma::Ietf::RfcValidate.new
+      fatal = v.content_validate(rfc_model)
+      expect(fatal.join("\n"))
         .to match(/Unknown submissionType \(stream\) on <rfc> element/)
-      expect(validator.validate_rfc_xml(rfc_xml).join("\n"))
+      expect(fatal.join("\n"))
         .to include("IETF, IAB, IRTF, independent, editorial")
     end
   end

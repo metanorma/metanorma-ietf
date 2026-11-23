@@ -75,19 +75,27 @@ module Metanorma
 
       # Mirror convert_forward's serialisation tail: bare-ampersand
       # escaping (#302: was present on the library API path only),
-      # non-ASCII <u> wrapping (N11), then validation. Content errors
-      # are stashed so the output stage can quarantine (#302: the
-      # released leg moved invalid output to .err and halted; the
+      # non-ASCII <u> wrapping (N11), then validation. Findings are
+      # recorded in the flavor log catalog through Metanorma::Utils::Log
+      # (the Metanorma::Standoc::Validate shape); abort-severity
+      # entries are stashed so the output stage can quarantine (#302:
+      # the released leg moved invalid output to .err and halted; the
       # port had reduced that to warnings)
       def rfc_post_process(xml, transformer, options)
         xml = Transformer.escape_bare_ampersands(xml)
         xml = Transformer.u_cleanup(xml)
         @rfc_content_errors = []
+        @rfc_validator = nil
         if options[:validate]
+          rfc = transformer.rfc
+          @rfc_validator = RfcValidate.new
+          @fatal_rfc_errors = @rfc_validator.content_validate(rfc, transformer.doc)
+          @rfc_validator.content_warnings(rfc)
+          @rfc_validator.record_filename_hint(rfc.doc_name)
+          @rfc_content_errors = @fatal_rfc_errors +
+            transformer.content_validate(xml)
           transformer.schema_validate(xml)
             .each { |e| warn "RFC XML: #{e}" }
-          @rfc_content_errors = transformer.content_validate(xml)
-          @rfc_content_errors.each { |e| warn "RFC XML: #{e}" }
         end
         xml
       end
@@ -100,9 +108,12 @@ module Metanorma
           super(isodoc_node, inname, outname, format,
                 options.merge(validate: true))
           if @rfc_content_errors&.any?
+            @rfc_validator&.write(outname)
             FileUtils.mv(outname, "#{outname}.err", force: true)
+            warn "FATAL ERRORS:\n\n#{@fatal_rfc_errors.join("\n\n")}" if @fatal_rfc_errors.any?
             warn "Cannot continue processing"
           else
+            @rfc_validator&.entries? and @rfc_validator.write(outname)
             @done_rfc = true
           end
         when :txt, :pdf, :html

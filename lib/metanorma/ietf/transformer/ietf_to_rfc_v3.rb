@@ -34,7 +34,7 @@ module Metanorma
         include CleanupTransformer
         include ValidationTransformer
 
-        attr_reader :doc, :options, :xrefs
+        attr_reader :doc, :options, :xrefs, :rfc
 
         def initialize(doc, options = {})
           @doc = doc
@@ -55,7 +55,7 @@ module Metanorma
           rfc.middle = build_middle
           rfc.back = build_back
           cleanup(rfc)
-          rfc
+          @rfc = rfc
         end
 
 

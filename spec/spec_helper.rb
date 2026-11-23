@@ -168,7 +168,7 @@ FEATURE_HDR = <<~HDR.freeze
   <rfc category='std' ipr='trust200902' submissionType='IETF' version='3' xml:lang='en'>
     <front>
       <title/>
-      <seriesInfo value='' name='Internet-Draft' asciiName='Internet-Draft' status='Informational' stream='IETF'/>
+      <seriesInfo value='' name='Internet-Draft' asciiName='Internet-Draft'/>
       <date day="1" year="2000" month="January"/>
       <abstract anchor="_">
 HDR
