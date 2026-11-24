@@ -6,8 +6,52 @@ module Metanorma
       end
 
       def metadata_author(node, xml)
-        personal_author(node, xml)
+        if node.attr("fullname") || node.attr("surname")
+          personal_author(node, xml)
+        else
+          # the AsciiDoc author line ("= Title" followed by name
+          # lines) is the common authoring shape; reading only
+          # :fullname:/:surname: produced author-less front matter,
+          # which RFC 7991 forbids (author+, metanorma-ietf#360)
+          author_line_author(node, xml)
+        end
         committee_contributors(node, xml, default_publisher, {})
+      end
+
+      # Asciidoctor numbers the authors on the title line from 1
+      # (attribute set, plus the _1 alias) and then _2, _3...
+      def author_line_author(node, xml)
+        count = node.attr("authorcount").to_i
+        count = 1 if count < 1
+        (1..count).each do |i|
+          suffix = i == 1 ? "" : "_#{i}"
+          author_line_author1(node, xml, suffix)
+        end
+      end
+
+      def author_line_author1(node, xml, suffix)
+        forename = node.attr("firstname#{suffix}")
+        surname = node.attr("lastname#{suffix}")
+        full = node.attr("author#{suffix}")
+        return unless full || forename || surname
+        xml.contributor do |c|
+          personal_role(node, c, suffix)
+          c.person do |p|
+            p.name do |n|
+              if forename || surname
+                add_noko_elem(n, "forename", forename)
+                middlename = node.attr("middlename#{suffix}") and
+                  add_noko_elem(n, "forename", middlename)
+                add_noko_elem(n, "initial",
+                              node.attr("authorinitials#{suffix}"))
+                add_noko_elem(n, "surname", surname)
+              else
+                add_noko_elem(n, "completename", full)
+              end
+            end
+            add_noko_elem(p, "email", node.attr("email#{suffix}"))
+          end
+        end
       end
 
       def org_author(node, xml); end

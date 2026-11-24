@@ -21,7 +21,7 @@ RSpec.describe Metanorma::Ietf do
       [bcp14]#keyword#
     INPUT
     output = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
       <sections>
       <p id='_'>
       <em>Physical noise sources</em>
@@ -64,7 +64,7 @@ RSpec.describe Metanorma::Ietf do
       <<<
     INPUT
     output = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
       <sections><p id="_">Line break<br/>
       line break</p>
       <hr/>
@@ -84,7 +84,7 @@ RSpec.describe Metanorma::Ietf do
       http://example.com[Link,title="tip"]
     INPUT
     output = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
       <sections>
         <p id="_">mailto:fred@example.com
       <link target="http://example.com"/>
@@ -103,7 +103,7 @@ RSpec.describe Metanorma::Ietf do
       Text [[bookmark]] Text
     INPUT
     output = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
       <sections>
         <p id="_">Text <bookmark id="_" anchor="bookmark"/> Text</p>
       </sections>
@@ -136,7 +136,7 @@ RSpec.describe Metanorma::Ietf do
       * [[[doc,x]]] Reference
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
           <sections>
               <clause id="_" anchor="reference" inline-header="false" obligation="normative">
                  <title id="_">Section</title>
@@ -212,7 +212,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
       <sections>
 
       </sections><bibliography><references id="_" obligation="informative" normative="true">
@@ -246,7 +246,7 @@ RSpec.describe Metanorma::Ietf do
       == Title footnote:[Footnote text 2]
     INPUT
     output = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
              <preface><foreword id="_" obligation="informative">
         <title id="_">Foreword</title>
         <p id="_">Hello!<fn id="_" reference="1">
@@ -270,7 +270,7 @@ RSpec.describe Metanorma::Ietf do
       ((primary:See)) Index ((_term_)) and(((primary:A~B~, stem:[alpha], &#x2c80;))).
     INPUT
     output = <<~OUTPUT
-         #{BLANK_HDR}
+         #{BLANK_HDR_AUTHOR}
         <sections>
             <p id="_">See<index primary="true"><primary>See</primary></index>#{' '}
             Index <em>term</em><index><primary><em>term</em></primary></index>#{' '}
