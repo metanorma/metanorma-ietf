@@ -69,11 +69,6 @@ RSpec.describe "IETF container children (#297)" do
   end
 
   it "renders admonition non-paragraph children" do
-    pending "MODEL GAP (metanorma-document 0.2.9): AdmonitionBlock " \
-            "maps only paragraphs — lists/sourcecode inside " \
-            "admonitions cannot reach the transformer " \
-            "(metanorma-ietf#297, metanorma-document#46). Re-test on " \
-            "the model upgrade."
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -88,9 +83,6 @@ RSpec.describe "IETF container children (#297)" do
   end
 
   it "renders sourcecode inside a note" do
-    pending "MODEL GAP (metanorma-document 0.2.9): NoteBlock maps no " \
-            "sourcecode/figure/table (metanorma-ietf#297, " \
-            "metanorma-document#46). Re-test on the model upgrade."
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>

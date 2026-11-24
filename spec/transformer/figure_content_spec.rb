@@ -52,6 +52,19 @@ RSpec.describe Metanorma::Ietf::Transformer do
     expect(result).to include("k: v")
   end
 
+  it "renders <source> citations through the shared bracket" do
+    result = convert_fragment(<<~BODY)
+      <figure id="f3"><name>Fig</name><image src="m.png"/>
+      <source type="bibliographic">
+      <origin bibitemid="rfc1234" type="inline"/>
+      </source></figure>
+    BODY
+
+    expect(result).to include("[SOURCE: ")
+    expect(result).to include(%q(target="rfc1234"))
+    expect(result).to include("]")
+  end
+
   it "carries the legacy @source attribute as a SOURCE bracket" do
     result = convert_fragment(
       '<figure id="f3" source="RFC 4321"><image src="m.png"/></figure>',

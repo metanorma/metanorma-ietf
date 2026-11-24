@@ -324,7 +324,7 @@ RSpec.describe "IETF block rendering (WS3)" do
           <section anchor="blockclause">
             <name>Blocks</name>
             <figure anchor="figureA-1">
-              <name>Split-it-right  divider</name>
+              <name>Split-it-right <em>sample</em> divider</name>
               <artwork src="rice_images/rice_image1.png" alt="alttext" anchor="_" name="titletxt" width="30" height="20"/>
               <artwork anchor="_" src="rice_images/rice_image1.png" height="20"/>
               <artwork anchor="_" src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7" height="20"/>
@@ -383,7 +383,7 @@ RSpec.describe "IETF block rendering (WS3)" do
           <section anchor="blockclause">
             <name>Blocks</name>
             <figure anchor="figureA-1">
-              <name>Split-it-right  divider</name>
+              <name>Split-it-right <em>sample</em> divider</name>
               <artwork src=""/>
             </figure>
           </section>

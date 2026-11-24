@@ -83,10 +83,9 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   end
 
   it "carries the figure [SOURCE:] attribution" do
-    pending "MODEL GAP (metanorma-document 0.5.12): FigureBlock maps " \
-            "the source ATTRIBUTE only — the <source> citation element " \
-            "is parse-ghosted; the mapping ships in metanorma-document " \
-            "#143 (metanorma-ietf#296 item 3)."
+    # was pending: FigureBlock mapped the source ATTRIBUTE only (#296);
+    # the citation elements map as of metanorma-document 0.5.13 and
+    # render through the shared term-source bracket
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -101,9 +100,8 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   end
 
   it "carries sourcecode src" do
-    pending "MODEL GAP (metanorma-document 0.5.12): SourcecodeBlock " \
-            "maps no src attribute; the mapping ships in " \
-            "metanorma-document #143 (metanorma-ietf#296 item 4)."
+    # was pending: SourcecodeBlock mapped no src attribute (#296);
+    # the mapping ships in metanorma-document 0.5.13
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>

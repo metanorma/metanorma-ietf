@@ -27,8 +27,8 @@ RSpec.describe Metanorma::Ietf::Transformer do
   end
 
   it "renders a ul inside an admonition" do
-    pending "MODEL GAP: AdmonitionBlock maps no ul/ol/dl until the " \
-            "metanorma-document release carries the #297 mappings"
+    # was pending: AdmonitionBlock mapped no ul/ol/dl (#297); the
+    # mappings ship in metanorma-document 0.5.13
     result = convert_fragment(<<~BODY)
       <admonition type="caution"><p>careful</p><ul><li>ad li</li></ul></admonition>
     BODY
@@ -39,8 +39,8 @@ RSpec.describe Metanorma::Ietf::Transformer do
   end
 
   it "renders sourcecode inside a note" do
-    pending "MODEL GAP: NoteBlock maps no sourcecode until the " \
-            "metanorma-document release carries the #297 mappings"
+    # was pending: NoteBlock mapped no sourcecode (#297); the mapping
+    # ships in metanorma-document 0.5.13
     result = convert_fragment(<<~BODY)
       <note id="note1"><p>note lead</p><sourcecode>note_code</sourcecode></note>
     BODY
@@ -52,8 +52,8 @@ RSpec.describe Metanorma::Ietf::Transformer do
   end
 
   it "renders a note inside an example" do
-    pending "MODEL GAP: ExampleBlock maps no note until the " \
-            "metanorma-document release carries the #297 mappings"
+    # was pending: ExampleBlock mapped no note (#297); the mapping
+    # ships in metanorma-document 0.5.13
     result = convert_fragment(<<~BODY)
       <example id="ex1"><p>example body</p>
       <note id="inner"><p>example note text</p></note></example>
