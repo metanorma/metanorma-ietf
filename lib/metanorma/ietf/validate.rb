@@ -77,6 +77,10 @@ module Metanorma
         end
       end
 
+      def record_preptool_warning(msg)
+        @log.add("IETF_23", nil, params: [msg])
+      end
+
       # idnits3 FILENAME_DOCNAME_MISMATCH / FILENAME_TOO_MANY_DOTS
       # apply to the submitted file, which Datatracker requires to be
       # named after the draft; our build artifact keeps the source

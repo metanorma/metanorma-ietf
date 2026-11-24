@@ -1,4 +1,5 @@
 require "metanorma/processor"
+require "open3"
 require "tempfile"
 require "fileutils"
 require_relative "transformer"
@@ -139,7 +140,24 @@ module Metanorma
         outflag = { txt: "--text", pdf: "--pdf", html: "--html" }[format]
 
         outname ||= inname.sub(/\.xml$/, outext)
-        system("xml2rfc", outflag, rfcname, "-o", outname)
+        _out, err, status = Open3.capture3("xml2rfc", outflag, rfcname,
+                                           "-o", outname)
+        warn err unless err.empty?
+        record_preptool_warnings(err, rfcname)
+        status.success?
+      end
+
+      # xml2rfc's preptool runs its 5.4.x submission checklist on every
+      # txt/pdf/html rendering and prints warnings; the raw pass-through
+      # stays on stderr, and the findings also land in the flavor log so
+      # the validation report stops being silent about the reference
+      # toolchain's opinion (metanorma-ietf#366)
+      def record_preptool_warnings(err, rfcname)
+        return unless @rfc_validator
+        err.scan(/warning:\s*(.+)$/i).each do |(msg)|
+          @rfc_validator.record_preptool_warning(msg.strip)
+        end
+        @rfc_validator.write(rfcname) if @rfc_validator.entries?
       end
     end
   end
