@@ -181,8 +181,18 @@ module Metanorma
           return nil unless node
 
           order = node.respond_to?(:element_order) ? node.element_order : nil
-          return ls_text(node) unless order&.any?
+          if order&.any?
+            joined = flatten_ordered_text(node, order)
+            # the order walk can come up empty when this vintage
+            # carries the text runs outside the element order (the
+            # pipeline's lutaml config changes the shape) - fall back
+            # to the node's own text (#292/#296)
+            return joined unless joined.gsub(/[[:space:] ]/, "").empty?
+          end
+          ls_text(node)
+        end
 
+        def flatten_ordered_text(node, order)
           counters = Hash.new(0)
           order.map do |e|
             if e.text?
