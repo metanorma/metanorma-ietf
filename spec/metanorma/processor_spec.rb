@@ -165,3 +165,56 @@ RSpec.describe Metanorma::Ietf::Processor do
     end
   end
 end
+
+RSpec.describe Metanorma::Ietf::Processor, "preptool warnings" do
+  before do
+    @processor = Metanorma::Ietf::Processor.new
+  end
+
+  it "records xml2rfc warnings in the log" do
+    v = Metanorma::Ietf::RfcValidate.new
+    @processor.instance_variable_set(:@rfc_validator, v)
+    @processor.record_preptool_warnings(
+      "probe.rfc.xml(20): Warning: Duplicate xsd:ID attribute anchor=\"dup\" found.\n" \
+      "  WARNING:  legacy uppercase form\n", "probe.rfc.xml",
+    )
+    expect(v.entries?).to be true
+    report = v.write("preptool.rfc.xml")
+    text = File.read(report).gsub(/<[^>]+>/, " ")
+    expect(text).to include("xml2rfc preptool warning: Duplicate")
+      .and include("xml2rfc preptool warning: legacy uppercase form")
+    FileUtils.rm_f(report)
+  end
+
+  # the txt lane wires the validator through the xml2rfc run; a clean
+  # document renders without raising through the capture path
+  it "renders the txt lane with the validator wired", :if => system("sh", "-c", "command -v xml2rfc >/dev/null") do
+    sem = <<~INPUT
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic">
+      <bibdata type="standard">
+      <title language="en" type="main">T</title>
+      <contributor><role type="author"/><person>
+      <name><forename>A</forename><initial>A.</initial><surname>U</surname></name>
+      </person></contributor>
+      <language>en</language><script>Latn</script>
+      <series type="stream"><title>independent</title></series>
+      <date type="published"><on>2026-11-24</on></date>
+      <copyright><from>2026</from><owner>
+      <organization><name>Internet Engineering Task Force</name></organization>
+      </owner></copyright>
+      <ext><doctype>internet-draft</doctype></ext>
+      </bibdata>
+      <preface><abstract id="ab1"><p>Abstract.</p></abstract></preface>
+      <sections>
+      <clause id="c1"><title>Body</title>
+      <p id="p1">Text.</p>
+      </clause>
+      </sections>
+      </metanorma>
+    INPUT
+    FileUtils.rm_f ["pt.rfc.xml", "pt.rfc.xml.err", "pt.rfc.err.html", "pt.txt"]
+    @processor.output(sem, "pt.xml", "pt.txt", :txt)
+    expect(File.exist?("pt.txt")).to be true
+    FileUtils.rm_f ["pt.rfc.xml", "pt.rfc.xml.err", "pt.rfc.err.html", "pt.txt"]
+  end
+end

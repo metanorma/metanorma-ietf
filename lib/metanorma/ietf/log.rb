@@ -100,6 +100,9 @@ module Metanorma
                      error: "unknown document attribute :%s: (did you " \
                        "mean :%s:?)",
                      severity: 2 },
+        "IETF_23": { category: "RFC XML text output",
+                     error: "xml2rfc preptool warning: %s",
+                     severity: 2 },
         "IETF_21": { category: "RFC XML submission",
                      error: "The IETF submission check expects the " \
                        "submitted file to be named %s.xml; rename the " \
