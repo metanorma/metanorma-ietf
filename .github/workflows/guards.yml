@@ -38,5 +38,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
       - name: Diff the bundled v3.rng against xml2rfc's grammar
         run: bundle exec rake guards:schema_sync
