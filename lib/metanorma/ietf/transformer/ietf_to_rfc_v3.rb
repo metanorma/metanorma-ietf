@@ -211,8 +211,12 @@ module Metanorma
           if order&.any?
             build_interleaved_content(name, name_node, order)
           else
+            # no element_order (raw-semantic parses): own text plus
+            # any mapped inline children - ls_text alone dropped them
+            # (#292 figure-caption xref)
             text = ls_text(name_node)
             name.content = [text] if text && !text.empty?
+            build_nested_inline(name, name_node)
           end
           text_empty = to_array(name.content).join.strip.empty?
           has_inlines = %i[bcp14 cref em eref iref relref strong sub
@@ -290,7 +294,7 @@ module Metanorma
               to_array(model.public_send(tag))[idx]
             next unless child
 
-            if SIMPLE_INLINE_TAGS.include?(tag)
+            if SIMPLE_INLINE_TAGS.include?(tag) && elem.respond_to?(tag)
               built = build_simple_inline_model(child, tag)
               next unless built
 
@@ -298,7 +302,9 @@ module Metanorma
               track_element_order(elem, tag.to_sym, built)
               built_children += 1
             else
-              # no nested v3 home (link, xref inside em): keep the text
+              # no v3 home in this container (strong inside em, link
+              # inside em): keep the child's text - structure is
+              # unrepresentable, content is not (#292)
               text = flatten_inline_text(child)
               if text && !text.empty?
                 fragments << text

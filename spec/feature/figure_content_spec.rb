@@ -7,7 +7,8 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==".freeze
 
   it "folds subfigure content into the parent figure" do
-    pending "MODEL GAP (metanorma-document 0.2.9): subfigure fold inputs are parse-ghosted (metanorma-ietf#296/#303)"
+    # was pending: subfigure fold inputs were parse-ghosted (#296/#303);
+    # FigureBlock maps the subfigures now
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -25,7 +26,8 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   end
 
   it "carries the figure key definition list" do
-    pending "MODEL GAP (metanorma-document 0.2.9): the figure key dl does not survive ingest (metanorma-ietf#296)"
+    # was pending: the key dl did not survive ingest (#296); the walk
+    # folds it into the postamble now
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -115,10 +117,9 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   end
 
   it "carries intra-figure explanatory paragraphs" do
-    pending "MODEL GAP (metanorma-document 0.2.9): FigureBlock maps " \
-            "no p — intra-figure paragraphs are parse-ghosted " \
-            "(metanorma-ietf#296/#303 ledger, metanorma-document#46 " \
-            "family)."
+    # was pending: FigureBlock mapped no p (#296/#303 ledger); the
+    # fold carries pre-artwork paragraphs into the preamble and
+    # post-artwork ones into the postamble now
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
