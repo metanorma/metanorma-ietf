@@ -254,6 +254,9 @@ module Metanorma
             ol: to_array(model_attr(note_node, :ol)),
             formula: to_array(model_attr(note_node, :formula)),
             quote: to_array(model_attr(note_node, :quote)),
+            # #297: note sourcecode — the v3 aside admits no
+            # sourcecode element, so the listing renders text-at-minimum
+            sourcecode: to_array(model_attr(note_node, :sourcecode)),
           }
           if blocks.values.any? { |a| !a.empty? } && first
             label = Rfcxml::V3::Text.new
@@ -272,8 +275,21 @@ module Metanorma
             list = transform_ordered_list(ol)
             safe_append(aside, :ol, list) if list
           end
+          blocks[:sourcecode].each do |sc|
+            code = transform_sourcecode(sc)
+            next unless code
+
+            # the v3 aside admits no sourcecode element: the listing
+            # renders as its text content (#297)
+            t = Rfcxml::V3::Text.new
+            to_array(code.content).each do |line|
+              t.content = to_array(t.content) + [line.to_s]
+              track_text_order(t, line.to_s)
+            end
+            safe_append(aside, :t, t) unless to_array(t.content).empty?
+          end
           # #297: formula and quote are mapped on NoteBlock
-          # (sourcecode/figure/table are not — model gap)
+          # (figure/table are not — model gap)
           blocks[:formula].each do |f|
             Array(transform_formula(f)).each do |r|
               safe_append(aside, r.is_a?(Rfcxml::V3::Dl) ? :dl : :t, r)
@@ -375,9 +391,10 @@ module Metanorma
           "dl" => :dl,
           "table" => :table,
           # #297 additions: mapped on ExampleBlock ("list" is the
-          # legacy alias for ul; note has no mapping — model gap)
+          # legacy alias for ul; note rides the :notes collection)
           "formula" => :formula,
           "quote" => :quote,
+          "note" => :notes,
           "list" => :list,
         }.freeze
 
@@ -398,6 +415,7 @@ module Metanorma
           when :table then transform_table(child)
           when :formula then transform_formula(child)
           when :quote then transform_quote(child)
+          when :notes then transform_note(child, nil)
           when :list then transform_unordered_list(child)
           end
         end
@@ -414,6 +432,7 @@ module Metanorma
           when Rfcxml::V3::Dl then :dl
           when Rfcxml::V3::Table then :table
           when Rfcxml::V3::Blockquote then :blockquote
+          when Rfcxml::V3::Aside then :aside
           else :t
           end
         end
@@ -576,6 +595,19 @@ module Metanorma
           get_paragraphs(admon_node).each do |p|
             t = transform_paragraph(p)
             safe_append(aside, :t, t) if t
+          end
+
+          # #297: admonition list bodies render like note list bodies
+          # (the v3 aside admits ul/ol/dl)
+          {
+            dl: :transform_definition_list,
+            ul: :transform_unordered_list,
+            ol: :transform_ordered_list,
+          }.each do |tag, renderer|
+            to_array(model_attr(admon_node, tag)).each do |child|
+              rendered = public_send(renderer, child)
+              safe_append(aside, tag, rendered) if rendered
+            end
           end
 
           aside
