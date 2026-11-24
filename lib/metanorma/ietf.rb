@@ -4,6 +4,8 @@ require_relative "ietf/version"
 
 module Metanorma
   module Ietf
+    autoload :AttributesTable, "metanorma/ietf/attributes_table"
+    autoload :GrammarEnums, "metanorma/ietf/grammar_enums"
     autoload :Transformer, "metanorma/ietf/transformer"
 
     RFC2629DTD_URL = "https://raw.githubusercontent.com/metanorma/metanorma-ietf/master/rfc2629.dtd"

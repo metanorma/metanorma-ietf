@@ -69,6 +69,7 @@ module Metanorma
       end
 
       def metadata_series(node, xml)
+        scan_declared_attributes(node)
         xml.series **{ type: "stream" } do |s|
           # Asciidoctor downcases attribute names: :submissionType: lands
           # as "submissiontype", :submission-type: as "submission-type";
@@ -84,7 +85,20 @@ module Metanorma
       end
 
       def submission_type_attr(node)
-        node.attr("submission-type") || node.attr("submissiontype")
+        AttributesTable.resolve(node, "submission-type")
+      end
+
+      # Declared attributes that look like a misspelling of a flavor
+      # attribute surface here instead of being dropped silently (the
+      # raw-attribute pipe that caused metanorma-ietf#348); runs once
+      # per compile
+      def scan_declared_attributes(node)
+        @attribute_scan_done and return
+        @attribute_scan_done = true
+        return unless @log
+        AttributesTable.scan(node).each do |declared, canonical|
+          @log.add("IETF_22", nil, params: [declared, canonical])
+        end
       end
 
       def title_fallback(node, xml)

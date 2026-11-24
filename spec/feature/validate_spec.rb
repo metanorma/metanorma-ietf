@@ -630,7 +630,7 @@ RSpec.describe "IETF RFC XML validation (WS3)" do
       expect(fatal.join("\n"))
         .to match(/Unknown submissionType \(stream\) on <rfc> element/)
       expect(fatal.join("\n"))
-        .to include("IETF, IAB, IRTF, independent, editorial")
+        .to include("IAB, IETF, IRTF, editorial, independent")
     end
 
     it "aborts a category that the stream does not carry" do

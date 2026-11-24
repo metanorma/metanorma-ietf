@@ -106,7 +106,7 @@ RSpec.describe "submission type attribute spellings" do
       expect(fatal.join("\n"))
         .to match(/Unknown submissionType \(stream\) on <rfc> element/)
       expect(fatal.join("\n"))
-        .to include("IETF, IAB, IRTF, independent, editorial")
+        .to include("IAB, IETF, IRTF, editorial, independent")
     end
   end
 end
