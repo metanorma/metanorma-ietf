@@ -130,13 +130,26 @@ module Metanorma
             src_t = transform_term_sources(src_models)
             if src_t
               postamble = figure.postamble || Rfcxml::V3::Postamble.new
-              to_array(src_t.content).each do |s|
-                postamble.content = to_array(postamble.content) + [s]
-                track_text_order(postamble, s)
-              end
-              to_array(src_t.xref).each do |x|
-                safe_append(postamble, :xref, x)
-                track_element_order(postamble, :xref, x)
+              # mirror the bracket from the term-source Text's tracked
+              # element order in source order (not its content array -
+              # under the orderable serialisation the content read-back
+              # loses the interleaving)
+              counters = Hash.new(0)
+              to_array(src_t.element_order).each do |e|
+                if e.text?
+                  postamble.content = to_array(postamble.content) + [e.text_content]
+                  track_text_order(postamble, e.text_content)
+                else
+                  tag = e.element_tag
+                  idx = counters[tag]
+                  counters[tag] += 1
+                  child = src_t.respond_to?(tag) &&
+                    to_array(src_t.public_send(tag))[idx]
+                  next unless child.is_a?(Rfcxml::V3::Xref)
+
+                  safe_append(postamble, :xref, child)
+                  track_element_order(postamble, :xref, child)
+                end
               end
               figure.postamble = postamble
             end
