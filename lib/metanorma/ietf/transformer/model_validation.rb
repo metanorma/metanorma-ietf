@@ -11,7 +11,12 @@ module Metanorma
       # findings; they are returned as catalog-id/params pairs for
       # Validate to record through the metanorma log.
       module ModelValidation
-        RFC7841_STREAMS = %w(IETF IAB IRTF independent editorial).freeze
+        # the grammar is the SSOT for the stream enum (generated into
+        # GrammarEnums by rake attributes:generate, synced with
+        # xml2rfc's grammar by the guards:schema_sync CI job)
+        RFC7841_STREAMS =
+          Metanorma::Ietf::GrammarEnums::ENUMS.dig("rfc", "submissionType")
+            .freeze
 
         # RFC 7841 s2: the category each stream may carry; source of
         # truth is the xml2rfc boilerplate_rfc_7841.py

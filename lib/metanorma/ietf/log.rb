@@ -96,6 +96,10 @@ module Metanorma
                        "xml2rfc's text output does not align; use " \
                        "spaces",
                      severity: 2 },
+        "IETF_22": { category: "Document Attributes",
+                     error: "unknown document attribute :%s: (did you " \
+                       "mean :%s:?)",
+                     severity: 2 },
         "IETF_21": { category: "RFC XML submission",
                      error: "The IETF submission check expects the " \
                        "submitted file to be named %s.xml; rename the " \
