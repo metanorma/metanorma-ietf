@@ -44,10 +44,8 @@ RSpec.describe "IETF footnote content (#293)" do
   end
 
   it "carries a non-paragraph footnote body" do
-    pending "MODEL GAP (metanorma-document 0.2.9): FnElement maps " \
-            "only p — a list-bodied footnote is parse-ghosted, content " \
-            "included (metanorma-ietf#293, metanorma-document#46 " \
-            "family). Re-test on the model upgrade."
+    # was pending: FnElement mapped only p (#293); the model maps
+    # ul/ol/table now and the endnote section renders them
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>

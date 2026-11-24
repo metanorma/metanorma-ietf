@@ -791,14 +791,27 @@ module Metanorma
           # flatten_inline_text (not the p's own text runs): a
           # footnote's inline markup lost even its TEXT (#293). The
           # paragraph id rides along so xrefs to the footnote body
-          # resolve to the endnote. (A non-paragraph fn body — a bare
-          # ul — is a 0.2.9 parse ghost: FnElement maps only p.)
+          # resolve to the endnote.
           entries = to_array(fn_elem.p).map do |p|
             text = flatten_inline_text(p)
             next if text.nil? || text.strip.empty?
 
             { text: text.strip, anchor: anchor_for(p) }
           end.compact
+
+          # non-paragraph fn bodies (ul/ol/table — mapped since the
+          # 0.2.9 ledger) render like their clause counterparts
+          # (#293 item 2)
+          {
+            "ul" => :transform_unordered_list,
+            "ol" => :transform_ordered_list,
+            "table" => :transform_table,
+          }.each do |tag, renderer|
+            to_array(model_attr(fn_elem, tag)).each do |node|
+              rendered = public_send(renderer, node)
+              entries << { block: rendered } if rendered
+            end
+          end
 
           @collected_footnotes[num] = entries if entries.any?
         end

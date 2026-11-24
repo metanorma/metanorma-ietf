@@ -256,6 +256,11 @@ module Metanorma
 
           @collected_footnotes.keys.sort.each do |num|
             @collected_footnotes[num].each do |entry|
+              if entry[:block]
+                append_ordered(section, example_result_tag(entry[:block]),
+                               entry[:block])
+                next
+              end
               t = Rfcxml::V3::Text.new
               # the body paragraph's id (#293): xrefs into the
               # footnote body resolve to its endnote
