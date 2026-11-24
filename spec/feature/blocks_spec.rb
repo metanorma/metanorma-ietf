@@ -1193,9 +1193,9 @@ RSpec.describe "IETF block rendering (WS3)" do
         <middle>
           <section anchor="blockclause">
             <name>Blocks</name>
-            <figure anchor="_">
-              <name>Label</name>
-            </figure>
+            <sourcecode anchor="_" name="Label">    A
+              B
+          C</sourcecode>
           </section>
         </middle>
         <back/>
@@ -1206,10 +1206,6 @@ RSpec.describe "IETF block rendering (WS3)" do
   end
 
   it "renders pseudocode figure content" do
-    pending "MODEL GAP (metanorma-document 0.2.9): FigureBlock maps " \
-            "neither p nor sourcecode, so pseudocode content cannot " \
-            "reach the transformer (metanorma-ietf#303, " \
-            "metanorma-document#46). Re-test on the model upgrade."
     input = <<~INPUT
       <itu-standard xmlns="https://www.metanorma.org/ns/standoc">
               <sections><clause id="blockclause"><title>Blocks</title>
