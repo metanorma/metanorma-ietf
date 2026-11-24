@@ -112,7 +112,7 @@ RSpec.describe "IETF table rendering (WS3)" do
           <section anchor="tabclause">
             <name>Tables</name>
             <table align="right" anchor="tableD-1">
-              <name>Repeatability and reproducibility of  rice yield</name>
+              <name>Repeatability and reproducibility of <em>husked</em> rice yield</name>
               <thead>
                 <tr>
                   <th rowspan="2" align="left">Description</th>

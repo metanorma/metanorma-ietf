@@ -69,11 +69,6 @@ RSpec.describe "IETF front matter (#298)" do
   end
 
   it "prefers the authored singular initial element" do
-    pending "MODEL GAP (metanorma-document 0.2.9): FullName maps only " \
-            "the plural <initials>; the singular <initial> the standoc " \
-            "converter emits is parse-ghosted (metanorma-ietf#298, " \
-            "metanorma-document#46 family). The precedence code is in " \
-            "place — re-test on the model upgrade."
     input = hdr_with(bibdata_insert: <<~B) + BODY
       <contributor><role type="author"/>
       <person><name>

@@ -38,6 +38,26 @@ RSpec.describe Metanorma::Ietf::Transformer do
     expect(result).to include("tail")
   end
 
+  it "carries a cross-reference inside a figure caption" do
+    result = convert_fragment(<<~BODY)
+      <figure id="f2"><name>see <xref target="other"/></name>
+      <image src="m.png"/></figure>
+    BODY
+
+    # v3 <name> legally carries inline elements; the structure survives
+    expect(result).to include(%q(<name>see <xref target="other"/></name>))
+  end
+
+  it "keeps the text of a cross-reference inside strike" do
+    result = convert_fragment(
+      '<p>keep <strike>cut <xref target="other">Section 2</xref> ' \
+      'here</strike> end</p>',
+    )
+
+    # strike has no v3 home: text-at-minimum, descendant text included
+    expect(result).to include("cut Section 2 here")
+  end
+
   it "carries link content inside a dt" do
     result = convert_fragment(
       '<dl><dt><link target="https://example.com">site</link> name</dt>'\

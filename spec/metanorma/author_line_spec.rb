@@ -52,7 +52,10 @@ RSpec.describe "AsciiDoc author line" do
     let(:author_line) { "Jane Roe <jane@roe.example>" }
 
     it "emits the author into the front matter" do
-      expect(rfc_xml).to include('<author initials="J." surname="Roe"')
+      # the presentation stage derives the initials from the full
+      # name ("JR" from Jane Roe); pre-0.5.13 parses dropped the
+      # singular <initial> and fell back to the forename initial
+      expect(rfc_xml).to include('<author initials="JR" surname="Roe"')
       expect(rfc_xml).to include("jane@roe.example")
     end
 

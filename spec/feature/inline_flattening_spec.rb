@@ -43,11 +43,6 @@ RSpec.describe "IETF inline content preservation (#292)" do
   end
 
   it "carries an xref inside a figure caption" do
-    pending "MODEL GAP (metanorma-document 0.2.9): NameWithIdElement " \
-            "maps no inline children — an xref inside a figure/table " \
-            "caption is parse-ghosted, content included " \
-            "(metanorma-ietf#292, metanorma-document#46 family). The " \
-            "name builder carries mapped inlines — re-test on upgrade."
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -78,10 +73,6 @@ RSpec.describe "IETF inline content preservation (#292)" do
   end
 
   it "keeps the text of an xref nested in a dropped inline (strike)" do
-    pending "MODEL GAP (metanorma-document 0.2.9): StrikeElement maps " \
-            "em/strong/eref/link but NOT xref — a nested xref is " \
-            "parse-ghosted, content included (metanorma-ietf#292, " \
-            "metanorma-document#46 family). Re-test on upgrade."
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
