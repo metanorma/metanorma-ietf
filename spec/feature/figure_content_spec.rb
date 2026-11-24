@@ -83,10 +83,10 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   end
 
   it "carries the figure [SOURCE:] attribution" do
-    pending "MODEL GAP (metanorma-document 0.2.9): FigureBlock maps " \
+    pending "MODEL GAP (metanorma-document 0.5.12): FigureBlock maps " \
             "the source ATTRIBUTE only — the <source> citation element " \
-            "(and its fmt-source rendering) is parse-ghosted " \
-            "(metanorma-ietf#296, metanorma-document#46 family)."
+            "is parse-ghosted; the mapping ships in metanorma-document " \
+            "#143 (metanorma-ietf#296 item 3)."
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -97,14 +97,13 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
       </metanorma>
     INPUT
     out = strip_guid(feature_convert(input))
-    expect(out).to match(/SOURCE.*ISO\s*712/m)
+    expect(out).to match(%r{\[SOURCE: <xref target="ISO712"/>\]})
   end
 
   it "carries sourcecode src" do
-    pending "MODEL GAP (metanorma-document 0.2.9): SourcecodeBlock " \
-            "maps no src attribute — sourcecode src= is parse-ghosted " \
-            "(metanorma-ietf#296, metanorma-document#46 family); " \
-            "rfcxml's v3 Sourcecode maps src and is ready for it."
+    pending "MODEL GAP (metanorma-document 0.5.12): SourcecodeBlock " \
+            "maps no src attribute; the mapping ships in " \
+            "metanorma-document #143 (metanorma-ietf#296 item 4)."
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
@@ -135,9 +134,9 @@ RSpec.describe "IETF figure and image content (#296, #305)" do
   end
 
   it "renders a clause-level pre as ascii-art artwork" do
-    pending "MODEL GAP (metanorma-document 0.2.9): sections map no " \
-            "pre — a clause-level literal block is parse-ghosted " \
-            "(metanorma-ietf#296, metanorma-document#46 family)."
+    # was pending: sections mapped no pre (#296); the literal_blocks
+    # mapping ships in metanorma-standoc and the transformer renders
+    # the block as ascii-art artwork
     input = <<~INPUT
       #{BLANK_HDR}
       <sections><clause id="c1"><title>Body</title>
