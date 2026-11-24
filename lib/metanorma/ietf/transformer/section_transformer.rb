@@ -479,6 +479,15 @@ module Metanorma
                 aside = transform_admonition(admonitions[idx])
                 append_ordered(section, :aside, aside) if aside
               end
+            when "pre"
+              # clause-level literal blocks render as ascii-art
+              # artwork (#296 item 7; the model mapping ships in
+              # metanorma-standoc)
+              pres = to_array(model_attr(clause, :literal_blocks))
+              if pres[idx]
+                artwork = transform_pre_to_artwork(pres[idx])
+                append_ordered(section, :artwork, artwork) if artwork
+              end
             end
           end
         end
@@ -523,6 +532,11 @@ module Metanorma
           to_array(model_attr(clause, :quote_blocks)).each do |q|
             bq = transform_quote(q)
             append_ordered(section, :blockquote, bq) if bq
+          end
+
+          to_array(model_attr(clause, :literal_blocks)).each do |pre|
+            artwork = transform_pre_to_artwork(pre)
+            append_ordered(section, :artwork, artwork) if artwork
           end
 
           to_array(clause.admonitions).each do |admon|

@@ -24,6 +24,10 @@ module Metanorma
           src_order = figure_node.element_order
           if src_order && src_order.any?
             counters = Hash.new(0)
+            # pre-artwork paragraphs fold into the preamble,
+            # post-artwork ones into the postamble (#296 item 2) —
+            # the figure element admits no bare <t>
+            seen_art = false
             src_order.each do |e|
               next if e.text?
               tag = e.element_tag
@@ -31,71 +35,147 @@ module Metanorma
               counters[tag] += 1
               case tag
               when "image"
+                next unless figure_node.respond_to?(:image)
                 img = to_array(figure_node.image || [])[idx]
                 if img
                   artwork = transform_image_to_artwork(img)
                   safe_append(figure, :artwork, artwork) if artwork
+                  seen_art = true if artwork
                 end
               when "pre"
+                next unless figure_node.respond_to?(:pre)
                 pre_node = to_array(figure_node.pre || [])[idx]
                 if pre_node
                   artwork = transform_pre_to_artwork(pre_node)
                   safe_append(figure, :artwork, artwork) if artwork
+                  seen_art = true if artwork
                 end
               when "sourcecode"
-                sourcecodes = to_array(model_attr(figure_node,
-                                                  :sourcecode_blocks) || [])
-                if sourcecodes[idx]
-                  src = transform_sourcecode(sourcecodes[idx])
+                # 0.5.12 maps figure sourcecode as :sourcecode;
+                # :sourcecode_blocks is the older vintage
+                scs = to_array(model_attr(figure_node, :sourcecode) || [])
+                scs = to_array(model_attr(figure_node,
+                                          :sourcecode_blocks) || []) if scs.empty?
+                if (sc = scs[idx])
+                  src = transform_sourcecode(sc)
                   safe_append(figure, :sourcecode, src) if src
+                  seen_art = true if src
                 end
               # subfigures were dropped outright (#296): the walk had
               # no figure branch though the model maps it
               when "figure"
-                sub = to_array(model_attr(figure_node, :figure) || [])[idx]
+                next unless figure_node.respond_to?(:figure)
+                sub = to_array(figure_node.figure || [])[idx]
                 append_subfigure_content(figure, sub) if sub
+                seen_art = true if sub
               # the figure key <dl> was dropped outright (#296)
               when "dl"
-                dl_node = to_array(model_attr(figure_node, :dl) || [])[idx]
+                next unless figure_node.respond_to?(:dl)
+                dl_node = to_array(figure_node.dl || [])[idx]
                 append_figure_key(figure, dl_node) if dl_node
+              # the figure surroundings (#296 item 2): pre/post-artwork
+              # paragraphs render in source order like the tables'
+              # surroundings machinery
+              when "p"
+                next unless figure_node.respond_to?(:p)
+                paras = to_array(figure_node.p || [])[idx]
+                build_figure_surrounding(figure, paras, seen_art) if paras
               when "key"
-                k = to_array(model_attr(figure_node, :key) || [])[idx]
+                next unless figure_node.respond_to?(:key)
+                k = to_array(figure_node.key || [])[idx]
                 k && to_array(model_attr(k, :dl)).each do |d|
                   append_figure_key(figure, d)
                 end
               end
             end
           else
-            # Fallback without element_order
-            to_array(figure_node.image || []).each do |img|
+            # Fallback without element_order (raw-semantic parses carry
+            # no element_order): canonical authoring order - paragraphs,
+            # subfigures, art, sourcecode, key (#296 items 1 and 2: the
+            # old fallback carried images only). model_attr throughout:
+            # Subfigure maps a strict subset of FigureBlock, and a raw
+            # read on an unmapped accessor raises.
+            to_array(model_attr(figure_node, :p)).each do |para|
+              build_figure_surrounding(figure, para, false)
+            end
+            to_array(model_attr(figure_node, :figure)).each do |sub|
+              append_subfigure_content(figure, sub)
+            end
+            to_array(model_attr(figure_node, :image)).each do |img|
               artwork = transform_image_to_artwork(img)
               safe_append(figure, :artwork, artwork) if artwork
             end
-
-            to_array(figure_node.pre || []).each do |pre_node|
+            to_array(model_attr(figure_node, :pre)).each do |pre_node|
               artwork = transform_pre_to_artwork(pre_node)
               safe_append(figure, :artwork, artwork) if artwork
+            end
+            scs = to_array(model_attr(figure_node, :sourcecode))
+            scs += to_array(model_attr(figure_node, :sourcecode_blocks))
+            scs.each do |sc|
+              src = transform_sourcecode(sc)
+              safe_append(figure, :sourcecode, src) if src
+            end
+            to_array(model_attr(figure_node, :dl)).each do |dl_node|
+              append_figure_key(figure, dl_node)
             end
           end
 
           # Figure source/citation (model_attr: a Subfigure model has
-          # no source accessor — #296 crash)
-          sources = model_attr(figure_node, :source)
-          if sources
-            sources = [sources] unless sources.is_a?(Array)
-            sources.each do |src|
-              src_text = format_figure_source(src)
-              if src_text && !src_text.empty?
-                postamble = figure.postamble || Rfcxml::V3::Postamble.new
-                t = Rfcxml::V3::Text.new
-                t.content = ["[SOURCE: #{src_text}]"]
-                safe_append(postamble, :t, t)
-                figure.postamble = postamble
+          # no source accessor — #296 crash). v3 figure admits no
+          # bare <t>: the [SOURCE:] bracket rides the postamble
+          # (#296 item 3). The <source> elements are mapped as
+          # :sources (SourceElement); @source stays a string attr.
+          src_models = to_array(model_attr(figure_node, :sources))
+          if src_models.any?
+            src_t = transform_term_sources(src_models)
+            if src_t
+              postamble = figure.postamble || Rfcxml::V3::Postamble.new
+              to_array(src_t.content).each do |s|
+                postamble.content = to_array(postamble.content) + [s]
               end
+              to_array(src_t.xref).each do |x|
+                safe_append(postamble, :xref, x)
+              end
+              figure.postamble = postamble
             end
+          elsif (legacy = model_attr(figure_node, :source)) &&
+              !legacy.to_s.strip.empty?
+            postamble = figure.postamble || Rfcxml::V3::Postamble.new
+            postamble.content = to_array(postamble.content) +
+              ["[SOURCE: #{legacy}]"]
+            figure.postamble = postamble
           end
 
           figure
+        end
+
+        # figure-adjacent paragraphs have no v3 home as bare <t>: they
+        # fold into the preamble (before art) or postamble (after) as
+        # interleaved inline content (#296 item 2)
+        def build_figure_surrounding(figure, p_node, seen_art)
+          if seen_art
+            holder = figure.postamble || Rfcxml::V3::Postamble.new
+            fill_figure_surrounding(holder, p_node)
+            figure.postamble = holder
+          else
+            holder = figure.preamble || Rfcxml::V3::Preamble.new
+            fill_figure_surrounding(holder, p_node)
+            figure.preamble = holder
+          end
+        end
+
+        def fill_figure_surrounding(holder, p_node)
+          order = p_node.respond_to?(:element_order) ? p_node.element_order : nil
+          if order && order.any?
+            prev = to_array(holder.content)
+            build_interleaved_content(holder, p_node, order)
+            # interleaved content overwrites the text fragments; the
+            # inline children ride safe_append, so merge the texts
+            holder.content = prev + to_array(holder.content)
+          else
+            text = extract_paragraph_text(p_node)
+            holder.content = to_array(holder.content) + [text] if text && !text.empty?
+          end
         end
 
         # v3 figure admits no nested figure: fold a subfigure's
@@ -302,14 +382,6 @@ module Metanorma
           asides
         end
 
-        def format_figure_source(source)
-          return nil unless source
-          if source.is_a?(String)
-            source
-          else
-            ls_text(source)
-          end
-        end
       end
     end
   end
