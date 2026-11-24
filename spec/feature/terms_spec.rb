@@ -174,3 +174,36 @@ RSpec.describe "IETF terms rendering (WS3)" do
       .to be_xml_equivalent_to output
   end
 end
+
+# metanorma-ietf#300: consecutive sources merge into one bracket with
+# live xrefs, and the modification note renders regardless of status
+# (the modification text lives in SourceModification paragraphs, whose
+# wrapper model carries no text runs)
+RSpec.describe "term sources merge and modification" do
+  it "merges consecutive sources with live xrefs and the modification" do
+    input = <<~INPUT
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc">
+      <sections><terms id="t1" obligation="normative"><title>Terms</title>
+      <term id="tm1">
+      <preferred><expression><name>time-stamp</name></expression></preferred>
+      <definition><verbalexpression><p>proof of time.</p></verbalexpression></definition>
+      <source status="adapted">
+      <origin bibitemid="ISO712" type="inline" citeas="ISO 712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
+      <modification><p>specialised for this application</p></modification>
+      </source>
+      <source status="identical">
+      <origin bibitemid="RFC2119" type="inline" citeas="RFC 2119"></origin>
+      </source>
+      </term>
+      </terms></sections>
+      </metanorma>
+    INPUT
+    out = strip_guid(feature_convert(input))
+    sources = out.lines.grep(/SOURCE/)
+    expect(sources.size).to eq(1)
+    expect(out).not_to include("&lt;xref")
+    expect(out).to include("<xref")
+    expect(sources.join).to include("adapted")
+    expect(sources.join).to include("specialised for this application")
+  end
+end

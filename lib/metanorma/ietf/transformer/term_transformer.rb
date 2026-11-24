@@ -285,12 +285,20 @@ module Metanorma
           # (#300): the released path did not gate it on "modified"
           mod = model_attr(source, :modification)
           if mod
-            # mixed_text: the modification is a mixed-content
-            # paragraph; ls_text saw only its (empty) string runs
-            mod_text = mixed_text(mod)
-            if mod_text && !mod_text.empty?
-              append_text.call(" \u2014 #{mod_text}")
+            # mixed_text: the modification carries its text in
+            # paragraphs (SourceModification maps p); the wrapper
+            # model's own text runs are empty (#300)
+            mod_text = if mod.respond_to?(:p) && mod.p.to_a.any?
+              mod.p.to_a.filter_map { |para|
+                mt = mixed_text(para)
+                mt unless mt.to_s.empty?
+              }.join(" ")
+            else
+              mt = mixed_text(mod)
+              mt.to_s.empty? ? nil : mt
             end
+            append_text.call(" \u2014 #{mod_text}") if mod_text &&
+              !mod_text.empty?
           end
         end
 
