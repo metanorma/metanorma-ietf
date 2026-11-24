@@ -132,17 +132,20 @@ module Metanorma
               postamble = figure.postamble || Rfcxml::V3::Postamble.new
               to_array(src_t.content).each do |s|
                 postamble.content = to_array(postamble.content) + [s]
+                track_text_order(postamble, s)
               end
               to_array(src_t.xref).each do |x|
                 safe_append(postamble, :xref, x)
+                track_element_order(postamble, :xref, x)
               end
               figure.postamble = postamble
             end
           elsif (legacy = model_attr(figure_node, :source)) &&
               !legacy.to_s.strip.empty?
             postamble = figure.postamble || Rfcxml::V3::Postamble.new
-            postamble.content = to_array(postamble.content) +
-              ["[SOURCE: #{legacy}]"]
+            bracket = "[SOURCE: #{legacy}]"
+            postamble.content = to_array(postamble.content) + [bracket]
+            track_text_order(postamble, bracket)
             figure.postamble = postamble
           end
 
@@ -174,7 +177,10 @@ module Metanorma
             holder.content = prev + to_array(holder.content)
           else
             text = extract_paragraph_text(p_node)
-            holder.content = to_array(holder.content) + [text] if text && !text.empty?
+            return if text.nil? || text.empty?
+
+            holder.content = to_array(holder.content) + [text]
+            track_text_order(holder, text)
           end
         end
 
@@ -207,7 +213,11 @@ module Metanorma
         end
 
         # v3 figure admits no dl: the key flattens into the postamble
-        # as "term: definition" lines — text-at-minimum (#296)
+        # as "term: definition" lines — text-at-minimum (#296). The
+        # lines must ride the postamble's tracked element order too:
+        # under the orderable serialisation an untracked write is
+        # dropped (the orderless vintage serialises from content, the
+        # orderable one from the tracked order)
         def append_figure_key(figure, dl_node)
           dts = to_array(model_attr(dl_node, :dt))
           dds = to_array(model_attr(dl_node, :dd))
@@ -222,7 +232,10 @@ module Metanorma
           return if lines.empty?
 
           postamble = figure.postamble || Rfcxml::V3::Postamble.new
-          postamble.content = to_array(postamble.content) + lines
+          lines.each do |line|
+            postamble.content = to_array(postamble.content) + [line]
+            track_text_order(postamble, line)
+          end
           figure.postamble = postamble
         end
 
