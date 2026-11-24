@@ -160,6 +160,12 @@ module Metanorma
           sourcecode = Rfcxml::V3::Sourcecode.new
           anchor_for(figure_node) and
             sourcecode.anchor = to_ncname(anchor_for(figure_node))
+          # the caption travels with the pseudocode as flat text
+          # (#303: the old bare sourcecode dropped the figure's name;
+          # sourcecode/name is a string attribute, unlike figure/name)
+          cap = ls_text(figure_node.name)
+          cap = cap.tr("\u00A0", " ") if cap
+          sourcecode.name = cap if cap && !cap.strip.empty?
           sourcecode.content = [lines.join("\n")]
           sourcecode
         end

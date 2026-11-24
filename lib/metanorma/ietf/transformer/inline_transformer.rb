@@ -7,11 +7,16 @@ module Metanorma
 
         def extract_paragraph_text(paragraph)
           text = paragraph.text
-          if text && !Array(text).empty?
-            text.is_a?(Array) ? text.join : text.to_s
-          else
-            ""
-          end
+          joined = text.is_a?(Array) ? text.join : text.to_s
+          # markup-carrying paragraphs hold their content in element
+          # children; the text runs carry only the whitespace between
+          # them (#303 - pseudocode paragraphs rendered empty). The
+          # presentation stage pads those runs with no-break spaces,
+          # which ASCII strip treats as content
+          return joined unless joined.gsub(/[[:space:]\u00A0]/, "").empty?
+          return "" unless paragraph.respond_to?(:each_mixed_content)
+
+          mixed_text(paragraph).tr("\u00A0", " ")
         end
 
         def build_eref_xref(elem)
