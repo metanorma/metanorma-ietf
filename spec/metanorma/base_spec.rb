@@ -26,7 +26,7 @@ RSpec.describe Metanorma::Ietf do
       :flush-caches: true
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
           <sections> </sections>
       </metanorma>
     OUTPUT
@@ -43,7 +43,7 @@ RSpec.describe Metanorma::Ietf do
       :novalid:
     INPUT
     output = <<~OUTPUT
-          #{BLANK_HDR}
+          #{BLANK_HDR_AUTHOR}
           <sections> </sections>
       </metanorma>
     OUTPUT
@@ -517,6 +517,15 @@ RSpec.describe Metanorma::Ietf do
                  <docidentifier primary="true">1000</docidentifier>
                  <docnumber>1000</docnumber>
                  <contributor>
+                   <role type='author'/>
+                   <person>
+                     <name>
+                       <forename>Author</forename>
+                       <initial>A</initial>
+                     </name>
+                   </person>
+                 </contributor>
+                 <contributor>
                    <role type='publisher'/>
                    <organization>
                      <name>IEC</name>
@@ -658,7 +667,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-       #{BLANK_HDR}
+       #{BLANK_HDR_AUTHOR}
         <sections>
           <clause id='_' numbered='true' removeInRFC='true' toc='true' inline-header='false' obligation='normative'>
             <title id="_">Clause</title>
@@ -699,7 +708,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
         <preface>
             <foreword id="_" obligation="informative">
                <title id="_">Foreword</title>

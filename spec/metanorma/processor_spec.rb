@@ -23,7 +23,7 @@ RSpec.describe Metanorma::Ietf::Processor do
 
   it "generates IsoDoc XML from a blank document" do
     output = <<~OUTPUT
-            #{BLANK_HDR}
+            #{BLANK_HDR_AUTHOR}
       <sections/>
       </metanorma>
     OUTPUT
@@ -118,7 +118,7 @@ RSpec.describe Metanorma::Ietf::Processor do
 
   it "quarantines invalid RFC XML to .err and halts (#302)" do
     semantic = <<~INPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
       <sections><clause id="c1"><title>Body</title>
       <p id="p1">See <xref target="nonexistent-anchor"/>.</p>
       </clause></sections>
@@ -136,7 +136,7 @@ RSpec.describe Metanorma::Ietf::Processor do
 
   it "escapes bare ampersands on the processor leg (#302)" do
     semantic = <<~INPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
       <preface><abstract id="ab1"><p>Abstract.</p></abstract></preface>
       <sections><clause id="c1"><title>Body</title>
       <p id="p1">Pilcrow entity &amp;para; end.</p>

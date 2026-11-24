@@ -10,7 +10,7 @@ RSpec.describe Metanorma::Ietf do
       Hello
     INPUT
     output = <<~OUTPUT
-       #{BLANK_HDR}
+       #{BLANK_HDR_AUTHOR}
       <sections>
       <p keep-with-next='true' keep-with-previous='true' indent='5' id='_'>Hello</p>
       </sections>
@@ -32,7 +32,7 @@ RSpec.describe Metanorma::Ietf do
       --
     INPUT
     output = <<~OUTPUT
-       #{BLANK_HDR}
+       #{BLANK_HDR_AUTHOR}
       <sections><p id="_">x</p>
       <p id="_">y</p>
       <p id="_">z</p></sections>
@@ -66,7 +66,8 @@ RSpec.describe Metanorma::Ietf do
             <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
              <bibdata type="standard">
                <title language="en" type="main">Document title</title>
-      <contributor>
+      <contributor><role type="author"/><person><name><forename>Author</forename><initial>A</initial></name></person></contributor>
+<contributor>
                    <role type='publisher'/>
                    <organization>
                      <name>Internet Engineering Task Force</name>
@@ -128,7 +129,7 @@ RSpec.describe Metanorma::Ietf do
       NOTE: This is a note
     INPUT
     output = <<~OUTPUT
-             #{BLANK_HDR}
+             #{BLANK_HDR_AUTHOR}
       <sections>
         <terms id="_" obligation="normative">
         <title id="_">Terms and definitions</title>
@@ -157,7 +158,7 @@ RSpec.describe Metanorma::Ietf do
       NOTE: This is a note
     INPUT
     output = <<~OUTPUT
-                    #{BLANK_HDR}
+                    #{BLANK_HDR_AUTHOR}
                     <sections>
         <terms id="_" obligation="normative">
         <title id="_">Terms and Definitions</title>
@@ -187,7 +188,7 @@ RSpec.describe Metanorma::Ietf do
       NOTE: This is a note
     INPUT
     output = <<~OUTPUT
-                    #{BLANK_HDR}
+                    #{BLANK_HDR_AUTHOR}
                     <sections>
         <terms id="_" obligation="normative">
         <title id="_">Terms, definitions and symbols</title>
@@ -218,7 +219,7 @@ RSpec.describe Metanorma::Ietf do
       NOTE: This is a note
     INPUT
     output = <<~OUTPUT
-             #{BLANK_HDR}
+             #{BLANK_HDR_AUTHOR}
              <preface><foreword id="_" obligation="informative">
         <title id="_">Foreword</title>
         <note id="_">
@@ -249,7 +250,7 @@ RSpec.describe Metanorma::Ietf do
       ....
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
        <sections>
            <figure id="_" anchor="lit">
         <pre id="_" align='left' alt='hello'>&lt;LITERAL&gt;</pre>
@@ -270,7 +271,7 @@ RSpec.describe Metanorma::Ietf do
       ....
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
        <sections>
            <figure id="_">
         <pre id="_">&lt;LITERAL&gt;</pre>
@@ -289,7 +290,7 @@ RSpec.describe Metanorma::Ietf do
       CAUTION: Only use paddy or parboiled rice for the determination of husked rice yield.
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
        <sections>
          <admonition id="_" type="caution">
          <p id="_">Only use paddy or parboiled rice for the determination of husked rice yield.</p>
@@ -316,7 +317,7 @@ RSpec.describe Metanorma::Ietf do
       ====
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
       <sections>
          <admonition id="_" type="safety precautions"><name id="_">Precautions</name><p id="_">While werewolves are hardy community members, keep in mind the following dietary concerns:</p>
        <ol id="_" type="arabic">
@@ -349,7 +350,7 @@ RSpec.describe Metanorma::Ietf do
       This is an example
     INPUT
     output = <<~OUTPUT
-            #{BLANK_HDR}
+            #{BLANK_HDR_AUTHOR}
             <sections>
         <terms id="_" obligation="normative">
         <title id="_">Terms and definitions</title>
@@ -378,7 +379,7 @@ RSpec.describe Metanorma::Ietf do
       This is an example
     INPUT
     output = <<~OUTPUT
-            #{BLANK_HDR}
+            #{BLANK_HDR_AUTHOR}
       <sections>
         <terms id="_" obligation="normative">
         <title id="_">Terms and Definitions</title>
@@ -409,7 +410,7 @@ RSpec.describe Metanorma::Ietf do
       This is an example
     INPUT
     output = <<~OUTPUT
-                    #{BLANK_HDR}
+                    #{BLANK_HDR_AUTHOR}
       <sections>
         <terms id="_" obligation="normative">
         <title id="_">Terms, definitions and symbols</title>
@@ -446,7 +447,7 @@ RSpec.describe Metanorma::Ietf do
       ====
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
        <sections>
          <example id="_" subsequence="A">
          <name id="_">Title</name>
@@ -468,7 +469,7 @@ RSpec.describe Metanorma::Ietf do
       == Section 1
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
              <preface><foreword id="_" obligation="informative">
          <title id="_">Foreword</title>
          <p id="_">This is a preamble</p>
@@ -491,7 +492,7 @@ RSpec.describe Metanorma::Ietf do
       == Section 1
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
              <preface><foreword id="_" obligation="informative">
          <title id="_">Foreword</title>
          <p id="_">This is a preamble</p>
@@ -514,7 +515,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
               <sections>
          <figure id="_" height="4" width="3">
         <name id="_">Caption</name>
@@ -540,7 +541,7 @@ RSpec.describe Metanorma::Ietf do
       ____
     INPUT
     output = <<~OUTPUT
-            #{BLANK_HDR}
+            #{BLANK_HDR_AUTHOR}
              <sections>
                <quote id="_">
                <source type="inline" bibitemid="ISO7301" citeas="">
@@ -592,7 +593,7 @@ RSpec.describe Metanorma::Ietf do
       * [[[RFC4918,RFC 4918]]]
     INPUT
     output = <<~OUTPUT
-            #{BLANK_HDR}
+            #{BLANK_HDR_AUTHOR}
               <preface>
                    <foreword id="_" obligation="informative">
                       <title id="_">Foreword</title>
@@ -646,7 +647,7 @@ RSpec.describe Metanorma::Ietf do
       <2> This is another callout
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
       <sections><sourcecode id="_" lang="ruby"><body>puts "Hello, world." <callout target="_">1</callout>
       %w{a b c}.each do |x|
         puts x <callout target="_">2</callout>
@@ -675,7 +676,7 @@ RSpec.describe Metanorma::Ietf do
       <<ISO2191,section=1>>
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
        <sections>
          <terms id="_" obligation="normative">
          <title id="_">Terms and definitions</title>
@@ -715,7 +716,7 @@ RSpec.describe Metanorma::Ietf do
       <<ISO2191,section=1>>, with adjustments
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
             <sections>
          <terms id="_" obligation="normative">
          <title id="_">Terms and definitions</title>
@@ -757,7 +758,7 @@ RSpec.describe Metanorma::Ietf do
       |===
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
        <sections>
            <table id='_' align='right'>
              <thead>
@@ -820,7 +821,7 @@ RSpec.describe Metanorma::Ietf do
       --
     INPUT
     output = <<~OUTPUT
-      #{BLANK_HDR}
+      #{BLANK_HDR_AUTHOR}
       <sections>
              <key>
                 <dl id="_">

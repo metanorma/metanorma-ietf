@@ -103,6 +103,7 @@ LOCAL_CACHED_ISOBIB_BLANK_HDR = <<~HDR.freeze
 
 HDR
 
+
 BLANK_HDR = <<~"HDR".freeze
          <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="semantic" version="#{Metanorma::Ietf::VERSION}" flavor="ietf">
          <bibdata type="standard">
@@ -154,6 +155,17 @@ BLANK_HDR = <<~"HDR".freeze
             </presentation-metadata>
           </metanorma-extension>
 HDR
+
+# BLANK_HDR with the contributor the "Author" title line now produces
+# (metanorma-ietf#360): the adoc-driven metanorma/ specs convert
+# documents with that line, so their expected bibdata carries the
+# author before the publisher
+BLANK_HDR_AUTHOR = BLANK_HDR.sub(
+  "<contributor>",
+  "<contributor><role type=\"author\"/><person><name>" \
+    "<forename>Author</forename><initial>A</initial></name></person>" \
+    "</contributor>\n<contributor>",
+).freeze
 
 # WS3: the default pipeline's skeleton-document header, for ported
 # spec/isodoc expectations (the old XML_HDR reflects the released

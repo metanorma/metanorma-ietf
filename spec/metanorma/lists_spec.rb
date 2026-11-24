@@ -35,7 +35,7 @@ RSpec.describe Metanorma::Ietf do
 
     INPUT
     xml = <<~OUTPUT
-           #{BLANK_HDR}
+           #{BLANK_HDR_AUTHOR}
            <sections>
           <ul id="_" anchor="id" nobullet='true' spacing='compact' indent='5' bare='true'>
             <li>
