@@ -1,0 +1,42 @@
+# Audit guards: the idnits3 submission check and the v3.rng grammar
+# sync (metanorma-ietf#358, #359) — the checks that keep the RFC XML
+# output clean after the #348/#356 audit.
+name: guards
+
+on:
+  push:
+    branches: [ master, main ]
+    tags: [ v* ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  idnits3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build idnits3
+        run: |
+          git clone --depth 1 https://github.com/ietf-tools/idnits /tmp/idnits
+          npm ci --prefix /tmp/idnits
+      - name: Run the idnits3 submission check on the fixture corpus
+        run: bundle exec rake guards:idnits3
+        env:
+          IDNITS3_DIR: /tmp/idnits
+
+  schema-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Diff the bundled v3.rng against xml2rfc's grammar
+        run: bundle exec rake guards:schema_sync
