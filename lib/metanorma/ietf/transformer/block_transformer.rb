@@ -428,6 +428,13 @@ module Metanorma
           markers = sc_node.markers
           sourcecode.markers = markers if markers && !markers.to_s.empty?
 
+          # src= references an external listing (#296 item 4; the model
+          # mapping ships in metanorma-document 0.5.13)
+          if sc_node.respond_to?(:src)
+            src_val = sc_node.src
+            sourcecode.src = src_val if src_val && !src_val.to_s.empty?
+          end
+
           name = sc_node.filename
           sourcecode.name = name if name && !name.to_s.empty?
 
