@@ -124,6 +124,23 @@ module Metanorma
           text_elem.content = content_fragments
         end
 
+        # RFC XML v3 has no stacked-reference construct: render each
+        # child citation through the single-eref path, joined by the
+        # authored connectives (custom over named) or a comma (#304;
+        # the released leg dropped the whole stack)
+        def build_eref_stack(stack)
+          refs = stack.eref.to_a
+          return nil if refs.empty?
+          parts = [build_eref_xref(refs.first)]
+          refs[1..].each do |e|
+            conn = e.respond_to?(:custom_connective) &&
+                   !e.custom_connective.to_s.empty? ? e.custom_connective : e.connective
+            parts << (conn.nil? || conn.to_s.empty? ? ", " : " #{conn} ")
+            parts << build_eref_xref(e)
+          end
+          parts
+        end
+
         def build_inline_element(p_node, tag, idx)
           # title/caption models walk through here too (#292): guard
           # the accessor reads for vintages that don't map the tag
@@ -185,6 +202,10 @@ module Metanorma
             coll = p_node.concept
             return nil unless coll.is_a?(Array) && coll[idx]
             build_concept(coll[idx])
+          when "erefstack"
+            coll = p_node.erefstack
+            return nil unless coll.is_a?(Array) && coll[idx]
+            build_eref_stack(coll[idx])
           when "fn"
             coll = p_node.fn
             return nil unless coll.is_a?(Array) && coll[idx]
