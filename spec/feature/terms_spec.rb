@@ -120,11 +120,6 @@ RSpec.describe "IETF terms rendering (WS3)" do
   end
 
   it "processes multiple term definitions" do
-    # canon#277 closed on moxml 0.5.x; the batched-comparison state
-    # invariant broke again on the moxml 0.6 line (relaton-mandated):
-    # tracked upstream with this suite as the repro
-    pending "canon: batched DOM-diff state accumulation on moxml 0.6 " \
-            "(the example passes standalone; lutaml/canon issue filed)"
     input = <<~INPUT
       <metanorma xmlns="https://www.metanorma.org/ns/standoc">
             <sections>
@@ -142,12 +137,12 @@ RSpec.describe "IETF terms rendering (WS3)" do
     INPUT
     output = <<~OUTPUT
       <?xml version='1.0'?>
-      <?rfc strict="yes"?>
-      <?rfc compact="yes"?>
-      <?rfc subcompact="no"?>
-      <?rfc tocdepth="4"?>
-      <?rfc symrefs="yes"?>
       <?rfc sortrefs="yes"?>
+      <?rfc symrefs="yes"?>
+      <?rfc tocdepth="4"?>
+      <?rfc subcompact="no"?>
+      <?rfc compact="yes"?>
+      <?rfc strict="yes"?>
       <rfc category='std' ipr='trust200902' submissionType='IETF' version='3' xml:lang='en'>
         <front>
           <title/>
