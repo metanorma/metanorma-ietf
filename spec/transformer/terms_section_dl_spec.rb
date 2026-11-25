@@ -37,8 +37,8 @@ RSpec.describe Metanorma::Ietf::Transformer do
   end
 
   it "renders the terms-section definition list" do
-    pending "MODEL GAP: TermsSection maps no dl until the " \
-            "metanorma-standoc release carries the #376 mapping"
+    # was pending: TermsSection mapped no dl (metanorma-ietf#376);
+    # the mapping ships in metanorma-standoc 3.5.28
     result = described_class.convert(terms_xml)
 
     expect(result).to include("<dl")
