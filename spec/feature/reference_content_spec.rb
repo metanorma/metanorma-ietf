@@ -1,8 +1,13 @@
 require "spec_helper"
 
-# Fix-wave specs for metanorma-ietf#301 (references gaps), including
-# the item-6 precedence as adjudicated 2026-08-11: a formattedref is
-# the full rendered citation and wins over a co-present title.
+# Fix-wave specs for metanorma-ietf#301 (references gaps). The
+# item-6 precedence (formattedref wins over a co-present title,
+# adjudicated 2026-08-11) was superseded on 2026-11-25 per the owner's
+# direction on metanorma-ietf#375: a structured title wins when one
+# co-exists, matching the released renderers (v2.5.1 through the
+# 1.15.x-era 3.7.0) — xml2rfc renders authors, date and series from
+# the other elements, so the full citation spliced into <title>
+# duplicates them.
 RSpec.describe "IETF reference content (#301)" do
   # reference_export: false — these examples spec the INTERNAL
   # renderer, which since the relaton-bib#125 adoption (2026-08-13)
@@ -85,15 +90,15 @@ RSpec.describe "IETF reference content (#301)" do
     expect(out).to match(/<date month="March" year="2019"\/>/)
   end
 
-  it "lets a formattedref win over a co-present title" do
+  it "lets a structured title win over a co-present formattedref" do
     out = biblio_convert(<<~B)
       <bibitem id="FR" type="standard">
       <formattedref format="application/x-isodoc+xml">Full Citation, 1st edition, 2001.</formattedref>
       <title>Fetched Title</title>
       <docidentifier type="W3C">W3C FR</docidentifier></bibitem>
     B
-    expect(out).to include("Full Citation, 1st edition, 2001.")
-    expect(out).not_to include("Fetched Title")
+    expect(out).to include("Fetched Title")
+    expect(out).not_to include("Full Citation, 1st edition, 2001.")
   end
 
   it "renders a translator-only contributor instead of Unknown" do
