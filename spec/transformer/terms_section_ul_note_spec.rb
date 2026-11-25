@@ -37,8 +37,8 @@ RSpec.describe Metanorma::Ietf::Transformer do
   end
 
   it "renders a note inside the terms section" do
-    pending "MODEL GAP: TermsSection maps no note until the " \
-            "metanorma-standoc release carries the #380 mapping"
+    # was pending: TermsSection mapped no note (metanorma-ietf#380);
+    # the mapping ships in metanorma-standoc 3.5.30
     result = convert_terms('<note id="n1"><p>terms note</p></note>')
 
     expect(result).to include("<aside")
