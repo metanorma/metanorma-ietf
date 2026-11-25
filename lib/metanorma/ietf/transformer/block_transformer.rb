@@ -564,7 +564,7 @@ module Metanorma
             .gsub(%r{<(eref|xref|link)\b[^>]*>.*?</\1>\s*(?=<semx )}m, "")
             .gsub(%r{<fmt-link\b[^>]*\btarget="([^"]+)"[^>]*/>}, '\1')
           content = content.gsub(%r{<br\s*/?>}, "\n")
-            .gsub(%r{</?[a-zA-Z][a-zA-Z0-9:-]*(?:\s[^>]*)?/?>}, "")
+            .gsub(%r{</?[a-zA-Z][a-zA-Z0-9:-]*(?:\s[^>]*+)?/?>}, "")
           CGI.unescapeHTML(content)
         end
 
