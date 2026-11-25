@@ -92,17 +92,12 @@ module Metanorma
           end
         end
 
+        # metanorma-ietf#307: the three phases — block-child guard,
+        # interleaved replay, and text merging — extracted from the
+        # epic body.
         def unwrap_single_t_in_li(li)
           return unless li.t.is_a?(Array) && li.t.size == 1
-          has_other_children = false
-          %i[ul ol dl sourcecode table figure blockquote].each do |attr|
-            val = li.public_send(attr)
-            if val.is_a?(Array) && !val.empty?
-              has_other_children = true
-              break
-            end
-          end
-          return if has_other_children
+          return if li_has_block_children?(li)
 
           t = li.t.first
 
@@ -118,7 +113,22 @@ module Metanorma
             return
           end
 
-          t_content = extract_text_content(t)
+          merge_li_text_content(li, extract_text_content(t))
+
+          migrate_inline_elements(t, li)
+
+          li.t = []
+          li.element_order = nil
+        end
+
+        def li_has_block_children?(li)
+          %i[ul ol dl sourcecode table figure blockquote].any? do |attr|
+            val = li.public_send(attr)
+            val.is_a?(Array) && !val.empty?
+          end
+        end
+
+        def merge_li_text_content(li, t_content)
           li_content = li.content
 
           if li_content.is_a?(Array) && li_content.any? { |c| c.to_s.strip.empty? } && t_content && !t_content.strip.empty?
@@ -130,11 +140,6 @@ module Metanorma
             new_content = existing.strip.empty? ? t_content : existing + t_content
             li.content = [new_content]
           end
-
-          migrate_inline_elements(t, li)
-
-          li.t = []
-          li.element_order = nil
         end
 
         # Replay a mixed-content source model's ordered fragments onto
@@ -281,9 +286,7 @@ module Metanorma
           strongs.each_with_index do |s, i|
             text = extract_bcp14_text(s)
             if bcp14_keyword?(text)
-              bcp = Rfcxml::V3::Bcp14.new
-              bcp.content = text.upcase
-              safe_append(text_elem, :bcp14, bcp)
+              append_bcp14_keyword(text_elem, text)
               replace_in_element_order(text_elem, "strong", i, "bcp14")
               changed = true
             else
@@ -292,6 +295,14 @@ module Metanorma
           end
 
           text_elem.strong = new_strongs if changed
+        end
+
+        # metanorma-ietf#307: the bcp14 node construction, extracted
+        # from the strong-walk.
+        def append_bcp14_keyword(text_elem, text)
+          bcp = Rfcxml::V3::Bcp14.new
+          bcp.content = text.upcase
+          safe_append(text_elem, :bcp14, bcp)
         end
 
         def extract_bcp14_text(strong_elem)

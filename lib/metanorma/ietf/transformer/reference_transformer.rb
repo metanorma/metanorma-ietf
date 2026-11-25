@@ -142,13 +142,9 @@ module Metanorma
         def transform_bibitem(bibitem)
           return nil unless bibitem
 
-          if reference_group?(bibitem)
-            return transform_referencegroup(bibitem)
-          end
+          return transform_referencegroup(bibitem) if reference_group?(bibitem)
 
-          if formattedref_bibitem?(bibitem)
-            return transform_formattedref_bibitem(bibitem)
-          end
+          return transform_formattedref_bibitem(bibitem) if formattedref_bibitem?(bibitem)
 
           # the relaton-bib v3 exporter is the preferred reference
           # back-end (relaton-bib#125, adopted 2026-08-13); the
@@ -165,6 +161,15 @@ module Metanorma
           target = extract_bibitem_target(bibitem)
           ref.target = target if target && !target.empty?
 
+          ref.front = build_bibitem_front(bibitem)
+          build_bibitem_backmatter(ref, bibitem)
+
+          ref
+        end
+
+        # metanorma-ietf#307: the front-matter assembly phase of the
+        # field-by-field renderer.
+        def build_bibitem_front(bibitem)
           front = Rfcxml::V3::Front.new
 
           title = extract_bibitem_title(bibitem)
@@ -195,8 +200,12 @@ module Metanorma
           abstract = extract_bibitem_abstract(bibitem)
           front.abstract = abstract if abstract
 
-          ref.front = front
+          front
+        end
 
+        # metanorma-ietf#307: the back-matter assembly phase of the
+        # field-by-field renderer.
+        def build_bibitem_backmatter(ref, bibitem)
           stream = extract_bibitem_stream(bibitem)
           ref.stream = stream if stream
 
@@ -216,8 +225,6 @@ module Metanorma
             ann.content = annotation_text
             safe_append(ref, :annotation, ann)
           end
-
-          ref
         end
 
         # bibitem → Rfcxml::V3::Reference via the relaton-bib v3
