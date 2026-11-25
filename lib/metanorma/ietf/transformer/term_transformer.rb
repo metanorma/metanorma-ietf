@@ -38,6 +38,23 @@ module Metanorma
             safe_append(section, :dl, list) if list
           end
 
+          # metanorma-ietf#380: the section's lists and notes dropped
+          # the same way; notes render as asides (metanorma-standoc
+          # maps the section note as of 3.5.29)
+          {
+            unordered_lists: [:ul, :transform_unordered_list],
+            ordered_lists: [:ol, :transform_ordered_list],
+          }.each do |attr, (tag, renderer)|
+            to_array(model_attr(terms_node, attr)).each do |child|
+              rendered = public_send(renderer, child)
+              safe_append(section, tag, rendered) if rendered
+            end
+          end
+          to_array(model_attr(terms_node, :notes)).each do |note|
+            aside = transform_note(note, section)
+            safe_append(section, :aside, aside) if aside
+          end
+
           term_entries =
             terms_node.respond_to?(:term) ? to_array(terms_node.term) : []
           nested_sections = []
