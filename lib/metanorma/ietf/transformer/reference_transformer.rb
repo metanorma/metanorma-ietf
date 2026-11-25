@@ -314,19 +314,17 @@ module Metanorma
           group
         end
 
-        # a formattedref is the FULL rendered citation — the human- or
-        # (almost always) relaton-render-formatted text that populates
-        # the v3 reference; a bare title does not. It therefore wins
-        # over a co-present title (#301 item 6, adjudicated 2026-08-11:
-        # restores the released #279 precedence; the fetched-title-wins
-        # flip discarded the authored/rendered citation). Bibitems with
-        # NEITHER also route here, for the docid fallback.
+        # a structured title wins when one co-exists with a
+        # formattedref (metanorma-ietf#375, superseding the #301 item 6
+        # adjudication per the owner's 2026-11-25 direction): the
+        # released renderers (v2.5.1 through the 1.15.x-era 3.7.0) all
+        # emitted the clean structured title, and xml2rfc renders
+        # authors, date and series from the other elements — splicing
+        # the full citation into <title> duplicates them. The
+        # formattedref is the title only for title-less bibitems;
+        # bibitems with NEITHER also route here, for the docid fallback.
         def formattedref_bibitem?(bibitem)
           return false unless bibitem
-
-          fr = model_attr(bibitem, :formatted_ref)
-          return true if fr && !mixed_text(fr).to_s.strip.empty?
-          return true if recovered_formattedref_for(bibitem)
 
           title = extract_bibitem_title(bibitem)
           title.nil? || title.empty?
