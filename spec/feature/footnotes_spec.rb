@@ -3,7 +3,11 @@ require "fileutils"
 
 RSpec.describe IsoDoc do
   it "processes IsoXML footnotes" do
-    pending "canon#277: batched DOM-diff state accumulation (the example passes standalone)"
+    # canon#277 closed on moxml 0.5.x; the batched-comparison state
+    # invariant broke again on the moxml 0.6 line (relaton-mandated):
+    # tracked upstream with this suite as the repro
+    pending "canon: batched DOM-diff state accumulation on moxml 0.6 " \
+            "(the example passes standalone; lutaml/canon issue filed)"
     input = <<~INPUT
           <metanorma xmlns="https://www.metanorma.org/ns/standoc">
           <preface>
