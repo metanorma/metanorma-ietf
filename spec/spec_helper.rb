@@ -170,13 +170,18 @@ BLANK_HDR_AUTHOR = BLANK_HDR.sub(
 # WS3: the default pipeline's skeleton-document header, for ported
 # spec/isodoc expectations (the old XML_HDR reflects the released
 # path's skeleton defaults)
+# The <?rfc?> PI block follows the transformer's PI_ORDER emission
+# sequence (Transformer::MetadataTransformer::PI_ORDER): sortrefs,
+# symrefs, tocdepth, subcompact, compact, strict. The previous order
+# here was the reverse — the fingerprint of the old stack's reversed
+# prolog-PI serialization (lutaml/canon#318).
 FEATURE_HDR = <<~HDR.freeze
-  <?rfc strict="yes"?>
-  <?rfc compact="yes"?>
-  <?rfc subcompact="no"?>
-  <?rfc tocdepth="4"?>
-  <?rfc symrefs="yes"?>
   <?rfc sortrefs="yes"?>
+  <?rfc symrefs="yes"?>
+  <?rfc tocdepth="4"?>
+  <?rfc subcompact="no"?>
+  <?rfc compact="yes"?>
+  <?rfc strict="yes"?>
   <rfc category='std' ipr='trust200902' submissionType='IETF' version='3' xml:lang='en'>
     <front>
       <title/>
