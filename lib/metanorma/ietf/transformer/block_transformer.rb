@@ -83,45 +83,57 @@ module Metanorma
               inline_obj = build_inline_element(p_node, tag, idx)
 
               if inline_obj
-                if inline_obj.is_a?(Array)
-                  inline_obj.each do |part|
-                    if part.is_a?(String)
-                      content_fragments << part
-                      track_text_order(text_elem, part)
-                    else
-                      part_tag = part.class.name.split("::").last
-                        .downcase.to_sym
-                      safe_append(text_elem, part_tag, part)
-                      track_element_order(text_elem, part_tag, part)
-                    end
-                  end
-                elsif inline_obj.is_a?(String)
-                  content_fragments << inline_obj
-                  track_text_order(text_elem, inline_obj)
-                else
-                  actual_tag = if inline_obj.is_a?(Rfcxml::V3::Xref) && rfc_tag == "relref"
-                                 "xref"
-                               else
-                                 rfc_tag
-                               end
-                  collection_name = actual_tag.to_sym
-                  if prev_was_inline
-                    content_fragments << " "
-                    track_text_order(text_elem, " ")
-                  end
-                  safe_append(text_elem, collection_name, inline_obj)
-                  track_element_order(text_elem, collection_name, inline_obj)
-                end
-                counters[tag] += 1
-                prev_was_inline = true
+                prev_was_inline = emit_inline_result(text_elem, inline_obj,
+                                                     rfc_tag, content_fragments,
+                                                     prev_was_inline)
               else
-                counters[tag] += 1
                 prev_was_inline = false
               end
+              counters[tag] += 1
             end
           end
 
           text_elem.content = content_fragments
+        end
+
+        # metanorma-ietf#307: the three emission shapes of the
+        # interleaved walk — an array of parts (previous inline state
+        # carried), a bare string, or a model object (a separating
+        # space when it follows an inline). Returns the new
+        # prev_was_inline state.
+        def emit_inline_result(text_elem, inline_obj, rfc_tag, fragments,
+                               prev_was_inline)
+          if inline_obj.is_a?(Array)
+            inline_obj.each do |part|
+              if part.is_a?(String)
+                fragments << part
+                track_text_order(text_elem, part)
+              else
+                part_tag = part.class.name.split("::").last
+                  .downcase.to_sym
+                safe_append(text_elem, part_tag, part)
+                track_element_order(text_elem, part_tag, part)
+              end
+            end
+            prev_was_inline
+          elsif inline_obj.is_a?(String)
+            fragments << inline_obj
+            track_text_order(text_elem, inline_obj)
+            true
+          else
+            actual_tag = if inline_obj.is_a?(Rfcxml::V3::Xref) && rfc_tag == "relref"
+                           "xref"
+                         else
+                           rfc_tag
+                         end
+            if prev_was_inline
+              fragments << " "
+              track_text_order(text_elem, " ")
+            end
+            safe_append(text_elem, actual_tag.to_sym, inline_obj)
+            track_element_order(text_elem, actual_tag.to_sym, inline_obj)
+            true
+          end
         end
 
         # RFC XML v3 has no stacked-reference construct: render each
@@ -141,6 +153,29 @@ module Metanorma
           parts
         end
 
+        # metanorma-ietf#307: the inline tag case decomposed into a
+        # dispatch of per-tag builders; tags with no v3 counterpart
+        # route to the text-at-minimum dropped-inline path.
+        INLINE_BUILDERS = {
+          "eref" => :build_eref_inline,
+          "xref" => :build_xref_inline,
+          "link" => :build_link_inline,
+          "span" => :build_span_inline,
+          "bcp14" => :build_bcp14_inline,
+          "br" => :build_br_inline,
+          "stem" => :build_stem_inline,
+          "index" => :build_index_inline,
+          "concept" => :build_concept_inline,
+          "erefstack" => :build_erefstack_inline,
+          "fn" => :build_fn_inline,
+          "image" => :build_image_inline,
+        }.freeze
+
+        DROPPED_INLINE_TAGS = %w[smallcap strike underline keyword
+                                 add del tab semx fmt-stem fmt-fn-label
+                                 fmt-concept fmt-annotation-start
+                                 fmt-annotation-end].freeze
+
         def build_inline_element(p_node, tag, idx)
           # title/caption models walk through here too (#292): guard
           # the accessor reads for vintages that don't map the tag
@@ -151,77 +186,101 @@ module Metanorma
           simple = build_simple_inline(p_node, tag, idx)
           return simple if simple
 
-          case tag
-          when "eref"
-            coll = p_node.eref
-            return nil unless coll.is_a?(Array) && coll[idx]
-            if @abstract_flatten
-              flat = abstract_semx_rendering(p_node, coll[idx])
-              return flat if flat
-            end
-            build_eref_xref(coll[idx])
-          when "xref"
-            coll = p_node.xref
-            return nil unless coll.is_a?(Array) && coll[idx]
-            if @abstract_flatten
-              flat = abstract_semx_rendering(p_node, coll[idx])
-              return flat if flat
-            end
-            build_xref(coll[idx])
-          when "link"
-            coll = p_node.link
-            return nil unless coll.is_a?(Array) && coll[idx]
-            build_link(coll[idx])
-          when "span"
-            coll = p_node.span
-            return nil unless coll.is_a?(Array) && coll[idx]
-            elem = coll[idx]
-            return nil unless elem.class_attr == "bcp14"
-            bcp = Rfcxml::V3::Bcp14.new
-            val = ls_text(elem)
-            bcp.content = val if val && !val.empty?
-            bcp
-          when "bcp14"
-            coll = p_node.bcp14
-            return nil unless coll.is_a?(Array) && coll[idx]
-            bcp = Rfcxml::V3::Bcp14.new
-            val = ls_text(coll[idx])
-            bcp.content = val if val && !val.empty?
-            bcp
-          when "br"
-            "\n"
-          when "stem"
-            coll = p_node.stem
-            return nil unless coll.is_a?(Array) && coll[idx]
-            build_stem_text(coll[idx])
-          when "note"
-            nil
-          when "index"
-            build_iref_from_model(p_node, idx)
-          when "concept"
-            coll = p_node.concept
-            return nil unless coll.is_a?(Array) && coll[idx]
-            build_concept(coll[idx])
-          when "erefstack"
-            coll = p_node.erefstack
-            return nil unless coll.is_a?(Array) && coll[idx]
-            build_eref_stack(coll[idx])
-          when "fn"
-            coll = p_node.fn
-            return nil unless coll.is_a?(Array) && coll[idx]
-            build_footnote_reference(coll[idx])
-          when "bookmark"
-            nil # Bookmarks are not in RFC XML v3 schema
-          when "image"
-            build_inline_image(p_node, idx)
-          when "smallcap", "strike", "underline", "keyword",
-               "add", "del", "tab", "semx",
-               "fmt-stem", "fmt-fn-label", "fmt-concept",
-               "fmt-annotation-start", "fmt-annotation-end"
-            build_dropped_inline(p_node, tag, idx)
-          else
-            nil
+          return build_dropped_inline(p_node, tag, idx) if
+            DROPPED_INLINE_TAGS.include?(tag)
+
+          builder = INLINE_BUILDERS[tag] or return nil
+          public_send(builder, p_node, idx)
+        end
+
+        def build_eref_inline(p_node, idx)
+          coll = p_node.eref
+          return nil unless coll.is_a?(Array) && coll[idx]
+          if @abstract_flatten
+            flat = abstract_semx_rendering(p_node, coll[idx])
+            return flat if flat
           end
+          build_eref_xref(coll[idx])
+        end
+
+        def build_xref_inline(p_node, idx)
+          coll = p_node.xref
+          return nil unless coll.is_a?(Array) && coll[idx]
+          if @abstract_flatten
+            flat = abstract_semx_rendering(p_node, coll[idx])
+            return flat if flat
+          end
+          build_xref(coll[idx])
+        end
+
+        def build_link_inline(p_node, idx)
+          coll = p_node.link
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          build_link(coll[idx])
+        end
+
+        def build_span_inline(p_node, idx)
+          coll = p_node.span
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          elem = coll[idx]
+          return nil unless elem.class_attr == "bcp14"
+
+          bcp = Rfcxml::V3::Bcp14.new
+          val = ls_text(elem)
+          bcp.content = val if val && !val.empty?
+          bcp
+        end
+
+        def build_bcp14_inline(p_node, idx)
+          coll = p_node.bcp14
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          bcp = Rfcxml::V3::Bcp14.new
+          val = ls_text(coll[idx])
+          bcp.content = val if val && !val.empty?
+          bcp
+        end
+
+        def build_br_inline(_p_node, _idx)
+          "\n"
+        end
+
+        def build_stem_inline(p_node, idx)
+          coll = p_node.stem
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          build_stem_text(coll[idx])
+        end
+
+        def build_index_inline(p_node, idx)
+          build_iref_from_model(p_node, idx)
+        end
+
+        def build_concept_inline(p_node, idx)
+          coll = p_node.concept
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          build_concept(coll[idx])
+        end
+
+        def build_erefstack_inline(p_node, idx)
+          coll = p_node.erefstack
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          build_eref_stack(coll[idx])
+        end
+
+        def build_fn_inline(p_node, idx)
+          coll = p_node.fn
+          return nil unless coll.is_a?(Array) && coll[idx]
+
+          build_footnote_reference(coll[idx])
+        end
+
+        def build_image_inline(p_node, idx)
+          build_inline_image(p_node, idx)
         end
 
         # Notes render UNNUMBERED in RFC output (maintainer concession,
@@ -441,6 +500,17 @@ module Metanorma
           sourcecode = Rfcxml::V3::Sourcecode.new
           sourcecode.anchor = to_ncname(anchor_for(sc_node)) if anchor_for(sc_node)
 
+          apply_sourcecode_attributes(sourcecode, sc_node)
+          content = sourcecode_content(sc_node)
+          content = normalize_sourcecode_markup(content)
+          sourcecode.content = [content] unless content.empty?
+
+          sourcecode
+        end
+
+        # metanorma-ietf#307: the attribute wiring phase of
+        # transform_sourcecode.
+        def apply_sourcecode_attributes(sourcecode, sc_node)
           lang = sc_node.lang
           sourcecode.type = lang if lang && !lang.to_s.empty?
 
@@ -456,46 +526,46 @@ module Metanorma
 
           name = sc_node.filename
           sourcecode.name = name if name && !name.to_s.empty?
+        end
 
-          content = ""
+        # metanorma-ietf#307: the text-extraction phase — the current
+        # Semantic XML nests the code text in sourcecode/body; content
+        # then parses as an empty (but truthy) collection.
+        def sourcecode_content(sc_node)
           c = sc_node.content
-          if c
-            content = c.is_a?(Array) ? c.join : c.to_s
-          end
-          # current Semantic XML nests the code text in sourcecode/body;
-          # content then parses as an empty (but truthy) collection
+          content = c ? (c.is_a?(Array) ? c.join : c.to_s) : ""
           if content.strip.empty? && sc_node.respond_to?(:body) && sc_node.body
             bc = sc_node.body.content
             content = bc.is_a?(Array) ? bc.join : bc.to_s
           end
+          content
+        end
 
-          # WS2 A-1: the code text arrives from raw-mapped attributes —
-          # escaped markup on the current-schema body path (&amp;,
-          # &lt;, embedded <br/>), once-decoded text on the old-vintage
-          # content path (literal &) — and serialising escaped text
-          # re-escapes it (&amp;amp;). Normalise conservatively:
-          # <br/> becomes a newline, recognisable tags drop, and only
-          # well-formed entities decode (CGI.unescapeHTML leaves a
-          # bare "&caerbannog" alone, where a fragment parse ate it).
-          # The former post-hoc sourcecode_cleanup pass is retired —
-          # its character-level tag stripper ate genuine "<".
-          # WS3 (cleanup_spec): the presentation layer leaves each
-          # inline element in code text TWICE — the semantic original
-          # immediately followed by its semx-wrapped rendering. Drop
-          # originals that have a rendering, and render a bare
-          # fmt-link as its target text (N4), before the generic
-          # tag strip keeps the rendered text.
+        # metanorma-ietf#307: the markup-normalisation phase of
+        # transform_sourcecode. WS2 A-1: the code text arrives from
+        # raw-mapped attributes — escaped markup on the
+        # current-schema body path (&amp;, &lt;, embedded <br/>),
+        # once-decoded text on the old-vintage content path (literal
+        # &) — and serialising escaped text re-escapes it (&amp;amp;).
+        # Normalise conservatively: <br/> becomes a newline,
+        # recognisable tags drop, and only well-formed entities decode
+        # (CGI.unescapeHTML leaves a bare "&caerbannog" alone, where a
+        # fragment parse ate it). The former post-hoc
+        # sourcecode_cleanup pass is retired — its character-level tag
+        # stripper ate genuine "<". WS3 (cleanup_spec): the
+        # presentation layer leaves each inline element in code text
+        # TWICE — the semantic original immediately followed by its
+        # semx-wrapped rendering. Drop originals that have a
+        # rendering, and render a bare fmt-link as its target text
+        # (N4), before the generic tag strip keeps the rendered text.
+        def normalize_sourcecode_markup(content)
           content = content
             .gsub(%r{<(eref|xref|link)\b[^>]*/>\s*(?=<semx )}, "")
             .gsub(%r{<(eref|xref|link)\b[^>]*>.*?</\1>\s*(?=<semx )}m, "")
             .gsub(%r{<fmt-link\b[^>]*\btarget="([^"]+)"[^>]*/>}, '\1')
           content = content.gsub(%r{<br\s*/?>}, "\n")
             .gsub(%r{</?[a-zA-Z][a-zA-Z0-9:-]*(?:\s[^>]*)?/?>}, "")
-          content = CGI.unescapeHTML(content)
-
-          sourcecode.content = [content] unless content.empty?
-
-          sourcecode
+          CGI.unescapeHTML(content)
         end
 
         def transform_quote(quote_node)

@@ -286,50 +286,46 @@ module Metanorma
           found ? postal : nil
         end
 
+        # metanorma-ietf#307: the per-part emitters, driven by a
+        # field-to-tag table; a part renders only when non-blank.
+        POSTAL_FIELDS = {
+          city: :city,
+          state: :region,
+          postcode: :code,
+          country: :country,
+        }.freeze
+
         def build_postal_from_structured(addr)
           postal = Rfcxml::V3::Postal.new
           found = false
 
-          streets = addr.street
-          if streets.is_a?(Array) && !streets.empty?
-            streets.each do |s|
-              next if s.to_s.strip.empty?
-              st = Rfcxml::V3::Street.new
-              st.content = [s.to_s.strip]
-              safe_append(postal, :street, st)
-              found = true
-            end
-          end
+          found = append_postal_streets(postal, addr.street) || found
+          POSTAL_FIELDS.each do |field, tag|
+            value = addr.public_send(field)
+            next if value.nil? || value.to_s.strip.empty?
 
-          if addr.city && !addr.city.to_s.strip.empty?
-            city = Rfcxml::V3::City.new
-            city.content = [addr.city.to_s.strip]
-            safe_append(postal, :city, city)
-            found = true
-          end
-
-          if addr.state && !addr.state.to_s.strip.empty?
-            region = Rfcxml::V3::Region.new
-            region.content = [addr.state.to_s.strip]
-            safe_append(postal, :region, region)
-            found = true
-          end
-
-          if addr.postcode && !addr.postcode.to_s.strip.empty?
-            code = Rfcxml::V3::Code.new
-            code.content = [addr.postcode.to_s.strip]
-            safe_append(postal, :code, code)
-            found = true
-          end
-
-          if addr.country && !addr.country.to_s.strip.empty?
-            country = Rfcxml::V3::Country.new
-            country.content = [addr.country.to_s.strip]
-            safe_append(postal, :country, country)
+            node = Rfcxml::V3.const_get(tag.to_s.capitalize).new
+            node.content = [value.to_s.strip]
+            safe_append(postal, tag, node)
             found = true
           end
 
           found ? postal : nil
+        end
+
+        def append_postal_streets(postal, streets)
+          return false unless streets.is_a?(Array) && !streets.empty?
+
+          found = false
+          streets.each do |s|
+            next if s.to_s.strip.empty?
+
+            st = Rfcxml::V3::Street.new
+            st.content = [s.to_s.strip]
+            safe_append(postal, :street, st)
+            found = true
+          end
+          found
         end
 
         def build_date

@@ -345,6 +345,29 @@ module Metanorma
           "admonition" => "aside",
         }.freeze
 
+        # metanorma-ietf#307: the giant tag case decomposed into one
+        # handler per element; the dispatch table is the walk. Each
+        # handler resolves its own collection off the clause and
+        # appends through append_ordered.
+        ORDERED_WALKERS = {
+          "p" => :parse_ordered_paragraph,
+          "ul" => :parse_ordered_unordered_list,
+          "ol" => :parse_ordered_ordered_list,
+          "dl" => :parse_ordered_definition_list,
+          "table" => :parse_ordered_table,
+          "figure" => :parse_ordered_figure,
+          "sourcecode" => :parse_ordered_sourcecode,
+          "clause" => :parse_ordered_subclause,
+          "formula" => :parse_ordered_formula,
+          "note" => :parse_ordered_note,
+          "quote" => :parse_ordered_quote,
+          "example" => :parse_ordered_example,
+          "terms" => :parse_ordered_terms,
+          "definitions" => :parse_ordered_definitions,
+          "admonition" => :parse_ordered_admonition,
+          "pre" => :parse_ordered_literal,
+        }.freeze
+
         def parse_ordered_children(clause, section, src_order)
           counters = Hash.new(0)
 
@@ -358,264 +381,210 @@ module Metanorma
             next if tag == "title"
             idx = counters[tag]
             counters[tag] += 1
+            walker = ORDERED_WALKERS[tag] or next
+            public_send(walker, clause, section, idx)
+          end
+        end
 
-            case tag
-            when "p"
-              paras = get_paragraphs(clause)
-              if paras[idx]
-                t = transform_paragraph(paras[idx])
-                if t
-                  append_ordered(section, :t, t)
-                  extract_inline_notes(paras[idx]).each do |aside|
-                    append_ordered(section, :aside, aside)
-                  end
-                end
-              end
-            when "ul"
-              uls = to_array(clause.unordered_lists)
-              if uls[idx]
-                list = transform_unordered_list(uls[idx])
-                append_ordered(section, :ul, list) if list
-              end
-            when "ol"
-              ols = to_array(clause.ordered_lists)
-              if ols[idx]
-                list = transform_ordered_list(ols[idx])
-                append_ordered(section, :ol, list) if list
-              end
-            when "dl"
-              dls = to_array(clause.definition_lists)
-              if dls[idx]
-                list = transform_definition_list(dls[idx])
-                append_ordered(section, :dl, list) if list
-              end
-            when "table"
-              tables = to_array(model_attr(clause, :tables))
-              if tables[idx]
-                table = transform_table(tables[idx])
-                append_ordered(section, :table, table) if table
-                build_table_surroundings(tables[idx]).each do |surr|
-                  if surr.is_a?(Rfcxml::V3::Dl)
-                    append_ordered(section, :dl, surr)
-                  elsif surr.is_a?(Rfcxml::V3::Text)
-                    append_ordered(section, :t, surr)
-                  elsif surr.is_a?(Rfcxml::V3::Aside)
-                    append_ordered(section, :aside, surr)
-                  end
-                end
-              end
-            when "figure"
-              figures = to_array(model_attr(clause, :figures))
-              if figures[idx]
-                f = transform_figure(figures[idx])
-                if f.is_a?(Rfcxml::V3::Figure)
-                  append_ordered(section, :figure, f)
-                elsif f.is_a?(Rfcxml::V3::Sourcecode)
-                  append_ordered(section, :sourcecode, f)
-                end
-                extract_figure_asides(figures[idx]).each do |aside|
-                  append_ordered(section, :aside, aside)
-                end
-              end
-            when "sourcecode"
-              sourcecodes = to_array(model_attr(clause, :sourcecode_blocks))
-              if sourcecodes[idx]
-                src = transform_sourcecode(sourcecodes[idx])
-                if src
-                  append_ordered(section, :sourcecode, src)
-                end
-                build_sourcecode_callouts(sourcecodes[idx]).each do |aside|
-                  append_ordered(section, :aside, aside)
-                end
-              end
-            when "clause"
-              sub_clauses = to_array(model_attr(clause, :clause) || model_attr(clause, :subsection))
-              if sub_clauses[idx]
-                sec = transform_clause(sub_clauses[idx])
-                append_ordered(section, :section, sec) if sec
-              end
-            when "formula"
-              formulas = to_array(model_attr(clause, :formulas))
-              if formulas[idx]
-                elements = transform_formula(formulas[idx])
-                elements.each do |elem|
-                  if elem.is_a?(Rfcxml::V3::Text)
-                    append_ordered(section, :t, elem)
-                  elsif elem.is_a?(Rfcxml::V3::Dl)
-                    append_ordered(section, :dl, elem)
-                  end
-                end
-              end
-            when "note"
-              notes = to_array(model_attr(clause, :notes))
-              if notes[idx]
-                aside = transform_note(notes[idx], section)
-                append_ordered(section, :aside, aside) if aside
-              end
-            when "quote"
-              quotes = to_array(model_attr(clause, :quote_blocks))
-              if quotes[idx]
-                bq = transform_quote(quotes[idx])
-                append_ordered(section, :blockquote, bq) if bq
-              end
-            when "example"
-              examples = to_array(model_attr(clause, :examples))
-              if examples[idx]
-                ts = transform_example(examples[idx])
-                # mixed results since F7: each child lands in its own
-                # typed collection, not blanket :t
-                ts.each { |n| append_ordered(section, example_result_tag(n), n) }
-              end
-            when "terms"
-              terms = to_array(model_attr(clause, :terms))
-              if terms[idx]
-                sec = transform_terms_section(terms[idx])
-                append_ordered(section, :section, sec) if sec
-              end
-            when "definitions"
-              defs = to_array(model_attr(clause, :definitions))
-              if defs[idx]
-                sec = transform_definitions_section(defs[idx])
-                append_ordered(section, :section, sec) if sec
-              end
-            when "admonition"
-              admonitions = to_array(clause.admonitions)
-              if admonitions[idx]
-                aside = transform_admonition(admonitions[idx])
-                append_ordered(section, :aside, aside) if aside
-              end
-            when "pre"
-              # clause-level literal blocks render as ascii-art
-              # artwork (#296 item 7; the model mapping ships in
-              # metanorma-standoc)
-              pres = to_array(model_attr(clause, :literal_blocks))
-              if pres[idx]
-                artwork = transform_pre_to_artwork(pres[idx])
-                append_ordered(section, :artwork, artwork) if artwork
-              end
+        def parse_ordered_paragraph(clause, section, idx)
+          paras = get_paragraphs(clause)
+          return unless paras[idx]
+
+          t = transform_paragraph(paras[idx])
+          return unless t
+
+          append_ordered(section, :t, t)
+          extract_inline_notes(paras[idx]).each do |aside|
+            append_ordered(section, :aside, aside)
+          end
+        end
+
+        def parse_ordered_unordered_list(clause, section, idx)
+          uls = to_array(clause.unordered_lists)
+          return unless uls[idx]
+
+          list = transform_unordered_list(uls[idx])
+          append_ordered(section, :ul, list) if list
+        end
+
+        def parse_ordered_ordered_list(clause, section, idx)
+          ols = to_array(clause.ordered_lists)
+          return unless ols[idx]
+
+          list = transform_ordered_list(ols[idx])
+          append_ordered(section, :ol, list) if list
+        end
+
+        def parse_ordered_definition_list(clause, section, idx)
+          dls = to_array(clause.definition_lists)
+          return unless dls[idx]
+
+          list = transform_definition_list(dls[idx])
+          append_ordered(section, :dl, list) if list
+        end
+
+        def parse_ordered_table(clause, section, idx)
+          tables = to_array(model_attr(clause, :tables))
+          return unless tables[idx]
+
+          table = transform_table(tables[idx])
+          append_ordered(section, :table, table) if table
+          build_table_surroundings(tables[idx]).each do |surr|
+            if surr.is_a?(Rfcxml::V3::Dl)
+              append_ordered(section, :dl, surr)
+            elsif surr.is_a?(Rfcxml::V3::Text)
+              append_ordered(section, :t, surr)
+            elsif surr.is_a?(Rfcxml::V3::Aside)
+              append_ordered(section, :aside, surr)
             end
           end
         end
+
+        def parse_ordered_figure(clause, section, idx)
+          figures = to_array(model_attr(clause, :figures))
+          return unless figures[idx]
+
+          f = transform_figure(figures[idx])
+          if f.is_a?(Rfcxml::V3::Figure)
+            append_ordered(section, :figure, f)
+          elsif f.is_a?(Rfcxml::V3::Sourcecode)
+            append_ordered(section, :sourcecode, f)
+          end
+          extract_figure_asides(figures[idx]).each do |aside|
+            append_ordered(section, :aside, aside)
+          end
+        end
+
+        def parse_ordered_sourcecode(clause, section, idx)
+          sourcecodes = to_array(model_attr(clause, :sourcecode_blocks))
+          return unless sourcecodes[idx]
+
+          src = transform_sourcecode(sourcecodes[idx])
+          if src
+            append_ordered(section, :sourcecode, src)
+          end
+          build_sourcecode_callouts(sourcecodes[idx]).each do |aside|
+            append_ordered(section, :aside, aside)
+          end
+        end
+
+        def parse_ordered_subclause(clause, section, idx)
+          sub_clauses = to_array(model_attr(clause, :clause) || model_attr(clause, :subsection))
+          return unless sub_clauses[idx]
+
+          sec = transform_clause(sub_clauses[idx])
+          append_ordered(section, :section, sec) if sec
+        end
+
+        def parse_ordered_formula(clause, section, idx)
+          formulas = to_array(model_attr(clause, :formulas))
+          return unless formulas[idx]
+
+          elements = transform_formula(formulas[idx])
+          elements.each do |elem|
+            if elem.is_a?(Rfcxml::V3::Text)
+              append_ordered(section, :t, elem)
+            elsif elem.is_a?(Rfcxml::V3::Dl)
+              append_ordered(section, :dl, elem)
+            end
+          end
+        end
+
+        def parse_ordered_note(clause, section, idx)
+          notes = to_array(model_attr(clause, :notes))
+          return unless notes[idx]
+
+          aside = transform_note(notes[idx], section)
+          append_ordered(section, :aside, aside) if aside
+        end
+
+        def parse_ordered_quote(clause, section, idx)
+          quotes = to_array(model_attr(clause, :quote_blocks))
+          return unless quotes[idx]
+
+          bq = transform_quote(quotes[idx])
+          append_ordered(section, :blockquote, bq) if bq
+        end
+
+        def parse_ordered_example(clause, section, idx)
+          examples = to_array(model_attr(clause, :examples))
+          return unless examples[idx]
+
+          ts = transform_example(examples[idx])
+          # mixed results since F7: each child lands in its own
+          # typed collection, not blanket :t
+          ts.each { |n| append_ordered(section, example_result_tag(n), n) }
+        end
+
+        def parse_ordered_terms(clause, section, idx)
+          terms = to_array(model_attr(clause, :terms))
+          return unless terms[idx]
+
+          sec = transform_terms_section(terms[idx])
+          append_ordered(section, :section, sec) if sec
+        end
+
+        def parse_ordered_definitions(clause, section, idx)
+          defs = to_array(model_attr(clause, :definitions))
+          return unless defs[idx]
+
+          sec = transform_definitions_section(defs[idx])
+          append_ordered(section, :section, sec) if sec
+        end
+
+        def parse_ordered_admonition(clause, section, idx)
+          admonitions = to_array(clause.admonitions)
+          return unless admonitions[idx]
+
+          aside = transform_admonition(admonitions[idx])
+          append_ordered(section, :aside, aside) if aside
+        end
+
+        # clause-level literal blocks render as ascii-art
+        # artwork (#296 item 7; the model mapping ships in
+        # metanorma-standoc)
+        def parse_ordered_literal(clause, section, idx)
+          pres = to_array(model_attr(clause, :literal_blocks))
+          return unless pres[idx]
+
+          artwork = transform_pre_to_artwork(pres[idx])
+          append_ordered(section, :artwork, artwork) if artwork
+        end
+
+        # The fallback walk (raw-semantic parses carry no element
+        # order): the same handlers as the ordered walk, driven whole-
+        # collection in the historical order. metanorma-ietf#307.
+        UNORDERED_WALKERS = {
+          notes: :parse_ordered_note,
+          examples: :parse_ordered_example,
+          sourcecode_blocks: :parse_ordered_sourcecode,
+          quote_blocks: :parse_ordered_quote,
+          literal_blocks: :parse_ordered_literal,
+          admonitions: :parse_ordered_admonition,
+          formulas: :parse_ordered_formula,
+          unordered_lists: :parse_ordered_unordered_list,
+          ordered_lists: :parse_ordered_ordered_list,
+          definition_lists: :parse_ordered_definition_list,
+          tables: :parse_ordered_table,
+          figures: :parse_ordered_figure,
+          clause: :parse_ordered_subclause,
+          terms: :parse_ordered_terms,
+          definitions: :parse_ordered_definitions,
+        }.freeze
 
         def parse_unordered_children(clause, section)
           if section.name
             track_element_order(section, :name, section.name)
           end
 
-          get_paragraphs(clause).each do |p|
-            t = transform_paragraph(p)
-            if t
-              append_ordered(section, :t, t)
-              extract_inline_notes(p).each do |aside|
-                append_ordered(section, :aside, aside)
-              end
+          get_paragraphs(clause).each_with_index do |_, idx|
+            parse_ordered_paragraph(clause, section, idx)
+          end
+
+          UNORDERED_WALKERS.each do |attr, walker|
+            to_array(model_attr(clause, attr)).each_with_index do |_, idx|
+              public_send(walker, clause, section, idx)
             end
-          end
-
-          to_array(model_attr(clause, :notes)).each do |note|
-            aside = transform_note(note, section)
-            append_ordered(section, :aside, aside) if aside
-          end
-
-          to_array(model_attr(clause, :examples)).each do |ex|
-            ts = transform_example(ex)
-            # mixed results since F7: each child lands in its own
-            # typed collection, not blanket :t
-            ts.each { |n| append_ordered(section, example_result_tag(n), n) }
-          end
-
-          to_array(model_attr(clause, :sourcecode_blocks)).each do |sc|
-            src = transform_sourcecode(sc)
-            if src
-              append_ordered(section, :sourcecode, src)
-            end
-            build_sourcecode_callouts(sc).each do |aside|
-              append_ordered(section, :aside, aside)
-            end
-          end
-
-          to_array(model_attr(clause, :quote_blocks)).each do |q|
-            bq = transform_quote(q)
-            append_ordered(section, :blockquote, bq) if bq
-          end
-
-          to_array(model_attr(clause, :literal_blocks)).each do |pre|
-            artwork = transform_pre_to_artwork(pre)
-            append_ordered(section, :artwork, artwork) if artwork
-          end
-
-          to_array(clause.admonitions).each do |admon|
-            aside = transform_admonition(admon)
-            append_ordered(section, :aside, aside) if aside
-          end
-
-          to_array(model_attr(clause, :formulas)).each do |f|
-            elements = transform_formula(f)
-            elements.each do |elem|
-              if elem.is_a?(Rfcxml::V3::Text)
-                append_ordered(section, :t, elem)
-              elsif elem.is_a?(Rfcxml::V3::Dl)
-                append_ordered(section, :dl, elem)
-              end
-            end
-          end
-
-          to_array(clause.unordered_lists).each do |ul|
-            list = transform_unordered_list(ul)
-            append_ordered(section, :ul, list) if list
-          end
-
-          to_array(clause.ordered_lists).each do |ol|
-            list = transform_ordered_list(ol)
-            append_ordered(section, :ol, list) if list
-          end
-
-          to_array(clause.definition_lists).each do |dl|
-            list = transform_definition_list(dl)
-            append_ordered(section, :dl, list) if list
-          end
-
-          to_array(model_attr(clause, :tables)).each do |tbl|
-            table = transform_table(tbl)
-            if table
-              append_ordered(section, :table, table)
-            end
-            build_table_surroundings(tbl).each do |surr|
-              if surr.is_a?(Rfcxml::V3::Dl)
-                append_ordered(section, :dl, surr)
-              elsif surr.is_a?(Rfcxml::V3::Text)
-                append_ordered(section, :t, surr)
-              elsif surr.is_a?(Rfcxml::V3::Aside)
-                append_ordered(section, :aside, surr)
-              end
-            end
-          end
-
-          to_array(model_attr(clause, :figures)).each do |fig|
-            f = transform_figure(fig)
-            if f.is_a?(Rfcxml::V3::Figure)
-              append_ordered(section, :figure, f)
-            elsif f.is_a?(Rfcxml::V3::Sourcecode)
-              append_ordered(section, :sourcecode, f)
-            end
-            extract_figure_asides(fig).each do |aside|
-              append_ordered(section, :aside, aside)
-            end
-          end
-
-          to_array(model_attr(clause, :clause) || model_attr(clause, :subsection)).each do |sub|
-            sec = transform_clause(sub)
-            append_ordered(section, :section, sec) if sec
-          end
-
-          to_array(model_attr(clause, :terms)).each do |term_section|
-            sec = transform_terms_section(term_section)
-            append_ordered(section, :section, sec) if sec
-          end
-
-          to_array(model_attr(clause, :definitions)).each do |defn|
-            sec = transform_definitions_section(defn)
-            append_ordered(section, :section, sec) if sec
           end
         end
       end
