@@ -364,12 +364,12 @@ module Metanorma
           # references-side A7.7 garbage-year probe)
           date_str = date_str.to_s.sub(/T.*$/, "")
           case date_str
-          when /^\d{4}$/
+          when /^\d{4}\z/
             date.year = date_str
-          when /^(\d{4})-(\d{2})$/
+          when /^(\d{4})-(\d{2})\z/
             date.year = $1
             date.month = month_name($2.to_i)
-          when /^(\d{4})-(\d{2})-(\d{2})$/
+          when /^(\d{4})-(\d{2})-(\d{2})\z/
             date.year = $1
             date.month = month_name($2.to_i)
             date.day = $3.to_i.to_s
