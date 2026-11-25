@@ -29,6 +29,15 @@ module Metanorma
             end
           end
 
+          # a bare <dl> directly inside the terms section rendered as
+          # nothing at all (metanorma-ietf#376): the term and
+          # definitions handlers both pass definition lists through,
+          # the terms section itself did not
+          to_array(model_attr(terms_node, :definition_lists)).each do |dl|
+            list = transform_definition_list(dl)
+            safe_append(section, :dl, list) if list
+          end
+
           term_entries =
             terms_node.respond_to?(:term) ? to_array(terms_node.term) : []
           nested_sections = []
