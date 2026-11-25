@@ -154,8 +154,10 @@ module Metanorma
       # toolchain's opinion (metanorma-ietf#366)
       def record_preptool_warnings(err, rfcname)
         return unless @rfc_validator
-        err.scan(/warning:\s*(.+)$/i).each do |(msg)|
-          @rfc_validator.record_preptool_warning(msg.strip)
+        err.each_line do |line|
+          next unless (m = line.match(/warning:\s*(.+)/i))
+
+          @rfc_validator.record_preptool_warning(m[1].strip)
         end
         @rfc_validator.write(rfcname) if @rfc_validator.entries?
       end
