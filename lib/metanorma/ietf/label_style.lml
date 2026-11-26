@@ -1,0 +1,293 @@
+// IETF Label Style Definition in LutaML
+//
+// Encodes the Internet-Draft / RFC labeling conventions verified against
+// the reference toolchain (ietf-tools/xml2rfc 3.35.0 text writer and
+// ietf-tools/idnits v3) for metanorma-ietf#355:
+//
+// * Sections: "1.  Introduction", "1.1.  Conventions" — arabic numbering
+//   with a trailing dot per component (xml2rfc render_section:
+//   num.title() + '.'); cross-references cite "Section 2" (text.py:4789).
+// * Appendices: sections under <back> are first-class — top level
+//   "Appendix A.  Title" (text.py:3343 prefixes 'Appendix '), deeper
+//   levels "A.1." without the prefix in headings, "Appendix A.1" in
+//   cross-references; idnits HEADING_NUMBER recognizes the shape.
+// * Captions: "Table 1" / "Figure 1" label part (xml2rfc joins the
+//   caption name with ': ' — text.py:4275/1750).
+// * Notes: RFC XML v3 has no numbered-note machinery; notes are bare
+//   and unnumbered ("Note"), with a counter only when repeated
+//   (metanorma-ietf termnote_anchor_names).
+//
+// Lists carry no labellers: xml2rfc list markers are a rendering concern
+// of the <ol>/<ul> types, not numbering labels.
+
+instance IETFLabelStyle < LabelStyle {
+  name = "IETF Label Style"
+  definition {
+    The IETF label style originates from and implements the requirements of:
+    * the RFC XML v3 vocabulary (RFC 7991) as rendered by xml2rfc
+    * the idnits submission checks.
+
+    This style defines the labeling scheme used by Internet-Drafts and RFCs.
+  }
+
+  // References to all labellers defined in this style
+  labellers = [
+    "id:clause_labeller",
+    "id:subclause_labeller",
+    "id:annex_labeller",
+    "id:annex_clause_labeller",
+    "id:annex_subclause_labeller",
+    "id:figure_labeller",
+    "id:annex_figure_labeller",
+    "id:table_labeller",
+    "id:annex_table_labeller",
+    "id:note_labeller"
+  ]
+
+  // References to all sequences used in this style
+  sequences = [
+    DecimalNumericSequence,
+    AlphaUpperNumericSequence
+  ]
+
+  // References to all templates used in this style
+  templates = [
+    ClauseLabelTemplate,
+    ClauseGlobalLabelTemplate,
+    SubclauseLabelTemplate,
+    SubclauseGlobalLabelTemplate,
+    AnnexLabelTemplate,
+    AnnexGlobalLabelTemplate,
+    AnnexClauseLabelTemplate,
+    AnnexClauseGlobalLabelTemplate,
+    AnnexSubclauseLabelTemplate,
+    AnnexSubclauseGlobalLabelTemplate,
+    FigureLabelTemplate,
+    AnnexFigureLabelTemplate,
+    TableLabelTemplate,
+    AnnexTableLabelTemplate,
+    NoteLabelTemplate
+  ]
+
+  // References to all contexts used in this style
+  contexts = [
+    DocumentContext,
+    ClauseContext,
+    SubclauseContext,
+    AnnexContext,
+    AnnexClauseContext
+  ]
+}
+
+// Contexts
+instance DocumentContext < LabelContext {
+  name = "document"
+  definition "Top-level document context for Internet-Drafts"
+}
+
+instance ClauseContext < LabelContext {
+  name = "clause"
+  parent = DocumentContext
+  definition "Context for sections within the document"
+}
+
+instance SubclauseContext < LabelContext {
+  name = "subclause"
+  parent = ClauseContext
+  definition "Context for subsections within sections"
+}
+
+instance AnnexContext < LabelContext {
+  name = "annex"
+  parent = DocumentContext
+  definition "Context for appendices within the document"
+}
+
+instance AnnexClauseContext < LabelContext {
+  name = "annex_clause"
+  parent = AnnexContext
+  definition "Context for sections within appendices"
+}
+
+// Section templates: headings carry a trailing dot per component;
+// cross-references cite "Section N" (xml2rfc xref labeling).
+instance ClauseLabelTemplate < LabelTemplate {
+  pattern = "%n."
+  definition "Template for section heading labels"
+}
+
+instance ClauseGlobalLabelTemplate < LabelTemplate {
+  pattern = "Section %n"
+  definition "Template for section cross-references"
+}
+
+instance ClauseLabeller < Labeller {
+  id = "clause_labeller"
+  sequence = DecimalNumericSequence
+  context = DocumentContext
+  type = "clause"
+  template = ClauseLabelTemplate
+  global_template = ClauseGlobalLabelTemplate
+  definition "Labeller for sections in the document"
+}
+
+instance SubclauseLabelTemplate < LabelTemplate {
+  pattern = "%pn.%n."
+  definition "Template for subsection heading labels"
+}
+
+instance SubclauseGlobalLabelTemplate < LabelTemplate {
+  pattern = "Section %pn.%n"
+  definition "Template for subsection cross-references"
+}
+
+instance SubclauseLabeller < Labeller {
+  id = "subclause_labeller"
+  sequence = DecimalNumericSequence
+  context = ClauseContext
+  parent = ClauseLabeller
+  type = "subclause"
+  template = SubclauseLabelTemplate
+  global_template = SubclauseGlobalLabelTemplate
+  definition "Labeller for subsections within sections"
+}
+
+// Appendix templates: top-level back-matter sections are "Appendix A.";
+// inner levels carry dotted numbers and cite "Appendix A.1".
+instance AnnexLabelTemplate < LabelTemplate {
+  pattern = "Appendix %n."
+  definition "Template for appendix heading labels"
+}
+
+instance AnnexGlobalLabelTemplate < LabelTemplate {
+  pattern = "Appendix %n"
+  definition "Template for appendix cross-references"
+}
+
+instance AnnexLabeller < Labeller {
+  id = "annex_labeller"
+  sequence = AlphaUpperNumericSequence
+  context = DocumentContext
+  type = "annex"
+  template = AnnexLabelTemplate
+  global_template = AnnexGlobalLabelTemplate
+  definition "Labeller for appendices in the document"
+}
+
+instance AnnexClauseLabelTemplate < LabelTemplate {
+  pattern = "%pn.%n."
+  definition "Template for appendix section heading labels"
+}
+
+instance AnnexClauseGlobalLabelTemplate < LabelTemplate {
+  pattern = "Appendix %pn.%n"
+  definition "Template for appendix section cross-references"
+}
+
+instance AnnexClauseLabeller < Labeller {
+  id = "annex_clause_labeller"
+  sequence = DecimalNumericSequence
+  context = AnnexContext
+  parent = AnnexLabeller
+  type = "clause"
+  template = AnnexClauseLabelTemplate
+  global_template = AnnexClauseGlobalLabelTemplate
+  definition "Labeller for sections within appendices"
+}
+
+instance AnnexSubclauseLabelTemplate < LabelTemplate {
+  pattern = "%pn.%n."
+  definition "Template for appendix subsection heading labels"
+}
+
+instance AnnexSubclauseGlobalLabelTemplate < LabelTemplate {
+  pattern = "Appendix %pn.%n"
+  definition "Template for appendix subsection cross-references"
+}
+
+instance AnnexSubclauseLabeller < Labeller {
+  id = "annex_subclause_labeller"
+  sequence = DecimalNumericSequence
+  context = AnnexClauseContext
+  parent = AnnexClauseLabeller
+  type = "subclause"
+  template = AnnexSubclauseLabelTemplate
+  global_template = AnnexSubclauseGlobalLabelTemplate
+  definition "Labeller for subsections within appendix sections"
+}
+
+// Captions: xml2rfc renders "Table 1: Name" / "Figure 1: Name"; the
+// label is the caption prefix, the name join is a rendering concern.
+instance FigureLabelTemplate < LabelTemplate {
+  pattern = "Figure %n"
+  definition "Template for figure caption labels"
+}
+
+instance FigureLabeller < Labeller {
+  id = "figure_labeller"
+  sequence = DecimalNumericSequence
+  context = DocumentContext
+  type = "figure"
+  template = FigureLabelTemplate
+  definition "Labeller for figures in the document"
+}
+
+instance AnnexFigureLabelTemplate < LabelTemplate {
+  pattern = "Figure %pn.%n"
+  definition "Template for figure caption labels in appendices"
+}
+
+instance AnnexFigureLabeller < Labeller {
+  id = "annex_figure_labeller"
+  sequence = DecimalNumericSequence
+  context = AnnexContext
+  parent = AnnexLabeller
+  type = "figure"
+  template = AnnexFigureLabelTemplate
+  definition "Labeller for figures in appendices"
+}
+
+instance TableLabelTemplate < LabelTemplate {
+  pattern = "Table %n"
+  definition "Template for table caption labels"
+}
+
+instance TableLabeller < Labeller {
+  id = "table_labeller"
+  sequence = DecimalNumericSequence
+  context = DocumentContext
+  type = "table"
+  template = TableLabelTemplate
+  definition "Labeller for tables in the document"
+}
+
+instance AnnexTableLabelTemplate < LabelTemplate {
+  pattern = "Table %pn.%n"
+  definition "Template for table caption labels in appendices"
+}
+
+instance AnnexTableLabeller < Labeller {
+  id = "annex_table_labeller"
+  sequence = DecimalNumericSequence
+  context = AnnexContext
+  parent = AnnexLabeller
+  type = "table"
+  template = AnnexTableLabelTemplate
+  definition "Labeller for tables in appendices"
+}
+
+// Notes: RFC XML v3 numbers no notes (xml2rfc render_note emits the
+// bare "Note" label); notes render bare regardless of repetition.
+instance NoteLabelTemplate < LabelTemplate {
+  pattern = "Note"
+  definition "Template for notes"
+}
+
+instance NoteLabeller < Labeller {
+  id = "note_labeller"
+  sequence = DecimalNumericSequence
+  context = ClauseContext
+  type = "note"
+  template = NoteLabelTemplate
+  definition "Labeller for notes (bare, unnumbered)"
+}
