@@ -196,7 +196,35 @@ RSpec.describe "IETF cleanup behaviours (WS3)" do
       <middle>
         <section anchor="F">
           <name>Foreword</name>
-          <sourcecode anchor="S" name="sourcecode1.rb" type="ruby" markers="true"/>
+          <sourcecode anchor="S" name="sourcecode1.rb" type="ruby" markers="true">
+          puts "Hello, world." %w{a b c}.each do |x| puts x end
+          
+      RFC 4918
+    
+          
+      Hello
+    
+          
+      RFC 4918,  Section 14.24
+    
+          
+      Hello
+    
+          
+      http://www.example.com
+    
+          
+      example
+    
+          
+      
+        Bibliography
+      
+    
+          
+      Goodbye
+    
+          </sourcecode>
         </section>
       </middle>
       <back>
