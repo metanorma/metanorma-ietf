@@ -1,3 +1,4 @@
+require "tmpdir"
 require "spec_helper"
 
 # WS3 port of spec/isodoc/validate_spec.rb. The old examples drove
@@ -746,7 +747,9 @@ RSpec.describe "IETF RFC XML validation (WS3)" do
       validator.content_validate(rfc)
       validator.content_warnings(rfc)
       expect(validator).not_to be_fatal
-      report = validator.write("/tmp/should-not-write-here")
+      # Dir.tmpdir, not a literal /tmp: the report write runs on
+      # Windows runners too, where /tmp does not exist
+      report = validator.write(File.join(Dir.tmpdir, "should-not-write-here"))
       expect(File.read(report))
         .to include("has lines wider than the 72 columns")
         .and include("contains tab characters")
@@ -762,7 +765,7 @@ RSpec.describe "IETF RFC XML validation (WS3)" do
       validator.content_validate(rfc)
       validator.record_filename_hint(rfc.doc_name)
       expect(validator.entries?).to be true
-      report = validator.write("/tmp/should-not-write-here")
+      report = validator.write(File.join(Dir.tmpdir, "should-not-write-here"))
       expect(File.read(report))
         .to include("expects the submitted file to be named " \
                     "draft-intesigroup-dlts-14.xml")
